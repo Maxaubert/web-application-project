@@ -1,0 +1,26 @@
+{
+  "checked_on": "2026-09-14",
+  "course": "ITF31619-1 26H",
+  "course_id": 11084,
+  "canvas": {
+    "ai_agreement_updated": "2026-09-03",
+    "announcements_read": 12,
+    "course_plan_updated": "2026-08-14",
+    "latest_announcement_id": 173533
+  },
+  "sources": [
+    {
+      "id": "U26",
+      "relative_to_course_material": "tekst/webapp-2026-journey.txt",
+      "sha256": "5a251655470b5628638075801b954e223230e81c3a92c633fcdf06e342b0892e",
+      "page_markers": 374,
+      "included_in_repo": false
+    }
+  ],
+  "limitations": [
+    "No student assessment status checked",
+    "Live Notion question bank not retrieved",
+    "No application scaffold or application tests",
+    "No automatic monitoring"
+  ]
+}
