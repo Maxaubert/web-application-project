@@ -1,5 +1,7 @@
 # Før vi bygger: beslutninger og to-do
 
+Se også [den korte to-do-listen for planleggingsdokumentene](../TODO.md).
+
 Arbeidsliste opprettet 16.09.2026. Alt nedenfor er **planlagt og ikke avkrysset**.
 Brukeren har valgt studentutleieideen fra Borrow Circle. Skill Swap og chat var tidligere
 ønskede deler; konkret omfang må avtales med Emil. «Én til én oppgøring» er ikke avklart:

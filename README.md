@@ -22,6 +22,9 @@ eller installerte programmer overføres via Git. Det finnes fortsatt ingen imple
 
 ## Start her
 
+**[To-do: dokumentene vi skal skrive](TODO.md)** samler MVP, kravspekk,
+akseptansekriterier, prioritering og resten av planleggingen i ti avkrysningspunkter.
+
 1. Les [krav og åpne frister](docs/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
 2. Fyll ut [prosjektkortet](docs/prosjekt.md) sammen: problem, bruker, hovedflyt og kuttliste.
 3. Avtal [samarbeid](docs/samarbeid.md) og [KI-bruk](KI-AVTALE.md). Avtalene er foreløpig utkast.
