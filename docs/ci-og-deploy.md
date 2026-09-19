@@ -7,7 +7,7 @@ Oppsett 19.09.2026, bestilt av Max. Dette er den konkrete driftsveiledningen;
 
 | Del | Status |
 |---|---|
-| CI | [Workflow](../.github/workflows/ci.yml) kjører dokumentvalidator og whitespace-kontroll på PR mot main, push til main og manuell start. Live resultat dokumenteres i PR og verifikasjonsloggen. |
+| CI | [Workflow](../.github/workflows/ci.yml) er prøvd med bestått GitHub-kjøring på PR. Den kontrollerer dokumenter og whitespace. Push til main og manuell start blir tilgjengelig etter merge. Bevis står i PR og verifikasjonsloggen. |
 | Node | CI bruker 22.x fra [.node-version](../.node-version); siste tilgjengelige patch innen den serien. Ingen pakkeinstallasjon trengs ennå. |
 | Avhengighetsoppdatering | [Dependabot](../.github/dependabot.yml) er konfigurert for ukentlige Actions-oppdateringer. Konfigurasjonen tas i bruk når den ligger på main. Ingen automatisk merge. |
 | PR-beskyttelse | **Blokkert av GitHub-abonnementet.** API-et avviser beskyttelse for dette private repoet med beskjed om Pro eller offentlig repo. Repoet beholdes privat; direkte push er derfor ikke teknisk sperret ennå. |

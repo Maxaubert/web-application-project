@@ -19,8 +19,8 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
   [KI- og fremdrifts-PR-en](https://github.com/Maxaubert/web-application-project/pull/2).
 - [x] Opprettet [felles arbeidslogg](arbeidslogg-max-og-emil.md) og [timeliste](timeliste.md).
   Loggen er etterført fra kjente hendelser; ingen timer er oppgitt eller registrert.
-- [x] Lagt inn [CI-workflow og konkret oppsettsveiledning](docs/ci-og-deploy.md) for
-  dokumentkontroll, videre apptester og senere deploy. Aktiv beskyttelse gjenstår.
+- [x] Lagt inn og prøvd [CI-workflow og konkret oppsettsveiledning](docs/ci-og-deploy.md).
+  Dokumentkontrollen besto på GitHub. App-CI og deploy kommer senere; aktiv beskyttelse gjenstår.
 
 ## Neste konkrete oppgaver
 

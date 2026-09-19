@@ -173,3 +173,32 @@ Uavhengig review fant ingen handlingskrevende funn. Dokumentvalidator besto med
 29 filer og 149 lokale lenker; staged diffkontroll besto uten whitespace-feil.
 Dette er dokumentarbeid utført av Codex etter Max' innspill, ikke studentrefleksjon
 eller apptesting. Endringene inngår i samme åpne PR som KI-kildetillegget.
+
+## CI og forsøk på PR-beskyttelse 19.09.2026
+
+Max bestilte teknisk PR-krav og grunnlag for test-/deploy-pipelines. Codex la til
+CI-workflow for PR mot main, push til main og manuell kjøring, Node 22.x-valg,
+ukentlig Dependabot-konfigurasjon for Actions og et forberedt beskyttelsesoppsett.
+Repoet er fortsatt privat. GitHub avviste både lesing og oppretting av branch protection
+med HTTP 403 og krav om Pro eller offentlig repo. Ingen branchregel er aktivert,
+og det er ikke hevdet at en grønn workflow i seg selv blokkerer direkte push.
+Emils invitasjon var fortsatt ventende ved ny kontroll.
+
+Actions-rettighetene var allerede lesetilgang, uten rett til å godkjenne PR-er.
+Checkout/setup-node er låst til commit-SHA-er kontrollert mot offisielle utgivelser.
+GitHub Actions-app-ID og sjekknavnet samsvarer med den forberedte regelkonfigurasjonen.
+Ingen secrets, hosting, deploy eller automatisk utgivelse er opprettet.
+
+Verifikasjon:
+
+- Uavhengig review av workflow, beskyttelsespayload og statusbeskrivelser: ingen funn.
+- actionlint 1.7.12: bestått. Verktøyarkivet ble kontrollert mot utgiverens SHA256-liste.
+- Workflowens faktiske Bash-sperre ble kjørt i tre midlertidige Git-repoer: docs uten
+  pakke besto; package.json i rot og i undermappe ga begge forventet feilstatus.
+- Dokumentvalidator: 34 Git-filer, 33 tekstfiler og 161 lokale lenker. Staged diffkontroll besto.
+- [Første live CI-kjøring](https://github.com/Maxaubert/web-application-project/actions/runs/35448304403)
+  besto på commit 17f60c6, sjekk `Repository checks`, levert av GitHub Actions.
+
+Det er fremdeles ingen apptester. Faktisk blokkering av merge kan først verifiseres
+når kontoen støtter branch protection. Workflowfilene ligger i åpen PR; hovedbranch-
+trigger og Dependabot-oppsett forutsetter merge. Nye PR-commits må få egen grønn kjøring.
