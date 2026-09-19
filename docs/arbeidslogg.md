@@ -4,13 +4,16 @@ Dette er en lett **teamhjelp**, ikke et ekstra Canvas-krav om dagbok eller timel
 Git-historikken viser faktiske kodebidrag; korte notater hjelper dere å skrive en ærlig
 rapport og følge opp læringshull. [P02/P04/P05](emnekrav.md) styrer.
 
-## Første registrering
+## Hvor fører vi arbeidet?
 
-14.09.2026: Codex opprettet dokumentasjonsgrunnlaget etter brukerens bestilling.
-Kursregler ble kontrollert mot Canvas og lokale undervisningskilder; en separat
-kildeagent sjekket utvalgte pedagogiske føringer. Resultat og testbegrensninger føres
-i [verifikasjon](verifikasjon.md). Det er ikke skrevet appkode, studentrefleksjon eller
-studenttestversjoner. Dette teller ikke som dokumentert mestring for Max eller Emil.
+- [Felles arbeidslogg for Max og Emil](../arbeidslogg-max-og-emil.md): konkrete økter,
+  etterførte milepæler, beslutninger, faktiske bidrag og neste handling.
+- [Timeliste](../timeliste.md): én rad per person og økt; ukjent tid føres ikke som null.
+- [TODO](../TODO.md): løpende oppgaver frem til Issues og Kanban overtar.
+- [Verifikasjon](verifikasjon.md): tekniske kontrollresultater og begrensninger.
+
+Denne filen er veiledning og mal, ikke en parallell fremdriftslogg. Den første
+registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjonen.
 
 ## Mal ved en meningsfull arbeidsøkt
 

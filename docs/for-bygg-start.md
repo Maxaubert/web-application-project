@@ -2,7 +2,8 @@
 
 Se også [den korte to-do-listen for planleggingsdokumentene](../TODO.md).
 
-Arbeidsliste opprettet 16.09.2026. Alt nedenfor er **planlagt og ikke avkrysset**.
+Arbeidsliste opprettet 16.09.2026, status oppdatert 19.09.2026. Helhetspunktene
+nedenfor er fortsatt åpne; utførte delresultater og neste handling står i TODO.
 Avklart av Max 19.09: salg, gratis lån og betalt leie inngår i MVP, med forespørsler og
 motforslag. Henting/retur avtales i forespørselen. Chat kommer senere, og hjelp/opplæring
 er fortsatt åpent. Se [gjeldende kravspesifikasjon](../kravspesifikasjon.md).
@@ -19,15 +20,15 @@ er ikke automatisk fullført. Studentene må fortsatt gjennomgå de åpne valgen
 | [ ] | F02 | Undersøk behovet hos noen aktuelle studenter: hva gjør de i dag, hvor stopper det opp, og hvorfor bruke vår app? Noter ekte funn og usikkerhet. | Begge |
 | [ ] | F03 | Skriv én tydelig problemformulering, første målgruppe og forventet brukerresultat. Avtal hvordan dere senere vurderer om flyten er nyttig. | Begge |
 | [ ] | F04 | Tegn komplette brukerreiser for salg, gratis lån og betalt leie. Avklar gjenstående regler for forespørsler og fullføring. Behold chat på senere-listen og hjelp/opplæring som åpent spørsmål. | Begge |
-| [ ] | F05 | Skriv korte funksjonsspesifikasjoner: mål, omfang, begrensninger og Gitt/Når/Så-kriterier. Skill funksjonelle krav, forretningsregler, kvalitetskrav og designkrav. Merk tekniske rammer som rammer. | Begge |
+| [ ] | F05 | Kravspekk med kravtyper og AK-01–AK-29 finnes som utkast. Gjennomgå sammen, presiser åpne regler og bekreft hva som er klart til bygging. | Begge |
 | [ ] | F06 | Avklar regler for tilgjengelighet, tidsperioder, forespørsel/godkjenning, henting/retur, avbestilling og konflikt. Ta stilling til betaling/depositum og verifisering av studenter uten å anta at det skal implementeres. | Begge |
 | [ ] | F07 | Prioriter med metoden under og avtal kutt ved tidspress. Skill emnets minimum fra produktets minimum. Knytt begge til første leveranse. | Begge |
-| [ ] | F08 | Finn største usikkerheter: teknikk, avtaler, persondata, eksterne tjenester og kapasitet. Velg korte, avgrensede undersøkelser med et spørsmål og stoppkriterium. | Eier per risiko, TBD |
+| [ ] | F08 | Feide er undersøkt og valgt bort av Max. Finn øvrige usikkerheter i teknikk, avtaler, persondata og kapasitet; velg korte undersøkelser med spørsmål og stoppkriterium. Alternativ innlogging og studentverifisering gjenstår. | Eier per risiko, TBD |
 | [ ] | F09 | Velg tillatt stack og driftsmål. Lag teknisk plan med enkel datamodell, API-kontrakt, server-/klientgrense, auth og eierskapskontroll. Beskriv alternativer og konsekvenser med egne ord. | Begge |
 | [ ] | F10 | Planlegg wireframes for hovedflyten, navigasjon og tilstander: tomt, laster, feil, suksess. Avtal mobilbruk, store mål/tekst, tastatur og høy zoom. | Eier + medstudentreview, TBD |
 | [ ] | F11 | Avtal hvilke persondata som trengs, hvem som får se dem, sletting/lagring og demonstrasjonsdata. Avklar eventuell juridisk usikkerhet før reell betaling eller offentlig pilot. | Begge |
 | [ ] | F12 | Lag testplan fra kriteriene: enhet, reell integrasjon og browser-E2E. Ta med feil bruker, manglende innlogging, ugyldig input og overlappende forespørsler der reglene krever det. | Begge |
-| [ ] | F13 | Ferdigstill gruppe-/KI-avtale, reviewpraksis og læringsrutine. Avtal arbeidskapasitet og hvordan begge blir kjent med hele appen. | Begge |
+| [ ] | F13 | Lærerens KI-avtale er hentet; gruppens utkast er ubekreftet. Ferdigstill gruppe-/KI-avtale, reviewpraksis og læringsrutine. Felles logg og tom timeliste finnes. Avtal faktisk kapasitet og hvordan begge lærer hele appen. | Begge |
 | [ ] | F14 | Del første flyt i små issues med eier, avhengigheter og verifikasjon. Sett milepæler mot bekreftede kursdatoer og reserver tid til feilretting, demo og eksamensøving. | Begge |
 | [ ] | F15 | Avtal GitHub-eier, synlighet og oppsettstillatelse. Gjør G01–G10 når autorisert, og kontroller filer/historikk for hemmeligheter etter G22 før første publisering. Ingen skyressurser opprettes bare fordi denne listen finnes. | Begge |
 

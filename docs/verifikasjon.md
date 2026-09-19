@@ -155,3 +155,21 @@ mellomrom ble påpekt og fjernet før staging. Dokumentvalidator besto med 27 fi
 og 120 lokale lenker; staged diffkontroll besto uten whitespace-feil. Ingen appkode
 er endret eller apptester kjørt. Reviewet er ikke en bekreftelse fra Emil.
 Dette tillegget går i en ny PR og omfattes ikke av tidligere mergegodkjenning.
+
+## Løpende fremdrift og felles timeliste 19.09.2026
+
+Etter ny bestilling fra Max er TODO oppdatert med utførte delresultater og neste
+oppgaver, mens de ti planleggingstemaene fortsatt krever gruppegjennomgang.
+Felles arbeidslogg er etterført fra kjente hendelser og Git-historikk. En tom
+timeliste skiller personer, målt tid og etterførte estimater. Ingen timer er diktet.
+AGENTS.md krever oppdatering av TODO og logg etter meningsfulle økter, frem til
+Issues/Kanban overtar oppgavelisten. README og eksisterende loggveiledning peker til filene.
+
+Max oppga at Feide ikke er riktig løsning. Kravspekk, innloggingskriteriet og teknisk
+plan er samordnet med at Feide er valgt bort. Det er ikke dokumentert en mislykket
+integrasjonstest eller et avslag fra HiØ; alternativ innlogging gjenstår.
+
+Uavhengig review fant ingen handlingskrevende funn. Dokumentvalidator besto med
+29 filer og 149 lokale lenker; staged diffkontroll besto uten whitespace-feil.
+Dette er dokumentarbeid utført av Codex etter Max' innspill, ikke studentrefleksjon
+eller apptesting. Endringene inngår i samme åpne PR som KI-kildetillegget.

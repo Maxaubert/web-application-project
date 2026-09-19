@@ -35,7 +35,9 @@ eller installerte programmer overføres via Git. Det finnes fortsatt ingen imple
 | Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
 
 **[To-do: dokumentene vi skal skrive](TODO.md)** samler MVP, kravspekk,
-akseptansekriterier, prioritering og resten av planleggingen i ti avkrysningspunkter.
+akseptansekriterier, prioritering og resten av planleggingen, med utført arbeid og neste steg.
+[Felles arbeidslogg](arbeidslogg-max-og-emil.md) følger fremdriften, og [timelisten](timeliste.md)
+samler Max og Emils faktiske timer. TODO vedlikeholdes frem til Issues og Kanban overtar.
 
 1. Les [krav og åpne frister](docs/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
 2. Gjennomgå [kravspesifikasjonen](kravspesifikasjon.md) og [teknisk plan](docs/teknisk-plan.md) sammen. Bruk [prosjektkortet](docs/prosjekt.md) til arbeidsdeling og fremdrift.
@@ -54,7 +56,7 @@ akseptansekriterier, prioritering og resten av planleggingen i ti avkrysningspun
 | Før byggestart: avklaringer, prioritering og oppgaver | [Før-bygg-listen](docs/for-bygg-start.md) |
 | Planlagt GitHub-oppsett, CI/CD, tester og presentasjon | [GitHub repo-oppsett](docs/github-repo-oppsett.md) |
 | Arkitektur, HTTP, database, sikkerhet, tester | [Teknikk og beslutningsmal](docs/teknikk.md) |
-| Arbeidsdeling, Git, PR og ærlig dokumentasjon | [Samarbeid](docs/samarbeid.md), [arbeidslogg](docs/arbeidslogg.md) |
+| Arbeidsdeling, fremdrift og timer | [Samarbeid](docs/samarbeid.md), [felles arbeidslogg](arbeidslogg-max-og-emil.md), [timeliste](timeliste.md), [loggveiledning](docs/arbeidslogg.md) |
 | KI-grenser og hjelp fra Claude/Codex/ChatGPT | [KI-avtale](KI-AVTALE.md), [assistentbruk](docs/assistentbruk.md), [AGENTS.md](AGENTS.md) |
 | Egen forståelse, retrospekt og eksamen | [Læringskart](docs/laering.md) |
 | Lyntale, sign off, rapport og presentasjon | [Leveranser](docs/leveranse.md) |

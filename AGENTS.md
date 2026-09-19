@@ -56,6 +56,9 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
+- Etter hver meningsfull økt: oppdater [TODO](TODO.md) og [felles arbeidslogg](arbeidslogg-max-og-emil.md).
+  Før [timer](timeliste.md) bare fra studentenes opplysninger; ukjent er ikke null.
+  TODO er aktiv backlog frem til Issues/Kanban overtar. Bevar historikk og lenk til utført arbeid.
 
 ## Git, personvern og samarbeid
 
