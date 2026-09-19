@@ -32,6 +32,7 @@ eller installerte programmer overføres via Git. Det finnes fortsatt ingen imple
 | [Kravspesifikasjon](kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav, kvalitet, design og akseptansekriterier |
 | [Teknisk plan](docs/teknisk-plan.md) | Hvordan kravene skal realiseres; åpne teknologivalg, datamodell, API, innlogging og tester |
 | [Lærerens KI-avtale](docs/ki-avtale-canvas.md) og [gruppens arbeidsutkast](KI-AVTALE.md) | Canvas-teksten om KI-bruk, skilt fra avtalen Max og Emil må gjennomgå og bekrefte |
+| [CI, PR-regler og deploy](docs/ci-og-deploy.md) | Workflowen som finnes, blokkert branch protection og hva som må på plass ved appoppsett |
 | Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
 
 **[To-do: dokumentene vi skal skrive](TODO.md)** samler MVP, kravspekk,
@@ -64,7 +65,7 @@ samler Max og Emils faktiske timer. TODO vedlikeholdes frem til Issues og Kanban
 
 ## Kjør kontroll av dokumentasjonen
 
-Fra denne repo-roten, med Node.js 22 eller nyere:
+Fra denne repo-roten, med Node.js 22 eller nyere (CI bruker 22.x fra `.node-version`):
 
 ```powershell
 node scripts/verify-docs.mjs
@@ -83,7 +84,8 @@ ikke studentenes forståelse eller om emnet er bestått. Se [begrensningene](doc
 | Vitest, integrasjon, dekning | TBD: ingen apptester finnes ennå |
 | Database, migrasjoner og seed | TBD: eget skjema er ikke valgt |
 | Playwright E2E | TBD: legges til når UI finnes |
-| CI og deploy | Ikke konfigurert. Dokumentkontroll er ikke applikasjons-CI |
+| CI | GitHub Actions-workflow i denne PR-en: dokument- og whitespace-kontroll; apptester kommer med appen |
+| Deploy og release | Ikke aktivert; hosting og utrulling velges med appen. Ingen automatisk utgivelse ved dokumentendringer |
 
 Første app-PR skal erstatte TBD-radene med en reproduserbar oppskrift, nødvendige
 miljøvariabelnavn uten verdier, databaseoppsett og testkommandoer. Test på begge
@@ -95,6 +97,9 @@ Repoet er privat på GitHub etter uttrykkelig bestilling. Offentlig GitHub-repo 
 **senere innleveringskrav**, ikke en godkjenning til å endre synlighet nå.
 Alle endringer gjøres på branch og gjennom PR; lokal PR-tekst finnes i
 [review-fila](docs/review.md). Ingen merge uten Oves godkjenning av den konkrete PR-en.
+GitHub håndhever ennå ikke PR-kravet: beskyttelsen for dette private repoet avvises
+på gjeldende abonnement. [Beskyttelsesoppsettet](docs/ci-og-deploy.md) er klart til
+aktivering når kontoen støtter det. En grønn workflow alene hindrer ikke direkte push.
 
 Ikke legg inn Canvas-token, rå kursarkiv, persondata om andre studenter eller interne
 bedriftsdokumenter. Lisensvalg står åpent; dette grunnlaget gir ingen lisens til

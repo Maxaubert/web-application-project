@@ -30,6 +30,7 @@ også gjeldende krav eller plan, slik at loggen ikke blir den eneste kilden til 
 
 | ID | Dato | Deltaker og konkret bidrag | Oppgave / resultat / beslutning | Kontroll eller lenke | Neste handling |
 |---|---|---|---|---|---|
+| L08 | 19.09.2026 | Max bestilte, Codex satte opp | La til CI for dokumentene, Actions-oppdateringer og forberedt PR-beskyttelse. GitHub avviste branch protection for privat repo på gjeldende abonnement; ingen teknisk PR-sperre er aktiv. | [CI og deploy](docs/ci-og-deploy.md). Ingen app eller deploy er laget, og ingen timer er oppgitt | Avklar abonnement, aktiver og verifiser beskyttelse; bygg reelle appkontroller med første app-PR |
 
 Bruk faktisk øktdato; merk eventuell etterføring. Oppgi KI-verktøy og faktisk rolle.
 Skriv ikke «vi» dersom bare én har arbeidet, og ikke før ventetid på KI som automatisk

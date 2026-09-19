@@ -76,7 +76,10 @@
 
 ## Kjøring og verifikasjon
 
-- Nå: `node scripts/verify-docs.mjs` og `git diff --check`. Ingen installasjon nødvendig.
+- Nå: `node scripts/verify-docs.mjs` og `git diff --check`. CI kjører også disse kontrollene
+  med Node 22.x. Se [CI og beskyttelsesstatus](docs/ci-og-deploy.md); PR-kravet er ennå ikke teknisk håndhevet.
+- Når appens package.json legges til: erstatt CI-sperren med reell install/lint/typecheck/test/build
+  i samme PR. Ikke fjern sperren og la dokumentkontroll være eneste appgate.
 - Appens install/run/build/typecheck/lint/test/E2E-kommandoer er TBD; finn ikke på resultater.
 - Første appoppsett skal gi dokumenterte, faktisk prøvde kommandoer, CI med typecheck/lint/unit,
   og lokal Playwright E2E når UI finnes. Ingen «grønn CI» fra dokumentkontroll alene.

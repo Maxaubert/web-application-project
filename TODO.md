@@ -19,9 +19,16 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
   [KI- og fremdrifts-PR-en](https://github.com/Maxaubert/web-application-project/pull/2).
 - [x] Opprettet [felles arbeidslogg](arbeidslogg-max-og-emil.md) og [timeliste](timeliste.md).
   Loggen er etterført fra kjente hendelser; ingen timer er oppgitt eller registrert.
+- [x] Lagt inn [CI-workflow og konkret oppsettsveiledning](docs/ci-og-deploy.md) for
+  dokumentkontroll, videre apptester og senere deploy. Aktiv beskyttelse gjenstår.
 
 ## Neste konkrete oppgaver
 
+- [ ] **Blokkert:** aktiver støtte for branch protection på GitHub-kontoen, legg på
+  forberedt regel for main og bekreft at manglende review/CI faktisk blokkerer merge (G03).
+  Repoet beholdes privat. Emil må fortsatt godta invitasjonen før han kan gi påkrevd review.
+- [ ] Ved første appoppsett: erstatt scaffold-sperren med reell lint/typecheck/test/dekning/build
+  og Playwright når UI finnes. Velg hosting før deploy-workflow opprettes (G11–G18).
 - [ ] Max og Emil gjennomgår MVP, krav og åpne regler sammen (F01/F04–F06).
 - [ ] Velg alternativ innlogging og avklar hvordan målgruppen verifiseres (F08/F09/F11).
 - [ ] Avklar reservering, datogrenser, avbestilling og salgsfullføring (F06).
