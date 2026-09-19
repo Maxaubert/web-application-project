@@ -21,6 +21,8 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
   Loggen er etterført fra kjente hendelser; ingen timer er oppgitt eller registrert.
 - [x] Lagt inn og prøvd [CI-workflow og konkret oppsettsveiledning](docs/ci-og-deploy.md).
   Dokumentkontrollen besto på GitHub. App-CI og deploy kommer senere; aktiv beskyttelse gjenstår.
+- [x] Opprettet lokal, Git-ignorert WAL med [rutine for gjennomgang og overføring](docs/arbeidslogg.md)
+  til felles arbeidslogg. Rånotatene blir på hver maskin og skal ikke pushes.
 
 ## Neste konkrete oppgaver
 

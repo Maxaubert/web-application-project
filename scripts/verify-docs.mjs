@@ -41,6 +41,9 @@ for (const name of names) {
     fail(`Fil fra avgrenset mappe i Git-utvalget: ${name}`);
   }
   const base = normalized.split('/').at(-1);
+  if (/^WAL\.md$/i.test(base)) {
+    fail(`Lokal WAL skal ikke spores i Git: ${name}`);
+  }
   if ((/^\.env(?:\.|$)/.test(base) || /^\.dev\.vars(?:\.|$)/.test(base)) && !base.endsWith('.example')) {
     fail(`Mulig hemmelighetsfil i Git-utvalget: ${name}`);
   }

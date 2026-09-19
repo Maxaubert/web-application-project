@@ -59,6 +59,11 @@
 - Etter hver meningsfull økt: oppdater [TODO](TODO.md) og [felles arbeidslogg](arbeidslogg-max-og-emil.md).
   Før [timer](timeliste.md) bare fra studentenes opplysninger; ukjent er ikke null.
   TODO er aktiv backlog frem til Issues/Kanban overtar. Bevar historikk og lenk til utført arbeid.
+- Ved øktstart: les lokal `WAL.md` hvis den finnes; opprett den ved behov etter
+  [loggrutinen](docs/arbeidslogg.md). Før korte faktanotater underveis, aldri hemmeligheter.
+  Før øktslutt/overlevering: gjennomgå notatene, overfør bekreftede resultater til arbeidsloggen
+  og merk WAL-notatet med L-ID. Behold uavklarte punkter åpne; ikke dupliser overførte hendelser.
+  WAL er lokal og Git-ignorert. Ikke force-add den eller kopier rånotatene inn i PR-er.
 
 ## Git, personvern og samarbeid
 

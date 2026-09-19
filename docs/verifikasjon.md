@@ -202,3 +202,20 @@ Verifikasjon:
 Det er fremdeles ingen apptester. Faktisk blokkering av merge kan først verifiseres
 når kontoen støtter branch protection. Workflowfilene ligger i åpen PR; hovedbranch-
 trigger og Dependabot-oppsett forutsetter merge. Nye PR-commits må få egen grønn kjøring.
+
+## Lokal WAL og overføring til arbeidslogg 19.09.2026
+
+Max ba om en Git-ignorert arbeids-WAL som senere gjennomgås og oppsummeres i
+arbeidsloggen. Codex opprettet lokal WAL.md og dokumenterte rutinen i AGENTS.md
+og loggveiledningen. L09 er den første gjennomgåtte oppsummeringen; rånotatene
+er ikke lagt i Git. Timer og studentrefleksjoner er ikke fylt inn.
+
+git check-ignore bekreftet den eksplisitte ignoreringsregelen, og git ls-files
+bekreftet at faktisk WAL ikke spores. Validatoren avviser nå en sporet WAL som
+ekstra vern mot feilaktig force-add. I et isolert midlertidig testrepo besto ordinære
+filer, mens en syntetisk WAL i index ga forventet feilstatus. Den faktiske lokale
+WAL-en ble ikke kopiert eller staged under prøven.
+
+Dokumentvalidator besto med 34 Git-filer, 33 tekstfiler og 164 lokale lenker.
+Dette er en lokal arbeidsrutine, ikke en bakgrunnsjobb eller GitHub-synkronisering
+av rånotatene. Hver maskin trenger sin egen WAL ved behov.

@@ -31,6 +31,7 @@ også gjeldende krav eller plan, slik at loggen ikke blir den eneste kilden til 
 | ID | Dato | Deltaker og konkret bidrag | Oppgave / resultat / beslutning | Kontroll eller lenke | Neste handling |
 |---|---|---|---|---|---|
 | L08 | 19.09.2026 | Max bestilte, Codex satte opp | La til CI for dokumentene, Actions-oppdateringer og forberedt PR-beskyttelse. GitHub-CI besto. GitHub avviste branch protection for privat repo på gjeldende abonnement; ingen teknisk PR-sperre er aktiv. | [CI og deploy](docs/ci-og-deploy.md), [første beståtte CI-kjøring](https://github.com/Maxaubert/web-application-project/actions/runs/35448304403). Ingen app, deploy eller timer | Avklar abonnement, aktiver og verifiser beskyttelse; bygg reelle appkontroller med første app-PR |
+| L09 | 19.09.2026 | Max bestilte, Codex satte opp | Opprettet lokal, Git-ignorert WAL for korte løpende faktanotater, med rutine for senere gjennomgang og oppsummering i denne loggen. | [Loggrutine](docs/arbeidslogg.md). Rå-WAL følger ikke med til GitHub eller skole-PC; ingen timer oppgitt | Vedlikehold WAL under økten og overfør gjennomgåtte fakta før overlevering |
 
 Bruk faktisk øktdato; merk eventuell etterføring. Oppgi KI-verktøy og faktisk rolle.
 Skriv ikke «vi» dersom bare én har arbeidet, og ikke før ventetid på KI som automatisk
