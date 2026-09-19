@@ -15,6 +15,16 @@
       "sha256": "5a251655470b5628638075801b954e223230e81c3a92c633fcdf06e342b0892e",
       "page_markers": 374,
       "included_in_repo": false
+    },
+    {
+      "id": "K02",
+      "url": "https://hiof.instructure.com/courses/11084/pages/ki-avtale",
+      "updated_at": "2026-09-03T10:37:41Z",
+      "checked_on": "2026-09-19",
+      "body_sha256": "32f78d38103b657084d77b68aad935fb4d2df40ddf193f47750f1f0f0a1fcd61",
+      "repository_path": "docs/ki-avtale-canvas.md",
+      "included_in_repo": true,
+      "format": "Canvas body converted to Markdown; wording preserved"
     }
   ],
   "limitations": [
@@ -22,5 +32,14 @@
     "Live Notion question bank not retrieved",
     "No application scaffold or application tests",
     "No automatic monitoring"
-  ]
+  ],
+  "ai_policy_check": {
+    "checked_on": "2026-09-19",
+    "ai_agreement_updated_at": "2026-09-03T10:37:41Z",
+    "ai_agreement_body_sha256": "32f78d38103b657084d77b68aad935fb4d2df40ddf193f47750f1f0f0a1fcd61",
+    "announcements_read": 12,
+    "latest_announcement_id": 173533,
+    "course_plan_updated_at": "2026-08-14T15:03:58Z",
+    "scope": "K02 full source text; K01 AI guidance and 12 course announcements checked for clarifications. Other course requirements not re-audited."
+  }
 }

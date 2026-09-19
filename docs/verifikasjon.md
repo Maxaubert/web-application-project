@@ -135,3 +135,23 @@ Dokumentvalidator besto med 26 Git-filer, 26 tekstfiler og 113 lokale lenker;
 arbeidsdiff besto uten whitespace-feil. Dette er dokumentkontroll, ikke app- eller
 E2E-testing. Ingen ny Canvas-kontroll eller bekreftelse fra Emil er utført.
 Brukeren har uttrykkelig godkjent PR og merge for denne web-dokumentasjonen.
+
+## Lærerens KI-avtale fra Canvas 19.09.2026
+
+Etter bestilling fra Max hentet Codex den publiserte K02-siden direkte fra Canvas.
+Kun denne avtalens tekst er lagt inn som kildekopi, i docs/ki-avtale-canvas.md;
+rå API-respons, token og øvrig kursarkiv er ikke lagt i repoet. Siden var sist endret
+03.09.2026 kl. 12:37 norsk tid. Kursplanens KI-føringer og de 12 tilgjengelige
+kunngjøringene ble undersøkt for presiseringer, med paginering fulgt. Dette var
+en målrettet KI-kontroll, ikke en ny gjennomgang av alle emnekrav.
+
+Kildekopien er lenket fra README, gruppeutkastet og kildeindeksen. Studentenes
+gruppeavtale er fortsatt ubekreftet. Kontrolltidspunkt og hash av kildens HTML-body
+er registrert i manifestet; tidligere kontrollhistorikk er beholdt.
+
+Normalisert tekstsammenligning bekreftet at lærerens ordlyd er bevart. Uavhengig
+review bekreftet tekst og hash og fant ingen innholdsmangler. Ett avsluttende
+mellomrom ble påpekt og fjernet før staging. Dokumentvalidator besto med 27 filer
+og 120 lokale lenker; staged diffkontroll besto uten whitespace-feil. Ingen appkode
+er endret eller apptester kjørt. Reviewet er ikke en bekreftelse fra Emil.
+Dette tillegget går i en ny PR og omfattes ikke av tidligere mergegodkjenning.

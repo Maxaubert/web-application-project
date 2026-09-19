@@ -11,10 +11,18 @@ er syntese. Offisiell teknisk dokumentasjon avklarer API-atferd, ikke hva som sk
 hentet med kursavgrensede lesekall, paginering fulgt. K01 sist endret 14.08.2026,
 K02 03.09.2026. Ingen vurderingsstatus, privat innboks eller andre emner ble undersøkt.
 
+**Målrettet KI-kontroll 19.09.2026:** K02 er hentet på nytt fra Canvas og bevart som
+[lærerens tekst](ki-avtale-canvas.md), sist endret 03.09.2026 kl. 12:37 norsk tid.
+Kursplanens KI-føringer og alle 12 tilgjengelige kunngjøringer ble kontrollert for
+presiseringer, med paginering fulgt. Ingen motstridende KI-presisering ble funnet
+i disse kildene. Gruppeenighet om KI-bruk og gruppekontrakt i tillegg til KI-avtalen
+bekreftes fortsatt av A04/A29. Dette er ikke en ny kontroll av alle emnekrav eller frister.
+Metadata og hash av Canvas-sidens HTML-innhold ligger i [kildemanifestet](kildemanifest.json).
+
 | ID | Primærkilde | Bruk |
 |---|---|---|
 | K01 | [Canvas kursplan](https://hiof.instructure.com/courses/11084/pages/webapp-kursplan) | §8 arbeidskrav 0–5, teknisk minimum; §9 vurdering; §10 fravær; §11 sign off; §12 eksamen |
-| K02 | [Canvas KI-avtale](https://hiof.instructure.com/courses/11084/pages/ki-avtale) | Fire områder: bruk, egen ferdighet, verifikasjon, avtale i repo |
+| K02 | [Canvas KI-avtale](https://hiof.instructure.com/courses/11084/pages/ki-avtale), [hentet tekst](ki-avtale-canvas.md) | Fire områder: bruk, egen ferdighet, verifikasjon, avtale i repo. Kildetekst, ikke gruppens tilslutning |
 | A14 | [Retrospektpresisering 14.09](https://hiof.instructure.com/courses/11084/discussion_topics/173533) | Kommende stoff, pass, teknikk/refleksjon/anvendelse og deltakelse |
 | A11 | [Grupper og forventninger 11.09](https://hiof.instructure.com/courses/11084/discussion_topics/173430) | Grupper låst, endringer avklares, større bredde/dybde i lyntaler |
 | A08 | [Nye gruppeoversikter 08.09](https://hiof.instructure.com/courses/11084/discussion_topics/173210) | Gamle lyntaletider må oppdateres |

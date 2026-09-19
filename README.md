@@ -31,6 +31,7 @@ eller installerte programmer overføres via Git. Det finnes fortsatt ingen imple
 |---|---|
 | [Kravspesifikasjon](kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav, kvalitet, design og akseptansekriterier |
 | [Teknisk plan](docs/teknisk-plan.md) | Hvordan kravene skal realiseres; åpne teknologivalg, datamodell, API, innlogging og tester |
+| [Lærerens KI-avtale](docs/ki-avtale-canvas.md) og [gruppens arbeidsutkast](KI-AVTALE.md) | Canvas-teksten om KI-bruk, skilt fra avtalen Max og Emil må gjennomgå og bekrefte |
 | Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
 
 **[To-do: dokumentene vi skal skrive](TODO.md)** samler MVP, kravspekk,

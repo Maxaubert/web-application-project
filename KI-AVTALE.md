@@ -4,6 +4,12 @@
 Denne filen dokumenterer ikke hva Max eller Emil allerede kan eller faktisk har gjort.
 Fyll inn egne valg og bekreft avtalen sammen. Kilde: [K02 og U26](docs/kilder.md).
 
+**Start med [lærerens KI-avtale fra Canvas](docs/ki-avtale-canvas.md)**, hentet og
+kontrollert 19.09.2026. Den er bevart som egen kildetekst; denne filen er gruppens
+arbeidsutkast. Canvas-avtalen åpner for KI som hjelp i arbeidet, men krever egen
+forståelse og kontroll av resultatene. Den er ikke en generell tillatelse til KI
+i alle oppgaver. Særgrensene nedenfor gjelder sine konkrete sammenhenger.
+
 ## 1. Hva bruker vi KI til?
 
 Forslag: oppsett, forklaringer, feilsøking, kodeforslag, review, alternative løsninger og
@@ -51,6 +57,8 @@ inn i rapporten eller loggen. Ved tvil om bearbeiding/korrektur: avklar konkret 
 ## 4. Hvordan holder vi avtalen levende?
 
 Avtalen ligger i repoet og brukes som grunnlag for ærlig omtale av KI i rapporten.
+Max og Emil må selv gjennomgå de fire områdene, velge arbeidsmåte og fylle inn
+tilslutning. Verken kildeteksten eller dette KI-lagde utkastet bekrefter at det er gjort.
 Før vesentlig KI-bidrag i [arbeidsloggen](docs/arbeidslogg.md): verktøy, oppgave,
 faktisk bidrag, kontroll, feil og eget læringsbehov. Ikke lag et referat av enhver prompt.
 Ikke logg hemmeligheter, sensitive promptdata eller andres private opplysninger.
