@@ -4,7 +4,10 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Foreløpig bare dokumentasjon. Idé, stack og arkitektur er ikke valgt. Ikke finn på beslutninger.
+- Foreløpig bare dokumentasjon. Studentmarked med salg, gratis lån og leie er valgt av Max;
+  alle tre i MVP, avtaler via forespørsler/motforslag, chat senere. Stack/arkitektur er åpne.
+- [Kravspesifikasjon](kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/teknisk-plan.md)
+  beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
 - Les [emnekrav](docs/emnekrav.md), [prosjektkort](docs/prosjekt.md) og [KI-avtale](KI-AVTALE.md)
   før implementering. Les [teknikk](docs/teknikk.md) for berørte kodeområder og
   [læringskart](docs/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.

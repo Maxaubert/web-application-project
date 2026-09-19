@@ -3,22 +3,22 @@
 Se også [den korte to-do-listen for planleggingsdokumentene](../TODO.md).
 
 Arbeidsliste opprettet 16.09.2026. Alt nedenfor er **planlagt og ikke avkrysset**.
-Brukeren har valgt studentutleieideen fra Borrow Circle. Skill Swap og chat var tidligere
-ønskede deler; konkret omfang må avtales med Emil. «Én til én oppgøring» er ikke avklart:
-opplæring/hjelp og økonomisk oppgjør gir forskjellige krav. Ingen av dem antas ferdig bestemt.
+Avklart av Max 19.09: salg, gratis lån og betalt leie inngår i MVP, med forespørsler og
+motforslag. Henting/retur avtales i forespørselen. Chat kommer senere, og hjelp/opplæring
+er fortsatt åpent. Se [gjeldende kravspesifikasjon](../kravspesifikasjon.md).
 
 Listen er ingen bestilling på implementering. [GitHub-planen](github-repo-oppsett.md)
-beskriver oppsettet som senere skal støtte arbeidet. Eldre prosjektkort og statusnotater
-kan fortsatt si «idé ikke valgt»; oppdatering av dem står eksplisitt i F01.
+beskriver oppsettet som skal støtte arbeidet. Repoer er nå opprettet; øvrige punkter
+er ikke automatisk fullført. Studentene må fortsatt gjennomgå de åpne valgene sammen.
 
 ## Før funksjonsbygging
 
 | Ferdig | ID | Oppgave og hva dere skal sitte igjen med | Foreslått ansvar |
 |---|---|---|---|
-| [ ] | F01 | Bekreft prosjektvalg og begreper sammen. Avklar utlån/utleie, hjelp/opplæring, chat og oppgjør. Oppdater prosjektkort og AI-veiledning når dette er avtalt. | Begge |
+| [ ] | F01 | Gå gjennom Max' avklaringer med Emil: alle tre handelstyper i MVP, forespørsler/motforslag, chat senere og oppgjør utenfor appen. Avklar gjenstående spørsmål og eventuell hjelp/opplæring. | Begge |
 | [ ] | F02 | Undersøk behovet hos noen aktuelle studenter: hva gjør de i dag, hvor stopper det opp, og hvorfor bruke vår app? Noter ekte funn og usikkerhet. | Begge |
 | [ ] | F03 | Skriv én tydelig problemformulering, første målgruppe og forventet brukerresultat. Avtal hvordan dere senere vurderer om flyten er nyttig. | Begge |
-| [ ] | F04 | Tegn én komplett brukerreise og avgrens første nyttige versjon. Lag eksplisitt inn/ut-liste og en senere-liste. Ta stilling til hvor hjelp og chat hører hjemme, ikke fjern dem i stillhet. | Begge |
+| [ ] | F04 | Tegn komplette brukerreiser for salg, gratis lån og betalt leie. Avklar gjenstående regler for forespørsler og fullføring. Behold chat på senere-listen og hjelp/opplæring som åpent spørsmål. | Begge |
 | [ ] | F05 | Skriv korte funksjonsspesifikasjoner: mål, omfang, begrensninger og Gitt/Når/Så-kriterier. Skill funksjonelle krav, forretningsregler, kvalitetskrav og designkrav. Merk tekniske rammer som rammer. | Begge |
 | [ ] | F06 | Avklar regler for tilgjengelighet, tidsperioder, forespørsel/godkjenning, henting/retur, avbestilling og konflikt. Ta stilling til betaling/depositum og verifisering av studenter uten å anta at det skal implementeres. | Begge |
 | [ ] | F07 | Prioriter med metoden under og avtal kutt ved tidspress. Skill emnets minimum fra produktets minimum. Knytt begge til første leveranse. | Begge |

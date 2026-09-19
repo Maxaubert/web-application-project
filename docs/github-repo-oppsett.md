@@ -3,8 +3,9 @@
 Planlagt 16.09.2026 for Max og Emil. **Dette er en oppgaveliste, ikke utført oppsett.**
 Ingen remote, regler, issues, board, workflows, tester, deploy eller grafiske filer er
 opprettet gjennom denne planen. Eksisterende grunnlagsfiler og PR-mal er utkast.
-Begynn med [før-bygg-listen](for-bygg-start.md). Prosjektretningen er studentutleie,
-basert på Borrow Circle; hjelp/opplæring, chat og oppgjør må avgrenses sammen.
+Begynn med [før-bygg-listen](for-bygg-start.md). Oppdatert produktretning står i
+[kravspesifikasjonen](../kravspesifikasjon.md): alle tre handelstyper ved lansering,
+forespørsler/motforslag og chat senere. Historiske oppsettstatuser nedenfor er fra 16.09.
 
 ## Hva som teller
 

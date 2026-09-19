@@ -106,3 +106,16 @@ besto uten whitespace-feil. Dette verifiserer dokumentene, ikke fremtidig CI ell
 Ingen faktisk GitHub-PR kan åpnes her uten en remote og basehistorikk. De tidligere
 staged filene er bevart på ny arbeidsbranch `codex/repo-setup-plan`; intet er committet,
 publisert eller merget. PR-utkastet står i [review](review.md).
+
+## Dokumentstruktur og produktavklaringer 19.09.2026
+
+Etter Max' bestilling er produktutkastet omdøpt til kravspesifikasjon, med en separat
+teknisk plan og README som inngang. Alle tre handelstyper inngår i første versjon;
+forespørsler, motforslag og partenes svar er beskrevet. Chat er utsatt til etter MVP.
+Åpne regler, Feide-tilgang og Emils tilslutning er ikke fylt inn som bekreftede valg.
+Codex har skrevet og kontrollert endringen; den er ikke studentenes egen rapporttekst.
+
+Uavhengig review fant ingen blokkere. Små restformuleringer om leie alene og plassering
+av chat er rettet. En tidlig validatorkjøring under review så den ennå ikke stagede
+omdøpingen; etter staging besto kontrollen med 26 filer og 113 lokale lenker.
+Diffkontroll besto. Ingen app, tester eller GitHub-workflows er implementert her.

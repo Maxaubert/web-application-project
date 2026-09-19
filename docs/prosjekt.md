@@ -1,32 +1,33 @@
 # Prosjektkort og første plan
 
-**Teamutkast, ikke en innlevert kravspesifikasjon.** Idé og beslutninger er åpne.
+**Teamutkast, oppdatert 19.09.2026.** Dette er arbeidsplanen, ikke en parallell kravspesifikasjon.
 Kilde: [emnekrav](emnekrav.md) T01–T08 og [kilder](kilder.md) K01, U26 s. 152–159, 229.
 Kvitter er undervisningsdemo. Velg et meningsfullt problem med sammenlignbart omfang,
 ikke en samling tilfeldige funksjoner for å krysse av teknologi.
 
-[Ideer til diskusjon med Emil](ideer-til-diskusjon.md) bevarer School Hub og
-Borrow Circle + Skill Swap + chat som kandidater. Ingen av dem er valgt; feltene
-nedenfor står åpne til dere faktisk har bestemt problem og omfang sammen.
+[Kravspesifikasjonen](../kravspesifikasjon.md) beskriver gjeldende studentmarked:
+salg, gratis lån og betalt leie i MVP, med forespørsler og motforslag. Chat kommer senere.
+Dette er Max' avklaringer; Emil og brukerbehov er ikke bekreftet. [Teknisk plan](teknisk-plan.md)
+samler gjennomføringen. [Idénotatet](ideer-til-diskusjon.md) bevares som historikk.
 
 ## Beslutninger Max og Emil tar sammen
 
 | Felt | Nå |
 |---|---|
-| Bruker og konkret problem | TBD |
+| Bruker og konkret problem | Studenter som trenger ting og studenter som tilbyr dem; behovet undersøkes, se kravspesifikasjonen |
 | Mål: hva brukeren skal kunne gjøre bedre | TBD |
-| Én hovedflyt: logg inn, lag noe, se det igjen | TBD |
+| Én hovedflyt: logg inn, lag noe, se det igjen | Publiser annonse → student foreslår avtale → eier svarer/justerer → studenten svarer på motforslag; detaljene står i kravspesifikasjonen |
 | Egen ressurs, eier og relasjoner | TBD |
 | Hva en annen bruker kan se og endre | TBD |
-| Akseptansekriterier fra brukerens perspektiv | TBD |
-| Minste nyttige omfang, og hvordan det ligner kursets nivå | TBD |
+| Akseptansekriterier fra brukerens perspektiv | AK-01–AK-23 i kravspesifikasjonen, fortsatt utkast |
+| Minste nyttige omfang, og hvordan det ligner kursets nivå | Alle tre handelstyper, uten chat eller innebygd betaling. Fullføringsregler gjenstår |
 | Første funksjoner i prioritert rekkefølge | TBD |
 | Kuttliste dersom tid/forståelse svikter | TBD |
 | Stack: RedwoodSDK/Next.js/TanStack Start | TBD. RedwoodSDK følger undervisningen nærmest |
 | Eksterne data, personvern og kostnader | TBD. Bruk syntetiske demoopplysninger |
 | Ambisjon, kapasitet og avtalt arbeidsform | TBD, begge bekrefter selv |
 | Gruppeendring meldt/avklart med faglærer | Ukjent. Bruker oppgir Max og Emil, ikke bevis på lærerens godkjenning |
-| Remote, synlighet, lisens og sky | Ikke valgt/godkjent |
+| Remote, synlighet, lisens og sky | Privat GitHub-repo er opprettet og pushet med fullmakt. Lisens og sky er åpne |
 
 Ikke velg app ut fra hvor mange avanserte utvidelser KI kan generere. Velg noe begge
 kan lære å forklare hele veien. RAG, filopplasting og cron står utenfor første omfang

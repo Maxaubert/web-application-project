@@ -4,10 +4,15 @@ Opprettet 18.09.2026 etter brukerens bestilling. Dette er den korte avkrysningsl
 for dokumentene vi skal utarbeide sammen. Ingen av oppgavene er bekreftet ferdige.
 Ti punkter betyr ti temaer, ikke krav om ti separate filer.
 
+Utkastene finnes nå i [kravspesifikasjonen](kravspesifikasjon.md) og [teknisk plan](docs/teknisk-plan.md).
+Avklart av Max 19.09: salg, gratis lån og betalt leie fra lansering; forespørsler og
+motforslag i MVP, chat senere. Avkryssing krever fortsatt gjennomgang av hele punktet.
+
 - [ ] **Problem og målgruppe:** beskriv studentenes behov, faktiske brukerinnspill og
   hvorfor de vil bruke tjenesten. Avklar prosjektets begreper med Emil. (F01–F03)
 - [ ] **MVP og avgrensning:** definer første nyttige versjon, én komplett brukerreise,
-  hva som er med og hva som utsettes. Avklar utleie, hjelp/opplæring og chat. (F04)
+  hva som er med og hva som utsettes. Behold alle tre handelstyper, chat senere;
+  avklar eventuell hjelp/opplæring og gjenstående regler. (F04)
 - [ ] **Kravspesifikasjon:** skriv funksjonelle krav, kvalitetskrav, designkrav og tekniske
   rammer. Beskriv ønsket oppførsel før arkitekturvalgene. (F05)
 - [ ] **Akseptansekriterier:** gjør kravene etterprøvbare med Gitt/Når/Så, inkludert

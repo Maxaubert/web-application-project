@@ -4,8 +4,9 @@ Arbeidsgrunnlag for **Max og Emil**, Høgskolen i Østfold, høsten 2026.
 Målet er å bygge en egen fullstack-app og forstå hele løsningen godt nok til å
 forklare, vurdere og endre den uten KI på individuell muntlig vurdering.
 
-**Status 14.09.2026:** lokal dokumentasjonsstart. Ingen applikasjonsidé eller endelig
-stack er valgt. Ingen app, avhengigheter, skyressurser eller GitHub-remote er opprettet.
+**Status 19.09.2026:** prosjektet er et studentmarked med kjøp/salg, gratis lån og
+betalt utleie fra første versjon. Forespørsler og motforslag håndterer avtalene;
+chat kommer etter MVP. Ingen app er implementert, og endelig stack er ikke valgt.
 Dokumentasjonen er laget med Codex og er ikke dokumentasjon på studentenes læring.
 
 **Overføring 18.09.2026:** privat GitHub-repo under `Maxaubert/web-application-project`
@@ -22,11 +23,17 @@ eller installerte programmer overføres via Git. Det finnes fortsatt ingen imple
 
 ## Start her
 
+| Dokument | Hva det svarer på |
+|---|---|
+| [Kravspesifikasjon](kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav, kvalitet, design og akseptansekriterier |
+| [Teknisk plan](docs/teknisk-plan.md) | Hvordan kravene skal realiseres; åpne teknologivalg, datamodell, API, innlogging og tester |
+| Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
+
 **[To-do: dokumentene vi skal skrive](TODO.md)** samler MVP, kravspekk,
 akseptansekriterier, prioritering og resten av planleggingen i ti avkrysningspunkter.
 
 1. Les [krav og åpne frister](docs/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
-2. Fyll ut [prosjektkortet](docs/prosjekt.md) sammen: problem, bruker, hovedflyt og kuttliste.
+2. Gjennomgå [kravspesifikasjonen](kravspesifikasjon.md) og [teknisk plan](docs/teknisk-plan.md) sammen. Bruk [prosjektkortet](docs/prosjekt.md) til arbeidsdeling og fremdrift.
 3. Avtal [samarbeid](docs/samarbeid.md) og [KI-bruk](KI-AVTALE.md). Avtalene er foreløpig utkast.
 4. Velg stack innenfor emnets rammer, og opprett den første lille appflyten med
    [teknisk sjekkliste](docs/teknikk.md). Start ikke med alle mulige funksjoner.
@@ -37,7 +44,8 @@ akseptansekriterier, prioritering og resten av planleggingen i ti avkrysningspun
 | Når dere trenger | Les |
 |---|---|
 | Gjeldende emnekrav, kilder, evidens | [Emnekrav](docs/emnekrav.md), [kildeindeks](docs/kilder.md) |
-| Idé, avgrensning og første plan | [Ideer til diskusjon med Emil](docs/ideer-til-diskusjon.md), [prosjektkort](docs/prosjekt.md) |
+| Produkt, omfang og gjennomføring | [Kravspesifikasjon](kravspesifikasjon.md), [teknisk plan](docs/teknisk-plan.md), [prosjektkort](docs/prosjekt.md) |
+| Historiske idéforslag | [Ideer til diskusjon med Emil](docs/ideer-til-diskusjon.md) |
 | Før byggestart: avklaringer, prioritering og oppgaver | [Før-bygg-listen](docs/for-bygg-start.md) |
 | Planlagt GitHub-oppsett, CI/CD, tester og presentasjon | [GitHub repo-oppsett](docs/github-repo-oppsett.md) |
 | Arkitektur, HTTP, database, sikkerhet, tester | [Teknikk og beslutningsmal](docs/teknikk.md) |
