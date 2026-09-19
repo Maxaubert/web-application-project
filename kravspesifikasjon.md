@@ -39,7 +39,7 @@ Forslag er anbefalinger til gruppen; åpne valg må avklares før berørt funksj
 | Omfang | Avklart | Salg, gratis lån og betalt leie i MVP. Chat senere og betaling utenfor appen. |
 | Avtaleflyt | Avklart | Eier godtar, avslår eller justerer forespørselen; forespørrer godtar eller avslår motforslaget. Praktiske avtaler ligger i forespørselen, også ved salg. |
 | Retur | Avklart | Eieren alene bekrefter mottatt retur og fullfører lån/leie. Studenten som lånte trenger ikke bekrefte. |
-| Feide | Ønsket, tilgang åpen | Undersøk registrering, test og institusjonsaktivering før innloggingsvalg låses. |
+| Innlogging | Feide valgt bort av Max 19.09 | Dokumentundersøkelsen er utført; alternativ innlogging og verifisering av studentmålgruppen gjenstår. |
 | Pris og felter | Åpent | Bestem obligatoriske annonse-/forespørselsfelt, leiepris per dag/per avtale, total og når kontaktopplysninger vises. Feltforslag finnes i punkt 3. |
 | Tilgjengelighet | Delvis avklart | Ingen overlappende godtatte leieavtaler. Avklar resten i tilgjengelighetstabellen i punkt 3. |
 | Avvik og avslutning | Åpent | Salgsfullføring, tilbaketrekking, avbestilling, uteblitt svar, skade og manglende retur. Vurder om dyrere ting trenger egne regler. |
@@ -48,7 +48,10 @@ Forslag er anbefalinger til gruppen; åpne valg må avklares før berørt funksj
 | Målgruppe og annonser | Åpent | Velg kategorier og geografisk område. Avklar flere handelstyper per annonse, offentlig visning og søkets omfang. |
 | Hjelp/opplæring | Åpent, ikke vedtatt i MVP | Avklar om dette fortsatt hører til den langsiktige ideen. |
 
-**Feide som ønsket innlogging:** Feide kan gi innlogging via studentens institusjon. [Feides dokumentasjon](https://docs.feide.no/service_providers/getting_started/openid_connect.html) beskriver registrering av en OIDC-applikasjon i kundeportalen. Før vi låser teknisk løsning må vi undersøke om gruppen kan registrere tjenesten, få nødvendige tilganger og prøve innlogging med relevante testbrukere. Innloggingen alene avgjør heller ikke hvilke handlinger en bruker får gjøre i appen; eierskap til annonser og avtaler må kontrolleres separat.
+**Innlogging:** Max har valgt Feide bort etter undersøkelsen. Funn og begrensninger er
+bevart i [teknisk plan](docs/teknisk-plan.md); ingen alternativ løsning er valgt.
+Innlogging alene avgjør heller ikke studentstatus eller hvilke handlinger en bruker
+får gjøre; målgruppeverifisering og eierskap til annonser og avtaler må håndteres separat.
 
 **Begreper:** «Kjøp/salg» overfører eierskap. «Lån» gir midlertidig bruk gratis, mens «leie» gir midlertidig bruk mot betaling. Alle tre er del av prosjektideen etter Max' avklaring.
 
@@ -68,7 +71,7 @@ Kravene nedenfor bygger på funksjonene Max har beskrevet og forslagene han har 
 
 | ID | Funksjonelt krav |
 |---|---|
-| FK-01 | En bruker skal kunne logge inn. Feide er ønsket innloggingsmåte. |
+| FK-01 | En bruker skal kunne logge inn. Innloggingsløsning må velges; Feide er valgt bort. |
 | FK-02 | En bruker skal kunne søke blant produkter, åpne et produkt og se beskrivelse, handelstype, pris eller at lånet er gratis, og relevant tilgjengelighet før en forespørsel sendes. |
 | FK-03 | En innlogget bruker skal kunne legge ut et produkt for salg, gratis utlån eller betalt utleie. Om én annonse kan tilby flere typer samtidig, er åpent. |
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel om kjøp, gratis lån eller betalt leie, med foreslåtte vilkår og praktiske avtaler. Lån og leie inkluderer foreslått periode. |
@@ -140,7 +143,7 @@ Tekniske krav beskriver egenskaper løsningen må ha. Teknologivalg beskriver hv
 
 | ID | Status | Teknisk krav |
 |---|---|---|
-| TK-01 | Ønsket av Max, gjennomførbarhet åpen | Feide er ønsket innloggingsmåte og må undersøkes før løsningen låses. Ingen alternativ innlogging er valgt. Appen skal kontrollere brukerens innloggede økt på serveren før beskyttede handlinger utføres. |
+| TK-01 | Innlogging kreves; løsning åpen | Feide er valgt bort av Max. Alternativ innlogging og studentverifisering må avklares. Appen skal kontrollere brukerens innloggede økt på serveren før beskyttede handlinger utføres. |
 | TK-02 | Innspill fra Max | Appen skal lagre produkter, eiere, forespørsler, motforslag og avtalestatus for alle tre handelstyper, slik at informasjonen finnes igjen etter utlogging. |
 | TK-03 | Valgt av Max, presisert for motforslag og retur | Bare eieren kan endre eget produkt og godta, avslå eller justere studentens opprinnelige forespørsel. Bare studenten som sendte forespørselen kan godta eller avslå eierens motforslag. Bare eieren kan bekrefte mottatt retur og fullføre lån/leie. Hver handling skal kontrollere part, rolle og gyldig avtalestatus på serveren. |
 | TK-04 | Valgt av Max | Serveren skal kontrollere data fra brukeren før lagring, for eksempel at nødvendig produktinformasjon finnes og at en leieperiode er gyldig. |
@@ -183,7 +186,7 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 
 ### Innlogging og tilgang (FK-01, TK-01, TK-03, TK-07)
 
-- **AK-01:** Gitt at Feide er valgt og aktivert for tjenesten og studenten har tilgang, når studenten fullfører innloggingen, så skal appen opprette en gyldig økt og gi tilgang til funksjoner for innloggede brukere. Kriteriet avventer Feide-avklaringen; innlogging er fortsatt nødvendig i MVP.
+- **AK-01:** Gitt at valgt innloggingsløsning er konfigurert og studenten har en gyldig konto med tilgang, når studenten fullfører innloggingen, så skal appen opprette en gyldig økt og gi tilgang til funksjoner for innloggede brukere. Konkret testoppsett avventer valg av løsning og målgruppeverifisering.
 - **AK-02:** Gitt at en bruker ikke er logget inn, når brukeren prøver en beskyttet handling (publisere, sende forespørsel, svare eller bekrefte retur), så skal handlingen avvises uten at data lagres, og brukeren skal få beskjed om å logge inn. Prøves separat for hver handling.
 - **AK-03:** Gitt at en innlogget bruker ikke er part i en forespørsel, når brukeren forsøker å åpne den direkte, så skal forespørselen, eventuelle motforslag og kontaktopplysninger ikke vises.
 
@@ -236,7 +239,7 @@ AK-02–AK-03, AK-07–AK-09, AK-12–AK-13, AK-15–AK-20 og AK-24–AK-25 skal
 alle tre handelstyper der handlingen gjelder. Returkriteriene gjelder bare lån/leie.
 
 **Før endelig godkjenning:** avklar åpne valg i beslutningsoversikten og tilgjengelighetstabellen,
-og sett et målbart søktidskrav. Feide må prøves med relevante brukere. Tekniske testscenarier
+og sett et målbart søktidskrav. Valgt innlogging må prøves med relevante brukere. Tekniske testscenarier
 planlegges separat. Kriteriene er fortsatt utkast, ikke ferdige eller beståtte tester.
 
 ## Behov som bør undersøkes

@@ -135,3 +135,87 @@ Dokumentvalidator besto med 26 Git-filer, 26 tekstfiler og 113 lokale lenker;
 arbeidsdiff besto uten whitespace-feil. Dette er dokumentkontroll, ikke app- eller
 E2E-testing. Ingen ny Canvas-kontroll eller bekreftelse fra Emil er utført.
 Brukeren har uttrykkelig godkjent PR og merge for denne web-dokumentasjonen.
+
+## Lærerens KI-avtale fra Canvas 19.09.2026
+
+Etter bestilling fra Max hentet Codex den publiserte K02-siden direkte fra Canvas.
+Kun denne avtalens tekst er lagt inn som kildekopi, i docs/ki-avtale-canvas.md;
+rå API-respons, token og øvrig kursarkiv er ikke lagt i repoet. Siden var sist endret
+03.09.2026 kl. 12:37 norsk tid. Kursplanens KI-føringer og de 12 tilgjengelige
+kunngjøringene ble undersøkt for presiseringer, med paginering fulgt. Dette var
+en målrettet KI-kontroll, ikke en ny gjennomgang av alle emnekrav.
+
+Kildekopien er lenket fra README, gruppeutkastet og kildeindeksen. Studentenes
+gruppeavtale er fortsatt ubekreftet. Kontrolltidspunkt og hash av kildens HTML-body
+er registrert i manifestet; tidligere kontrollhistorikk er beholdt.
+
+Normalisert tekstsammenligning bekreftet at lærerens ordlyd er bevart. Uavhengig
+review bekreftet tekst og hash og fant ingen innholdsmangler. Ett avsluttende
+mellomrom ble påpekt og fjernet før staging. Dokumentvalidator besto med 27 filer
+og 120 lokale lenker; staged diffkontroll besto uten whitespace-feil. Ingen appkode
+er endret eller apptester kjørt. Reviewet er ikke en bekreftelse fra Emil.
+Dette tillegget går i en ny PR og omfattes ikke av tidligere mergegodkjenning.
+
+## Løpende fremdrift og felles timeliste 19.09.2026
+
+Etter ny bestilling fra Max er TODO oppdatert med utførte delresultater og neste
+oppgaver, mens de ti planleggingstemaene fortsatt krever gruppegjennomgang.
+Felles arbeidslogg er etterført fra kjente hendelser og Git-historikk. En tom
+timeliste skiller personer, målt tid og etterførte estimater. Ingen timer er diktet.
+AGENTS.md krever oppdatering av TODO og logg etter meningsfulle økter, frem til
+Issues/Kanban overtar oppgavelisten. README og eksisterende loggveiledning peker til filene.
+
+Max oppga at Feide ikke er riktig løsning. Kravspekk, innloggingskriteriet og teknisk
+plan er samordnet med at Feide er valgt bort. Det er ikke dokumentert en mislykket
+integrasjonstest eller et avslag fra HiØ; alternativ innlogging gjenstår.
+
+Uavhengig review fant ingen handlingskrevende funn. Dokumentvalidator besto med
+29 filer og 149 lokale lenker; staged diffkontroll besto uten whitespace-feil.
+Dette er dokumentarbeid utført av Codex etter Max' innspill, ikke studentrefleksjon
+eller apptesting. Endringene inngår i samme åpne PR som KI-kildetillegget.
+
+## CI og forsøk på PR-beskyttelse 19.09.2026
+
+Max bestilte teknisk PR-krav og grunnlag for test-/deploy-pipelines. Codex la til
+CI-workflow for PR mot main, push til main og manuell kjøring, Node 22.x-valg,
+ukentlig Dependabot-konfigurasjon for Actions og et forberedt beskyttelsesoppsett.
+Repoet er fortsatt privat. GitHub avviste både lesing og oppretting av branch protection
+med HTTP 403 og krav om Pro eller offentlig repo. Ingen branchregel er aktivert,
+og det er ikke hevdet at en grønn workflow i seg selv blokkerer direkte push.
+Emils invitasjon var fortsatt ventende ved ny kontroll.
+
+Actions-rettighetene var allerede lesetilgang, uten rett til å godkjenne PR-er.
+Checkout/setup-node er låst til commit-SHA-er kontrollert mot offisielle utgivelser.
+GitHub Actions-app-ID og sjekknavnet samsvarer med den forberedte regelkonfigurasjonen.
+Ingen secrets, hosting, deploy eller automatisk utgivelse er opprettet.
+
+Verifikasjon:
+
+- Uavhengig review av workflow, beskyttelsespayload og statusbeskrivelser: ingen funn.
+- actionlint 1.7.12: bestått. Verktøyarkivet ble kontrollert mot utgiverens SHA256-liste.
+- Workflowens faktiske Bash-sperre ble kjørt i tre midlertidige Git-repoer: docs uten
+  pakke besto; package.json i rot og i undermappe ga begge forventet feilstatus.
+- Dokumentvalidator: 34 Git-filer, 33 tekstfiler og 161 lokale lenker. Staged diffkontroll besto.
+- [Første live CI-kjøring](https://github.com/Maxaubert/web-application-project/actions/runs/35448304403)
+  besto på commit 17f60c6, sjekk `Repository checks`, levert av GitHub Actions.
+
+Det er fremdeles ingen apptester. Faktisk blokkering av merge kan først verifiseres
+når kontoen støtter branch protection. Workflowfilene ligger i åpen PR; hovedbranch-
+trigger og Dependabot-oppsett forutsetter merge. Nye PR-commits må få egen grønn kjøring.
+
+## Lokal WAL og overføring til arbeidslogg 19.09.2026
+
+Max ba om en Git-ignorert arbeids-WAL som senere gjennomgås og oppsummeres i
+arbeidsloggen. Codex opprettet lokal WAL.md og dokumenterte rutinen i AGENTS.md
+og loggveiledningen. L09 er den første gjennomgåtte oppsummeringen; rånotatene
+er ikke lagt i Git. Timer og studentrefleksjoner er ikke fylt inn.
+
+git check-ignore bekreftet den eksplisitte ignoreringsregelen, og git ls-files
+bekreftet at faktisk WAL ikke spores. Validatoren avviser nå en sporet WAL som
+ekstra vern mot feilaktig force-add. I et isolert midlertidig testrepo besto ordinære
+filer, mens en syntetisk WAL i index ga forventet feilstatus. Den faktiske lokale
+WAL-en ble ikke kopiert eller staged under prøven.
+
+Dokumentvalidator besto med 34 Git-filer, 33 tekstfiler og 164 lokale lenker.
+Dette er en lokal arbeidsrutine, ikke en bakgrunnsjobb eller GitHub-synkronisering
+av rånotatene. Hver maskin trenger sin egen WAL ved behov.

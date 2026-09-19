@@ -7,6 +7,12 @@ Begynn med [før-bygg-listen](for-bygg-start.md). Oppdatert produktretning står
 [kravspesifikasjonen](../kravspesifikasjon.md): alle tre handelstyper ved lansering,
 forespørsler/motforslag og chat senere. Historiske oppsettstatuser nedenfor er fra 16.09.
 
+**Oppdatering 19.09:** Max har nå bestilt PR-beskyttelse og pipelinegrunnlag. Konkret
+[CI-oppsett og beskyttelsesstatus](ci-og-deploy.md) er skrevet sammen med workflow og
+regelkonfigurasjon. GitHub avviser håndheving på det private repoets abonnement;
+G03 er derfor fortsatt åpen. Appkontroller, deploy, Issues og board er ikke implementert.
+Delvis utførte oppgaver krysses ikke av som ferdige her; løpende status står i [TODO](../TODO.md).
+
 ## Hva som teller
 
 **K = emnekrav**, fra [emnekrav](emnekrav.md), kontrollert mot Canvas 14.09.

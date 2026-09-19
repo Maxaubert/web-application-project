@@ -56,6 +56,14 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
+- Etter hver meningsfull økt: oppdater [TODO](TODO.md) og [felles arbeidslogg](arbeidslogg-max-og-emil.md).
+  Før [timer](timeliste.md) bare fra studentenes opplysninger; ukjent er ikke null.
+  TODO er aktiv backlog frem til Issues/Kanban overtar. Bevar historikk og lenk til utført arbeid.
+- Ved øktstart: les lokal `WAL.md` hvis den finnes; opprett den ved behov etter
+  [loggrutinen](docs/arbeidslogg.md). Før korte faktanotater underveis, aldri hemmeligheter.
+  Før øktslutt/overlevering: gjennomgå notatene, overfør bekreftede resultater til arbeidsloggen
+  og merk WAL-notatet med L-ID. Behold uavklarte punkter åpne; ikke dupliser overførte hendelser.
+  WAL er lokal og Git-ignorert. Ikke force-add den eller kopier rånotatene inn i PR-er.
 
 ## Git, personvern og samarbeid
 
@@ -73,7 +81,10 @@
 
 ## Kjøring og verifikasjon
 
-- Nå: `node scripts/verify-docs.mjs` og `git diff --check`. Ingen installasjon nødvendig.
+- Nå: `node scripts/verify-docs.mjs` og `git diff --check`. CI kjører også disse kontrollene
+  med Node 22.x. Se [CI og beskyttelsesstatus](docs/ci-og-deploy.md); PR-kravet er ennå ikke teknisk håndhevet.
+- Når appens package.json legges til: erstatt CI-sperren med reell install/lint/typecheck/test/build
+  i samme PR. Ikke fjern sperren og la dokumentkontroll være eneste appgate.
 - Appens install/run/build/typecheck/lint/test/E2E-kommandoer er TBD; finn ikke på resultater.
 - Første appoppsett skal gi dokumenterte, faktisk prøvde kommandoer, CI med typecheck/lint/unit,
   og lokal Playwright E2E når UI finnes. Ingen «grønn CI» fra dokumentkontroll alene.

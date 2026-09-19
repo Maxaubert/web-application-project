@@ -12,7 +12,7 @@ generelle faglige sjekklisten, ikke en parallell apparkitektur.
 | Rammeverk og språk | Ingen endelig stack valgt | Velg innenfor T01 i [emnekrav](emnekrav.md), og begrunn valget. |
 | Styling | Max ønsker moderne verktøy, eksempelvis Tailwind CSS | Velg sammen med stacken; verktøyet erstatter ikke designkravene. |
 | Database og ORM | Eget skjema kreves, løsning ikke valgt | Følg T02; modeller alle tre handelstyper og avtaleflyten. |
-| Innlogging | Feide ønskes, tilgang ikke bekreftet | Undersøk registrering, testbrukere og institusjonsaktivering før valg låses. Alternativ er ikke valgt. |
+| Innlogging | Feide undersøkt og valgt bort av Max 19.09 | Velg alternativ innlogging og hvordan studentmålgruppen verifiseres. Ingen alternativ løsning er valgt eller prøvd. |
 | Hosting | Ikke valgt | Avklar etter stack, tilgang og budsjett. Ingen deploy er bestilt her. |
 | API og skrivehandlinger | Ikke designet | Knytt T03/T04 til konkrete handlinger med input, svar, feil og eierskap. |
 
@@ -36,7 +36,12 @@ Dette er et implementeringsforslag, ikke ferdig kode. Eksakte ruter, komponentgr
 tabeller og mekanismen for samtidighet bestemmes etter stack- og regelavklaringen.
 Ingen chatkomponent eller betalingsintegrasjon skal bygges som del av MVP.
 
-## Feide: undersøkelse før implementering
+## Vurdert alternativ: Feide
+
+**Beslutning oppgitt av Max 19.09.2026:** Feide er ikke riktig løsning for prosjektet
+og velges bort. Undersøkelsen nedenfor er dokumentgrunnlaget, ikke en påstand om
+at Feide er teknisk umulig eller at HiØ har avslått tilgang. Detaljert begrunnelse
+for valget er ikke oppgitt. Se L04 i [arbeidsloggen](../arbeidslogg-max-og-emil.md).
 
 Offisielle kilder undersøkt 19.09.2026:
 
@@ -44,9 +49,10 @@ Offisielle kilder undersøkt 19.09.2026:
 - [Integrasjon og test](https://docs.feide.no/service_providers/getting_started/add_feide_login.html): en registrert tjeneste kan testes før publisering.
 - [Institusjonsaktivering](https://docs.feide.no/service_providers/manage/access_to_services/activation.html): institusjonen må aktivere tjenesten før dens brukere får tilgang.
 
-Avklar med relevant administrator hvordan HiØ vil støtte prosjektet. Ingen henvendelse
-er sendt, konto opprettet eller registrering gjort. Undersøk også hvilke identitetsdata
-som faktisk kan bekrefte valgt målgruppe; innlogging og studentstatus er forskjellige spørsmål.
+Ingen henvendelse er sendt, konto opprettet eller registrering gjort, og ingen praktisk
+Feide-integrasjon er prøvd. Ved eventuell revurdering må institusjonstilgang avklares.
+Neste arbeid er å velge et alternativ. Innlogging og verifisering av studentstatus
+er fortsatt forskjellige spørsmål; begge må avklares for valgt løsning.
 
 ## Testplan og kobling til emnet
 

@@ -4,13 +4,42 @@ Dette er en lett **teamhjelp**, ikke et ekstra Canvas-krav om dagbok eller timel
 Git-historikken viser faktiske kodebidrag; korte notater hjelper dere å skrive en ærlig
 rapport og følge opp læringshull. [P02/P04/P05](emnekrav.md) styrer.
 
-## Første registrering
+## Hvor fører vi arbeidet?
 
-14.09.2026: Codex opprettet dokumentasjonsgrunnlaget etter brukerens bestilling.
-Kursregler ble kontrollert mot Canvas og lokale undervisningskilder; en separat
-kildeagent sjekket utvalgte pedagogiske føringer. Resultat og testbegrensninger føres
-i [verifikasjon](verifikasjon.md). Det er ikke skrevet appkode, studentrefleksjon eller
-studenttestversjoner. Dette teller ikke som dokumentert mestring for Max eller Emil.
+- [Felles arbeidslogg for Max og Emil](../arbeidslogg-max-og-emil.md): konkrete økter,
+  etterførte milepæler, beslutninger, faktiske bidrag og neste handling.
+- [Timeliste](../timeliste.md): én rad per person og økt; ukjent tid føres ikke som null.
+- [TODO](../TODO.md): løpende oppgaver frem til Issues og Kanban overtar.
+- [Verifikasjon](verifikasjon.md): tekniske kontrollresultater og begrensninger.
+
+Denne filen er veiledning og mal, ikke en parallell fremdriftslogg. Den første
+registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjonen.
+
+## Lokal WAL → gjennomgang → felles arbeidslogg
+
+`WAL.md` i repo-roten er et lokalt kladdeark for korte hendelsesnotater. Filen er
+Git-ignorert og skal ikke committes. Reglene her følger derimot repoet til begge studentene.
+
+1. Ved øktstart: les eksisterende WAL for uavklarte punkter. Hvis den mangler på denne
+   maskinen, opprett den med dato, korte notater og statuser. En manglende lokal WAL er normalt.
+2. Underveis: noter bestilling eller valgt handling, hvem som faktisk bidro, observert
+   resultat, kilde/kontroll og neste steg. Planlagt arbeid merkes som planlagt til det er utført.
+3. Ved et meningsfullt resultat, øktslutt eller bytte av maskin: gjennomgå notatene.
+   Skill verifiserte fakta, brukeroppgitte beslutninger og uavklarte antakelser. Rett feil
+   med et nytt korrigerende notat; ikke gjør et forsøk om til en suksess i oppsummeringen.
+4. Legg en kort, gjennomgått oppsummering i felles arbeidslogg med neste L-ID og bevis.
+   Oppdater TODO og berørt krav/plan. Timer føres bare fra studentenes egne opplysninger.
+   Egen refleksjon og rapportbegrunnelse skrives fortsatt av studentene selv.
+5. Merk kildenotatet «overført» med L-ID og eventuelt commit. Ikke lag en ny loggrad for
+   samme hendelse ved neste økt. Uavklarte punkter blir stående åpne; merk eventuelt
+   forkastede notater med kort grunn. Overført betyr ikke merget eller godkjent av Emil.
+
+WAL-notater skal være korte fakta om arbeidet, ikke rå samtaler eller interne tankerekker.
+Ikke lagre tokens, passord eller personfølsomt materiale selv om filen er ignorert.
+Git-ignorering er ikke kryptering eller backup, og filen følger ikke med via GitHub.
+Før bytte til skole-PC: overfør nødvendige, gjennomgåtte fakta og åpne oppgaver til
+sporede dokumenter gjennom vanlig branch/PR. Hver maskin kan ha sin egen lokale WAL.
+Rutinen utføres mens vi arbeider; ingen bakgrunnsjobb eller automatisk synkronisering er satt opp.
 
 ## Mal ved en meningsfull arbeidsøkt
 
