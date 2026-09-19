@@ -84,7 +84,7 @@ ikke studentenes forståelse eller om emnet er bestått. Se [begrensningene](doc
 | Vitest, integrasjon, dekning | TBD: ingen apptester finnes ennå |
 | Database, migrasjoner og seed | TBD: eget skjema er ikke valgt |
 | Playwright E2E | TBD: legges til når UI finnes |
-| CI | GitHub Actions-workflow i denne PR-en: dokument- og whitespace-kontroll; apptester kommer med appen |
+| CI | GitHub Actions-workflow: dokument- og whitespace-kontroll; apptester kommer med appen |
 | Deploy og release | Ikke aktivert; hosting og utrulling velges med appen. Ingen automatisk utgivelse ved dokumentendringer |
 
 Første app-PR skal erstatte TBD-radene med en reproduserbar oppskrift, nødvendige

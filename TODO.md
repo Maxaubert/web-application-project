@@ -15,7 +15,7 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
 - [x] Undersøkt Feide i dokumentasjonen. Max har valgt det bort som løsning for prosjektet;
   alternativ innlogging og studentverifisering er ikke valgt. Se teknisk plan.
 - [x] Hentet [lærerens KI-avtale](docs/ki-avtale-canvas.md) fra Canvas og skilt den fra
-  [gruppens ubekreftede utkast](KI-AVTALE.md). Kildekopien ligger i den åpne
+  [gruppens ubekreftede utkast](KI-AVTALE.md). Kildekopien og fremdriftsoppsettet spores i
   [KI- og fremdrifts-PR-en](https://github.com/Maxaubert/web-application-project/pull/2).
 - [x] Opprettet [felles arbeidslogg](arbeidslogg-max-og-emil.md) og [timeliste](timeliste.md).
   Loggen er etterført fra kjente hendelser; ingen timer er oppgitt eller registrert.
