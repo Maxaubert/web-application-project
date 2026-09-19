@@ -19,8 +19,8 @@ samler gjennomføringen. [Idénotatet](ideer-til-diskusjon.md) bevares som histo
 | Én hovedflyt: logg inn, lag noe, se det igjen | Publiser annonse → student foreslår avtale → eier svarer/justerer → studenten svarer på motforslag; detaljene står i kravspesifikasjonen |
 | Egen ressurs, eier og relasjoner | TBD |
 | Hva en annen bruker kan se og endre | TBD |
-| Akseptansekriterier fra brukerens perspektiv | AK-01–AK-23 i kravspesifikasjonen, fortsatt utkast |
-| Minste nyttige omfang, og hvordan det ligner kursets nivå | Alle tre handelstyper, uten chat eller innebygd betaling. Fullføringsregler gjenstår |
+| Akseptansekriterier fra brukerens perspektiv | AK-01–AK-29 i kravspesifikasjonen, fortsatt utkast |
+| Minste nyttige omfang, og hvordan det ligner kursets nivå | Alle tre handelstyper, uten chat eller innebygd betaling. Eier bekrefter retur for lån/leie; salgsfullføring og øvrige åpne regler må avklares |
 | Første funksjoner i prioritert rekkefølge | TBD |
 | Kuttliste dersom tid/forståelse svikter | TBD |
 | Stack: RedwoodSDK/Next.js/TanStack Start | TBD. RedwoodSDK følger undervisningen nærmest |

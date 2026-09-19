@@ -6,18 +6,22 @@ forklare, vurdere og endre den uten KI på individuell muntlig vurdering.
 
 **Status 19.09.2026:** prosjektet er et studentmarked med kjøp/salg, gratis lån og
 betalt utleie fra første versjon. Forespørsler og motforslag håndterer avtalene;
-chat kommer etter MVP. Ingen app er implementert, og endelig stack er ikke valgt.
+eieren alene bekrefter retur og fullfører lån/leie. Chat kommer etter MVP.
+Ingen app er implementert, og endelig stack er ikke valgt.
 Dokumentasjonen er laget med Codex og er ikke dokumentasjon på studentenes læring.
 
-**Overføring 18.09.2026:** privat GitHub-repo under `Maxaubert/web-application-project`
-er nå opprettet etter bestilling. Arbeidsbranchen er `codex/repo-setup-plan`; bruk denne
-før PR-en er merget. Eldre statusavsnitt om ingen remote beskriver situasjonen da de ble skrevet.
+## Hent prosjektet på en annen PC
+
+Repoet er privat på GitHub. Etter at dokumentasjons-PR-en er merget, bruk `main`:
 
 ```powershell
-gh repo clone Maxaubert/web-application-project -- --branch codex/repo-setup-plan
+gh repo clone Maxaubert/web-application-project -- --branch main
 ```
 
-Klon gjerne `Maxaubert/School` på branchen `codex/skole-pc-sync` ved siden av dette repoet.
+Har du allerede klonet prosjektet, bevar eventuelle lokale endringer, bytt til `main`
+og hent med `git pull --ff-only`. Ikke overskriv eget eller Emils arbeid ved synkronisering.
+Eldre daterte loggnotater om manglende remote beskriver situasjonen da de ble skrevet.
+School har en separat PR; dens arbeidsbranch er fortsatt `codex/skole-pc-sync`.
 Skole-PC-en trenger egne installasjoner og eventuell separat Canvas-tilgang. Ingen nøkler
 eller installerte programmer overføres via Git. Det finnes fortsatt ingen implementert app.
 
@@ -84,8 +88,8 @@ studentenes maskiner. Ikke kopier en maskintest eller demo og kall den studentar
 
 ## Publisering og rettigheter
 
-Repoet er lokalt. Offentlig GitHub-repo er et **senere innleveringskrav**, ikke
-en godkjenning til publisering nå. Remote, synlighet og deling avklares før opplasting.
+Repoet er privat på GitHub etter uttrykkelig bestilling. Offentlig GitHub-repo er et
+**senere innleveringskrav**, ikke en godkjenning til å endre synlighet nå.
 Alle endringer gjøres på branch og gjennom PR; lokal PR-tekst finnes i
 [review-fila](docs/review.md). Ingen merge uten Oves godkjenning av den konkrete PR-en.
 

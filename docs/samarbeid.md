@@ -52,8 +52,9 @@ Bruk faktisk commit, ikke skriv vinkelparentes-placeholder som kommando. Avklar 
 av arkivtags før push. Kontroller at .git-pakken som leveres inneholder sporene. Git-statistikk
 alene er ikke forståelse, og et co-author-navn er ikke bevis på at noen skrev eller kan koden.
 
-Remote finnes ikke i dette grunnlaget. Ikke kjør publiseringskommandoer som del av
-«oppsett» uten fullmakt. Fremtidig offentlig innlevering må fortsatt oppfylle P01.
+Privat GitHub-remote er opprettet med fullmakt. Ikke endre synlighet eller publiser
+nye ressurser som del av «oppsett» uten fullmakt. Fremtidig offentlig innlevering
+må fortsatt oppfylle P01.
 
 ## Konflikter og kvalitet
 

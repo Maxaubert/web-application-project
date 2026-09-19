@@ -119,3 +119,19 @@ Uavhengig review fant ingen blokkere. Små restformuleringer om leie alene og pl
 av chat er rettet. En tidlig validatorkjøring under review så den ennå ikke stagede
 omdøpingen; etter staging besto kontrollen med 26 filer og 113 lokale lenker.
 Diffkontroll besto. Ingen app, tester eller GitHub-workflows er implementert her.
+
+## Presisering av avtaler og retur 19.09.2026
+
+Max avklarte at eieren alene bekrefter mottatt retur og fullfører gratis lån og betalt
+leie. Codex har innarbeidet dette som FK-07 og AK-26–AK-29, presisert aktører og
+tilstander og skilt aksept fra avslag uten å endre eksisterende krav-ID-er.
+Feltliste og reserveringsregler er tydelig merket som forslag. Salgsfullføring,
+Feide-tilgang og øvrige åpne produktvalg er fortsatt uavklart. Teknisk plan og
+prosjektkort er samordnet; README beskriver bruk av main etter merge.
+
+En uavhengig kritiker gjennomgikk de fem endrede produkt-/oversiktsdokumentene
+uten å endre filer eller Git. Ingen handlingskrevende funn eller mergeblokkere.
+Dokumentvalidator besto med 26 Git-filer, 26 tekstfiler og 113 lokale lenker;
+arbeidsdiff besto uten whitespace-feil. Dette er dokumentkontroll, ikke app- eller
+E2E-testing. Ingen ny Canvas-kontroll eller bekreftelse fra Emil er utført.
+Brukeren har uttrykkelig godkjent PR og merge for denne web-dokumentasjonen.

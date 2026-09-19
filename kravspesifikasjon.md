@@ -29,21 +29,24 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 - Gjenbruk kan redusere behovet for nye kjøp og dermed ressursbruk. Miljøgevinsten er en forventning vi ikke har målt.
 - Tydelig informasjon om pris og overlevering, og om tidsrom og retur ved lån eller leie, kan gjøre det enklere å avtale med hverandre.
 
-## Spørsmål vi må avklare
+### Beslutningsoversikt
 
-1. Når betaling ikke skjer i appen, skal den vise en avtalt pris og markere oppgjør som noe partene ordner selv? Hvordan angis salgspris og leiepris, for eksempel per dag eller per avtale?
-2. Hvilke kategorier bør være med i første versjon? Skoleutstyr og hverdagsting er begge innenfor idéen, men første utvalg er ikke bestemt.
-3. Skal første versjon være for ett studiested, én by eller et større studentmiljø?
-4. Hvilke felt trenger forespørselen for henting og retur, og når kan partene se kontaktopplysninger? Praktiske avtaler skal håndteres i forespørselen. Chat kommer senere og er utenfor MVP.
-5. Hva skal skje hvis en ting ikke blir levert tilbake, blir skadet eller eieren avlyser? Trenger dyrere ting som PC egne regler?
-6. Er hjelp/opplæring mellom studenter fortsatt en del av prosjektideen, eller skal vi konsentrere oss om fysiske ting først?
-7. Skal én annonse kunne tilby flere valg samtidig, for eksempel både salg og utleie, eller velger eieren én type per annonse?
-8. Når reserveres en ting, hvordan avsluttes et salg/lån/leieforhold, og hva skjer ved tilbaketrekking, avbestilling eller uteblitt svar? Hvilke dato-/klokkeslettgrenser brukes?
-9. Hvilke vilkår kan eieren justere i et motforslag, og kan studenten sende enda et motforslag? Studenten kan allerede godta eller avslå eierens motforslag; flere forhandlingsrunder er ikke avklart.
+«Avklart» betyr avklart av Max 19.09.2026, ikke godkjent av Emil eller implementert.
+Forslag er anbefalinger til gruppen; åpne valg må avklares før berørt funksjon bygges.
 
-## Prosjektretning og åpne valg
-
-Avklart av Max 19.09: Kjøp/salg, gratis lån og betalt utleie skal være med ved lansering. Forespørsler og motforslag håndterer avtalen, inkludert det praktiske rundt overlevering. Chat planlegges senere og er utenfor MVP. Innebygd betaling inngår heller ikke i MVP. Feide er ønsket, men tilgang og gjennomførbarhet er fortsatt ikke bekreftet. Emil har ikke bekreftet beslutningene i dette dokumentet.
+| Tema | Status | Beslutning eller neste avklaring |
+|---|---|---|
+| Omfang | Avklart | Salg, gratis lån og betalt leie i MVP. Chat senere og betaling utenfor appen. |
+| Avtaleflyt | Avklart | Eier godtar, avslår eller justerer forespørselen; forespørrer godtar eller avslår motforslaget. Praktiske avtaler ligger i forespørselen, også ved salg. |
+| Retur | Avklart | Eieren alene bekrefter mottatt retur og fullfører lån/leie. Studenten som lånte trenger ikke bekrefte. |
+| Feide | Ønsket, tilgang åpen | Undersøk registrering, test og institusjonsaktivering før innloggingsvalg låses. |
+| Pris og felter | Åpent | Bestem obligatoriske annonse-/forespørselsfelt, leiepris per dag/per avtale, total og når kontaktopplysninger vises. Feltforslag finnes i punkt 3. |
+| Tilgjengelighet | Delvis avklart | Ingen overlappende godtatte leieavtaler. Avklar resten i tilgjengelighetstabellen i punkt 3. |
+| Avvik og avslutning | Åpent | Salgsfullføring, tilbaketrekking, avbestilling, uteblitt svar, skade og manglende retur. Vurder om dyrere ting trenger egne regler. |
+| Forhandling | Åpent | Hvilke felt kan eieren justere, og trengs flere motforslagsrunder? |
+| Historikk | Forslag | Bevar aksepterte vilkår og forslagshistorikk; avvis erstattede forslag. Annonseendringer skal ikke endre eksisterende avtaler. |
+| Målgruppe og annonser | Åpent | Velg kategorier og geografisk område. Avklar flere handelstyper per annonse, offentlig visning og søkets omfang. |
+| Hjelp/opplæring | Åpent, ikke vedtatt i MVP | Avklar om dette fortsatt hører til den langsiktige ideen. |
 
 **Feide som ønsket innlogging:** Feide kan gi innlogging via studentens institusjon. [Feides dokumentasjon](https://docs.feide.no/service_providers/getting_started/openid_connect.html) beskriver registrering av en OIDC-applikasjon i kundeportalen. Før vi låser teknisk løsning må vi undersøke om gruppen kan registrere tjenesten, få nødvendige tilganger og prøve innlogging med relevante testbrukere. Innloggingen alene avgjør heller ikke hvilke handlinger en bruker får gjøre i appen; eierskap til annonser og avtaler må kontrolleres separat.
 
@@ -51,7 +54,7 @@ Avklart av Max 19.09: Kjøp/salg, gratis lån og betalt utleie skal være med ve
 
 ## 2. MVP og avgrensning (utkast)
 
-Første versjon omfatter innlogging, søk og produktdetaljer, publisering for alle tre handelstyper, forespørsler, eierens svar/motforslag og studentens svar på motforslag. Ved lån og leie foreslår studenten en periode, for eksempel 21. september til 12. oktober. Ved salg foreslås en kjøpsavtale uten låneperiode. Henting og eventuell retur avtales gjennom forespørselen; de nøyaktige feltene og fullføringsreglene må avklares.
+Første versjon omfatter innlogging, søk og produktdetaljer, publisering for alle tre handelstyper, forespørsler, eierens svar/motforslag og studentens svar på motforslag. Ved lån og leie foreslår studenten en periode, for eksempel 21. september til 12. oktober. Ved salg foreslås en kjøpsavtale uten låneperiode. Henting og eventuell retur avtales gjennom forespørselen. Eieren bekrefter mottatt retur og fullfører lån/leie; salgsfullføring og de nøyaktige feltene er fortsatt åpne.
 
 **Utenfor MVP:** chat og innebygd betaling. Varsler, vurderinger, depositum, konflikthåndtering og hjelp/opplæring er ikke vedtatt som MVP-funksjoner. Alle tre handelstyper er derimot inne i MVP; de er ikke utsatt til senere.
 
@@ -71,31 +74,65 @@ Kravene nedenfor bygger på funksjonene Max har beskrevet og forslagene han har 
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel om kjøp, gratis lån eller betalt leie, med foreslåtte vilkår og praktiske avtaler. Lån og leie inkluderer foreslått periode. |
 | FK-05 | Eieren skal kunne se og godta, avslå eller foreslå justeringer til forespørsler om egne produkter. Et motforslag sendes til studenten som opprettet forespørselen. |
 | FK-06 | Studenten som sendte forespørselen, skal kunne se eierens svar og godta eller avslå eierens motforslag. Begge parter skal kunne se hvilke vilkår det er enighet om. |
+| FK-07 | Eieren skal kunne bekrefte mottatt retur for et avtalt lån eller leieforhold. Bekreftelsen fullfører avtalen og vises for begge parter, uten krav om bekreftelse fra studenten som lånte. Dette gjelder ikke fullføring av salg. |
 
-**Å avklare før kravene kan testes:** Påkrevde annonse- og forespørselsfelt, søkefelt, prisberegning og felter for overlevering/retur. De er åpne detaljer innenfor den avklarte forespørselsflyten.
+### Informasjon per handelstype
+
+Feltlisten nedenfor er et **forslag til obligatorisk avtaleinformasjon**, ikke et vedtatt
+skjema. Perioden for lån/leie og praktiske avtaler i forespørselen er allerede avklart.
+Gruppen må velge konkrete felt og valideringsregler før implementering.
+
+| Opplysninger | Salg | Gratis lån | Betalt leie |
+|---|---|---|---|
+| Produkt, handelstype og de to partene | Ja | Ja | Ja |
+| Pris | Avtalt total | Tydelig gratisstatus | Prisgrunnlag og avtalt total; beregning må avklares |
+| Start og slutt | Ingen låneperiode | Fra-/til-dato | Fra-/til-dato |
+| Overlevering | Foreslått sted og tidspunkt | Foreslått sted og tidspunkt | Foreslått sted og tidspunkt |
+| Retur | Ikke relevant | Foreslått sted og tidspunkt | Foreslått sted og tidspunkt |
+
+Påkrevde annonsefelt og kontaktopplysninger må avklares separat. Kontaktopplysninger
+skal bare være tilgjengelige for partene (TK-07); tidspunktet for visning er åpent.
 
 ### Felles avtale- og motforslagsflyt
 
 Dette er funksjonelle regler på tvers av handelstypene, ikke valgt databasearkitektur.
 
-| Hendelse | Hvem handler? | Observerbart resultat |
-|---|---|---|
-| Send forespørsel | Interessert student | Eier mottar et forslag og må svare; ingen ferdig avtale ennå. |
-| Godta opprinnelig forslag | Eier | Begge er enige om det innsendte forslaget, og vilkårene vises for begge. |
-| Avslå opprinnelig forslag | Eier | Studenten ser avslaget; ingen avtale opprettes. |
-| Send justerte vilkår | Eier | Studenten mottar et motforslag; eierens justering regnes ikke som studentens aksept. |
-| Godta motforslag | Studenten som sendte forespørselen | Partene blir enige om de justerte vilkårene, som vises for begge. |
-| Avslå motforslag | Studenten som sendte forespørselen | Eier ser avslaget; motforslaget blir ikke en avtale. Videre forhandling er åpent. |
+Statusnavnene er arbeidsbegreper. Tabellen angir hvem som kan utføre den avklarte
+handlingen, fra hvilken tilstand og hva begge parter skal se etterpå.
+
+| Før | Handling | Hvem? | Etter |
+|---|---|---|---|
+| Ingen forespørsel | Send forespørsel | Interessert student | Venter på eier; ingen avtale ennå. |
+| Venter på eier | Godta opprinnelig forslag | Eier | Avtalt; de innsendte vilkårene vises for begge. |
+| Venter på eier | Avslå opprinnelig forslag | Eier | Avslått; ingen avtale opprettes. |
+| Venter på eier | Send justerte vilkår | Eier | Venter på forespørrer; endringene er ikke akseptert ennå. |
+| Venter på forespørrer | Godta motforslag | Studenten som sendte forespørselen | Avtalt med de justerte vilkårene. |
+| Venter på forespørrer | Avslå motforslag | Studenten som sendte forespørselen | Avslått; ingen avtale om motforslaget. Videre forhandling er åpent. |
+| Avtalt lån/leie, ikke fullført | Bekreft mottatt retur | Eier | Fullført; ingen bekreftelse fra forespørrer kreves. |
+
+Om det trengs en egen status for utlevert vare, er åpent. Bekreftelse av retur registrerer
+eierens opplysning om mottak; appen kan ikke kontrollere den fysiske overleveringen.
+Fullføring av salg, avbestilling og gjenåpning er ikke definert av denne tabellen.
 
 Eksempel: Studenten foreslår lån 21. september–12. oktober. Eieren foreslår i stedet
 23. september–10. oktober. Først når studenten godtar motforslaget, er de enige om den
 nye perioden. Samme svarflyt gjelder ved salg, men uten krav om tilbakelevering.
 
-**Anbefalinger som må gjennomgås:** Bevar historikken over forslag og hvilke vilkår
-begge aksepterte. Et erstattet forslag bør ikke kunne godtas fra en gammel side, og en
-annonseendring bør ikke endre en eksisterende avtale. Reservering, avbestilling og fullføring
-er fortsatt åpne spørsmål. «Avtale» her beskriver appens registrerte enighet; særskilt
-e-signering er ikke spesifisert.
+«Avtale» her beskriver appens registrerte enighet; særskilt e-signering er ikke spesifisert.
+Historikk og vern mot aksept av erstattede forslag er anbefalinger i beslutningsoversikten.
+
+### Tilgjengelighet og reservering
+
+Avtalestatus og annonsens tilgjengelighet er forskjellige ting. En fullført retur skal
+ikke automatisk slette andre fremtidige avtaler eller erklære alle datoer ledige.
+
+| Regel | Status og avgrensning |
+|---|---|
+| Overlappende godtatte leieavtaler | Avklart: samme ting kan ikke ha to i samme periode, også ved samtidige svar (TK-06). |
+| Når reserveres tingen? | Forslag: først når partene har akseptert samme vilkår, med ny tilgjengelighetskontroll også ved aksept av motforslag. Ikke besluttet. |
+| Flere ventende forespørsler | Forslag: tillat overlapp før avtale inngås. Avklar hva som skjer med de øvrige når én godtas. |
+| Gratis lån, dobbeltsalg og blandede handelstyper | Forslag: hindre motstridende avtaler for samme ting. Avklar reglene før implementering. |
+| Datogrenser og ny tilgjengelighet | Åpent: dato eller klokkeslett, inklusive sluttdatoer, retur samme dag som neste henting, forsinket retur og tilgjengelighet etter fullføring/avbestilling. |
 
 ## 4. Tekniske krav og teknologivalg (utkast)
 
@@ -105,7 +142,7 @@ Tekniske krav beskriver egenskaper løsningen må ha. Teknologivalg beskriver hv
 |---|---|---|
 | TK-01 | Ønsket av Max, gjennomførbarhet åpen | Feide er ønsket innloggingsmåte og må undersøkes før løsningen låses. Ingen alternativ innlogging er valgt. Appen skal kontrollere brukerens innloggede økt på serveren før beskyttede handlinger utføres. |
 | TK-02 | Innspill fra Max | Appen skal lagre produkter, eiere, forespørsler, motforslag og avtalestatus for alle tre handelstyper, slik at informasjonen finnes igjen etter utlogging. |
-| TK-03 | Valgt av Max, presisert for motforslag | Bare eieren kan endre eget produkt og godta, avslå eller justere studentens opprinnelige forespørsel. Bare studenten som sendte forespørselen kan godta eller avslå eierens motforslag. Hver handling skal kontrollere part og rolle på serveren. |
+| TK-03 | Valgt av Max, presisert for motforslag og retur | Bare eieren kan endre eget produkt og godta, avslå eller justere studentens opprinnelige forespørsel. Bare studenten som sendte forespørselen kan godta eller avslå eierens motforslag. Bare eieren kan bekrefte mottatt retur og fullføre lån/leie. Hver handling skal kontrollere part, rolle og gyldig avtalestatus på serveren. |
 | TK-04 | Valgt av Max | Serveren skal kontrollere data fra brukeren før lagring, for eksempel at nødvendig produktinformasjon finnes og at en leieperiode er gyldig. |
 | TK-05 | Valgt av Max for leie; utvidet beskrivelse for MVP | Avtalestatus skal gjelde en konkret forespørsel og avtale. Lån og leie har en periode; salg har ingen returperiode. Den nøyaktige datamodellen bestemmes senere. |
 | TK-06 | Valgt av Max for leie; generalisering til lån er forslag | Appen skal hindre to godtatte leieavtaler for samme produkt i overlappende perioder, også ved samtidige svar. Forslag: samme vern for gratis lån. Vern mot dobbeltsalg og konflikt mellom salg og fremtidige lån/leier må avklares før implementering. |
@@ -147,14 +184,14 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 ### Innlogging og tilgang (FK-01, TK-01, TK-03, TK-07)
 
 - **AK-01:** Gitt at Feide er valgt og aktivert for tjenesten og studenten har tilgang, når studenten fullfører innloggingen, så skal appen opprette en gyldig økt og gi tilgang til funksjoner for innloggede brukere. Kriteriet avventer Feide-avklaringen; innlogging er fortsatt nødvendig i MVP.
-- **AK-02:** Gitt at en bruker ikke er logget inn, når brukeren prøver å legge ut et produkt eller sende eller svare på en forespørsel eller et motforslag, så skal handlingen avvises uten at data lagres, og brukeren skal få beskjed om å logge inn.
+- **AK-02:** Gitt at en bruker ikke er logget inn, når brukeren prøver en beskyttet handling (publisere, sende forespørsel, svare eller bekrefte retur), så skal handlingen avvises uten at data lagres, og brukeren skal få beskjed om å logge inn. Prøves separat for hver handling.
 - **AK-03:** Gitt at en innlogget bruker ikke er part i en forespørsel, når brukeren forsøker å åpne den direkte, så skal forespørselen, eventuelle motforslag og kontaktopplysninger ikke vises.
 
 ### Søk og produktdetaljer (FK-02, KK-02)
 
 - **AK-04:** Gitt at det finnes en tilgjengelig annonse med et bestemt produktnavn, når brukeren søker etter navnet, så skal annonsen vises i søkeresultatet.
 - **AK-05:** Gitt at et søk ikke finner noen produkter, når resultatet vises, så skal brukeren få en tydelig melding om at ingen annonser ble funnet.
-- **AK-06:** Gitt at en bruker åpner et produkt fra søkeresultatet, når produktsiden vises, så skal brukeren kunne se beskrivelse, pris og tilgjengelighet før en forespørsel sendes.
+- **AK-06:** Gitt at en bruker åpner et produkt fra søkeresultatet, når produktsiden vises, så skal brukeren kunne se beskrivelse, handelstype, pris eller gratisstatus og tilgjengelighet før en forespørsel sendes.
 
 ### Legge ut produkt (FK-03, TK-02, TK-04, KK-05)
 
@@ -166,28 +203,41 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 
 - **AK-10:** Gitt at en student er logget inn og produktet tilbys for valgt handelstype, når studenten sender en gyldig kjøps-, låne- eller leieforespørsel med praktiske avtaler og periode der det gjelder, så skal den lagres som ventende og være synlig for studenten og eieren. Den er ennå ikke en godtatt avtale.
 - **AK-11:** Gitt at perioden er ugyldig, når studenten prøver å sende forespørselen, så skal den ikke lagres og studenten skal få en forklaring uten å miste opplysningene som kan brukes på nytt.
-- **AK-12:** Gitt at eieren har en ventende forespørsel om sitt produkt, når eieren godtar eller avslår den, så skal beslutningen lagres og være synlig for studenten som sendte forespørselen.
+- **AK-12:** Gitt en gyldig forespørsel som venter på eieren og kan godtas etter tilgjengelighetsreglene, når eieren godtar den, så skal begge parter se en lagret avtale med de opprinnelige vilkårene.
+- **AK-24:** Gitt en forespørsel som venter på eieren, når eieren avslår den, så skal begge se avslaget uten at en avtale opprettes.
 - **AK-13:** Gitt at en bruker ikke er eieren, når brukeren prøver å godta, avslå eller justere den opprinnelige forespørselen som eier, så skal serveren avvise handlingen uten endring. Dette hindrer ikke at den opprinnelige studenten svarer på et motforslag i sin egen rolle.
 - **AK-14:** Gitt at én leieforespørsel allerede er godtatt for en periode, når eieren prøver å godta en annen forespørsel om samme produkt i en overlappende periode, så skal den andre godkjenningen avvises og den første avtalen forbli uendret.
 - **AK-15:** Gitt at lagringen av en forespørsel eller et svar feiler, når brukeren utfører handlingen, så skal appen ikke vise den som fullført, og brukeren skal få en tydelig feilmelding.
 
 ### Bruk på ulike enheter og tilgjengelighet (KK-01, KK-04, DK-03–DK-04)
 
-- **AK-16:** Gitt en mobil, et nettbrett eller en PC, når brukeren søker, åpner et produkt, legger ut et produkt eller sender eller svarer på en forespørsel eller et motforslag, så skal alle nødvendige felt og handlinger være tilgjengelige uten at innhold skjules av layouten.
+- **AK-16:** Gitt en mobil, et nettbrett eller en PC, når brukeren utfører en kjerneoppgave, så skal alle nødvendige felt og handlinger være tilgjengelige uten at innhold skjules av layouten. Prøves separat for søk, produktvisning, publisering, forespørsel, svar, motforslag og returbekreftelse.
 - **AK-17:** Gitt at brukeren navigerer med tastatur eller høy zoom, når brukeren utfører kjerneoppgavene, så skal fokus være synlig og alle nødvendige kontroller kunne nås og brukes. Sider og skjemaer skal bruke passende HTML-elementer og tilknyttede feltetiketter.
 
 ### Motforslag og alle tre handelstyper (FK-03–FK-06, TK-03, TK-07)
 
 - **AK-18:** Gitt en ventende forespørsel, når eieren sender justerte vilkår, så skal studenten kunne se endringene og godta eller avslå dem. Justeringen alene oppretter ingen godtatt avtale.
-- **AK-19:** Gitt et gjeldende motforslag fra eieren, når studenten som opprettet forespørselen godtar det, så skal begge se avtalen med de justerte vilkårene. Ved avslag skal begge se avslaget uten at motforslaget godtas.
+- **AK-19:** Gitt et gjeldende motforslag fra eieren som kan godtas etter tilgjengelighetsreglene, når studenten som opprettet forespørselen godtar det, så skal begge se en lagret avtale med de justerte vilkårene.
+- **AK-25:** Gitt et gjeldende motforslag fra eieren, når studenten som opprettet forespørselen avslår det, så skal begge se avslaget uten at motforslaget blir en avtale.
 - **AK-20:** Gitt en utenforstående eller eieren selv, når vedkommende prøver å godta motforslaget på vegne av studenten, så skal serveren avvise handlingen uten å endre avtalen.
 - **AK-21:** Gitt at et produkt tilbys for salg, når en student sender en kjøpsforespørsel, så må selgeren svare. Salgsforespørselen støtter samme aksept-, avslags- og motforslagsflyt, uten krav om tilbakeleveringsperiode.
 - **AK-22:** Gitt at et produkt tilbys til gratis lån, når studenten foreslår en låneperiode, så skal forespørselen vise at lånet er gratis og støtte samme svarflyt. Den skal ikke kreve en leiepris.
 - **AK-23:** Gitt at eieren publiserer én annonse for hver av salg, gratis lån og betalt leie, når en student åpner dem, så skal hver annonses handelstype og pris eller gratisstatus være synlig. Alle tre typer skal kunne brukes i første versjon.
 
-AK-02, AK-03, AK-07–AK-09, AK-12, AK-15–AK-17 skal prøves for alle tre handelstyper der handlingen gjelder. De er ikke begrenset til leie.
+### Retur og fullføring (FK-07, TK-02–TK-03, KK-05)
 
-**Må presiseres før endelig godkjenning:** annonse- og forespørselsfelt, pris/enhet/total, dato- og tilgjengelighetsregler, reservering og fullføring, hva som kan endres i et motforslag, søkets omfang og målbart søktidskrav. Feide må prøves med relevante brukere. Samtidige godkjenninger, tapte svar/ny innsending og foreldede forslag trenger egne testscenarier i den tekniske planen. Dette er fortsatt et utkast, ikke ferdige eller beståtte tester.
+- **AK-26:** Gitt et avtalt lån eller leieforhold som ikke er fullført, når eieren bekrefter mottatt retur, så skal avtalen lagres som fullført og vises slik for begge etter ny innlogging, uten at forespørreren bekrefter.
+- **AK-27:** Gitt at en innlogget bruker ikke er eieren, når brukeren forsøker å bekrefte retur, så skal serveren avvise handlingen uten å endre avtalen. Prøves både med forespørreren og en utenforstående.
+- **AK-28:** Gitt at lagring av returbekreftelsen feiler, når eieren bekrefter, så skal appen vise feil uten å vise avtalen som fullført.
+- **AK-29:** Gitt en forespørsel som ikke er godtatt, når eieren forsøker å bekrefte retur, så skal serveren avvise handlingen uten å endre status.
+
+Eksisterende AK-ID-er beholdes; nye kriterier er plassert ved den relevante flyten.
+AK-02–AK-03, AK-07–AK-09, AK-12–AK-13, AK-15–AK-20 og AK-24–AK-25 skal prøves for
+alle tre handelstyper der handlingen gjelder. Returkriteriene gjelder bare lån/leie.
+
+**Før endelig godkjenning:** avklar åpne valg i beslutningsoversikten og tilgjengelighetstabellen,
+og sett et målbart søktidskrav. Feide må prøves med relevante brukere. Tekniske testscenarier
+planlegges separat. Kriteriene er fortsatt utkast, ikke ferdige eller beståtte tester.
 
 ## Behov som bør undersøkes
 

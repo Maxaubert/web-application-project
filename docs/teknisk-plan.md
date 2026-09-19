@@ -20,8 +20,9 @@ generelle faglige sjekklisten, ikke en parallell apparkitektur.
 
 Begreper å modellere, **ikke vedtatte tabeller**: bruker, annonse/ting, handelstype,
 forespørsel, foreslåtte vilkår, motforslag og godtatt avtale. Lån og leie har perioder;
-salg har ikke returperiode. Prisberegning, tilgjengelighet og fullføring må avklares i
-kravspesifikasjonen før datamodellen låses.
+salg har ikke returperiode. Eieren alene bekrefter mottatt retur og fullfører lån/leie.
+Prisberegning, tilgjengelighet og salgsfullføring må avklares i kravspesifikasjonen
+før datamodellen låses. Bruk livsløpstabellen der som grunnlag for gyldige tilstandsoverganger.
 
 Foreslått gjennomgang av hver skrivehandling:
 
@@ -51,9 +52,10 @@ som faktisk kan bekrefte valgt målgruppe; innlogging og studentstatus er forskj
 
 | Bevis som skal planlegges | Grunnlag |
 |---|---|
-| Hovedflyt for salg, gratis lån og betalt leie, med lagret resultat etter ny innlogging | FK-01–FK-06, AK-01–AK-23, T05/T06 |
-| Eier godtar/avslår/justerer; riktig student godtar/avslår motforslag | TK-03/TK-07, AK-12/AK-13/AK-18–AK-20 |
-| Samtidig godkjenning av overlappende leieavtaler tillater høyst én | TK-06; AK-14 alene tester bare sekvensiell godkjenning |
+| Hovedflyt for salg, gratis lån og betalt leie, med lagret resultat etter ny innlogging | FK-01–FK-07, AK-01–AK-29, T05/T06 |
+| Eier godtar/avslår/justerer; riktig student godtar/avslår motforslag | TK-03/TK-07, AK-12/AK-13/AK-18–AK-20/AK-24/AK-25 |
+| Eier fullfører lån/leie ved mottatt retur; feil aktør, ugyldig status og lagringsfeil endrer ikke avtalen | FK-07, AK-26–AK-29 |
+| Samtidig godkjenning av overlappende leieavtaler tillater høyst én, både ved direkte aksept og aksept av motforslag | TK-06; AK-14 alene tester bare sekvensiell godkjenning |
 | Avvist tilgang etterlater lagringen uendret | TK-03/TK-07, T04 |
 | Foreslåtte tillegg: foreldet motforslag, tapt svar og ny innsending uten doble handlinger | Gjennomgå reglene før nye kriterier fastsettes |
 | REST-kontrakt med relevant metode, status og feilsvar | T03 |
