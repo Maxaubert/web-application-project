@@ -1,6 +1,6 @@
 # Teknisk plan for studentmarkedet
 
-**Utkast 19.09.2026. Ingen app eller endelig arkitektur er implementert.**
+**Oppdatert 20.09.2026. Appgrunnlag finnes; produktarkitekturen er fortsatt utkast.**
 [Kravspesifikasjonen](../kravspesifikasjon.md) eier produktets oppførsel og omfang.
 Dette dokumentet skal beskrive hvordan den oppfylles. [Teknikk](teknikk.md) er den
 generelle faglige sjekklisten, ikke en parallell apparkitektur.
@@ -9,9 +9,9 @@ generelle faglige sjekklisten, ikke en parallell apparkitektur.
 
 | Område | Nåværende status | Neste avklaring |
 |---|---|---|
-| Rammeverk og språk | Ingen endelig stack valgt | Velg innenfor T01 i [emnekrav](emnekrav.md), og begrunn valget. |
+| Rammeverk og språk | RedwoodSDK 1.7.3, React, Vite og TypeScript satt opp etter Max sin bestilling | [Oppsett og versjoner](app-oppsett.md); studentenes egen begrunnelse gjenstår. |
 | Styling | Max ønsker moderne verktøy, eksempelvis Tailwind CSS | Velg sammen med stacken; verktøyet erstatter ikke designkravene. |
-| Database og ORM | Eget skjema kreves, løsning ikke valgt | Følg T02; modeller alle tre handelstyper og avtaleflyten. |
+| Database og ORM | Drizzle og lokal D1 er satt opp, ingen tabeller | Følg T02; gruppen designer eget skjema etter regelavklaring. |
 | Innlogging | Feide undersøkt og valgt bort av Max 19.09 | Velg alternativ innlogging og hvordan studentmålgruppen verifiseres. Ingen alternativ løsning er valgt eller prøvd. |
 | Hosting | Ikke valgt | Avklar etter stack, tilgang og budsjett. Ingen deploy er bestilt her. |
 | API og skrivehandlinger | Ikke designet | Knytt T03/T04 til konkrete handlinger med input, svar, feil og eierskap. |
@@ -69,7 +69,8 @@ er fortsatt forskjellige spørsmål; begge må avklares for valgt løsning.
 | Playwright av hovedflytene og manuell kontroll av tilgjengelighet | Teamstandard i [GitHub-plan](github-repo-oppsett.md) |
 | Reproduserbare kommandoer og nødvendig konfigurasjon uten hemmeligheter | T08, [README](../README.md) |
 
-Testsuiten, kommandoene og miljøet finnes ikke ennå. Emnekrav bygger på sist kontrollerte
+Starterens testmiljø og kommandoer finnes i [README](../README.md). Produktets tester
+og hovedflytintegrasjon finnes ikke ennå; scaffoldtester oppfyller ikke T07. Emnekrav bygger på sist kontrollerte
 kurskilder i [kildeindeksen](kilder.md); ingen ny Canvas-kontroll er utført her.
 
 ## Neste planlegging

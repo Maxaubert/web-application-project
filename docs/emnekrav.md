@@ -30,8 +30,9 @@ Alle må kunne forklare hele appen og gjøre en liten endring på stedet, ikke b
 
 ## Teknisk minimum og hvordan det skal kunne bevises
 
-Alle T-rader har status **TBD, ingen app finnes**. Fyll senere inn virkelig fil,
-testnavn, commit og kommandoutfall i evidenskolonnen. En grønn docsjekk dekker ingen T-rad.
+**Oppsettsstatus 20.09.2026:** RedwoodSDK-starter og lokale verktøy finnes, se
+[appoppsettet](app-oppsett.md). Ingen T-rad er ferdig dokumentert/godkjent for produktet.
+Eget skjema, API, auth, hovedflyt og integrasjon/dekning gjenstår. Fyll inn reelle bevis underveis.
 
 | ID | Verifisert krav | Forventet evidens, foreløpig plan | Kilde |
 |---|---|---|---|
@@ -53,10 +54,10 @@ U26 s. 136 har et eget 60 %-mål i en komponentøving, ikke et nytt globalt mini
 
 | ID | Krav | Evidens/status | Kilde |
 |---|---|---|---|
-| P01 | .git følger leveransen; GitHub-repo offentlig ved innlevering og lenke i rapport | Ingen remote nå. Fremtidig publisering og pakking må avklares og verifiseres | K01 §8 krav 0, punkt 4 |
+| P01 | .git følger leveransen; GitHub-repo offentlig ved innlevering og lenke i rapport | Privat GitHub-repo finnes. Fremtidig offentliggjøring og pakking må avklares og verifiseres | K01 §8 krav 0, punkt 4 |
 | P02 | Ekte bidrag under eget navn gjennom semesteret; historikken må stemme med refleksjonen | Studentbidrag ikke etablert her. Commit-antall er ikke forståelsesmål | K01 §8, Om git-historikken |
 | P03 | Gruppekontrakt og felles forståelse av ambisjon, arbeidsform, KI og tema | [Utkast](samarbeid.md), ikke avtalt av studentene | A29, A04 |
-| P04 | KI-avtale i repo, svar verifiseres, KI-bruk dokumenteres og avtalen oppdateres ved behov | [Utkast](../KI-AVTALE.md), ikke signert | K02; K01 §8 krav 5 |
+| P04 | KI-avtale i repo, svar verifiseres, KI-bruk dokumenteres og avtalen oppdateres ved behov | [Utkast](../KI-AVTALE.md), ikke bekreftet av studentene | K02; K01 §8 krav 5 |
 | P05 | Egne arkitekturbegrunnelser i rapporten uten KI-generert tekst | Ikke skrevet. Nøytral [mal](teknikk.md) og kildestøtte er hjelp, ikke besvarelse | U26 s. 230, linje 8089–8095 |
 | P06 | Alle deltar, viser respons på tilbakemelding og svarer uten hjelpemidler. KI kan brukes i forberedelse, ikke live-svar | Individuell status ukjent | K01 §9 og §8 krav 0/4 |
 

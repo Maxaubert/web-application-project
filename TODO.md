@@ -1,6 +1,6 @@
 # To-do: nåstatus og neste arbeid
 
-**Sist oppdatert 19.09.2026.** Dette er den aktive oppgavelisten frem til vi tar i
+**Sist oppdatert 20.09.2026.** Dette er den aktive oppgavelisten frem til vi tar i
 bruk GitHub Issues og Kanban. Ti planleggingstemaer betyr ikke ti separate filer.
 Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
 
@@ -20,7 +20,7 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
 - [x] Opprettet [felles arbeidslogg](arbeidslogg-max-og-emil.md) og [timeliste](timeliste.md).
   Loggen er etterført fra kjente hendelser; ingen timer er oppgitt eller registrert.
 - [x] Lagt inn og prøvd [CI-workflow og konkret oppsettsveiledning](docs/ci-og-deploy.md).
-  Dokumentkontrollen besto på GitHub. App-CI og deploy kommer senere; aktiv beskyttelse gjenstår.
+  Dokumentkontrollen besto på GitHub. App-CI er utvidet på oppsettsbranchen; deploy og aktiv beskyttelse gjenstår.
 - [x] Opprettet lokal, Git-ignorert WAL med [rutine for gjennomgang og overføring](docs/arbeidslogg.md)
   til felles arbeidslogg. Rånotatene blir på hver maskin og skal ikke pushes.
 
@@ -28,9 +28,13 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
 
 - [ ] **Blokkert:** aktiver støtte for branch protection på GitHub-kontoen, legg på
   forberedt regel for main og bekreft at manglende review/CI faktisk blokkerer merge (G03).
-  Repoet beholdes privat. Emil må fortsatt godta invitasjonen før han kan gi påkrevd review.
-- [ ] Ved første appoppsett: erstatt scaffold-sperren med reell lint/typecheck/test/dekning/build
-  og Playwright når UI finnes. Velg hosting før deploy-workflow opprettes (G11–G18).
+  Repoet beholdes privat. Emil-18 er nå registrert som samarbeidspartner (kontrollert 20.09).
+- [x] Satt opp RedwoodSDK/Vite, npm-låsefil, TypeScript, Drizzle/lokal D1 og startertester
+  på `setup/initial-project`. Ingen produktkode. Se [oppsett](docs/app-oppsett.md) (G11–G16).
+- [ ] Emil prøver ren installasjon og `npm run check` på egen PC. Review oppsetts-PR før merge.
+- [ ] Bygg produktets integrasjonstester/dekning og E2E når hovedflyten finnes (T07, G13–G16).
+- [ ] Velg hosting/konto og utrulling før deploy-workflow opprettes (G17–G18).
+- [ ] Følg opp moderate Drizzle Kit-avhengighetsfunn med kompatibel upstream-fiks.
 - [ ] Max og Emil gjennomgår MVP, krav og åpne regler sammen (F01/F04–F06).
 - [ ] Velg alternativ innlogging og avklar hvordan målgruppen verifiseres (F08/F09/F11).
 - [ ] Avklar reservering, datogrenser, avbestilling og salgsfullføring (F06).
@@ -64,7 +68,7 @@ Temaene står åpne til hele resultatet er gjennomgått av begge. Fremdriften st
   server-/klientgrenser, samt hovedskjermer og feil-/tomtilstander. Begrunn alternativene. (F09/F10)
 - [ ] **Testplan:** knytt kriteriene til enhetstester, integrasjonstester og E2E. Beskriv
   testdata og manuell kontroll av tastatur, mobilvisning og høy zoom. Koblingstabell
-  finnes i teknisk plan; testmiljø, testdata og apptester finnes ikke ennå. (F12, G13–G16)
+  finnes i teknisk plan; startertestmiljø finnes, produktets testdata og tester gjenstår. (F12, G13–G16)
 - [ ] **Arbeids- og leveranseplan:** avtal roller, review og KI-bruk, del arbeidet i issues,
   prioriter Kanban-backloggen og sett milepæler med tid til testing og læring. (F13–F15)
 

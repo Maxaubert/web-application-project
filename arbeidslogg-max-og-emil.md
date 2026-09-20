@@ -1,6 +1,6 @@
 # Arbeidslogg for Max og Emil
 
-Felles fremdriftslogg for prosjektet. Sist oppdatert 19.09.2026.
+Felles fremdriftslogg for prosjektet. Sist oppdatert 20.09.2026.
 Se [aktive oppgaver](TODO.md), [timeliste](timeliste.md) og
 [veiledning for arbeid, KI-bidrag og læringsbevis](docs/arbeidslogg.md).
 
@@ -32,6 +32,9 @@ også gjeldende krav eller plan, slik at loggen ikke blir den eneste kilden til 
 |---|---|---|---|---|---|
 | L08 | 19.09.2026 | Max bestilte, Codex satte opp | La til CI for dokumentene, Actions-oppdateringer og forberedt PR-beskyttelse. GitHub-CI besto. GitHub avviste branch protection for privat repo på gjeldende abonnement; ingen teknisk PR-sperre er aktiv. | [CI og deploy](docs/ci-og-deploy.md), [første beståtte CI-kjøring](https://github.com/Maxaubert/web-application-project/actions/runs/35448304403). Ingen app, deploy eller timer | Avklar abonnement, aktiver og verifiser beskyttelse; bygg reelle appkontroller med første app-PR |
 | L09 | 19.09.2026 | Max bestilte, Codex satte opp | Opprettet lokal, Git-ignorert WAL for korte løpende faktanotater, med rutine for senere gjennomgang og oppsummering i denne loggen. | [Loggrutine](docs/arbeidslogg.md). Rå-WAL følger ikke med til GitHub eller skole-PC; ingen timer oppgitt | Vedlikehold WAL under økten og overfør gjennomgåtte fakta før overlevering |
+| L10 | 19.09.2026 (etterført 20.09) | Max godkjente, Codex merget | PR 2 squash-merget, main synkronisert. Originalhistorikk bevart i lokal arkivtag. | [Merget PR 2](https://github.com/Maxaubert/web-application-project/pull/2), [bestått main-CI](https://github.com/Maxaubert/web-application-project/actions/runs/35451830804) | PR-beskyttelse fortsatt blokkert; ingen timer oppgitt |
+| L11 | 20.09.2026 | Max bestilte, Codex kontrollerte | Hentet siste web-repo; allerede oppdatert. Emil-18 er nå samarbeidspartner. Ingen Emil-commits/PR-er funnet ved denne kontrollen; lokalt arbeid hos Emil er ukjent. | GitHub API for commits, branches, PR-er og samarbeidspartnere | Emil prøver oppsett og committer egne bidrag |
+| L12 | 20.09.2026 | Max bestilte, Codex initialiserte og prøvde | Offisiell RedwoodSDK/Vite-starter i app/, npm, TypeScript, lokal D1/Drizzle, lint og testverktøy. Ingen markedsplasskode eller skyressurser. Oppdatert CI, README og TODO. | [Oppsett og kontroller](docs/app-oppsett.md), branch setup/initial-project. Tre Vitest- og to Playwright-tester besto lokalt, bygg og lokal SQL besto. Studenttimer ikke oppgitt | PR-review og Emils egen installasjon; produktmodell og hovedflyt gjenstår |
 
 Bruk faktisk øktdato; merk eventuell etterføring. Oppgi KI-verktøy og faktisk rolle.
 Skriv ikke «vi» dersom bare én har arbeidet, og ikke før ventetid på KI som automatisk

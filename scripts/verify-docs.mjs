@@ -32,7 +32,7 @@ try {
   finish();
 }
 
-const textExtensions = new Set(['.md', '.mjs', '.json', '.yml', '.yaml', '.txt']);
+const textExtensions = new Set(['.md', '.mjs', '.json', '.jsonc', '.ts', '.tsx', '.mts', '.yml', '.yaml', '.txt']);
 let linksChecked = 0;
 let textFilesChecked = 0;
 for (const name of names) {
@@ -108,7 +108,7 @@ const guards = [
   ['AGENTS.md', 'egen arkitekturbegrunnelse', 'Egen vurderingstekst'],
   ['AGENTS.md', 'Ikke dikt bidrag', 'Autentisk dokumentasjon'],
   ['AGENTS.md', 'Bare Oves eksplisitte godkjenning', 'Mergegate'],
-  ['README.md', 'Ingen app er implementert', 'Ærlig appstatus'],
+  ['README.md', 'Ingen markedsplassfunksjoner er implementert', 'Ærlig appstatus'],
   ['KI-AVTALE.md', 'ikke bekreftet av studentene', 'Avtalestatus'],
   ['docs/emnekrav.md', 'etter uke 42', 'Datokonflikt'],
   ['docs/emnekrav.md', 'fremtidig pensum', 'Retrospektpresisering'],
