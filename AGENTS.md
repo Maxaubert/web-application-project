@@ -4,8 +4,8 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Foreløpig bare dokumentasjon. Studentmarked med salg, gratis lån og leie er valgt av Max;
-  alle tre i MVP, avtaler via forespørsler/motforslag, chat senere. Stack/arkitektur er åpne.
+- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, gratis lån og leie er valgt av Max;
+  alle tre i MVP, avtaler via forespørsler/motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp; produktarkitektur er åpen.
 - [Kravspesifikasjon](kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
 - Les [emnekrav](docs/emnekrav.md), [prosjektkort](docs/prosjekt.md) og [KI-avtale](KI-AVTALE.md)
@@ -68,6 +68,7 @@
 ## Git, personvern og samarbeid
 
 - Alle repoendringer på branch og i PR, også docs. Ingen push til hovedbranch.
+- Navngi branch etter arbeidet, eksempelvis `setup/initial-project`; ikke bruk codex/ai-prefiks.
 - Funksjonsendring: issue først, så branch, så PR. Lokalt uten remote: beskriv oppgaven og
   PR-utkastet i [review](docs/review.md); opprett faktisk issue/PR først når remote er godkjent.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
@@ -81,15 +82,18 @@
 
 ## Kjøring og verifikasjon
 
-- Nå: `node scripts/verify-docs.mjs` og `git diff --check`. CI kjører også disse kontrollene
-  med Node 22.x. Se [CI og beskyttelsesstatus](docs/ci-og-deploy.md); PR-kravet er ennå ikke teknisk håndhevet.
-- Når appens package.json legges til: erstatt CI-sperren med reell install/lint/typecheck/test/build
-  i samme PR. Ikke fjern sperren og la dokumentkontroll være eneste appgate.
-- Appens install/run/build/typecheck/lint/test/E2E-kommandoer er TBD; finn ikke på resultater.
-- Første appoppsett skal gi dokumenterte, faktisk prøvde kommandoer, CI med typecheck/lint/unit,
-  og lokal Playwright E2E når UI finnes. Ingen «grønn CI» fra dokumentkontroll alene.
-- Kode-PR: kjør full enhetssuite, typekontroll og lint, samt relevant integrasjon/dekning og
-  lokal Playwright ved UI-endring. Test hovedflyten fra README på branch-bygget før mergeforslag.
-- Ikke deploy til Vercel automatisk: kursets stackvalg avgjør plattform, og publisering krever fullmakt.
-- Rapporter hva som er endret, hva som faktisk er kjørt, feil og gjenstående usikkerhet.
+- Node 24.19.0 og npm 11.17.0. Fra `app/`: `npm ci`, deretter `npx playwright install chromium`.
+- Typecheck/lint: `npm run typecheck` og `npm run lint` i `app/`.
+- Unit/dekning: `npm run test:coverage`. Startertestene oppfyller ikke T07 eller L8a-egenarbeid.
+- Build: `npm run build`. Artefakt: `app/dist/`, Git-ignorert.
+- E2E headless: `npm run test:e2e` etter bygg; ved endring i src, runtime eller appkonfigurasjon.
+- Hele appgaten: `npm run check`. CI kjører samme gate og låst installasjon på Linux.
+- Dokumenter fra repo-roten: `node scripts/verify-docs.mjs` og `git diff --check`.
+- Lokal install/start etter merge: `npm ci` og `npm run dev` i app/. Versjon i `app/package.json`.
+- Kjente testfeil som tolereres: ingen. Avhengighetsfunn er dokumentert i [appoppsett](docs/app-oppsett.md).
+- Release/deploy/signering: ikke konfigurert. Ingen publisering eller skyressurser uten fullmakt.
+- Produktkode: legg til meningsfulle Vitest-enhets-/integrasjonstester og Playwright av hovedflyten.
+  Minst 50 % dekning kreves til leveransen; ikke skjul manglende produktbevis bak grønn scaffold-CI.
+- PR-kravet er ikke teknisk håndhevet ennå; se [CI-status](docs/ci-og-deploy.md).
+- Test relevante brukerhandlinger på branch-bygget før mergeforslag. Rapporter faktiske utfall.
 - Hold AGENTS.md og CLAUDE.md under ca. 200 linjer; detaljer skal bo i lenkede fagfiler.

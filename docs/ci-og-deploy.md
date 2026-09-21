@@ -1,21 +1,21 @@
 # CI, PR-regler og videre deploy
 
-Oppsett 19.09.2026, bestilt av Max. Dette er den konkrete driftsveiledningen;
+Oppdatert 20.09.2026, bestilt av Max. Dette er den konkrete driftsveiledningen;
 [GitHub-planen](github-repo-oppsett.md) beholder den større sjekklisten.
 
 ## Hva som finnes nå
 
 | Del | Status |
 |---|---|
-| CI | [Workflow](../.github/workflows/ci.yml) er prøvd med bestått GitHub-kjøring på PR. Den kontrollerer dokumenter og whitespace. Push til main og manuell start blir tilgjengelig etter merge. Bevis står i PR og verifikasjonsloggen. |
-| Node | CI bruker 22.x fra [.node-version](../.node-version); siste tilgjengelige patch innen den serien. Ingen pakkeinstallasjon trengs ennå. |
-| Avhengighetsoppdatering | [Dependabot](../.github/dependabot.yml) er konfigurert for ukentlige Actions-oppdateringer. Konfigurasjonen tas i bruk når den ligger på main. Ingen automatisk merge. |
-| PR-beskyttelse | **Blokkert av GitHub-abonnementet.** API-et avviser beskyttelse for dette private repoet med beskjed om Pro eller offentlig repo. Repoet beholdes privat; direkte push er derfor ikke teknisk sperret ennå. |
-| App-CI | Ikke implementert: app, pakkevalg og kommandoer finnes ikke. CI feiler bevisst hvis package.json legges til uten at appkontrollene samtidig etableres. |
+| CI | Samlet `Repository checks`: dokumenter, whitespace, npm ci, typecheck, lint, Vitest/dekning, lokal D1, bygg og Playwright. Appkontrollene ligger på oppsettsbranchen frem til merge. |
+| Node/npm | Node 24.19.0 fra `.node-version`, npm 11.17.0. Samme versjoner lokalt og i CI. |
+| Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig. Ingen automatisk merge. |
+| PR-beskyttelse | **Blokkert av GitHub-abonnementet.** Sist prøvd 19.09: private repo krever Pro eller offentlig repo. Repoet beholdes privat; direkte push er ikke teknisk sperret. |
+| Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
 | Deploy og release | Ingen hosting, hemmeligheter, deploy eller automatisk GitHub-utgivelse konfigurert. |
 
 Workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
-til verifiserte commit-SHA-er og ti minutters tidsgrense. Ingen deploy-nøkler eller
+til verifiserte commit-SHA-er og femten minutters tidsgrense. Ingen deploy-nøkler eller
 skrivetoken trengs. Eldre kjøringer av samme PR kanselleres; hovedbranch-kjøringer
 kanselleres ikke på denne måten. Påkrevde sjekker må ikke få path-filtre som gjør
 at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
@@ -30,8 +30,7 @@ at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 - Løste reviewtråder, oppdatert branch og bestått `Repository checks` fra GitHub Actions.
 - Ingen force-push eller sletting av main.
 
-Emil-18 var fortsatt invitert, men ikke aktiv samarbeidspartner ved kontroll
-19.09.2026. Han må akseptere invitasjonen for å kunne gi påkrevd review med skrivetilgang.
+Emil-18 er registrert som samarbeidspartner ved kontroll 20.09.2026.
 KI-review erstatter ikke medstudentreview. Admin kan fremdeles endre repoets
 innstillinger; regelen er en sperre i arbeidsflyten, ikke umulighet for en eier å endre policy.
 
@@ -49,24 +48,26 @@ Dokumenter en kontrollert feilsjekk før dere kaller merge-gaten verifisert. Ikk
 en direkte push til main med ekte endringer som test. Ikke gjør repoet offentlig
 eller kjøp abonnement uten eksplisitt bestilling.
 
-## Første app-PR: utvid samme kvalitetsport
+## Appkontroller og videre utvidelse
 
-Bytt ut scaffold-sperren i CI med disse reelle stegene i samme PR som appen kommer:
+Fra `app/`: `npm ci`, `npx playwright install chromium`, `npm run check`.
+CI bruker `--with-deps` ved browserinstallasjon på Linux. Appkontrollene må kjøres
+på alle PR-er, også når dokumenter endres. Installer fra låsefilen, ikke med løs pakkeoppløsning.
+Playwright tester produksjonsbygget i lokal Cloudflare-runtime på port 4173.
+Vitest-dekning og Playwright-rapporter/traces lagres som CI-artefakter i sju dager.
 
-1. Velg Node-/pakkebehandlerversjon for stacken, commit låsefilen og prøv ren,
-   låst installasjon lokalt og i CI. Velg kommandoer etter faktisk npm/pnpm-oppsett.
-2. Kjør typekontroll, lint, enhetstester, Vitest-integrasjon/dekning og produksjonsbygg.
-   Følg T07 for minst én integrasjonstest av hovedflyten og minst 50 % dekning.
-3. Kjør Playwright når UI finnes, med isolert testdatabase og syntetiske brukere.
-   Ingen produksjonsdatabase eller hemmeligheter fra andre studenter i testene.
-4. Last opp relevante feilrapporter/traces med kort lagringstid, uten private data.
-5. Behold sjekknavnet `Repository checks` som samlet gate dersom arbeidet splittes
-   i jobber; kontroller at alle nødvendige jobber faktisk lykkes, også ved feil/skip.
-6. Prøv en bevisst testfeil på arbeidsbranch, se at CI feiler, rett den og kjør på nytt.
-   Oppdater README med prøvde kommandoer, TODO og arbeidslogg.
+Gaten kjører i én jobb og stopper ved feil. Ingen test bruker produksjonsdata,
+Cloudflare-konto eller hemmeligheter. `npm run generate` bruker bare lokal Wrangler-konfigurasjon.
+For konkrete versjoner, opphav og begrensninger, se [appoppsettet](app-oppsett.md).
 
-Grønn dokumentkontroll er aldri bevis på at appen fungerer. Dette dokumentet velger
-ikke appens arkitektur eller skriver studentenes egen arkitekturbegrunnelse.
+Ved produktutvikling: utvid med reelle enhets-/integrasjonstester, hovedflyt-E2E,
+syntetiske aktører og minst 50 % dekning etter T07. Bevis at tilgangsfeil ikke endrer
+lagret data. Oppsettets tre enhetstester og to browser-smoke-tester oppfyller ikke
+kursets produktkrav. Innfør dekningsgate med avtalt målegrunnlag sammen med produktets tester.
+Ikke ekskluder vanskelig kode for å få grønt resultat.
+
+Behold sjekknavnet `Repository checks` som samlet gate dersom arbeidet senere deles
+opp i jobber. Verifiser at feil eller nødvendige jobber som hoppes over blokkerer gaten.
 
 ## Release og deploy for en nettside
 

@@ -1,0 +1,38 @@
+{
+  // Schema reference for wrangler configuration
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Name of your worker
+  "name": "web-application-project",
+
+  // Entry point for your worker
+  "main": "src/worker.tsx",
+
+  // Compatibility settings
+  "compatibility_date": "2026-09-20",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Assets configuration
+  "assets": {
+    "binding": "ASSETS"
+  },
+
+  // Observability settings
+  "observability": {
+    "enabled": true
+  },
+
+  // Local-only placeholder, replace with an approved real D1 ID before deployment.
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "web-application-project-local",
+    "database_id": "00000000-0000-0000-0000-000000000000",
+    "migrations_dir": "drizzle",
+    "remote": false
+  }],
+
+  // Environment variables
+  "vars": {
+    // Add your environment variables here
+  }
+}

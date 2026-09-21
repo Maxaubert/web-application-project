@@ -18,7 +18,10 @@ jobs:
   repository:
     name: Repository checks
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
+    env:
+      WRANGLER_SEND_METRICS: false
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -45,13 +48,29 @@ jobs:
         if: github.event_name != 'pull_request'
         run: git show --format= --check HEAD
 
-      # Replace this guard with real install/lint/typecheck/test/build steps
-      # in the same PR that introduces the app. Do not silently skip app tests.
-      - name: Require app CI when scaffolding
-        shell: bash
-        run: |
-          tracked_files="$(git ls-files)"
-          if grep -Eq '(^|/)package\.json$' <<< "$tracked_files"; then
-            echo '::error::App/package detected. Add real app CI before removing this guard; see docs/ci-og-deploy.md.'
-            exit 1
-          fi
+      - name: Pin npm
+        run: npm install --global npm@11.17.0
+
+      - name: Install locked dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Install test browser
+        working-directory: app
+        run: npx playwright install --with-deps chromium
+
+      - name: Typecheck, lint, tests, local D1, build and browser tests
+        working-directory: app
+        run: npm run check
+
+      - name: Retain test reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: test-reports
+          path: |
+            app/coverage
+            app/playwright-report
+            app/test-results
+          retention-days: 7
+          if-no-files-found: ignore

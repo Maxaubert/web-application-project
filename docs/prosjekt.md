@@ -23,7 +23,7 @@ samler gjennomføringen. [Idénotatet](ideer-til-diskusjon.md) bevares som histo
 | Minste nyttige omfang, og hvordan det ligner kursets nivå | Alle tre handelstyper, uten chat eller innebygd betaling. Eier bekrefter retur for lån/leie; salgsfullføring og øvrige åpne regler må avklares |
 | Første funksjoner i prioritert rekkefølge | TBD |
 | Kuttliste dersom tid/forståelse svikter | TBD |
-| Stack: RedwoodSDK/Next.js/TanStack Start | TBD. RedwoodSDK følger undervisningen nærmest |
+| Stack | RedwoodSDK/Vite med React/TypeScript, Drizzle/lokal D1 satt opp 20.09 etter Max sin bestilling. Produktarkitektur gjenstår |
 | Eksterne data, personvern og kostnader | TBD. Bruk syntetiske demoopplysninger |
 | Ambisjon, kapasitet og avtalt arbeidsform | TBD, begge bekrefter selv |
 | Gruppeendring meldt/avklart med faglærer | Ukjent. Bruker oppgir Max og Emil, ikke bevis på lærerens godkjenning |
