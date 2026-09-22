@@ -1,7 +1,8 @@
+"use client";
 import { useState } from "react"
 
 export default function PasswordField({ onValueChange = null, text = "password"}) {
-    const [value, setValue] = useState(value)
+    const [value, setValue] = useState("")
     function valueChange(newVal) {
         if (onValueChange) {
             valueChange(newVal)

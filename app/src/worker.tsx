@@ -11,5 +11,5 @@ export type AppContext = Record<string, never>;
 
 export default defineApp([
   setCommonHeaders(),
-  render(Document, [route("/", Email)]),
+  render(Document, [route("/", Login)]),
 ]);
