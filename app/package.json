@@ -31,7 +31,7 @@
     "rwsdk": "1.7.3"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.56.0",
+    "@cloudflare/vite-plugin": "1.57.3",
     "@cloudflare/workers-types": "5.20260920.1",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
