@@ -16,6 +16,10 @@
 
 - Nyeste relevante Canvas-kunngjøring og gjeldende kursplan styrer krav.
   Årets undervisningsmateriale utdyper; 2025 er historisk støtte. Lokale notater er syntese.
+- Søsterrepoet School (privat, `../School`, github.com/Maxaubert/School) er viktigste
+  lokale kilde for ferske Canvas-uttrekk, kunngjøringer, sign-off, kursmateriell og beste
+  praksis: `School/ITF31619-Webapplikasjoner/README.md`. Sjekk nyeste daterte uttrekk før
+  krav- eller planarbeid. Bare lesing; mangler det (f.eks. hos Emil), bruk Canvas direkte.
 - Bruk stabile krav-ID-er fra emnekrav. Varsle konkret: krav-ID, kilde/punkt eller side,
   observert avvik, konsekvens og minste retting. Skill krav fra anbefaling og teamstandard.
 - Ikke kall uavklart dato, ukjent fremdrift eller upublisert øving et bekreftet krav.
