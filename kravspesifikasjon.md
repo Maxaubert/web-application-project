@@ -55,7 +55,7 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Forlengelse | Avklart 28.09 | Begge kan foreslå senere returdato; den andre godtar eller avslår. Blokkeres ved kollisjon med annet godtatt lån (D-19 til D-25). |
 | Avbestilling | Avklart 28.09 | Forespørrer kan trekke en ventende forespørsel. Etter aksept kan begge avbestille før overlevering. Ingen avbestilling midt i et lån (D-55). |
 | Reservasjon | Avklart 28.09 | Ventende forespørsler reserverer ikke. Første godtatte avtale reserverer, og overlappende ventende forespørsler avslås (D-27 til D-29). |
-| Salg fullført | Avklart 28.09 | Godtatt kjøpsforespørsel tar annonsen ut av søket og avslår andre ventende bud. Eier kan legge ut ny annonse med kopierte detaljer (D-30 til D-35). |
+| Salg fullført | Avklart 28.09 | Godtatt kjøpsforespørsel tar annonsen ut av søket og avslår andre ventende bud (D-30 til D-32). Solgte annonser kan ikke legges ut på nytt. Låneannonser blir liggende i søket, med opptatte datoer markert. |
 | Varsler | Avklart 28.09 | E-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. Status vises også i appen (D-65 til D-67). Påminnelser om forsinket retur er med; kanal og hyppighet er åpent (D-86). |
 | Returproblemer | Avklart 28.09 og 29.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Bare den som skrev og admin kan lese den; admin kontakter partene ved behov. Admin-dashboard er utenfor MVP (D-89), så hvordan admin leser rapportene, er åpent. |
 | Utløp | Avklart 29.09 | En ubesvart forespørsel utløper etter 7 dager. Erstatter D-54. |
@@ -89,7 +89,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-08 | Etter aksept skal begge parter se hverandres telefon og e-post og bekrefte overlevering i appen. Salg og gis bort er fullført når begge har bekreftet; lån er da i bruk. |
 | FK-09 | Begge parter i et lån skal kunne foreslå en senere returdato, som den andre godtar eller avslår. |
 | FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. |
-| FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk, og kunne redigere profil, ta ned egne annonser, legge ut en kopi av en solgt annonse og logge ut. |
+| FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk, og kunne redigere profil, ta ned egne annonser og logge ut. |
 | FK-12 | Partene skal få e-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. |
 
 ### Informasjon per handelstype

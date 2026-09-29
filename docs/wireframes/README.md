@@ -89,7 +89,7 @@ endrer ingenting i databasen.
 |---|---|---|
 | `completeAccount` | Ny bruker | Navn og telefon påkrevd og gyldige. |
 | `createListing`, `updateListing` | Innlogget bruker / eier | Påkrevde felt, 1–10 bilder, pris heltall ≥ 0. Bare eier kan redigere. |
-| `unpublishListing`, `copyListing` | Eier | Kopi lager ny annonse og endrer ikke gamle avtaler. |
+| `unpublishListing` | Eier | Tar annonsen ut av søket. Endrer ikke eksisterende avtaler. |
 | `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. |
 | `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |
 | `withdrawRequest` | Forespørrer | Bare mens den venter. |
@@ -122,7 +122,7 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/requests/:id` | `ContactCard`, `HandoverConfirmation` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
 | 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `History` | Begge bekreftelser med tidspunkt, pris, historikk. | |
 | 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/requests/:id` | `ExtensionPanel`, `ReturnIssuePanel` | Periode, pris, kontakt. Forleng lånet (WV-01), retur som eieren bekrefter, og rapporter returproblem (WV-02). | |
-| 09 | Min side: Mine annonser | `Minside-*` | `/me` | `ProfileCard`, `MyPageTabs`, `ListingCard` | Profil og faner. Egne annonser med status, «Rediger», «Ta ned», «Legg ut ny med samme detaljer». | |
+| 09 | Min side: Mine annonser | `Minside-*` | `/me` | `ProfileCard`, `MyPageTabs`, `ListingCard` | Profil og faner. Egne annonser med status, «Rediger» og «Ta ned». Solgte annonser har ingen handlinger; låneannonser blir liggende med opptatte datoer. | |
 | 09 | Min side: Historikk | `Minside-historikk-*` | `/me?tab=history` | `HistoryList` | Fullførte salg og lån, både gitt og mottatt. | |
 | 09 | Rediger profil | `Profil-rediger-*` | `/me/profile` | `ProfileForm` | Bytt eller fjern bilde, navn, telefon, e-post (låst), «Lagre», «Logg ut». | |
 

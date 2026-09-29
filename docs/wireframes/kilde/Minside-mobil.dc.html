@@ -56,7 +56,6 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1
 <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">{{ a.title }}</strong><span class="help">{{ a.meta }}</span><span class="st">{{ a.status }}</span></div>
 </div>
 <sc-if value="{{ a.live }}" hint-placeholder-val="{{ true }}"><div style="display: flex; gap: 8px"><a href="Legg-ut-mobil.dc.html" class="btn2" style="flex-grow: 1">Rediger</a><button type="button" class="btn2" style="flex-grow: 1">Ta ned</button></div></sc-if>
-<sc-if value="{{ a.sold }}" hint-placeholder-val="{{ false }}"><a href="Legg-ut-mobil.dc.html" class="btn2">Legg ut ny med samme detaljer</a></sc-if>
 </div>
 </sc-for>
 </div>
@@ -70,7 +69,7 @@ return {
 ads: [
 { title: 'Skjerm 24 tommer', meta: 'Lån · 100 kr/uke', status: 'Publisert · 1 ventende forespørsel', live: true, sold: false },
 { title: 'Casio fx-991 kalkulator', meta: 'Salg · 250 kr', status: 'Solgt 03.10', live: false, sold: true },
-{ title: 'Arduino startsett', meta: 'Lån · 60 kr/uke', status: 'Utlånt til 25.10', live: true, sold: false }
+{ title: 'Arduino startsett', meta: 'Lån · 60 kr/uke', status: 'Publisert · utlånt til 25.10', live: true, sold: false }
 ]
 };
 }

@@ -483,7 +483,7 @@
     },
     "n9": {
       "fill": "orange",
-      "text": "Våre notater (WF-09)\n\nBrukerens mål: Se egne annonser og historikk, og endre profilen.\n\nData: user, egne listing-rader, fullførte request-rader.\n\nKomponenter: ProfileCard, MyPageTabs, ListingCard, HistoryList, ProfileForm.\n\nServerhandling / API: GET /api/me/listings og GET /api/me/history. Actions updateProfile, unpublishListing, copyListing. Logg ut via better-auth.\n\nAvklart: Min side = profil (bilde, navn, telefon) + fanene Mine annonser, Forespørsler og Historikk. «Legg ut ny med samme detaljer» lager en ny annonse (D-30–D-35).",
+      "text": "Våre notater (WF-09)\n\nBrukerens mål: Se egne annonser og historikk, og endre profilen.\n\nData: user, egne listing-rader, fullførte request-rader.\n\nKomponenter: ProfileCard, MyPageTabs, ListingCard, HistoryList, ProfileForm.\n\nServerhandling / API: GET /api/me/listings og GET /api/me/history. Actions updateProfile, unpublishListing. Logg ut via better-auth.\n\nAvklart: Min side = profil (bilde, navn, telefon) + fanene Mine annonser, Forespørsler og Historikk. Solgte annonser forsvinner fra søket. Låneannonser blir liggende med opptatte datoer markert.",
       "w": 420,
       "x": 5970,
       "y": 15508
