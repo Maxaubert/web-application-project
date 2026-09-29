@@ -75,24 +75,19 @@ skjer utenfor appen, og kontaktinfo deles først når partene er enige.</p>
 sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p>
 <table>
 <tr><th style="width:28%">Del</th><th>Innhold</th></tr>
-<tr><td>REST (lesing)</td><td><code>GET /api/annonser</code>, <code>GET /api/annonser/:id</code>, <code>GET /api/foresporsler</code>, <code>GET /api/meg/annonser</code>, <code>GET /api/meg/historikk</code></td></tr>
-<tr><td>Server actions</td><td>opprettAnnonse, sendForesporsel, godta, avsla, sendMotbud, bekreftOverlevering, avbestill, foreslaForlengelse, rapporterProblem, oppdaterProfil</td></tr>
-<tr><td>Data</td><td>bruker, annonse, bilde, foresporsel, forslag (bud og perioder med historikk), rapport</td></tr>
+<tr><td>REST (lesing)</td><td><code>GET /api/listings</code>, <code>GET /api/listings/:id</code>, <code>GET /api/requests</code>, <code>GET /api/me/listings</code>, <code>GET /api/me/history</code></td></tr>
+<tr><td>Server actions</td><td>createListing, sendRequest, acceptOffer, declineOffer, sendCounterOffer, confirmHandover, confirmReturn, cancelAgreement, proposeExtension, reportIssue, updateProfile</td></tr>
+<tr><td>Data</td><td>user, listing, listing_image, request, offer (bud og perioder med historikk), issue_report</td></tr>
 </table>
 
-<h2>Ikke avklart ennå</h2>
-<ul>
-<li>Avrunding når lån med ukepris ikke varer hele uker.</li>
-<li>Hvem som bekrefter retur ved lån, og hva som skjer hvis bare én har bekreftet overleveringen.</li>
-<li>Når en ubesvart forespørsel utløper, hvem som ser returrapporter, kategoriliste og bildelagring.</li>
-</ul>
+
 </div>
 
 <h2 style="margin-top:0">Utvalgte wireframes</h2>
 <section class="screen">
 <h3><span class="num">01</span>Logg inn</h3>
 <p class="lead">Brukeren skriver HiØ-e-posten sin. Ingen passord, og samme flyt for ny og eksisterende konto.</p>
-<p class="meta"><span>Komponenter:</span> EpostSkjema, Feilmelding<br><span>Server:</span> better-auth sender kode og lenke, bare til @hiof.no</p>
+<p class="meta"><span>Komponenter:</span> EmailForm, ErrorMessage<br><span>Server:</span> better-auth sender kode og lenke, bare til @hiof.no</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Main.png" alt="Logg inn, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Innlogging-desktop.png" alt="Logg inn, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -101,7 +96,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">02</span>Engangskode</h3>
 <p class="lead">Riktig kode, eller et klikk på lenken i e-posten, logger inn. Ny bruker går videre til kontooppsett.</p>
-<p class="meta"><span>Komponenter:</span> KodeSkjema<br><span>Server:</span> better-auth sjekker koden og oppretter sesjon</p>
+<p class="meta"><span>Komponenter:</span> CodeForm<br><span>Server:</span> better-auth sjekker koden og oppretter sesjon</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Innlogging-kode-mobil.png" alt="Engangskode, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Innlogging-kode-desktop.png" alt="Engangskode, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -110,7 +105,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">03</span>Fullfør kontoen</h3>
 <p class="lead">Bare første gang. Navn og telefon fylles inn én gang.</p>
-<p class="meta"><span>Komponenter:</span> KontoSkjema<br><span>Server:</span> Action fullforKonto</p>
+<p class="meta"><span>Komponenter:</span> AccountSetupForm<br><span>Server:</span> Action completeAccount</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Kontooppsett-mobil.png" alt="Fullfør kontoen, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Kontooppsett-desktop.png" alt="Fullfør kontoen, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -119,7 +114,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">04</span>Annonser og søk</h3>
 <p class="lead">Forsiden etter innlogging. Søk i tittel og beskrivelse, og filtrer på kategori, handelstype og om lån er tilgjengelige nå.</p>
-<p class="meta"><span>Komponenter:</span> Søkefelt, Filtre, AnnonseKort<br><span>Server:</span> GET /api/annonser</p>
+<p class="meta"><span>Komponenter:</span> SearchField, Filters, ListingCard<br><span>Server:</span> GET /api/listings</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Sok-mobil.png" alt="Annonser og søk, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Sok-desktop.png" alt="Annonser og søk, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -128,7 +123,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">05</span>Annonse: salg</h3>
 <p class="lead">Bilder, pris, tilstand og beskrivelse. Kjøperen legger inn bud herfra.</p>
-<p class="meta"><span>Komponenter:</span> Bildegalleri, AnnonseInfo, EierKort<br><span>Server:</span> GET /api/annonser/:id</p>
+<p class="meta"><span>Komponenter:</span> ImageGallery, ListingInfo, OwnerCard<br><span>Server:</span> GET /api/listings/:id</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Annonse-mobil.png" alt="Annonse: salg, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Annonse-desktop.png" alt="Annonse: salg, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -137,7 +132,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">06</span>Annonse: lån</h3>
 <p class="lead">Samme oppbygning som salg, med ukepris og kalender over opptatte datoer.</p>
-<p class="meta"><span>Komponenter:</span> Bildegalleri, AnnonseInfo, Kalender<br><span>Server:</span> GET /api/annonser/:id</p>
+<p class="meta"><span>Komponenter:</span> ImageGallery, ListingInfo, AvailabilityCalendar<br><span>Server:</span> GET /api/listings/:id</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Annonse-leie-mobil.png" alt="Annonse: lån, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Annonse-leie-desktop.png" alt="Annonse: lån, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -146,7 +141,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">07</span>Legg ut annonse</h3>
 <p class="lead">Salg, lån eller gis bort. En til ti bilder, tittel, beskrivelse, kategori, tilstand og pris.</p>
-<p class="meta"><span>Komponenter:</span> AnnonseSkjema, BildeOpplaster<br><span>Server:</span> Action opprettAnnonse</p>
+<p class="meta"><span>Komponenter:</span> ListingForm, ImageUploader<br><span>Server:</span> Action createListing</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Legg-ut-mobil.png" alt="Legg ut annonse, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Legg-ut-desktop.png" alt="Legg ut annonse, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -155,7 +150,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">08</span>Legg inn bud</h3>
 <p class="lead">Ved salg sender kjøperen bare et bud. Sted og tid avtales senere på telefon eller e-post.</p>
-<p class="meta"><span>Komponenter:</span> BudSkjema<br><span>Server:</span> Action sendForesporsel</p>
+<p class="meta"><span>Komponenter:</span> BidForm<br><span>Server:</span> Action sendRequest</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Foresporsel-salg-mobil.png" alt="Legg inn bud, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Foresporsel-salg-desktop.png" alt="Legg inn bud, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -163,8 +158,8 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 </section>
 <section class="screen">
 <h3><span class="num">09</span>Send låneforespørsel</h3>
-<p class="lead">Ved lån velges bare en periode på minst én uke. Opptatte dager kan ikke velges.</p>
-<p class="meta"><span>Komponenter:</span> PeriodeVelger, Oppsummering<br><span>Server:</span> Action sendForesporsel</p>
+<p class="lead">Ved lån velges bare en periode på minst én uke. Opptatte dager kan ikke velges. Prisen er ukepris delt på 7 per dag.</p>
+<p class="meta"><span>Komponenter:</span> PeriodPicker, Summary<br><span>Server:</span> Action sendRequest</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Foresporsel-leie-mobil.png" alt="Send låneforespørsel, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Foresporsel-leie-desktop.png" alt="Send låneforespørsel, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -173,7 +168,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">10</span>Nytt bud, selgerens side</h3>
 <p class="lead">Selgeren godtar, avslår eller foreslår en annen pris. Partene svarer på omgang.</p>
-<p class="meta"><span>Komponenter:</span> ForslagKort, MotbudSkjema<br><span>Server:</span> Actions godta, avsla, sendMotbud</p>
+<p class="meta"><span>Komponenter:</span> OfferCard, CounterOfferForm<br><span>Server:</span> Actions acceptOffer, declineOffer, sendCounterOffer</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Avtale-venter-mobil.png" alt="Nytt bud, selgerens side, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Avtale-nyttbud-desktop.png" alt="Nytt bud, selgerens side, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -182,7 +177,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">11</span>Avtalt</h3>
 <p class="lead">Kontaktinfo vises først nå. Begge bekrefter overleveringen i appen.</p>
-<p class="meta"><span>Komponenter:</span> KontaktKort, Overleveringsbekreftelse<br><span>Server:</span> Action bekreftOverlevering</p>
+<p class="meta"><span>Komponenter:</span> ContactCard, HandoverConfirmation<br><span>Server:</span> Action confirmHandover</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Avtale-avtalt-mobil.png" alt="Avtalt, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Avtale-avtalt-desktop.png" alt="Avtalt, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -190,8 +185,8 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 </section>
 <section class="screen">
 <h3><span class="num">12</span>Lån i bruk</h3>
-<p class="lead">Låneperioden kan forlenges, og returproblemer kan rapporteres.</p>
-<p class="meta"><span>Komponenter:</span> Forlengelse, Returproblem<br><span>Server:</span> Actions foreslaForlengelse, rapporterProblem</p>
+<p class="lead">Låneperioden kan forlenges. Bare eieren bekrefter returen, og begge kan rapportere returproblemer.</p>
+<p class="meta"><span>Komponenter:</span> ExtensionPanel, ReturnIssuePanel<br><span>Server:</span> Actions proposeExtension, confirmReturn, reportIssue</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Avtale-leie-aktiv-mobil.png" alt="Lån i bruk, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Avtale-leie-aktiv-desktop.png" alt="Lån i bruk, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -200,7 +195,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">13</span>Min side: forespørsler</h3>
 <p class="lead">Mottatte og sendte bud og låneforespørsler, med status og hvem som har tur.</p>
-<p class="meta"><span>Komponenter:</span> MinSideFaner, ForesporselRad<br><span>Server:</span> GET /api/foresporsler</p>
+<p class="meta"><span>Komponenter:</span> MyPageTabs, RequestRow<br><span>Server:</span> GET /api/requests</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Foresporsler-mobil.png" alt="Min side: forespørsler, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Foresporsler-desktop.png" alt="Min side: forespørsler, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -209,7 +204,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">14</span>Min side: mine annonser</h3>
 <p class="lead">Profil øverst og egne annonser under. Solgte annonser kan legges ut på nytt som kopi.</p>
-<p class="meta"><span>Komponenter:</span> ProfilKort, AnnonseKort<br><span>Server:</span> GET /api/meg/annonser</p>
+<p class="meta"><span>Komponenter:</span> ProfileCard, ListingCard<br><span>Server:</span> GET /api/me/listings</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Minside-mobil.png" alt="Min side: mine annonser, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Minside-desktop.png" alt="Min side: mine annonser, desktop"></div><figcaption>Desktop</figcaption></figure>
@@ -218,7 +213,7 @@ sesjon, hvem brukeren er i forespørselen og om statusen tillater handlingen.</p
 <section class="screen">
 <h3><span class="num">15</span>Min side: historikk</h3>
 <p class="lead">Fullførte salg og lån, både gitt og mottatt.</p>
-<p class="meta"><span>Komponenter:</span> HistorikkListe<br><span>Server:</span> GET /api/meg/historikk</p>
+<p class="meta"><span>Komponenter:</span> HistoryList<br><span>Server:</span> GET /api/me/history</p>
 <div class="pair">
 <figure class="mob"><div class="frame"><img src="../wireframes/png/Minside-historikk-mobil.png" alt="Min side: historikk, mobil"></div><figcaption>Mobil</figcaption></figure>
 <figure class="desk"><div class="frame"><img src="../wireframes/png/Minside-historikk-desktop.png" alt="Min side: historikk, desktop"></div><figcaption>Desktop</figcaption></figure>

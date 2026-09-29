@@ -427,63 +427,63 @@
     },
     "n1": {
       "fill": "orange",
-      "text": "Våre notater (WF-01)\n\nBrukerens mål: Logge inn eller lage konto med HiØ-e-post, uten passord.\n\nData: Bruker (e-post). better-auth lagrer engangskode, lenke og sesjon.\n\nKomponenter: EpostSkjema, KodeSkjema, Feilmelding.\n\nServerhandling / API: better-auth sender kode og lenke (bare @hiof.no), sjekker koden og oppretter sesjon. Ny bruker sendes til kontooppsett.\n\nAvklart: bare e-post, ingen passord. Kode og lenke sendes på e-post. Kun @hiof.no. Samme flyt for ny og eksisterende konto; ny konto går til kontooppsett.",
+      "text": "Våre notater (WF-01)\n\nBrukerens mål: Logge inn eller lage konto med HiØ-e-post, uten passord.\n\nData: user (email). better-auth lagrer engangskode, lenke og sesjon.\n\nKomponenter: EmailForm, CodeForm, ErrorMessage.\n\nServerhandling / API: better-auth sender kode og lenke (bare @hiof.no), sjekker koden og oppretter sesjon. Ny bruker sendes til kontooppsett.\n\nAvklart: bare e-post, ingen passord. Kode og lenke sendes på e-post. Kun @hiof.no. Samme flyt for ny og eksisterende konto; ny konto går til kontooppsett.",
       "w": 420,
       "x": 5970,
       "y": 0
     },
     "n2": {
       "fill": "orange",
-      "text": "Våre notater (WF-02)\n\nBrukerens mål: Fullføre kontoen første gang.\n\nData: Bruker (navn, telefon).\n\nKomponenter: KontoSkjema.\n\nServerhandling / API: Action fullforKonto: krever sesjon, sjekker navn og telefon og lagrer dem.\n\nAvklart: bare for nye kontoer. Navn og telefon fylles inn én gang. Telefon deles bare etter aksept (D-13–D-14).",
+      "text": "Våre notater (WF-02)\n\nBrukerens mål: Fullføre kontoen første gang.\n\nData: user (name, phone).\n\nKomponenter: AccountSetupForm.\n\nServerhandling / API: Action completeAccount: krever sesjon, sjekker navn og telefon og lagrer dem.\n\nAvklart: bare for nye kontoer. Navn og telefon fylles inn én gang. Telefon deles bare etter aksept (D-13–D-14).",
       "w": 420,
       "x": 1830,
       "y": 1264
     },
     "n3": {
       "fill": "orange",
-      "text": "Våre notater (WF-03)\n\nBrukerens mål: Finne noe å kjøpe, låne eller få.\n\nData: Annonse (tittel, type, pris, status), første bilde, opptatte perioder for lån.\n\nKomponenter: Toppmeny, Søkefelt, Filtre, AnnonseKort, AnnonseListe.\n\nServerhandling / API: GET /api/annonser?q=&kategori=&type=&tilgjengelig= gir 200 med liste, 400 ved ugyldige filtre, 401 uten sesjon.\n\nAvklart: søk i tittel og beskrivelse, filtre kategori, handelstype, Tilgjengelig nå / Alle (D-58–D-62).",
+      "text": "Våre notater (WF-03)\n\nBrukerens mål: Finne noe å kjøpe, låne eller få.\n\nData: Annonse (tittel, type, pris, status), første bilde, opptatte perioder for lån.\n\nKomponenter: Toppmeny, SearchField, Filters, ListingCard, AnnonseListe.\n\nServerhandling / API: GET /api/listings?q=&category=&type=&available= gir 200 med liste, 400 ved ugyldige filtre, 401 uten sesjon.\n\nAvklart: søk i tittel og beskrivelse, filtre kategori, handelstype, Tilgjengelig nå / Alle (D-58–D-62).",
       "w": 420,
       "x": 7960,
       "y": 2528
     },
     "n4": {
       "fill": "orange",
-      "text": "Våre notater (WF-04)\n\nBrukerens mål: Se detaljene og bestemme seg.\n\nData: Annonse, bilder, eierens fornavn, opptatte perioder (lån). Telefon sendes ikke med.\n\nKomponenter: Bildegalleri, AnnonseInfo, Kalender (lån), EierKort, Handlingsknapp.\n\nServerhandling / API: GET /api/annonser/:id gir 200, eller 404 hvis annonsen ikke finnes eller er tatt ned.\n\nAvklart: telefon vises ikke før avtale. Eier setter ingen kalender (D-61), men bookede dager vises.",
+      "text": "Våre notater (WF-04)\n\nBrukerens mål: Se detaljene og bestemme seg.\n\nData: listing, listing_image, eierens fornavn, opptatte perioder (lån). Telefon sendes ikke med.\n\nKomponenter: ImageGallery, ListingInfo, AvailabilityCalendar (lån), OwnerCard, ActionButton.\n\nServerhandling / API: GET /api/listings/:id gir 200, eller 404 hvis annonsen ikke finnes eller er tatt ned.\n\nAvklart: telefon vises ikke før avtale. Eier setter ingen kalender (D-61), men bookede dager vises.",
       "w": 420,
       "x": 5970,
       "y": 4508
     },
     "n5": {
       "fill": "orange",
-      "text": "Våre notater (WF-05)\n\nBrukerens mål: Legge ut en ting for salg, lån eller gis bort.\n\nData: Annonse, Bilde (1–10).\n\nKomponenter: AnnonseSkjema, TypeValg, BildeOpplaster, Feiloppsummering.\n\nServerhandling / API: Action opprettAnnonse: krever sesjon, sjekker påkrevde felt, 1–10 bilder og pris som heltall, lagrer med innlogget bruker som eier. Bare eier kan redigere eller ta ned.\n\nAvklart: én type per annonse (salg, lån eller gis bort; lån kan ha valgfri ukepris), 1–10 bilder, påkrevde felt og tilstander (D-01–D-02, D-46–D-49). Kategorilisten er åpen.",
+      "text": "Våre notater (WF-05)\n\nBrukerens mål: Legge ut en ting for salg, lån eller gis bort.\n\nData: listing, listing_image (1–10).\n\nKomponenter: ListingForm, TypePicker, ImageUploader, ErrorSummary.\n\nServerhandling / API: Action createListing: krever sesjon, sjekker påkrevde felt, 1–10 bilder og pris som heltall, lagrer med innlogget bruker som eier. Bare eier kan redigere eller ta ned.\n\nAvklart: én type per annonse (salg, lån eller gis bort; lån kan ha valgfri ukepris), 1–10 bilder, påkrevde felt og tilstander (D-01–D-02, D-46–D-49). Kategorilisten er åpen.",
       "w": 420,
       "x": 3980,
       "y": 6628
     },
     "n6": {
       "fill": "orange",
-      "text": "Våre notater (WF-06)\n\nBrukerens mål: Legge inn bud (salg) eller be om en periode (lån).\n\nData: Forespørsel (annonse, forespørrer, status) og Forslag (bud eller fra/til).\n\nKomponenter: BudSkjema, PeriodeVelger, Oppsummering.\n\nServerhandling / API: Action sendForesporsel: krever sesjon, ikke egen annonse, annonsen må være aktiv. Lån: minst én uke og ingen overlapp med godtatte lån.\n\nAvklart: salg = bare et bud. Lån = bare en periode (minst én uke). Sted og tid avtales på telefon/e-post etter aksept. Åpent: avrunding.",
+      "text": "Våre notater (WF-06)\n\nBrukerens mål: Legge inn bud (salg) eller be om en periode (lån).\n\nData: request (listing_id, requester_id, status) og offer (price eller start_date/end_date).\n\nKomponenter: BidForm, PeriodPicker, Summary.\n\nServerhandling / API: Action sendRequest: krever sesjon, ikke egen annonse, annonsen må være aktiv. Lån: minst én uke og ingen overlapp med godtatte lån.\n\nAvklart: salg = bare et bud. Lån = bare en periode (minst én uke). Sted og tid avtales på telefon/e-post etter aksept. Lån med ukepris koster ukepris / 7 per dag.",
       "w": 420,
       "x": 3980,
       "y": 9048
     },
     "n7": {
       "fill": "orange",
-      "text": "Våre notater (WF-07)\n\nBrukerens mål: Se hva som venter på meg.\n\nData: Forespørsel med siste forslag, annonse og motpart.\n\nKomponenter: MinSideFaner, MottattSendtBryter, ForesporselRad.\n\nServerhandling / API: GET /api/foresporsler?retning=mottatt|sendt gir bare brukerens egne.\n\nAvklart: Forespørsler er en fane på Min side. Mottatt/Sendt, bud og låneforespørsler. Ingen chat.",
+      "text": "Våre notater (WF-07)\n\nBrukerens mål: Se hva som venter på meg.\n\nData: Forespørsel med siste forslag, annonse og motpart.\n\nKomponenter: MyPageTabs, ReceivedSentToggle, RequestRow.\n\nServerhandling / API: GET /api/requests?retning=mottatt|sendt gir bare brukerens egne.\n\nAvklart: Forespørsler er en fane på Min side. Mottatt/Sendt, bud og låneforespørsler. Ingen chat.",
       "w": 420,
       "x": 3980,
       "y": 11268
     },
     "n8": {
       "fill": "orange",
-      "text": "Våre notater (WF-08)\n\nBrukerens mål: Bli enige og gjennomføre overleveringen.\n\nData: Forespørsel, forslagshistorikk, bekreftelser, kontaktinfo (først etter aksept), Rapport.\n\nKomponenter: StatusBanner, ForslagKort, MotbudSkjema, KontaktKort, Overleveringsbekreftelse, Historikk, Forlengelse, Returproblem.\n\nServerhandling / API: Actions godta, avsla, sendMotbud, bekreftOverlevering, avbestill, foreslaForlengelse, rapporterProblem. Hver sjekker riktig part og at statusen tillater handlingen.\n\nAvklart: mottaker godtar, avslår eller foreslår annen pris/periode, på omgang. Kontakt (telefon og e-post) vises etter aksept. Begge bekrefter overlevering. Åpent: returbekreftelse, én-bekreftelse-tilfellet, rapportinnsyn.",
+      "text": "Våre notater (WF-08)\n\nBrukerens mål: Bli enige og gjennomføre overleveringen.\n\nData: request, offer-historikk, bekreftelser, kontaktinfo (først etter aksept), issue_report.\n\nKomponenter: StatusBanner, OfferCard, CounterOfferForm, ContactCard, HandoverConfirmation, Historikk, ExtensionPanel, ReturnIssuePanel.\n\nServerhandling / API: Actions acceptOffer, declineOffer, sendCounterOffer, bekreftOverlevering, avbestill, foreslaForlengelse, rapporterProblem. Hver sjekker riktig part og at statusen tillater handlingen.\n\nAvklart: mottaker godtar, avslår eller foreslår annen pris/periode, på omgang. Kontakt (telefon og e-post) vises etter aksept. Begge bekrefter overlevering. Bare eieren bekrefter retur ved lån. Har bare én bekreftet overlevering, regnes den som bekreftet etter 3 dager. Ubesvart forespørsel utløper etter 7 dager. Returrapporter ses bare av den som skrev og admin.",
       "w": 420,
       "x": 9950,
       "y": 12988
     },
     "n9": {
       "fill": "orange",
-      "text": "Våre notater (WF-09)\n\nBrukerens mål: Se egne annonser og historikk, og endre profilen.\n\nData: Bruker, egne annonser, fullførte avtaler.\n\nKomponenter: ProfilKort, MinSideFaner, AnnonseKort, HistorikkListe, ProfilSkjema.\n\nServerhandling / API: GET /api/meg/annonser og /api/meg/historikk. Actions oppdaterProfil, taNedAnnonse, kopierAnnonse. Logg ut via better-auth.\n\nAvklart: Min side = profil (bilde, navn, telefon) + fanene Mine annonser, Forespørsler og Historikk. «Legg ut ny med samme detaljer» lager en ny annonse (D-30–D-35).",
+      "text": "Våre notater (WF-09)\n\nBrukerens mål: Se egne annonser og historikk, og endre profilen.\n\nData: user, egne listing-rader, fullførte request-rader.\n\nKomponenter: ProfileCard, MyPageTabs, ListingCard, HistoryList, ProfileForm.\n\nServerhandling / API: GET /api/me/listings og GET /api/me/history. Actions updateProfile, unpublishListing, copyListing. Logg ut via better-auth.\n\nAvklart: Min side = profil (bilde, navn, telefon) + fanene Mine annonser, Forespørsler og Historikk. «Legg ut ny med samme detaljer» lager en ny annonse (D-30–D-35).",
       "w": 420,
       "x": 5970,
       "y": 15508

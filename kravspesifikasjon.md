@@ -50,17 +50,17 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Forespørsel ved lån | Avklart 29.09 | Bare en periode (fra og til), minst én uke (D-22). Opptatte datoer kan ikke velges. Motforslag gjelder perioden. |
 | Gis bort | Avklart 29.09 | Som salg, men uten bud: forespørsel, eier godtar eller avslår, begge bekrefter overlevering. Ingen retur. |
 | Sted og tid | Avklart 29.09 | Ikke i appen. Partene avtaler overlevering og retur på telefon eller e-post etter aksept. Erstatter D-03 til D-12 om møtepunkt og hentetid i forespørselen. |
-| Overlevering | Avklart 28.09 | Begge bekrefter overlevering i appen. Salg og gis bort er fullført etter begge bekreftelsene; lån er da i bruk (D-36, D-37). |
-| Retur | Åpent | Hvem som bekrefter vanlig retur ved lån, og hvordan faktisk returdato registreres, er gjenåpnet (etter D-85 til D-89). «Eieren alene bekrefter» fra 19.09 gjelder ikke lenger som vedtatt regel. |
+| Overlevering | Avklart 28.09 og 29.09 | Begge bekrefter overlevering i appen. Salg og gis bort er fullført etter begge bekreftelsene; lån er da i bruk (D-36, D-37). Har bare én part bekreftet, regnes overleveringen som bekreftet 3 dager senere. |
+| Retur | Avklart 29.09 | Bare eieren bekrefter retur ved lån. Låneren bekrefter ikke. Hvordan faktisk returdato registreres ved senere bekreftelse, er åpent. |
 | Forlengelse | Avklart 28.09 | Begge kan foreslå senere returdato; den andre godtar eller avslår. Blokkeres ved kollisjon med annet godtatt lån (D-19 til D-25). |
 | Avbestilling | Avklart 28.09 | Forespørrer kan trekke en ventende forespørsel. Etter aksept kan begge avbestille før overlevering. Ingen avbestilling midt i et lån (D-55). |
 | Reservasjon | Avklart 28.09 | Ventende forespørsler reserverer ikke. Første godtatte avtale reserverer, og overlappende ventende forespørsler avslås (D-27 til D-29). |
 | Salg fullført | Avklart 28.09 | Godtatt kjøpsforespørsel tar annonsen ut av søket og avslår andre ventende bud. Eier kan legge ut ny annonse med kopierte detaljer (D-30 til D-35). |
 | Varsler | Avklart 28.09 | E-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. Status vises også i appen (D-65 til D-67). Påminnelser om forsinket retur er med; kanal og hyppighet er åpent (D-86). |
-| Returproblemer | Avklart 28.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Admin-dashboard er utenfor MVP (D-89). |
-| Utløp | Åpent | D-54 knyttet utløp til hentetidspunktet, som er fjernet 29.09. Ny regel for når en ubesvart forespørsel utløper, mangler. |
-| Pris og avrunding | Åpent | Eksakt dag- og ukeberegning og avrunding for lån med ukepris (D-24). |
-| Kategorier og bilder | Delvis avklart | Fast kategoriliste, men innholdet er åpent (D-47). Lagring av bilder er ikke valgt. |
+| Returproblemer | Avklart 28.09 og 29.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Bare den som skrev og admin kan lese den; admin kontakter partene ved behov. Admin-dashboard er utenfor MVP (D-89), så hvordan admin leser rapportene, er åpent. |
+| Utløp | Avklart 29.09 | En ubesvart forespørsel utløper etter 7 dager. Erstatter D-54. |
+| Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
+| Kategorier og bilder | Delvis avklart | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres sannsynligvis i Cloudflare R2, muligens D1; ikke endelig valgt. |
 | Historikk | Avklart 28.09 | Alle forslag bevares i historikken. Bare siste forslag kan godtas (D-53). Annonseendringer endrer ikke eksisterende avtaler (D-51). |
 
 **Begreper:** «Salg» overfører eierskap mot betaling utenfor appen. «Lån» gir midlertidig bruk, gratis eller mot ukepris. «Gis bort» overfører eierskap uten betaling.
@@ -85,7 +85,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel på andres annonse: et bud ved salg, en periode på minst én uke ved lån, eller en forespørsel uten vilkår ved gis bort. |
 | FK-05 | Eieren skal kunne godta, avslå eller foreslå en annen pris eller periode. Motforslaget sendes til forespørreren. |
 | FK-06 | Forespørreren skal kunne godta, avslå eller sende nytt motforslag. Partene svarer på omgang, og bare siste forslag kan godtas. Begge skal se forslagshistorikken og hva de er enige om. |
-| FK-07 | Ved lån skal retur kunne registreres. Hvem som bekrefter, og hvordan faktisk returdato registreres, er åpent (se beslutningsoversikten). |
+| FK-07 | Ved lån skal eieren kunne bekrefte mottatt retur. Bekreftelsen fullfører lånet og vises for begge. Låneren bekrefter ikke. |
 | FK-08 | Etter aksept skal begge parter se hverandres telefon og e-post og bekrefte overlevering i appen. Salg og gis bort er fullført når begge har bekreftet; lån er da i bruk. |
 | FK-09 | Begge parter i et lån skal kunne foreslå en senere returdato, som den andre godtar eller avslår. |
 | FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. |
@@ -96,11 +96,11 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 
 | Opplysninger | Salg | Lån | Gis bort |
 |---|---|---|---|
-| Annonsepris | Salgspris (heltall kr) | Valgfri ukepris; tom betyr gratis | Ingen |
+| Annonsepris | Salgspris (heltall kr) | Valgfri ukepris; tom betyr gratis. Prisen for lånet er ukepris / 7 per dag | Ingen |
 | Forespørsel | Bud i kroner | Fra- og til-dato, minst én uke | Ingen vilkår |
 | Motforslag | Annen pris | Annen periode | Ikke aktuelt |
 | Overlevering | Avtales utenfor appen, begge bekrefter | Avtales utenfor appen, begge bekrefter | Avtales utenfor appen, begge bekrefter |
-| Retur | Ikke aktuelt | Innen returdato; bekreftelse åpen | Ikke aktuelt |
+| Retur | Ikke aktuelt | Innen returdato; eieren bekrefter | Ikke aktuelt |
 
 Påkrevde annonsefelt er tittel, beskrivelse, kategori, tilstand, bilder og relevant pris (D-46).
 Tilstand er «Ny», «Som ny» eller «Brukt, fullt fungerende»; ting som må repareres, legges ikke ut (D-48, D-49).
@@ -118,12 +118,13 @@ tilstand og hva begge parter ser etterpå.
 | Venter på eier | Foreslå annen pris eller periode | Eier | Venter på forespørrer |
 | Venter på forespørrer | Godta, avslå eller nytt motforslag | Forespørrer | Godtatt, avslått eller venter på eier |
 | Venter på eier | Trekk forespørselen | Forespørrer | Trukket |
+| Venter på eier eller forespørrer | 7 dager uten svar | Systemet | Utløpt |
 | Godtatt | Avbestill | Begge, før overlevering | Avbestilt |
 | Godtatt | Bekreft overlevering | Hver part for seg | Fullført (salg, gis bort) eller i bruk (lån) når begge har bekreftet |
 | I bruk | Foreslå senere returdato | Begge | Motparten godtar eller avslår |
-| I bruk | Retur | Åpent | Fullført |
+| I bruk | Bekreft mottatt retur | Eier | Fullført |
 
-Hva som skjer når bare én part har bekreftet overlevering, og når avbestilling da stenges, er åpent.
+Har bare én part bekreftet overlevering, regnes den som bekreftet 3 dager senere. Når avbestilling stenges i mellomtiden, er ikke avklart.
 
 ### Tilgjengelighet og reservering
 
@@ -142,11 +143,11 @@ Hva som skjer når bare én part har bekreftet overlevering, og når avbestillin
 |---|---|---|
 | TK-01 | Avklart 29.09 | Innlogging med better-auth: engangskode og lenke på e-post, bare `@hiof.no`. Appen skal kontrollere innlogget økt på serveren før beskyttede handlinger og visning av annonser. |
 | TK-02 | Avklart | Appen skal lagre brukere, annonser, bilder, forespørsler, forslag med historikk, bekreftelser og returrapporter, slik at informasjonen finnes igjen etter utlogging. |
-| TK-03 | Avklart | Bare eieren kan endre eller ta ned egen annonse. Bare parten som har tur, kan godta, avslå eller sende motforslag. Bare partene kan bekrefte overlevering, avbestille, foreslå forlengelse eller rapportere problem. Hver handling skal kontrollere part, rolle og gyldig status på serveren. |
+| TK-03 | Avklart | Bare eieren kan endre eller ta ned egen annonse. Bare parten som har tur, kan godta, avslå eller sende motforslag. Bare partene kan bekrefte overlevering, avbestille, foreslå forlengelse eller rapportere problem. Bare eieren kan bekrefte retur. Hver handling skal kontrollere part, rolle og gyldig status på serveren. |
 | TK-04 | Avklart | Serveren skal validere data før lagring, for eksempel påkrevde felt, 1 til 10 bilder, pris som heltall, bud over null og at en låneperiode er minst én uke og ledig. |
 | TK-05 | Avklart | Avtalestatus gjelder en konkret forespørsel. Lån har en periode; salg og gis bort har ingen. |
 | TK-06 | Avklart | Appen skal hindre to godtatte lån av samme ting i overlappende perioder, også ved samtidige svar, og hindre at en solgt eller bortgitt ting godtas to ganger. |
-| TK-07 | Avklart | Bare partene kan se en forespørsel, forslagene og rapportene. Telefon og e-post vises først etter godtatt forespørsel. Tilgangen kontrolleres på serveren. |
+| TK-07 | Avklart | Bare partene kan se en forespørsel og forslagene. En returrapport ses bare av den som skrev den og admin. Telefon og e-post vises først etter godtatt forespørsel. Tilgangen kontrolleres på serveren. |
 | TK-08 | Avklart 29.09 | Lesing skjer via REST-endepunkter med ressurs-URL og riktig status også ved feil (T03). All skriving skjer via server actions med tilgangskontroll i handleren (T04). Se [skjermspesifikasjonen](docs/wireframes/README.md). |
 
 **Tekniske rammer:** Appen skal oppfylle [emnekrav](docs/emnekrav.md) T01 til T08. RedwoodSDK, React, TypeScript og Drizzle med D1 er satt opp. Datamodell og drift beskrives i [teknisk plan](docs/teknisk-plan.md).
@@ -230,9 +231,16 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-34:** Gitt en godtatt avtale, når bare én part har bekreftet overlevering, så skal avtalen ikke vises som fullført. Når begge har bekreftet, skal salg og gis bort vises som fullført og lån som i bruk.
 - **AK-35:** Gitt et lån i bruk, når én part foreslår senere returdato som overlapper et annet godtatt lån, så skal forslaget avvises. Et gyldig forslag gjelder først når motparten har godtatt det.
 - **AK-36:** Gitt et lån i bruk, når en part rapporterer et returproblem, så skal rapporten lagres uten å endre avtalens status.
-- **AK-26 til AK-29:** Kriteriene for returbekreftelse fra 19.09 forutsatte at eieren alene bekrefter retur. De venter på ny returregel og skal skrives om når den er avklart.
+- **AK-26:** Gitt et lån i bruk, når eieren bekrefter mottatt retur, så skal lånet lagres som fullført og vises slik for begge etter ny innlogging, uten at låneren bekrefter.
+- **AK-27:** Gitt at en innlogget bruker ikke er eieren, når brukeren forsøker å bekrefte retur, så skal serveren avvise handlingen uten å endre avtalen. Prøves både med låneren og en utenforstående.
+- **AK-28:** Gitt at lagring av returbekreftelsen feiler, når eieren bekrefter, så skal appen vise feil uten å vise lånet som fullført.
+- **AK-29:** Gitt en forespørsel som ikke er godtatt, når eieren forsøker å bekrefte retur, så skal serveren avvise handlingen uten å endre status.
+- **AK-38:** Gitt at bare én part har bekreftet overlevering, når det har gått 3 dager uten at motparten har bekreftet, så skal overleveringen regnes som bekreftet av begge.
+- **AK-39:** Gitt en forespørsel uten svar, når det har gått 7 dager, så skal den lagres som utløpt og ikke kunne godtas.
+- **AK-40:** Gitt en returrapport, når motparten eller en utenforstående prøver å lese den, så skal den ikke vises.
+- **AK-37:** Gitt et lån med ukepris på 100 kr og en periode på 10 dager, når forespørselen vises, så skal prisen være 100 / 7 × 10 kr.
 
-**Før endelig godkjenning:** avklar returregelen, utløp for ubesvarte forespørsler, avrunding for lån med ukepris og kategorilisten, og gå gjennom kriteriene med Emil. Kriteriene er utkast, ikke ferdige eller beståtte tester.
+**Før endelig godkjenning:** avklar kategorilisten, bildelagring og hvordan admin leser returrapporter, og gå gjennom kriteriene med Emil. Kriteriene er utkast, ikke ferdige eller beståtte tester.
 
 ## Behov som bør undersøkes
 

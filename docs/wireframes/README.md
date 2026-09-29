@@ -36,6 +36,11 @@ Avklart av Max 29.09.2026. Disse erstatter eldre varianter i notatet
 | Kontaktinfo | Telefon og e-post vises først for motparten etter godtatt forespørsel. |
 | Overlevering | Begge bekrefter. Salget er fullført når begge har bekreftet. |
 | Forlengelse | Begge kan foreslå ny returdato. Standardforslag er dagen etter nåværende returdato. |
+| Retur | Bare eieren bekrefter retur ved lån. |
+| Pris for lån | Ukepris delt på 7, ganget med antall dager. |
+| Frister | Ubesvart forespørsel utløper etter 7 dager. Har bare én part bekreftet overlevering, regnes den som bekreftet etter 3 dager. |
+| Returrapporter | Bare den som skrev og admin kan lese dem. Admin kontakter partene ved behov. |
+| Bilder | Sannsynligvis Cloudflare R2, muligens D1. Ikke endelig valgt. |
 | Min side | Én side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk. Rediger profil og logg ut ligger under profilen. |
 | Hovedmeny | Annonser, Min side, Legg ut annonse. |
 | API-stil | REST-endepunkter for lesing (T03), server actions for all skriving med tilgangskontroll i handleren (T04). |
@@ -51,16 +56,17 @@ Avklart av Max 29.09.2026. Disse erstatter eldre varianter i notatet
 
 ## Foreslått datamodell
 
-Forslag som dekker skjermene. Ikke et vedtatt Drizzle-skjema (T02).
+Forslag som dekker skjermene. Ikke et vedtatt Drizzle-skjema (T02). Kode, tabeller, felt,
+statuser, ruter og komponentnavn er på engelsk; teksten brukerne ser, er på norsk (Max 29.09).
 
 | Tabell | Felt | Merknad |
 |---|---|---|
-| `bruker` | id, epost (unik, `@hiof.no`), navn, telefon, bilde, opprettet | Utvider better-auth sin brukertabell. Navn og telefon er tomme til kontooppsett er fullført. |
-| `annonse` | id, eier_id, type (`salg`, `lan`, `gis_bort`), tittel, beskrivelse, kategori, tilstand (`ny`, `som_ny`, `brukt`), pris, status (`aktiv`, `solgt`, `tatt_ned`), opprettet | Pris er heltall i kroner. Salg: pris. Lån: ukepris eller tom. Gis bort: tom. |
-| `bilde` | id, annonse_id, fil, rekkefolge | 1–10 per annonse. Første bilde vises i søket. |
-| `foresporsel` | id, annonse_id, foresporrer_id, status, eier_bekreftet, foresporrer_bekreftet, opprettet | Status: `venter_eier`, `venter_foresporrer`, `godtatt`, `avslatt`, `trukket`, `avbestilt`, `i_bruk`, `fullfort`. |
-| `forslag` | id, foresporsel_id, avsender_id, pris, fra_dato, til_dato, opprettet | Hvert bud, motbud og forlengelse. Siste rad er gjeldende. Eldre rader er historikk. |
-| `rapport` | id, foresporsel_id, avsender_id, type, beskrivelse, opprettet | Returproblem (WV-02). Lagres som påstand, avgjør ingenting. |
+| `user` | id, email (unik, `@hiof.no`), name, phone, image, created_at | Utvider better-auth sin brukertabell. `name` og `phone` er tomme til kontooppsett er fullført. |
+| `listing` | id, owner_id, type (`sale`, `loan`, `giveaway`), title, description, category, condition (`new`, `like_new`, `used`), price, status (`active`, `sold`, `unpublished`), created_at | `price` er heltall i kroner. Salg: pris. Lån: ukepris eller tom. Gis bort: tom. |
+| `listing_image` | id, listing_id, file, position | 1–10 per annonse. Første bilde vises i søket. |
+| `request` | id, listing_id, requester_id, status, owner_confirmed, requester_confirmed, created_at | Status: `waiting_owner`, `waiting_requester`, `accepted`, `declined`, `withdrawn`, `expired`, `cancelled`, `in_use`, `completed`. |
+| `offer` | id, request_id, sender_id, price, start_date, end_date, created_at | Hvert bud, motbud og forlengelse. Siste rad er gjeldende. Eldre rader er historikk. |
+| `issue_report` | id, request_id, sender_id, type, description, created_at | Returproblem (WV-02). Lagres som påstand, avgjør ingenting. |
 
 ## REST-endepunkter (lesing)
 
@@ -68,11 +74,11 @@ Alle krever gyldig sesjon og svarer 401 uten.
 
 | Metode og sti | Brukes av | Svar |
 |---|---|---|
-| `GET /api/annonser?q=&kategori=&type=&tilgjengelig=` | WF-03 | 200 med liste (tittel, type, pris, status, første bilde, ledig fra). 400 ved ugyldige filtre. |
-| `GET /api/annonser/:id` | WF-04 | 200 med annonse, bilder, eierens fornavn og opptatte perioder. 404 hvis den ikke finnes eller er tatt ned. Telefon sendes aldri med. |
-| `GET /api/foresporsler?retning=mottatt\|sendt` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
-| `GET /api/foresporsler/:id` | WF-08 | 200 bare for de to partene, ellers 404. Kontaktinfo bare når status er godtatt eller senere. |
-| `GET /api/meg/annonser`, `GET /api/meg/historikk` | WF-09 | 200 med egne annonser eller fullførte avtaler. |
+| `GET /api/listings?q=&category=&type=&available=` | WF-03 | 200 med liste (tittel, type, pris, status, første bilde, ledig fra). 400 ved ugyldige filtre. |
+| `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fornavn og opptatte perioder. 404 hvis den ikke finnes eller er tatt ned. Telefon sendes aldri med. |
+| `GET /api/requests?direction=received\|sent` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
+| `GET /api/requests/:id` | WF-08 | 200 bare for de to partene, ellers 404. Kontaktinfo bare når status er `accepted` eller senere. |
+| `GET /api/me/listings`, `GET /api/me/history` | WF-09 | 200 med egne annonser eller fullførte avtaler. |
 
 ## Server actions (skriving)
 
@@ -81,49 +87,49 @@ endrer ingenting i databasen.
 
 | Action | Hvem | Regler |
 |---|---|---|
-| `fullforKonto` | Ny bruker | Navn og telefon påkrevd og gyldige. |
-| `opprettAnnonse`, `redigerAnnonse` | Innlogget bruker / eier | Påkrevde felt, 1–10 bilder, pris heltall ≥ 0. Bare eier kan redigere. |
-| `taNedAnnonse`, `kopierAnnonse` | Eier | Kopi lager ny annonse og endrer ikke gamle avtaler. |
-| `sendForesporsel` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. |
-| `godta`, `avsla`, `sendMotbud` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |
-| `trekkForesporsel` | Forespørrer | Bare mens den venter. |
-| `avbestill` | Begge | Bare før overlevering er bekreftet av begge. |
-| `bekreftOverlevering` | Begge | Salg fullføres når begge har bekreftet. Lån går til i bruk. |
-| `foreslaForlengelse` | Begge | Ny returdato etter nåværende, ikke over neste godtatte lån. Motparten godtar eller avslår. |
-| `rapporterProblem` | Begge | Lagrer rapport. Endrer ikke status. |
-| `oppdaterProfil` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
+| `completeAccount` | Ny bruker | Navn og telefon påkrevd og gyldige. |
+| `createListing`, `updateListing` | Innlogget bruker / eier | Påkrevde felt, 1–10 bilder, pris heltall ≥ 0. Bare eier kan redigere. |
+| `unpublishListing`, `copyListing` | Eier | Kopi lager ny annonse og endrer ikke gamle avtaler. |
+| `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. |
+| `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |
+| `withdrawRequest` | Forespørrer | Bare mens den venter. |
+| `cancelAgreement` | Begge | Bare før overlevering er bekreftet av begge. |
+| `confirmHandover` | Begge | Salg fullføres når begge har bekreftet. Lån går til `in_use`. Har bare én bekreftet, regnes det som bekreftet etter 3 dager (planlagt jobb). |
+| `proposeExtension` | Begge | Ny returdato etter nåværende, ikke over neste godtatte lån. Motparten godtar eller avslår. |
+| `confirmReturn` | Eier | Bare ved lån i bruk. Fullfører lånet. |
+| `reportIssue` | Begge | Lagrer rapport. Endrer ikke status. Bare avsender og admin kan lese den. |
+| `updateProfile` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
 
 ## Skjermer
 
-Filnavn viser til [png/](png/) og [kilde/](kilde/). Ruter er forslag.
+Filnavn viser til [png/](png/) og [kilde/](kilde/). Filnavnene er arbeidsnavn fra lerretet,
+ikke kodenavn. Ruter og komponentnavn er forslag.
 
-| WF | Skjerm | Mobil / desktop | Rute | Innhold og handlinger | Tilstander |
-|---|---|---|---|---|---|
-| 01 | Logg inn | `Main`, `Innlogging-desktop` | `/logg-inn` | Felt for HiØ-e-post, «Fortsett». | Feil adresse (`Innlogging-feil-*`). |
-| 01 | Kode | `Innlogging-kode-*` | `/logg-inn/kode` | Kodefelt, «Logg inn», «Send ny kode», «Endre e-post». Lenken i e-posten logger inn direkte. | Feil eller utløpt kode ikke tegnet. |
-| 02 | Fullfør kontoen | `Kontooppsett-*` | `/kontooppsett` | E-post (låst), fullt navn, telefon, «Fullfør». Bare for nye kontoer. | |
-| 03 | Annonser og søk | `Sok-*` | `/` | Søk i tittel og beskrivelse, filtre kategori, handelstype og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
-| 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/annonser/:id` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fornavn. | Borte (`Annonse-borte-*`). |
-| 04 | Annonse, lån | `Annonse-leie-*` | `/annonser/:id` | Som salg, pluss ukepris, «Minst én uke», kalender med opptatte datoer og «Send låneforespørsel». | |
-| 05 | Legg ut annonse | `Legg-ut-*` | `/annonser/ny` | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). |
-| 06 | Legg inn bud | `Foresporsel-salg-*` | `/annonser/:id/bud` | Varekort og «Ditt bud (kr)», «Send bud». | |
-| 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/annonser/:id/lan` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris, «Send forespørsel». | |
-| 07 | Min side: Forespørsler | `Foresporsler-*` | `/min-side?fane=foresporsler` | Mottatt og Sendt. Rad med vare, type, motpart, bud eller periode, status og «Din tur». | Tom liste (`Foresporsler-tom-*`). |
-| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/foresporsler/:id` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. | |
-| 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/foresporsler/:id` | Felt «Din pris (kr)», «Send motbud», «Avbryt». | |
-| 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/foresporsler/:id` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
-| 08c | Salget er fullført | `Avtale-fullfort-*` | `/foresporsler/:id` | Begge bekreftelser med tidspunkt, pris, historikk. | |
-| 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/foresporsler/:id` | Periode, pris, kontakt. Forleng lånet (WV-01) og rapporter returproblem (WV-02). | |
-| 09 | Min side: Mine annonser | `Minside-*` | `/min-side` | Profil og faner. Egne annonser med status, «Rediger», «Ta ned», «Legg ut ny med samme detaljer». | |
-| 09 | Min side: Historikk | `Minside-historikk-*` | `/min-side?fane=historikk` | Fullførte salg og lån, både gitt og mottatt. | |
-| 09 | Rediger profil | `Profil-rediger-*` | `/min-side/profil` | Bytt eller fjern bilde, navn, telefon, e-post (låst), «Lagre», «Logg ut». | |
+| WF | Skjerm | Mobil / desktop | Rute | Komponenter | Innhold og handlinger | Tilstander |
+|---|---|---|---|---|---|---|
+| 01 | Logg inn | `Main`, `Innlogging-desktop` | `/login` | `EmailForm`, `ErrorMessage` | Felt for HiØ-e-post, «Fortsett». | Feil adresse (`Innlogging-feil-*`). |
+| 01 | Kode | `Innlogging-kode-*` | `/login/code` | `CodeForm` | Kodefelt, «Logg inn», «Send ny kode», «Endre e-post». Lenken i e-posten logger inn direkte. | Feil eller utløpt kode ikke tegnet. |
+| 02 | Fullfør kontoen | `Kontooppsett-*` | `/account-setup` | `AccountSetupForm` | E-post (låst), fullt navn, telefon, «Fullfør». Bare for nye kontoer. | |
+| 03 | Annonser og søk | `Sok-*` | `/` | `TopNav`, `SearchField`, `Filters`, `ListingCard`, `ListingList` | Søk i tittel og beskrivelse, filtre kategori, handelstype og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
+| 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fornavn. | Borte (`Annonse-borte-*`). |
+| 04 | Annonse, lån | `Annonse-leie-*` | `/listings/:id` | Som salg, pluss `AvailabilityCalendar` | Som salg, pluss ukepris, «Minst én uke», kalender med opptatte datoer og «Send låneforespørsel». | |
+| 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `TypePicker`, `ImageUploader`, `ErrorSummary` | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). |
+| 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
+| 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
+| 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` | `MyPageTabs`, `ReceivedSentToggle`, `RequestRow` | Mottatt og Sendt. Rad med vare, type, motpart, bud eller periode, status og «Din tur». | Tom liste (`Foresporsler-tom-*`). |
+| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. | |
+| 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/requests/:id` | `CounterOfferForm` | Felt «Din pris (kr)», «Send motbud», «Avbryt». | |
+| 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/requests/:id` | `ContactCard`, `HandoverConfirmation` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
+| 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `History` | Begge bekreftelser med tidspunkt, pris, historikk. | |
+| 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/requests/:id` | `ExtensionPanel`, `ReturnIssuePanel` | Periode, pris, kontakt. Forleng lånet (WV-01), retur som eieren bekrefter, og rapporter returproblem (WV-02). | |
+| 09 | Min side: Mine annonser | `Minside-*` | `/me` | `ProfileCard`, `MyPageTabs`, `ListingCard` | Profil og faner. Egne annonser med status, «Rediger», «Ta ned», «Legg ut ny med samme detaljer». | |
+| 09 | Min side: Historikk | `Minside-historikk-*` | `/me?tab=history` | `HistoryList` | Fullførte salg og lån, både gitt og mottatt. | |
+| 09 | Rediger profil | `Profil-rediger-*` | `/me/profile` | `ProfileForm` | Bytt eller fjern bilde, navn, telefon, e-post (låst), «Lagre», «Logg ut». | |
 
 ## Ikke avklart
 
-- Avrunding og dagtelling når lån har ukepris og perioden ikke er hele uker.
-- Hvem som bekrefter vanlig retur ved lån, og hvordan faktisk returdato registreres.
-- Hva som skjer når bare én part har bekreftet overleveringen.
-- Hvem som kan se returrapporter, og hvordan de følges opp uten admin-dashboard.
-- Når en forespørsel utløper, nå som hentetidspunkt er fjernet.
-- Kategorilisten, appnavnet og hvor bilder lagres.
+- Hvordan faktisk returdato registreres hvis eieren bekrefter retur senere.
+- Når avbestilling stenges hvis bare én part har bekreftet overleveringen.
+- Hvordan admin leser returrapporter uten admin-dashboard.
+- Kategorilisten, appnavnet og endelig valg av bildelagring.
 - Skjerm for forespørsel på «gis bort», og feilskjerm for feil eller utløpt kode.
