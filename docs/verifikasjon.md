@@ -207,7 +207,7 @@ trigger og Dependabot-oppsett forutsetter merge. Nye PR-commits må få egen gr�
 
 Max ba om en Git-ignorert arbeids-WAL som senere gjennomgås og oppsummeres i
 arbeidsloggen. Codex opprettet lokal WAL.md og dokumenterte rutinen i AGENTS.md
-og loggveiledningen. L09 er den første gjennomgåtte oppsummeringen; rånotatene
+og loggveiledningen. Oppføringen 19.09 er den første gjennomgåtte oppsummeringen; rånotatene
 er ikke lagt i Git. Timer og studentrefleksjoner er ikke fylt inn.
 
 git check-ignore bekreftet den eksplisitte ignoreringsregelen, og git ls-files

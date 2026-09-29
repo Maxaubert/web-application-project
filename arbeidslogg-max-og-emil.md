@@ -1,41 +1,54 @@
-# Arbeidslogg for Max og Emil
+# Arbeidslogg
 
-Felles fremdriftslogg for prosjektet. Sist oppdatert 20.09.2026.
-Se [aktive oppgaver](TODO.md), [timeliste](timeliste.md) og
-[veiledning for arbeid, KI-bidrag og læringsbevis](docs/arbeidslogg.md).
+Hovedpunkter per arbeidsdag. Timer står i [timelisten](timeliste.md), neste arbeid på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
+Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 
-Loggen beskriver hva som faktisk er gjort og valgt. Den erstatter ikke studentenes
-egne refleksjoner eller rapport. Oppføringene nedenfor er etterført av Codex fra
-samtalen, dokumentene og Git-historikken. Ukjente bidrag og timer er ikke fylt inn.
-«Max + Codex» betyr Max' bestilling/avklaringer og Codex' dokument-/undersøkelsesarbeid,
-ikke at Max har skrevet eller prøvd alt selv. Emils selvstendige arbeid føres når kjent.
+## 14.09.2026 – Kursgrunnlag
 
-## Etterførte milepæler
+- Samlet emnekrav, kursplan og undervisningsmateriale i et dokumentasjonsgrunnlag med kildeliste og veiledning for kodeassistenter (Codex). Kontrollene står i [verifikasjonen](docs/verifikasjon.md).
 
-| ID | Dato | Kjente bidrag | Arbeid og resultat | Bevis / oppfølging |
-|---|---|---|---|---|
-| L01 | 14.09.2026 | Max + Codex; kilde- og kritikeragenter | Opprettet kursbasert dokumentasjonsgrunnlag og assistentveiledning. Ingen appkode eller påvist studentmestring. | [Verifikasjonslogg](docs/verifikasjon.md) |
-| L02 | 16.–18.09.2026 | Max + Codex | Dokumenterte GitHub-oppsett og før-bygg-plan. Opprettet privat GitHub-repo og to-do-liste med ti planleggingstemaer. | [GitHub-plan](docs/github-repo-oppsett.md), [TODO](TODO.md); oppsettplan er ikke implementert CI/board |
-| L03 | 19.09.2026 | Max + Codex | Presiserte studentmarkedet: salg, gratis lån og betalt leie i MVP. Forespørsler med motforslag, chat senere og oppgjør utenfor appen. Eier alene bekrefter retur for lån/leie. Skilte kravspekk og teknisk plan, og la til testbare kriterier. | [Kravspesifikasjon](kravspesifikasjon.md), [merget dokumentasjons-PR](https://github.com/Maxaubert/web-application-project/pull/1). Gruppegjennomgang gjenstår |
-| L04 | 19.09.2026 | Codex undersøkte; Max oppga beslutningen | Undersøkte Feide via offisiell dokumentasjon. Fant mulighet for OIDC-integrasjon, men behov for institusjonsaktivering før institusjonens brukere får tilgang. Max valgte deretter Feide bort som ikke riktig løsning for prosjektet. | [Teknisk plan](docs/teknisk-plan.md). Ingen praktisk integrasjonstest eller avslag fra HiØ; detaljert beslutningsbegrunnelse er ikke oppgitt. Alternativ innlogging gjenstår |
-| L05 | 19.09.2026 | Max ba om tilgang; Codex sendte invitasjonen | Inviterte Emil-18 til web-repoet med skrivetilgang. | Invitasjonen var ventende ved utsending; aksept er ikke kontrollert på nytt |
-| L06 | 19.09.2026 | Emil tipset om avtalen, videreformidlet av Max; Codex hentet og kontrollerte | Fant publisert KI-avtale på Canvas og la lærerens ordlyd i egen kildefil. Skilte lærerens tekst fra gruppens ubekreftede avtale. Kilde- og dokumentkontroll besto. | [Kildetekst](docs/ki-avtale-canvas.md), [PR for KI-kilden](https://github.com/Maxaubert/web-application-project/pull/2). Max og Emil må fortsatt avklare egen KI-praksis |
-| L07 | 19.09.2026 | Max + Codex | Oppdaterte to-do med faktisk fremdrift og neste oppgaver. Opprettet denne felles loggen og tom timeliste, og la inn rutine for videre oppdateringer. Uavhengig review og dokumentkontroll besto. | [TODO](TODO.md), [timeliste](timeliste.md). Ingen timer er oppgitt; Issues og Kanban tas i bruk senere |
+## 18.09.2026 – Repo, oppsettplan og første kravutkast (2,5 t)
 
-## Nye økter
+- Opprettet et privat GitHub-repo for prosjektet og la inn prosjektgrunnlaget.
+- Skrev plan for GitHub-oppsett og hva som må være på plass før vi begynner å bygge.
+- Samlet planleggingen i en to-do-liste med ti temaer.
+- Laget første utkast til krav for studentmarkedet sammen med Codex.
 
-Legg til én kort oppføring per meningsfull økt, nyeste nederst. Bruk neste L-ID.
-Ved endret beslutning: behold den gamle oppføringen og lenk til den nye. Oppdater
-også gjeldende krav eller plan, slik at loggen ikke blir den eneste kilden til valget.
+## 19.09.2026 – Kravspesifikasjon, KI-avtale og CI (4 t)
 
-| ID | Dato | Deltaker og konkret bidrag | Oppgave / resultat / beslutning | Kontroll eller lenke | Neste handling |
-|---|---|---|---|---|---|
-| L08 | 19.09.2026 | Max bestilte, Codex satte opp | La til CI for dokumentene, Actions-oppdateringer og forberedt PR-beskyttelse. GitHub-CI besto. GitHub avviste branch protection for privat repo på gjeldende abonnement; ingen teknisk PR-sperre er aktiv. | [CI og deploy](docs/ci-og-deploy.md), [første beståtte CI-kjøring](https://github.com/Maxaubert/web-application-project/actions/runs/35448304403). Ingen app, deploy eller timer | Avklar abonnement, aktiver og verifiser beskyttelse; bygg reelle appkontroller med første app-PR |
-| L09 | 19.09.2026 | Max bestilte, Codex satte opp | Opprettet lokal, Git-ignorert WAL for korte løpende faktanotater, med rutine for senere gjennomgang og oppsummering i denne loggen. | [Loggrutine](docs/arbeidslogg.md). Rå-WAL følger ikke med til GitHub eller skole-PC; ingen timer oppgitt | Vedlikehold WAL under økten og overfør gjennomgåtte fakta før overlevering |
-| L10 | 19.09.2026 (etterført 20.09) | Max godkjente, Codex merget | PR 2 squash-merget, main synkronisert. Originalhistorikk bevart i lokal arkivtag. | [Merget PR 2](https://github.com/Maxaubert/web-application-project/pull/2), [bestått main-CI](https://github.com/Maxaubert/web-application-project/actions/runs/35451830804) | PR-beskyttelse fortsatt blokkert; ingen timer oppgitt |
-| L11 | 20.09.2026 | Max bestilte, Codex kontrollerte | Hentet siste web-repo; allerede oppdatert. Emil-18 er nå samarbeidspartner. Ingen Emil-commits/PR-er funnet ved denne kontrollen; lokalt arbeid hos Emil er ukjent. | GitHub API for commits, branches, PR-er og samarbeidspartnere | Emil prøver oppsett og committer egne bidrag |
-| L12 | 20.09.2026 | Max bestilte, Codex initialiserte og prøvde | Offisiell RedwoodSDK/Vite-starter i app/, npm, TypeScript, lokal D1/Drizzle, lint og testverktøy. Ingen markedsplasskode eller skyressurser. Oppdatert CI, README og TODO. | [Oppsett og kontroller](docs/app-oppsett.md), branch setup/initial-project. Tre Vitest- og to Playwright-tester besto lokalt, bygg og lokal SQL besto. Studenttimer ikke oppgitt | PR-review og Emils egen installasjon; produktmodell og hovedflyt gjenstår |
+- Presiserte appen: studentmarked med salg, lån og leie, forespørsler med motforslag og oppgjør utenfor appen. Skilte kravspesifikasjonen fra den tekniske planen og la til testbare akseptkriterier ([PR #1](https://github.com/Maxaubert/web-application-project/pull/1)).
+- Undersøkte Feide som innlogging. Det krever at institusjonen aktiverer tjenesten, så jeg valgte det bort.
+- Inviterte Emil til repoet.
+- Hentet lærerens KI-avtale fra Canvas etter tips fra Emil, og la den i en egen kildefil ([PR #2](https://github.com/Maxaubert/web-application-project/pull/2)).
+- Satte opp CI for dokumentene. Branch protection lot seg ikke slå på for et privat repo på gratisabonnementet.
+- Opprettet timeliste, felles arbeidslogg og lokal WAL.
 
-Bruk faktisk øktdato; merk eventuell etterføring. Oppgi KI-verktøy og faktisk rolle.
-Skriv ikke «vi» dersom bare én har arbeidet, og ikke før ventetid på KI som automatisk
-studentarbeid. Studentene skriver selv det de har lært eller fortsatt ikke forstår.
+## 20.09.2026 – Appoppsett (2 t)
+
+- Satte opp den offisielle RedwoodSDK-starteren i `app/` med TypeScript, lokal D1 med Drizzle, lint, Vitest og Playwright (Codex). Startertestene, bygget og lokal SQL besto.
+- Oppdaterte CI, README og to-do-listen.
+
+## 21.09.2026 – Merging (0,5 t)
+
+- Merget oppsett-PR #3 og Dependabot-PR #4 til #6.
+- Emil: startet på innloggingssiden (`login.tsx`, `email.tsx`, `password.tsx`), og la til `use client` i komponentene 23.09.
+
+## 28.09.2026 – Sign-off-krav og kravdiskusjon (5 t)
+
+- Hentet sign-off-kravene fra Canvas og laget en sjekkliste.
+- Vurderte kritisk hvor godt prosjektet dekker kravene.
+- Gikk gjennom de åpne produktspørsmålene og tok beslutningene (D-01 til D-91). De er samlet i `kravdiskusjon.md` i School-repoet.
+- Laget en plan for sign-off.
+
+## 29.09.2026 – Wireframes, kravspesifikasjon og sign-off-rapport (7 t)
+
+- Tegnet wireframes for hele MVP-en i mobil og desktop med Claude Design, én skjerm om gangen: innlogging, søk, annonse, bud og lån, forespørsler, avtale, Min side og profil.
+- Valgte innlogging med e-postkode eller lenke, bare for @hiof.no. Kategoriene ble salg, lån og gis bort, med bud ved salg og periode ved lån. Sted og tid avtales utenfor appen.
+- Avklarte reglene: eier bekrefter retur, lånepris er ukepris delt på 7 per dag, ubesvarte forespørsler utløper etter 7 dager, og overlevering regnes som bekreftet etter 3 dager. Returrapporter ses bare av den som skrev dem og admin. Solgte annonser kan ikke legges ut på nytt.
+- Skrev [skjermspesifikasjon](docs/wireframes/README.md) med ruter, datamodell, API og komponentnavn på engelsk (Claude Code).
+- Laget [sign-off-rapport](docs/sign-off/rapport.pdf) med hovedflyten, én mobil- og én desktopskjerm per steg.
+- Oppdaterte [kravspesifikasjonen](kravspesifikasjon.md) med beslutningene fra 28. og 29.09.
+- Merget wireframes og rapport inn i develop ([PR #11](https://github.com/Maxaubert/web-application-project/pull/11)).
+- Innførte daglig WAL og førte timelisten bakover fra commit-historikken.
+- Satte opp Kanban-board i GitHub Projects og fordelte sign-off-oppgavene.
+- Emil: oppdaterte innloggingssiden og rettet komponentene.

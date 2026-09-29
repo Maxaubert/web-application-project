@@ -1,16 +1,23 @@
 # Timeliste for Max og Emil
 
 Felles fil, én rad per person og arbeidsøkt. Opprettet 19.09.2026.
-**Ingen timer er registrert ennå.** Ingen tidsbruk er utledet fra commits, samtalelengde
-eller KI-kjøring. Dette er gruppens egen oversikt, ikke et påstått emnekrav.
+Radene under for Max er **anslag** laget 29.09.2026 fra commit-historikken og WAL, og
+godkjent av Max samme dag. Ren studietid (kursmateriell, eksamensøving) føres ikke her.
+Dette er gruppens egen oversikt, ikke et påstått emnekrav.
 
-Knytt økten til en L-ID i [arbeidsloggen](arbeidslogg-max-og-emil.md), og senere
-til en issue. [TODO](TODO.md) viser neste arbeid.
+Samme dato finnes i [arbeidsloggen](arbeidslogg-max-og-emil.md). Knytt økten senere
+til en issue på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 
 ## Registreringer
 
-| Dato | Person (Max/Emil) | Oppgave og bidrag | L-ID / issue | Start | Slutt | Pause (min) | Timer | Grunnlag |
+| Dato | Person (Max/Emil) | Oppgave og bidrag | Issue | Start | Slutt | Pause (min) | Timer | Grunnlag |
 |---|---|---|---|---|---|---|---|---|
+| 18.09.2026 | Max | Opprettet web-repoet, prosjektgrunnlag, oppsettplan, to-do og første kravutkast | | | | | 2,50 | Anslag, godkjent av Max 29.09 |
+| 19.09.2026 | Max | Kravspesifikasjon, teknisk plan, KI-avtale fra Canvas, CI, WAL og timeliste | | | | | 4,00 | Anslag, godkjent av Max 29.09 |
+| 20.09.2026 | Max | Satt opp RedwoodSDK, TypeScript, D1/Drizzle og testverktøy | | | | | 2,00 | Anslag, godkjent av Max 29.09 |
+| 21.09.2026 | Max | Merget oppsett-PR og Dependabot-PR-er | | | | | 0,50 | Anslag, godkjent av Max 29.09 |
+| 28.09.2026 | Max | Sign-off-krav, kritisk vurdering, kravdiskusjon og sign-off-plan | | | | | 5,00 | Anslag, godkjent av Max 29.09 |
+| 29.09.2026 | Max | Wireframes for hele MVP, skjermspesifikasjon, kravspesifikasjon, sign-off-rapport og WAL | | | | | 7,00 | Anslag, godkjent av Max 29.09 |
 
 ## Slik fører vi
 
@@ -31,6 +38,6 @@ Hold estimater adskilt fra målt tid; tomt betyr at grunnlag mangler.
 
 | Person | Målt tid (timer) | Etterførte estimater (timer) | Sum registrerte persontimer |
 |---|---|---|---|
-| Max | | | |
+| Max | | 21,00 (anslag) | 21,00 |
 | Emil | | | |
-| Totalt | | | |
+| Totalt | | 21,00 (anslag) | 21,00 |

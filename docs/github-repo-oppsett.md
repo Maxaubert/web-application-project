@@ -10,8 +10,15 @@ forespørsler/motforslag og chat senere. Historiske oppsettstatuser nedenfor er 
 **Oppdatering 19.09:** Max har nå bestilt PR-beskyttelse og pipelinegrunnlag. Konkret
 [CI-oppsett og beskyttelsesstatus](ci-og-deploy.md) er skrevet sammen med workflow og
 regelkonfigurasjon. GitHub avviser håndheving på det private repoets abonnement;
-G03 er derfor fortsatt åpen. Appkontroller, deploy, Issues og board er ikke implementert.
-Delvis utførte oppgaver krysses ikke av som ferdige her; løpende status står i [TODO](../TODO.md).
+G03 er derfor fortsatt åpen. Deploy er ikke implementert. Delvis utførte oppgaver krysses ikke av som ferdige her;
+løpende status står på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
+
+**Kanban, satt opp 29.09.2026:** GitHub Project «Kanban» koblet til repoet, med kolonnene To do,
+In progress, Review og Done (enklere enn de fem i G08). Hvert kort er en issue. Foreløpig står bare
+sign-off-kortene der (etiketten `sign-off`, milepælen «Sign-off uke 40»); MVP-kort legges inn senere.
+Innebygde automatiseringer har ingen API og må slås på i boardet under ⋯ → Workflows: «Item added to
+project» (To do), «Item closed» (Done), «Auto-close issue», «Pull request merged» (Done) og
+«Auto-add to project» med filter `is:issue label:sign-off`.
 
 ## Hva som teller
 

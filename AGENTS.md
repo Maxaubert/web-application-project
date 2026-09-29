@@ -4,10 +4,12 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, gratis lån og leie er valgt av Max;
-  alle tre i MVP, avtaler via forespørsler/motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp; produktarkitektur er åpen.
+- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, lån og gis bort
+  (Max 29.09); bud eller låneperiode med motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp.
 - [Kravspesifikasjon](kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
+- [Wireframes og skjermspesifikasjon](docs/wireframes/README.md) er byggegrunnlaget for skjermer, ruter,
+  datamodell og API. Nyere beslutninger der går foran kravspesifikasjonen til den er oppdatert.
 - Les [emnekrav](docs/emnekrav.md), [prosjektkort](docs/prosjekt.md) og [KI-avtale](KI-AVTALE.md)
   før implementering. Les [teknikk](docs/teknikk.md) for berørte kodeområder og
   [læringskart](docs/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.
@@ -19,6 +21,10 @@
 - Bruk stabile krav-ID-er fra emnekrav. Varsle konkret: krav-ID, kilde/punkt eller side,
   observert avvik, konsekvens og minste retting. Skill krav fra anbefaling og teamstandard.
 - Ikke kall uavklart dato, ukjent fremdrift eller upublisert øving et bekreftet krav.
+- Søsterrepoet School (privat, `../School`, github.com/Maxaubert/School) er viktigste lokale
+  kilde for ferske Canvas-uttrekk, kunngjøringer, sign-off, kursmateriell og Max' beslutningsnotat
+  `School/kravdiskusjon.md`. Start i `School/ITF31619-Webapplikasjoner/README.md` før krav- eller
+  planarbeid. Bare lesing; mangler det (f.eks. hos Emil), bruk Canvas direkte.
 - Oppdater kilder ved milepæler. Følg [kilder](docs/kilder.md); ikke hent andre emner eller
   kontodata. Ikke skriv til School, Claude-minner eller andre prosjekter.
 - Hvis kodeeksempel kolliderer med sikre API-er, dokumenter konflikten og sjekk offisiell
@@ -56,20 +62,25 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
-- Etter hver meningsfull økt: oppdater [TODO](TODO.md) og [felles arbeidslogg](arbeidslogg-max-og-emil.md).
-  Før [timer](timeliste.md) bare fra studentenes opplysninger; ukjent er ikke null.
-  TODO er aktiv backlog frem til Issues/Kanban overtar. Bevar historikk og lenk til utført arbeid.
-- Ved øktstart: les lokal `WAL.md` hvis den finnes; opprett den ved behov etter
-  [loggrutinen](docs/arbeidslogg.md). Før korte faktanotater underveis, aldri hemmeligheter.
-  Før øktslutt/overlevering: gjennomgå notatene, overfør bekreftede resultater til arbeidsloggen
-  og merk WAL-notatet med L-ID. Behold uavklarte punkter åpne; ikke dupliser overførte hendelser.
-  WAL er lokal og Git-ignorert. Ikke force-add den eller kopier rånotatene inn i PR-er.
+- Etter hver meningsfull økt: oppdater [felles arbeidslogg](arbeidslogg-max-og-emil.md). Oppgaver styres
+  som GitHub Issues på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1). Bevar historikk og lenk til utført arbeid.
+- **WAL (Max 29.09):** før alltid en løpende, tidsstemplet arbeidslogg hver arbeidsdag i
+  `wal/wal-<ÅÅÅÅ-MM-DD>.md` (Git-ignorert, lokal). Opprett dagens fil hvis den mangler. Skriv en rad
+  `| Tid | Hva |` når noe faktisk skjer, ikke i etterkant. Hent klokkeslett med `date "+%H:%M"`;
+  gjett aldri. Etterførte rader merkes `~` (omtrentlig). Blindveier og forkastede spor skal stå der.
+  Aldri hemmeligheter. Ikke force-add WAL eller kopier rånotatene inn i PR-er. Se [loggrutinen](docs/arbeidslogg.md).
+- Ved dagens slutt: destiller WAL til [arbeidsloggen](arbeidslogg-max-og-emil.md) (én oppføring per dag, jeg-form som OS-praksisloggen, bare utført arbeid)
+  og [timelisten](timeliste.md) (én rad per dag med kort punkt om hva som ble gjort). Timer kan
+  foreslås som anslag fra WAL og commits, merket «anslag», og gjelder først når Max har godkjent dem.
+  Ukjent tid er ikke null.
 
 ## Git, personvern og samarbeid
 
-- Alle repoendringer på branch og i PR, også docs. Ingen push til hovedbranch.
+- Alle repoendringer på branch, også docs. Ingen push til hovedbranch.
+- Opprett aldri PR og merge aldri uten Max' godkjenning. Spør gjerne om det skal gjøres,
+  men gjør det aldri automatisk (Max 29.09).
 - Navngi branch etter arbeidet, eksempelvis `setup/initial-project`; ikke bruk codex/ai-prefiks.
-- Funksjonsendring: issue først, så branch, så PR. Lokalt uten remote: beskriv oppgaven og
+- Funksjonsendring: issue først, så branch, så PR når Max ber om det. Lokalt uten remote: beskriv oppgaven og
   PR-utkastet i [review](docs/review.md); opprett faktisk issue/PR først når remote er godkjent.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
 - Stopp før merge. Bare Oves eksplisitte godkjenning av den identifiserte PR-en gjelder.

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Min side, ingen forespørsler, mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-foresporsler-tom-mobil a{color:#1f1f1f}.s-foresporsler-tom-mobil a:hover{color:#000000}
+.s-foresporsler-tom-mobil h1{margin:0;font-size:28px;line-height:1.2}.s-foresporsler-tom-mobil h2{margin:0;font-size:20px;line-height:1.3}.s-foresporsler-tom-mobil p{margin:0}
+.s-foresporsler-tom-mobil .hdr{height:60px;box-sizing:border-box;padding:0 12px 0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #c9c8c3;background:#ffffff;flex-shrink:0}
+.s-foresporsler-tom-mobil .dhdr{height:72px;box-sizing:border-box;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #c9c8c3;background:#ffffff;flex-shrink:0}
+.s-foresporsler-tom-mobil .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;text-decoration:none;color:#1f1f1f}
+.s-foresporsler-tom-mobil .logo{width:32px;height:32px;box-sizing:border-box;border:2px solid #6f6f6b;border-radius:6px;background:#dcdbd6}
+.s-foresporsler-tom-mobil .nav{display:flex;align-items:center;gap:32px;font-size:17px}.s-foresporsler-tom-mobil .nav a{padding:12px 0}.s-foresporsler-tom-mobil .nav a[aria-current]{font-weight:700;text-decoration-thickness:3px;text-underline-offset:6px}
+.s-foresporsler-tom-mobil .ib{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;cursor:pointer;padding:0}
+.s-foresporsler-tom-mobil .in{box-sizing:border-box;width:100%;height:52px;padding:0 14px;font:inherit;font-size:18px;border:2px solid #6f6f6b;border-radius:6px;background:#ffffff;color:#1f1f1f}
+.s-foresporsler-tom-mobil .in[readonly]{background:#ecebe8;border-style:dashed}
+.s-foresporsler-tom-mobil .fld{display:flex;flex-direction:column;gap:8px}.s-foresporsler-tom-mobil .lbl{font-size:16px;font-weight:600}
+.s-foresporsler-tom-mobil .btn,.s-foresporsler-tom-mobil .btn2{box-sizing:border-box;min-height:48px;padding:0 18px;border:2px solid #2b2b2b;border-radius:6px;background:#2b2b2b;color:#ffffff;font:inherit;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.s-foresporsler-tom-mobil .btn2{background:#ffffff;color:#1f1f1f;border-color:#1f1f1f}
+.s-foresporsler-tom-mobil .card{border:2px solid #c9c8c3;border-radius:8px;background:#ffffff}
+.s-foresporsler-tom-mobil .ph{background:#dcdbd6}
+.s-foresporsler-tom-mobil .av{border-radius:50%;background:#dcdbd6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-foresporsler-tom-mobil .help{font-size:15px;line-height:1.45;color:#4a4a47}
+.s-foresporsler-tom-mobil .st{font-size:15px;font-weight:600}
+.s-foresporsler-tom-mobil .who{align-self:flex-start;padding:6px 12px;border:2px dashed #6f6f6b;border-radius:6px;font-size:14px;font-weight:600;color:#4a4a47;background:#ffffff}
+.s-foresporsler-tom-mobil .back{align-self:flex-start;padding:10px 0;font-size:16px}
+.s-foresporsler-tom-mobil .tabs{display:flex;border-bottom:2px solid #c9c8c3}
+.s-foresporsler-tom-mobil .tabs a{min-height:48px;padding:0 16px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;text-decoration:none;color:#4a4a47;border-bottom:4px solid transparent;margin-bottom:-2px}
+.s-foresporsler-tom-mobil .tabs a[aria-current]{color:#1f1f1f;border-bottom-color:#1f1f1f}
+.s-foresporsler-tom-mobil .seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:2px solid #1f1f1f;border-radius:8px;overflow:hidden}
+.s-foresporsler-tom-mobil .seg button{min-height:48px;border:0;font:inherit;font-size:17px;font-weight:600;cursor:pointer;background:#ffffff;color:#1f1f1f}
+.s-foresporsler-tom-mobil .seg button[aria-pressed=true]{background:#2b2b2b;color:#ffffff}
+.s-foresporsler-tom-mobil .turn{align-self:flex-start;padding:3px 10px;border-radius:999px;font-size:14px;font-weight:700;background:#2b2b2b;color:#ffffff}
+.s-foresporsler-tom-mobil a:focus-visible,.s-foresporsler-tom-mobil button:focus-visible,.s-foresporsler-tom-mobil input:focus-visible{outline:3px solid #1f1f1f;outline-offset:2px}
+</style>
+</helmet>
+<div class="s-foresporsler-tom-mobil" style="width: 390px; height: 1100px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header class="hdr"><a href="Sok-mobil.dc.html" class="brand"><span class="logo"></span>[Appnavn]</a><div style="display: flex; align-items: center; gap: 4px"><a href="Legg-ut-mobil.dc.html" class="btn2" style="min-height: 44px; padding: 0 14px">Legg ut</a><button type="button" class="ib" aria-label="Meny"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button></div></header>
+<main style="padding: 20px 16px 40px; display: flex; flex-direction: column; gap: 20px">
+<div class="who">Visning: innlogget bruker</div>
+<h1>Min side</h1>
+<section style="display: flex; align-items: center; gap: 16px"><div class="av" style="width: 80px; height: 80px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6f6f6b" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></div><div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-size: 20px">[Fullt navn]</strong><span class="help">[e-post]@hiof.no</span><span class="help">[Telefonnummer]</span></div></section>
+<a href="Profil-rediger-mobil.dc.html" class="btn2">Rediger profil</a>
+<nav class="tabs" aria-label="Min side"><a href="Minside-mobil.dc.html" style="flex-grow: 1">Mine annonser</a><a href="Foresporsler-mobil.dc.html" aria-current="page" style="flex-grow: 1">Forespørsler</a><a href="Minside-historikk-mobil.dc.html" style="flex-grow: 1">Historikk</a></nav>
+<div class="seg" role="group" aria-label="Vis forespørsler"><button type="button" aria-pressed="false">Mottatt (0)</button><button type="button" aria-pressed="true">Sendt (0)</button></div>
+<div role="status" style="padding: 28px 20px; border: 2px dashed #8a8a86; border-radius: 8px; display: flex; flex-direction: column; gap: 12px; text-align: center; align-items: center"><strong style="font-size: 20px">Du har ikke sendt noen forespørsler</strong><a href="Sok-mobil.dc.html" class="btn" style="margin-top: 8px">Se annonser</a></div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

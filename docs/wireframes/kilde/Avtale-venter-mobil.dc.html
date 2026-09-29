@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Bud venter på svar, mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-avtale-venter-mobil a{color:#1f1f1f}.s-avtale-venter-mobil a:hover{color:#000000}
+.s-avtale-venter-mobil h1{margin:0;font-size:20px;line-height:1.2}.s-avtale-venter-mobil h2{margin:0;font-size:20px;line-height:1.3}.s-avtale-venter-mobil p{margin:0}
+.s-avtale-venter-mobil .hdr{height:60px;box-sizing:border-box;padding:0 12px 0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #c9c8c3;background:#ffffff;flex-shrink:0}
+.s-avtale-venter-mobil .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;text-decoration:none;color:#1f1f1f}
+.s-avtale-venter-mobil .logo{width:32px;height:32px;box-sizing:border-box;border:2px solid #6f6f6b;border-radius:6px;background:#dcdbd6}
+.s-avtale-venter-mobil .btn,.s-avtale-venter-mobil .btn2{box-sizing:border-box;min-height:52px;padding:0 22px;border:2px solid #2b2b2b;border-radius:6px;background:#2b2b2b;color:#ffffff;font:inherit;font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.s-avtale-venter-mobil .btn2{background:#ffffff;color:#1f1f1f;border-color:#1f1f1f}
+.s-avtale-venter-mobil .card{border:2px solid #c9c8c3;border-radius:8px;background:#ffffff}
+.s-avtale-venter-mobil .ph{background:#dcdbd6}
+.s-avtale-venter-mobil .who{align-self:flex-start;padding:6px 12px;border:2px dashed #6f6f6b;border-radius:6px;font-size:14px;font-weight:600;color:#4a4a47;background:#ffffff}
+.s-avtale-venter-mobil .status{padding:16px;border-radius:8px;background:#2b2b2b;color:#ffffff;display:flex;flex-direction:column;gap:4px}
+.s-avtale-venter-mobil .dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}.s-avtale-venter-mobil .dl dt{font-size:14px;color:#4a4a47}.s-avtale-venter-mobil .dl dd{margin:2px 0 0;font-size:20px;font-weight:700}
+.s-avtale-venter-mobil .back{align-self:flex-start;padding:10px 0;font-size:16px}
+.s-avtale-venter-mobil .hist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}.s-avtale-venter-mobil .hist li{display:flex;gap:10px;font-size:15px;line-height:1.4}.s-avtale-venter-mobil .hist li::before{content:"";width:10px;height:10px;margin-top:5px;border-radius:50%;background:#6f6f6b;flex-shrink:0}
+.s-avtale-venter-mobil a:focus-visible,.s-avtale-venter-mobil button:focus-visible{outline:3px solid #1f1f1f;outline-offset:2px}
+</style>
+</helmet>
+<div class="s-avtale-venter-mobil" style="width: 390px; height: 1500px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header class="hdr"><a href="Sok-mobil.dc.html" class="brand"><span class="logo"></span>[Appnavn]</a></header>
+<main style="padding: 16px 16px 40px; display: flex; flex-direction: column; gap: 20px">
+<div class="who">Visning: selger (eier)</div>
+<a href="Foresporsler-mobil.dc.html" class="back">‹ Min side</a>
+<div class="card" style="padding: 12px; display: flex; gap: 12px; align-items: center">
+<div class="ph" style="width: 64px; height: 64px; border-radius: 6px; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><h1>Casio fx-991 kalkulator</h1><span style="font-size: 16px">Salg · 250 kr</span></div>
+</div>
+<div class="status" role="status"><strong style="font-size: 18px">Nytt bud fra [Kjøper]</strong></div>
+<section class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<dl class="dl">
+<div><dt>Bud</dt><dd>220 kr</dd></div>
+<div><dt>Din pris</dt><dd>250 kr</dd></div>
+</dl>
+</section>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<a href="Avtale-avtalt-mobil.dc.html" class="btn">Godta</a>
+<a href="Avtale-motbud-mobil.dc.html" class="btn2">Foreslå annen pris</a>
+<button type="button" class="btn2">Avslå</button>
+</div>
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2>Historikk</h2>
+<ul class="hist">
+<li>01.10 kl. 12:03 · [Kjøper] bød 220 kr</li>
+</ul>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1500}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

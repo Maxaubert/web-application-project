@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Annonser laster, mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-sok-laster-mobil .wf-input{box-sizing:border-box;width:100%;height:48px;padding:0 14px;font-size:17px;border:2px solid #6f6f6b;border-radius:6px;background:#ffffff;color:#1f1f1f}
+</style>
+</helmet>
+<div class="s-sok-laster-mobil" style="width: 390px; height: 844px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header style="height: 60px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #c9c8c3; background: #ffffff">
+<div style="width: 32px; height: 32px; border: 2px solid #6f6f6b; border-radius: 6px; background: #dcdbd6"></div>
+<span style="font-size: 18px; font-weight: 700">[Appnavn]</span>
+</header>
+<main style="padding: 24px 16px; display: flex; flex-direction: column; gap: 20px">
+<h1 style="margin: 0; font-size: 28px">Annonser</h1>
+<label for="sl-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Søk i tittel og beskrivelse</label>
+<input id="sl-q" class="wf-input" type="search" value="kalkulator">
+<p role="status" style="margin: 0; font-size: 17px; font-weight: 600">Henter annonser …</p>
+<div style="display: flex; flex-direction: column; gap: 16px" aria-hidden="true">
+<div style="border: 2px solid #dcdbd6; border-radius: 8px; background: #ffffff; overflow: hidden">
+<div style="height: 150px; background: #e6e5e1"></div>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="width: 70%; height: 16px; border-radius: 4px; background: #dcdbd6"></div>
+<div style="width: 40%; height: 16px; border-radius: 4px; background: #dcdbd6"></div>
+</div>
+</div>
+<div style="border: 2px solid #dcdbd6; border-radius: 8px; background: #ffffff; overflow: hidden">
+<div style="height: 150px; background: #e6e5e1"></div>
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="width: 60%; height: 16px; border-radius: 4px; background: #dcdbd6"></div>
+<div style="width: 35%; height: 16px; border-radius: 4px; background: #dcdbd6"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

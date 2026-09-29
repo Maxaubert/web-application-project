@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Skriv inn kode, mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-innlogging-kode-mobil a{color:#1f1f1f}.s-innlogging-kode-mobil a:hover{color:#000000}
+.s-innlogging-kode-mobil .wf-input{box-sizing:border-box;width:100%;height:60px;padding:0 14px;font:inherit;font-size:28px;letter-spacing:0.4em;text-align:center;border:2px solid #6f6f6b;border-radius:6px;background:#ffffff;color:#1f1f1f}
+.s-innlogging-kode-mobil .wf-input:focus-visible,.s-innlogging-kode-mobil .wf-btn:focus-visible,.s-innlogging-kode-mobil a:focus-visible{outline:3px solid #1f1f1f;outline-offset:2px}
+</style>
+</helmet>
+<div class="s-innlogging-kode-mobil" style="width: 390px; height: 844px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header style="height: 60px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #c9c8c3; background: #ffffff">
+<div style="width: 32px; height: 32px; border: 2px solid #6f6f6b; border-radius: 6px; background: #dcdbd6"></div>
+<span style="font-size: 18px; font-weight: 700">[Appnavn]</span>
+</header>
+<main style="flex-grow: 1; padding: 64px 24px 40px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px; text-align: center">
+<h1 style="margin: 0; font-size: 34px; line-height: 1.15">Sjekk e-posten</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.45">Kode og lenke sendt til <strong>ola123@hiof.no</strong></p>
+</div>
+<form style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="kc-kode" style="font-size: 16px; font-weight: 600">Kode</label>
+<input id="kc-kode" class="wf-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="4821">
+</div>
+<a href="Kontooppsett-mobil.dc.html" class="wf-btn" style="box-sizing: border-box; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #2b2b2b; color: #ffffff; font-size: 18px; font-weight: 600; text-decoration: none">Logg inn</a>
+</form>
+<div style="display: flex; justify-content: space-between; font-size: 16px">
+<a href="#" style="padding: 10px 0">Send ny kode</a>
+<a href="Main.dc.html" style="padding: 10px 0">Endre e-post</a>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

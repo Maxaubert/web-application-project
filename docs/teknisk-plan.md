@@ -41,7 +41,7 @@ Ingen chatkomponent eller betalingsintegrasjon skal bygges som del av MVP.
 **Beslutning oppgitt av Max 19.09.2026:** Feide er ikke riktig løsning for prosjektet
 og velges bort. Undersøkelsen nedenfor er dokumentgrunnlaget, ikke en påstand om
 at Feide er teknisk umulig eller at HiØ har avslått tilgang. Detaljert begrunnelse
-for valget er ikke oppgitt. Se L04 i [arbeidsloggen](../arbeidslogg-max-og-emil.md).
+for valget er ikke oppgitt. Se 19.09 i [arbeidsloggen](../arbeidslogg-max-og-emil.md).
 
 Offisielle kilder undersøkt 19.09.2026:
 
@@ -76,6 +76,6 @@ kurskilder i [kildeindeksen](kilder.md); ingen ny Canvas-kontroll er utført her
 ## Neste planlegging
 
 Avklar reglene, velg stack, tegn datamodell og kontrakter, og bryt første komplette flyt
-ned i små oppgaver. Bruk [prosjektplanen](prosjekt.md) og [TODO](../TODO.md) til arbeidsdeling.
+ned i små oppgaver. Bruk [prosjektplanen](prosjekt.md) og [Kanban-boardet](https://github.com/users/Maxaubert/projects/1) til arbeidsdeling.
 For hvert vesentlig valg: noter alternativ, begrunnelse, kostnad og hva som ville endret valget.
 Studentenes beskyttede arkitekturbegrunnelse i rapporten skal fortsatt skrives av dem selv.
