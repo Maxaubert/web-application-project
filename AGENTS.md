@@ -69,9 +69,10 @@
 
 ## Git, personvern og samarbeid
 
-- Alle repoendringer på branch og i PR, også docs. Ingen push til hovedbranch.
+- Alle repoendringer på branch, også docs. Ingen push til hovedbranch.
+- Opprett aldri PR på egen hånd. Spør Max om PR skal lages, og lag den bare når han sier ja (Max 29.09).
 - Navngi branch etter arbeidet, eksempelvis `setup/initial-project`; ikke bruk codex/ai-prefiks.
-- Funksjonsendring: issue først, så branch, så PR. Lokalt uten remote: beskriv oppgaven og
+- Funksjonsendring: issue først, så branch, så PR når Max ber om det. Lokalt uten remote: beskriv oppgaven og
   PR-utkastet i [review](docs/review.md); opprett faktisk issue/PR først når remote er godkjent.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
 - Stopp før merge. Bare Oves eksplisitte godkjenning av den identifiserte PR-en gjelder.

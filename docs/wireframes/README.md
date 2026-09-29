@@ -2,9 +2,8 @@
 
 **Laget 29.09.2026** med Claude Design i Claude Code, etter Max sine valg underveis.
 Emil har ikke gjennomgått innholdet ennå. Dette dokumentet er byggegrunnlaget for
-skjermene. Det er ikke implementert kode, og det erstatter ikke
-[kravspesifikasjonen](../../kravspesifikasjon.md), som fortsatt må oppdateres med
-de nye beslutningene nedenfor.
+skjermene. Det er ikke implementert kode. Beslutningene nedenfor er også ført inn i
+[kravspesifikasjonen](../../kravspesifikasjon.md) (29.09.2026), som eier kravene.
 
 - **Redigerbart lerret:** <https://claude.ai/artifact/CnhymdWdfZZRhE5t6VTtE7>
   (privat, må deles fra Share-menyen før andre kan åpne det). Lerretet åpner i
@@ -21,8 +20,8 @@ de nye beslutningene nedenfor.
 
 ## Beslutninger fra wireframe-arbeidet
 
-Avklart av Max 29.09.2026. Disse erstatter eldre varianter i kravspesifikasjonen
-og i notatet `School/kravdiskusjon.md` der de spriker.
+Avklart av Max 29.09.2026. Disse erstatter eldre varianter i notatet
+`School/kravdiskusjon.md` der de spriker, og er ført inn i kravspesifikasjonen.
 
 | Tema | Beslutning |
 |---|---|
