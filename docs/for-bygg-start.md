@@ -1,9 +1,9 @@
 # Før vi bygger: beslutninger og to-do
 
-Se også [den korte to-do-listen for planleggingsdokumentene](../TODO.md).
+Aktive oppgaver ligger på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 
 Arbeidsliste opprettet 16.09.2026, status oppdatert 19.09.2026. Helhetspunktene
-nedenfor er fortsatt åpne; utførte delresultater og neste handling står i TODO.
+nedenfor er fortsatt åpne; utført arbeid står i [arbeidsloggen](../arbeidslogg-max-og-emil.md).
 Avklart av Max 19.09: salg, gratis lån og betalt leie inngår i MVP, med forespørsler og
 motforslag. Henting/retur avtales i forespørselen. Chat kommer senere, og hjelp/opplæring
 er fortsatt åpent. Se [gjeldende kravspesifikasjon](../kravspesifikasjon.md).

@@ -76,6 +76,6 @@ kurskilder i [kildeindeksen](kilder.md); ingen ny Canvas-kontroll er utført her
 ## Neste planlegging
 
 Avklar reglene, velg stack, tegn datamodell og kontrakter, og bryt første komplette flyt
-ned i små oppgaver. Bruk [prosjektplanen](prosjekt.md) og [TODO](../TODO.md) til arbeidsdeling.
+ned i små oppgaver. Bruk [prosjektplanen](prosjekt.md) og [Kanban-boardet](https://github.com/users/Maxaubert/projects/1) til arbeidsdeling.
 For hvert vesentlig valg: noter alternativ, begrunnelse, kostnad og hva som ville endret valget.
 Studentenes beskyttede arkitekturbegrunnelse i rapporten skal fortsatt skrives av dem selv.

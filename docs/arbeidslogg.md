@@ -9,7 +9,7 @@ rapport og følge opp læringshull. [P02/P04/P05](emnekrav.md) styrer.
 - [Felles arbeidslogg for Max og Emil](../arbeidslogg-max-og-emil.md): hovedpunkter per
   arbeidsdag i jeg-form.
 - [Timeliste](../timeliste.md): én rad per person og økt; ukjent tid føres ikke som null.
-- [TODO](../TODO.md): løpende oppgaver frem til Issues og Kanban overtar.
+- [Kanban-board](https://github.com/users/Maxaubert/projects/1): oppgavene som GitHub Issues.
 - [Verifikasjon](verifikasjon.md): tekniske kontrollresultater og begrensninger.
 
 Denne filen er veiledning og mal, ikke en parallell fremdriftslogg. Den første
