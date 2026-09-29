@@ -23,6 +23,7 @@ test-results/
 CLAUDE.local.md
 .codex-log/
 /WAL.md
+/wal/
 private/
 local-sources/
 kursmateriell/

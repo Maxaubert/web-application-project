@@ -15,31 +15,35 @@ rapport og følge opp læringshull. [P02/P04/P05](emnekrav.md) styrer.
 Denne filen er veiledning og mal, ikke en parallell fremdriftslogg. Den første
 registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjonen.
 
-## Lokal WAL → gjennomgang → felles arbeidslogg
+## Lokal WAL → arbeidslogg og timeliste
 
-`WAL.md` i repo-roten er et lokalt kladdeark for korte hendelsesnotater. Filen er
-Git-ignorert og skal ikke committes. Reglene her følger derimot repoet til begge studentene.
+Samme opplegg som i Max' OS-prosjekt (avklart 29.09.2026). Hver arbeidsdag har en egen fil
+`wal/wal-<ÅÅÅÅ-MM-DD>.md` i repo-roten. Mappen er Git-ignorert og skal ikke committes.
+Den gamle enkeltfilen `WAL.md` (19.09) er flyttet inn i `wal/wal-2026-09-19.md`.
 
-1. Ved øktstart: les eksisterende WAL for uavklarte punkter. Hvis den mangler på denne
-   maskinen, opprett den med dato, korte notater og statuser. En manglende lokal WAL er normalt.
-2. Underveis: noter bestilling eller valgt handling, hvem som faktisk bidro, observert
-   resultat, kilde/kontroll og neste steg. Planlagt arbeid merkes som planlagt til det er utført.
-3. Ved et meningsfullt resultat, øktslutt eller bytte av maskin: gjennomgå notatene.
-   Skill verifiserte fakta, brukeroppgitte beslutninger og uavklarte antakelser. Rett feil
-   med et nytt korrigerende notat; ikke gjør et forsøk om til en suksess i oppsummeringen.
-4. Legg en kort, gjennomgått oppsummering i felles arbeidslogg med neste L-ID og bevis.
-   Oppdater TODO og berørt krav/plan. Timer føres bare fra studentenes egne opplysninger.
-   Egen refleksjon og rapportbegrunnelse skrives fortsatt av studentene selv.
-5. Merk kildenotatet «overført» med L-ID og eventuelt commit. Ikke lag en ny loggrad for
-   samme hendelse ved neste økt. Uavklarte punkter blir stående åpne; merk eventuelt
-   forkastede notater med kort grunn. Overført betyr ikke merget eller godkjent av Emil.
+```markdown
+# WAL 29.09.2026
+
+Løpende arbeidslogg med tidsstempler. Skrives underveis, ikke i etterkant.
+
+| Tid | Hva |
+|---|---|
+| 18:45 | Kort beskrivelse av hva som faktisk skjedde, med PR/commit der det finnes. |
+```
+
+1. Ved øktstart: opprett dagens fil hvis den mangler, og les forrige fil for åpne punkter.
+2. Underveis: skriv en rad når noe skjer. Klokkeslett hentes med `date "+%H:%M"`, aldri gjettet.
+   Etterførte rader merkes med `~` foran klokkeslettet. Blindveier og forkastede spor skal stå.
+3. Ved dagens slutt: destiller WAL til [arbeidsloggen](../arbeidslogg-max-og-emil.md) med neste
+   L-ID (resultater framfor handlinger, uten blindveier), og til [timelisten](../timeliste.md) med
+   én rad per person og dag: dato, kort punkt om hva som ble gjort, timer og grunnlag.
+4. Timer kan foreslås som anslag fra WAL og commits. De merkes «anslag» og gjelder først når
+   Max har godkjent dem. Ukjent tid føres ikke som null.
 
 WAL-notater skal være korte fakta om arbeidet, ikke rå samtaler eller interne tankerekker.
-Ikke lagre tokens, passord eller personfølsomt materiale selv om filen er ignorert.
-Git-ignorering er ikke kryptering eller backup, og filen følger ikke med via GitHub.
-Før bytte til skole-PC: overfør nødvendige, gjennomgåtte fakta og åpne oppgaver til
-sporede dokumenter gjennom vanlig branch/PR. Hver maskin kan ha sin egen lokale WAL.
-Rutinen utføres mens vi arbeider; ingen bakgrunnsjobb eller automatisk synkronisering er satt opp.
+Ikke lagre tokens, passord eller personfølsomt materiale selv om mappen er ignorert.
+Git-ignorering er ikke kryptering eller backup, og filene følger ikke med via GitHub.
+Hver maskin har sin egen lokale WAL; det som skal deles, går via arbeidsloggen og timelisten.
 
 ## Mal ved en meningsfull arbeidsøkt
 
@@ -56,7 +60,7 @@ Kopier ved behov, og fyll bare det som faktisk har skjedd. Ikke lag oppdiktede e
 | Hull/feil jeg fant og hva jeg vil øve på | |
 | Avhengighet/tilbakemelding og neste handling | |
 
-Timer er frivillig og må være faktiske, ikke estimater presentert som utført arbeid.
+Timer er faktiske eller tydelig merkede anslag som Max har godkjent, aldri estimater presentert som målt tid.
 Bevar skillet mellom studentens egne ord og tekniske fakta fra KI. Beskyttet refleksjon
 og arkitekturbegrunnelse skrives selv. Ikke lim inn fulle prompts med persondata eller
 hemmeligheter. Lenk direkte til kode/test når det erstatter lang tekst.
