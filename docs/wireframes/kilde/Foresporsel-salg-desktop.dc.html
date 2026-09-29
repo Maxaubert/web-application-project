@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Legg inn bud, desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-foresporsel-salg-desktop a{color:#1f1f1f}.s-foresporsel-salg-desktop a:hover{color:#000000}
+.s-foresporsel-salg-desktop h1{margin:0;font-size:28px;line-height:1.2}.s-foresporsel-salg-desktop p{margin:0}
+.s-foresporsel-salg-desktop .hdr{height:60px;box-sizing:border-box;padding:0 12px 0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #c9c8c3;background:#ffffff;flex-shrink:0}
+.s-foresporsel-salg-desktop .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;text-decoration:none;color:#1f1f1f}
+.s-foresporsel-salg-desktop .logo{width:32px;height:32px;box-sizing:border-box;border:2px solid #6f6f6b;border-radius:6px;background:#dcdbd6}
+.s-foresporsel-salg-desktop .in{box-sizing:border-box;width:100%;height:56px;padding:0 14px;font:inherit;font-size:22px;font-weight:600;border:2px solid #6f6f6b;border-radius:6px;background:#ffffff;color:#1f1f1f}
+.s-foresporsel-salg-desktop .fld{display:flex;flex-direction:column;gap:8px}.s-foresporsel-salg-desktop .lbl{font-size:16px;font-weight:600}
+.s-foresporsel-salg-desktop .btn{box-sizing:border-box;min-height:52px;padding:0 22px;border:2px solid #2b2b2b;border-radius:6px;background:#2b2b2b;color:#ffffff;font:inherit;font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.s-foresporsel-salg-desktop .card{border:2px solid #c9c8c3;border-radius:8px;background:#ffffff}
+.s-foresporsel-salg-desktop .ph{background:#dcdbd6}
+.s-foresporsel-salg-desktop .help{font-size:15px;line-height:1.45;color:#4a4a47}
+.s-foresporsel-salg-desktop .who{align-self:flex-start;padding:6px 12px;border:2px dashed #6f6f6b;border-radius:6px;font-size:14px;font-weight:600;color:#4a4a47;background:#ffffff}
+.s-foresporsel-salg-desktop .back{align-self:flex-start;padding:10px 0;font-size:16px}
+.s-foresporsel-salg-desktop a:focus-visible,.s-foresporsel-salg-desktop button:focus-visible,.s-foresporsel-salg-desktop input:focus-visible{outline:3px solid #1f1f1f;outline-offset:2px}
+</style>
+</helmet>
+<div class="s-foresporsel-salg-desktop" style="width: 1440px; height: 1250px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header style="height: 72px; box-sizing: border-box; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #c9c8c3; background: #ffffff; flex-shrink: 0"><a href="Sok-desktop.dc.html" style="display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; text-decoration: none; color: #1f1f1f"><span style="width: 36px; height: 36px; box-sizing: border-box; border: 2px solid #6f6f6b; border-radius: 6px; background: #dcdbd6"></span>[Appnavn]</a><nav aria-label="Hovedmeny" style="display: flex; align-items: center; gap: 32px; font-size: 17px"><a href="Sok-desktop.dc.html" style="padding: 12px 0; color: #1f1f1f">Annonser</a><a href="Minside-desktop.dc.html" style="padding: 12px 0; color: #1f1f1f">Min side</a><a href="Legg-ut-desktop.dc.html" style="min-height: 44px; padding: 0 18px; display: flex; align-items: center; border: 2px solid #1f1f1f; border-radius: 6px; font-weight: 600; text-decoration: none; color: #1f1f1f">Legg ut annonse</a></nav></header>
+<main style="padding: 40px 48px 64px; display: flex; justify-content: center"><div style="width: 760px; display: flex; flex-direction: column; gap: 20px">
+<div class="who">Visning: kjøper</div>
+<a href="Annonse-desktop.dc.html" class="back">‹ Tilbake til annonsen</a>
+<h1>Legg inn bud</h1>
+<div class="card" style="padding: 12px; display: flex; gap: 12px; align-items: center">
+<div class="ph" style="width: 72px; height: 72px; border-radius: 6px; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Casio fx-991 kalkulator</strong><span style="font-size: 16px">Salg · 250 kr</span><span class="help">Selger: [Fornavn]</span></div>
+</div>
+<form style="display: flex; flex-direction: column; gap: 22px">
+<div class="fld"><label for="fs-bud" class="lbl">Ditt bud (kr)</label><input id="fs-bud" class="in" type="text" inputmode="numeric" value="220"></div>
+<a href="Avtale-venter-desktop.dc.html" class="btn">Send bud</a>
+</form>
+</div></main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1250}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

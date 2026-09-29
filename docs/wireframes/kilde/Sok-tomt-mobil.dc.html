@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Ingen treff, mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-sok-tomt-mobil .wf-input{box-sizing:border-box;width:100%;height:48px;padding:0 14px;font-size:17px;border:2px solid #6f6f6b;border-radius:6px;background:#ffffff;color:#1f1f1f}
+.s-sok-tomt-mobil .wf-btn:focus-visible{outline:3px solid #1f1f1f;outline-offset:2px}
+</style>
+</helmet>
+<div class="s-sok-tomt-mobil" style="width: 390px; height: 844px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header style="height: 60px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #c9c8c3; background: #ffffff">
+<div style="width: 32px; height: 32px; border: 2px solid #6f6f6b; border-radius: 6px; background: #dcdbd6"></div>
+<span style="font-size: 18px; font-weight: 700">[Appnavn]</span>
+</header>
+<main style="padding: 24px 16px; display: flex; flex-direction: column; gap: 20px">
+<h1 style="margin: 0; font-size: 28px">Annonser</h1>
+<label for="st-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Søk i tittel og beskrivelse</label>
+<input id="st-q" class="wf-input" type="search" value="mikroskop">
+<div role="status" style="margin-top: 24px; padding: 28px 20px; border: 2px dashed #8a8a86; border-radius: 8px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4a4a47" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+<strong style="font-size: 20px">Ingen annonser passer søket</strong>
+<button type="button" class="wf-btn" style="margin-top: 8px; height: 48px; padding: 0 24px; border: 2px solid #1f1f1f; border-radius: 6px; background: #ffffff; color: #1f1f1f; font-size: 17px; font-weight: 600; cursor: pointer">Fjern filtre</button>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
