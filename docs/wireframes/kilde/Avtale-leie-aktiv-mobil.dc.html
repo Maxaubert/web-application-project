@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Lån i bruk med forlengelse og returproblem, mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.s-avtale-leie-aktiv-mobil a{color:#1f1f1f}.s-avtale-leie-aktiv-mobil a:hover{color:#000000}
+.s-avtale-leie-aktiv-mobil h1{margin:0;font-size:20px;line-height:1.2}.s-avtale-leie-aktiv-mobil h2{margin:0;font-size:20px;line-height:1.3}.s-avtale-leie-aktiv-mobil p{margin:0}
+.s-avtale-leie-aktiv-mobil .hdr{height:60px;box-sizing:border-box;padding:0 12px 0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #c9c8c3;background:#ffffff;flex-shrink:0}
+.s-avtale-leie-aktiv-mobil .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;text-decoration:none;color:#1f1f1f}
+.s-avtale-leie-aktiv-mobil .logo{width:32px;height:32px;box-sizing:border-box;border:2px solid #6f6f6b;border-radius:6px;background:#dcdbd6}
+.s-avtale-leie-aktiv-mobil .in{box-sizing:border-box;width:100%;height:48px;padding:0 14px;font:inherit;font-size:17px;border:2px solid #6f6f6b;border-radius:6px;background:#ffffff;color:#1f1f1f}
+.s-avtale-leie-aktiv-mobil textarea.in{height:auto;min-height:110px;padding:12px 14px;line-height:1.45}
+.s-avtale-leie-aktiv-mobil .fld{display:flex;flex-direction:column;gap:8px}.s-avtale-leie-aktiv-mobil .lbl{font-size:16px;font-weight:600}
+.s-avtale-leie-aktiv-mobil .btn,.s-avtale-leie-aktiv-mobil .btn2{box-sizing:border-box;min-height:52px;padding:0 22px;border:2px solid #2b2b2b;border-radius:6px;background:#2b2b2b;color:#ffffff;font:inherit;font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.s-avtale-leie-aktiv-mobil .btn2{background:#ffffff;color:#1f1f1f;border-color:#1f1f1f}
+.s-avtale-leie-aktiv-mobil .card{border:2px solid #c9c8c3;border-radius:8px;background:#ffffff}
+.s-avtale-leie-aktiv-mobil .ph{background:#dcdbd6}
+.s-avtale-leie-aktiv-mobil .help{font-size:15px;line-height:1.45;color:#4a4a47}
+.s-avtale-leie-aktiv-mobil .open{padding:12px 14px;border:2px dashed #8a8a86;border-radius:6px;font-size:15px;line-height:1.45;color:#4a4a47}
+.s-avtale-leie-aktiv-mobil .who{align-self:flex-start;padding:6px 12px;border:2px dashed #6f6f6b;border-radius:6px;font-size:14px;font-weight:600;color:#4a4a47;background:#ffffff}
+.s-avtale-leie-aktiv-mobil .status{padding:16px;border-radius:8px;background:#2b2b2b;color:#ffffff;display:flex;flex-direction:column;gap:4px}
+.s-avtale-leie-aktiv-mobil .dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}.s-avtale-leie-aktiv-mobil .dl dt{font-size:14px;color:#4a4a47}.s-avtale-leie-aktiv-mobil .dl dd{margin:2px 0 0;font-size:17px;font-weight:600}
+.s-avtale-leie-aktiv-mobil .back{align-self:flex-start;padding:10px 0;font-size:16px}
+.s-avtale-leie-aktiv-mobil .panel{border:2px solid #1f1f1f;border-radius:8px;background:#ffffff;padding:16px;display:flex;flex-direction:column;gap:14px}
+.s-avtale-leie-aktiv-mobil .pl{align-self:flex-start;padding:2px 8px;border-radius:4px;background:#dcdbd6;font-size:13px;font-weight:700;color:#1f1f1f}
+.s-avtale-leie-aktiv-mobil a:focus-visible,.s-avtale-leie-aktiv-mobil button:focus-visible,.s-avtale-leie-aktiv-mobil input:focus-visible,.s-avtale-leie-aktiv-mobil select:focus-visible,.s-avtale-leie-aktiv-mobil textarea:focus-visible{outline:3px solid #1f1f1f;outline-offset:2px}
+</style>
+</helmet>
+<div class="s-avtale-leie-aktiv-mobil" style="width: 390px; height: 2100px; box-sizing: border-box; background: #f6f5f2; display: flex; flex-direction: column">
+<header class="hdr"><a href="Sok-mobil.dc.html" class="brand"><span class="logo"></span>[Appnavn]</a></header>
+<main style="padding: 16px 16px 40px; display: flex; flex-direction: column; gap: 20px">
+<div class="who">Visning: låner</div>
+<a href="Foresporsler-mobil.dc.html" class="back">‹ Min side</a>
+<div class="card" style="padding: 12px; display: flex; gap: 12px; align-items: center">
+<div class="ph" style="width: 64px; height: 64px; border-radius: 6px; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><h1>Grafisk kalkulator TI-84</h1><span style="font-size: 16px">Lån · gratis · fra [Eier]</span></div>
+</div>
+<div class="status" role="status"><strong style="font-size: 18px">I bruk. Returneres 18.10</strong></div>
+<section class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<h2>Avtalen</h2>
+<dl class="dl">
+<div><dt>Periode</dt><dd>05.10–18.10</dd></div>
+<div><dt>Pris</dt><dd>Gratis</dd></div>
+</dl>
+<p class="help">Kontakt: [Eiers navn] · [Telefonnummer] · [e-post]@hiof.no</p>
+</section>
+<section class="panel" aria-labelledby="wv1">
+<span class="pl">WV-01</span>
+<h2 id="wv1">Forleng lånet</h2>
+<div class="fld"><label for="fo-dato" class="lbl">Ny returdato</label><input id="fo-dato" class="in" type="text" value="19.10.2026"></div>
+<button type="button" class="btn2">Send forslag om forlengelse</button>
+</section>
+<section class="open" style="display: flex; flex-direction: column; gap: 6px">
+<strong style="color: #1f1f1f">Retur</strong>
+<span>[Åpent: hvem bekrefter retur]</span>
+</section>
+<section class="panel" aria-labelledby="wv2">
+<span class="pl">WV-02</span>
+<h2 id="wv2">Rapporter et problem med returen</h2>
+<div class="fld"><label for="rp-type" class="lbl">Hva gjelder det?</label><select id="rp-type" class="in"><option>Velg</option><option>Levert, men ikke bekreftet</option><option>Ikke returnert</option><option>Annet</option></select></div>
+<div class="fld"><label for="rp-besk" class="lbl">Beskriv hva som skjedde</label><textarea id="rp-besk" class="in"></textarea></div>
+<button type="button" class="btn2">Send rapport</button>
+<p class="open">[Åpent: hvem ser rapporten]</p>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2100}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

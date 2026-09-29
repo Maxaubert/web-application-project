@@ -4,10 +4,12 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, gratis lån og leie er valgt av Max;
-  alle tre i MVP, avtaler via forespørsler/motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp; produktarkitektur er åpen.
+- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, lån og gis bort
+  (Max 29.09); bud eller låneperiode med motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp.
 - [Kravspesifikasjon](kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
+- [Wireframes og skjermspesifikasjon](docs/wireframes/README.md) er byggegrunnlaget for skjermer, ruter,
+  datamodell og API. Nyere beslutninger der går foran kravspesifikasjonen til den er oppdatert.
 - Les [emnekrav](docs/emnekrav.md), [prosjektkort](docs/prosjekt.md) og [KI-avtale](KI-AVTALE.md)
   før implementering. Les [teknikk](docs/teknikk.md) for berørte kodeområder og
   [læringskart](docs/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.

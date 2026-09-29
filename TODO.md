@@ -23,6 +23,8 @@ Utført dokumentarbeid og ferdig avklart produkt er forskjellige milepæler.
   Dokumentkontrollen besto på GitHub. App-CI er utvidet på oppsettsbranchen; deploy og aktiv beskyttelse gjenstår.
 - [x] Opprettet lokal, Git-ignorert WAL med [rutine for gjennomgang og overføring](docs/arbeidslogg.md)
   til felles arbeidslogg. Rånotatene blir på hver maskin og skal ikke pushes.
+- [x] Wireframes for hele MVP i mobil og desktop, med skjermspesifikasjon og sign-off-rapport
+  (29.09, se [wireframes](docs/wireframes/README.md)). Emils gjennomgang gjenstår.
 
 ## Neste konkrete oppgaver
 
