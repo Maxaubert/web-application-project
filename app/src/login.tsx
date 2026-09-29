@@ -1,22 +1,24 @@
 "use client";
 import { useState } from "react";
 import Email from "./email";
-import PasswordField from "./password";
 
-export default function Login({ onSubmit, onEmailChange}) {
-    const [emailText, setEmailText ] = useState("")
+type LoginProps = {
+    onSubmit?: () => void
+    onEmailChange?: (value: string) => void
+}
+
+export default function Login({ onSubmit, onEmailChange}: LoginProps) {
     const [errorMessage, setErrorMessage]    = useState("")
     const regexp = /.+@.+\..+/
-    function emailChange(value) {
-        //onEmailChange(newVal)
-        setEmailText(value)
+    function emailChange(value: string) {
+        onEmailChange?.(value)
         if (value.match(regexp) || !value) {
             setErrorMessage("")
         }
         else {
             setErrorMessage("Invalid email")
         }
-        
+
     }
     return (
         <div>
