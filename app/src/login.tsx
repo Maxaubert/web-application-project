@@ -3,26 +3,21 @@ import { useState } from "react";
 import Email from "./email";
 import PasswordField from "./password";
 
-export default function Login({ onSubmit, onForgotPassword, onSignup, onEmailChange, onPasswordChange }) {
-    const [email, setEmail ] = useState("")
-    const [Password, setPassword] = useState("")
+export default function Login({ onSubmit, onEmailChange}) {
+    const [emailText, setEmailText ] = useState("")
+    const [errorMessage, setErrorMessage]    = useState("")
 
-    function emailChange(newVal) {
-        onEmailChange(newVal)
-        setEmail(newVal)
+    function emailChange(value) {
+        //onEmailChange(newVal)
+        setEmailText(value)
+        setErrorMessage(value)
     }
-    function passwordChange(newVal) {
-        onPasswordChange(newVal)
-        setPassword(newVal)
-    }    
     return (
         <div>
             <h2>logg inn</h2>
             <Email onValueChange = {emailChange}></Email>
-            <PasswordField onValueChange = {passwordChange}></PasswordField>
-            <button onClick = {onForgotPassword}>Glemt passord?</button>
-            <button onClick = {onSignup}>Har du ikke konto? Klikk her</button>
             <button onClick={onSubmit}>Logg inn</button>
+            <input type="email" value={errorMessage}></input>
         </div>
     )
 }

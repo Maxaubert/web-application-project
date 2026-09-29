@@ -5,11 +5,11 @@ export default function Email({onValueChange = null, text = "e-post addresse"}) 
     const [value, setValue] = useState("")
     function valueChange(newVal){
         if (onValueChange) {
-            onValueChange(newVal)
+            onValueChange(newVal.value)
         }
-        setValue(newVal)
+        setValue(newVal.value)
     }
     return (
-        <input type="email" placeholder={text} onChange={ valueChange}></input>
+        <input type="email" placeholder={text} onChange={valueChange } value = {value}></input>
     )
 }
