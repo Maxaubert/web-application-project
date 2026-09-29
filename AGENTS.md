@@ -69,7 +69,7 @@
   `| Tid | Hva |` når noe faktisk skjer, ikke i etterkant. Hent klokkeslett med `date "+%H:%M"`;
   gjett aldri. Etterførte rader merkes `~` (omtrentlig). Blindveier og forkastede spor skal stå der.
   Aldri hemmeligheter. Ikke force-add WAL eller kopier rånotatene inn i PR-er. Se [loggrutinen](docs/arbeidslogg.md).
-- Ved dagens slutt: destiller WAL til [arbeidsloggen](arbeidslogg-max-og-emil.md) (hovedpunkter, neste L-ID)
+- Ved dagens slutt: destiller WAL til [arbeidsloggen](arbeidslogg-max-og-emil.md) (én oppføring per dag, jeg-form som OS-praksisloggen, bare utført arbeid)
   og [timelisten](timeliste.md) (én rad per dag med kort punkt om hva som ble gjort). Timer kan
   foreslås som anslag fra WAL og commits, merket «anslag», og gjelder først når Max har godkjent dem.
   Ukjent tid er ikke null.
