@@ -3,13 +3,11 @@ import { defineApp } from "rwsdk/worker";
 
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
-import { Home } from "@/app/pages/home";
 import Login from "./login";
-import Email from "./email";
 
 export type AppContext = Record<string, never>;
 
 export default defineApp([
   setCommonHeaders(),
-  render(Document, [route("/", Login)]),
+  render(Document, [route("/", () => <Login />)]),
 ]);
