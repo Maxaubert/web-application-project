@@ -62,6 +62,7 @@ samler Max og Emils faktiske timer. TODO vedlikeholdes frem til Issues og Kanban
 | KI-grenser og hjelp fra Claude/Codex/ChatGPT | [KI-avtale](KI-AVTALE.md), [assistentbruk](docs/assistentbruk.md), [AGENTS.md](AGENTS.md) |
 | Egen forståelse, retrospekt og eksamen | [Læringskart](docs/laering.md) |
 | Lyntale, sign off, rapport og presentasjon | [Leveranser](docs/leveranse.md) |
+| Sluttrapporten (disposisjon, tittel og ingress) | [Rapport](docs/rapport/rapport.md) |
 | Kontroll av dette grunnlaget | [Lokal review](docs/review.md), [verifikasjon](docs/verifikasjon.md) |
 
 ## Kjør kontroll av dokumentasjonen
