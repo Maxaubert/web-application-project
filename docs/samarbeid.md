@@ -13,7 +13,7 @@ ikke et ekstra Canvas-krav. Scrum, sprinter og egen timelogg er ikke påkrevd i 
 | Arbeidstid, møtepunkt og svarfrist | TBD |
 | Oppgavefordeling og ansvar ved forsinkelse | TBD |
 | Roterende implementering/review og felles eierskap | Forslag: den andre reviewer, bytt fagområde jevnlig |
-| KI-verktøy og grenser | [KI-avtalen](../KI-AVTALE.md), tilslutning ikke gitt |
+| KI-verktøy og grenser | [KI-avtalen](../KI-AVTALE.md), godtatt av begge 30.09 |
 | Tema, minste omfang og kuttliste | [Prosjektkort](prosjekt.md), ikke bestemt |
 | Uenighet, fravær og manglende bidrag | Forslag: ta det opp tidlig, vis konkret hindring, avtal tiltak, kontakt faglærer ved behov |
 | Gruppeendring og studentassistent | Avklares av studentene; ingen henvendelse sendt av assistenten |

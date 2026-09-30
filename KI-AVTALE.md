@@ -1,8 +1,8 @@
 # KI-avtale for Max og Emil
 
-**Utkast til diskusjon, ikke bekreftet av studentene.** Grunnlaget er skrevet med Codex.
-Denne filen dokumenterer ikke hva Max eller Emil allerede kan eller faktisk har gjort.
-Fyll inn egne valg og bekreft avtalen sammen. Kilde: [K02 og U26](docs/kilder.md).
+**Godtatt av Max og Emil** (registrert 30.09.2026). Grunnlaget er skrevet med Codex og
+tilpasset etter våre valg. Filen dokumenterer ikke hva Max eller Emil allerede kan.
+Kilde: [K02 og U26](docs/kilder.md).
 
 **Start med [lærerens KI-avtale fra Canvas](docs/ki-avtale-canvas.md)**, hentet og
 kontrollert 19.09.2026. Den er bevart som egen kildetekst; denne filen er gruppens
@@ -12,11 +12,14 @@ i alle oppgaver. Særgrensene nedenfor gjelder sine konkrete sammenhenger.
 
 ## 1. Hva bruker vi KI til?
 
-Forslag: oppsett, forklaringer, feilsøking, kodeforslag, review, alternative løsninger og
-eksamensøving. Vi velger hjelp etter oppgaven og verifiserer det som produseres.
-KI kan hjelpe med kode når oppgaven tillater det. Ved øving kan vi velge hint før løsning.
+Vi bruker KI bredt der emnet tillater det, særlig til utvikling og review, og som
+samtalepartner i møter og diskusjoner. Ellers til oppsett, forklaringer, feilsøking,
+alternative løsninger og eksamensøving. Ved øving kan vi velge hint før løsning.
 
-Studentenes verktøy og ønsket arbeidsmåte: **TBD**.
+Vi styrer arbeidet selv: vi bestemmer hva som skal lages, godkjenner valgene og reviewer
+alt KI produserer før det tas i bruk. Vi leser koden, tester den og skal kunne forklare den.
+KI er et verktøy i arbeidet, ikke noe vi delegerer arbeidet til. Hvert verktøy velger
+hver av oss selv; avtalen gjelder hvordan vi bruker dem.
 
 ## 2. Hva gjør vi selv, alltid?
 
@@ -57,11 +60,8 @@ inn i rapporten eller loggen. Ved tvil om bearbeiding/korrektur: avklar konkret 
 ## 4. Hvordan holder vi avtalen levende?
 
 Avtalen ligger i repoet og brukes som grunnlag for ærlig omtale av KI i rapporten.
-Max og Emil må selv gjennomgå de fire områdene, velge arbeidsmåte og fylle inn
-tilslutning. Verken kildeteksten eller dette KI-lagde utkastet bekrefter at det er gjort.
 Før vesentlig KI-bidrag i [arbeidsloggen](docs/arbeidslogg.md): verktøy, oppgave,
 faktisk bidrag, kontroll, feil og eget læringsbehov. Ikke lag et referat av enhver prompt.
 Ikke logg hemmeligheter, sensitive promptdata eller andres private opplysninger.
 
-Oppdater når praksisen ikke fungerer. Max' tilslutning/dato: **ikke gitt**.
-Emils tilslutning/dato: **ikke gitt**. Avtal neste gjennomgang: **TBD**.
+Oppdater når praksisen ikke fungerer. Max og Emil har godtatt avtalen (registrert 30.09.2026).

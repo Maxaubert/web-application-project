@@ -28,7 +28,7 @@ er ikke automatisk fullført. Studentene må fortsatt gjennomgå de åpne valgen
 | [ ] | F10 | Planlegg wireframes for hovedflyten, navigasjon og tilstander: tomt, laster, feil, suksess. Avtal mobilbruk, store mål/tekst, tastatur og høy zoom. | Eier + medstudentreview, TBD |
 | [ ] | F11 | Avtal hvilke persondata som trengs, hvem som får se dem, sletting/lagring og demonstrasjonsdata. Avklar eventuell juridisk usikkerhet før reell betaling eller offentlig pilot. | Begge |
 | [ ] | F12 | Lag testplan fra kriteriene: enhet, reell integrasjon og browser-E2E. Ta med feil bruker, manglende innlogging, ugyldig input og overlappende forespørsler der reglene krever det. | Begge |
-| [ ] | F13 | Lærerens KI-avtale er hentet; gruppens utkast er ubekreftet. Ferdigstill gruppe-/KI-avtale, reviewpraksis og læringsrutine. Felles logg og tom timeliste finnes. Avtal faktisk kapasitet og hvordan begge lærer hele appen. | Begge |
+| [ ] | F13 | Lærerens KI-avtale er hentet; gruppens KI-avtale er godtatt 30.09. Ferdigstill gruppe-/KI-avtale, reviewpraksis og læringsrutine. Felles logg og tom timeliste finnes. Avtal faktisk kapasitet og hvordan begge lærer hele appen. | Begge |
 | [ ] | F14 | Del første flyt i små issues med eier, avhengigheter og verifikasjon. Sett milepæler mot bekreftede kursdatoer og reserver tid til feilretting, demo og eksamensøving. | Begge |
 | [ ] | F15 | Avtal GitHub-eier, synlighet og oppsettstillatelse. Gjør G01–G10 når autorisert, og kontroller filer/historikk for hemmeligheter etter G22 før første publisering. Ingen skyressurser opprettes bare fordi denne listen finnes. | Begge |
 
