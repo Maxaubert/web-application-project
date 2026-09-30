@@ -9,7 +9,7 @@ Teksten nedenfor er gjengitt fra lærerens side. Bare overskriftsnivåer, punktt
 og mellomrom er tilpasset Markdown; ordlyden er beholdt. Dette er kildeteksten,
 ikke Max og Emils utfylte eller godkjente gruppeavtale.
 
-Gruppens arbeidsutkast er [KI-AVTALE.md](../KI-AVTALE.md). Der står også særregler
+Gruppens avtale er [KI-AVTALE.md](../KI-AVTALE.md). Der står også særregler
 fra bestemte øvinger og rapporten. Denne generelle Canvas-teksten gir ikke alene
 svar på tillatt KI-bruk i alle vurderingssituasjoner. Les den konkrete oppgaven.
 

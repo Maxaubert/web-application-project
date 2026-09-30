@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Gjennomgang av wireframes</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f1f1f;background:#ecebe8}
+.gj-btn{box-sizing:border-box;min-height:48px;padding:0 16px;border:1px solid #5a5a5a;border-radius:4px;background:transparent;color:#f2f2f2;font:inherit;font-size:15px;cursor:pointer}
+.gj-btn.gj-pri{background:#f2f2f2;color:#111111;border-color:#f2f2f2}
+.gj-btn:disabled{opacity:0.3;cursor:default}
+.gj-seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #5a5a5a;border-radius:4px;overflow:hidden}
+.gj-seg button{min-height:40px;border:0;font:inherit;font-size:14px;cursor:pointer;background:transparent;color:#bdbdbd}
+.gj-seg button[aria-pressed=true]{background:#f2f2f2;color:#111111}
+.gj-seg button:disabled{color:#5a5a5a;cursor:default}
+.gj-btn:focus-visible,.gj-seg button:focus-visible,.gj-sel:focus-visible{outline:2px solid #f2f2f2;outline-offset:2px}
+.gj-sel{box-sizing:border-box;width:100%;height:44px;padding:0 10px;font:inherit;font-size:14px;border:1px solid #5a5a5a;border-radius:4px;background:#1f1f1f;color:#f2f2f2}
+</style>
+</helmet>
+<div style="width: 1600px; height: 1000px; box-sizing: border-box; display: flex; background: #2b2b2b">
+<aside style="width: 380px; flex-shrink: 0; box-sizing: border-box; padding: 32px 28px; background: #161616; color: #f2f2f2; display: flex; flex-direction: column; gap: 16px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: #9a9a9a"><span>{{ wf }}</span><span>{{ counter }}</span></div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 600; line-height: 1.2">{{ title }}</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #d6d6d6">{{ desc }}</p>
+<div class="gj-seg" role="group" aria-label="Skjermstørrelse">
+<button type="button" aria-pressed="{{ mPressed }}" disabled="{{ mDisabled }}" onClick="{{ showM }}">Mobil</button>
+<button type="button" aria-pressed="{{ dPressed }}" disabled="{{ dDisabled }}" onClick="{{ showD }}">Desktop</button>
+</div>
+<div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px">
+<label for="gj-hopp" style="font-size: 13px; color: #9a9a9a">Gå til skjerm</label>
+<select id="gj-hopp" class="gj-sel" value="{{ idx }}" onChange="{{ jump }}">
+<sc-for list="{{ options }}" as="o" hint-placeholder-count="26"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+</select>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<button type="button" class="gj-btn" disabled="{{ atStart }}" onClick="{{ prev }}">‹ Forrige</button>
+<button type="button" class="gj-btn gj-pri" disabled="{{ atEnd }}" onClick="{{ next }}">Neste ›</button>
+</div>
+</div>
+</aside>
+<main style="flex-grow: 1; overflow: auto; padding: 32px; box-sizing: border-box; background: #2b2b2b; display: flex; justify-content: center; align-items: flex-start">
+<div style="{{ boxStyle }}">
+<div style="{{ innerStyle }}">
+<sc-if value="{{ on.Annonse_borte_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Annonse-borte-desktop" hint-size="1440px,900px"></dc-import></sc-if>
+<sc-if value="{{ on.Annonse_borte_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Annonse-borte-mobil" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Annonse_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Annonse-desktop" hint-size="1440px,1000px"></dc-import></sc-if>
+<sc-if value="{{ on.Annonse_leie_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Annonse-leie-desktop" hint-size="1440px,1250px"></dc-import></sc-if>
+<sc-if value="{{ on.Annonse_leie_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Annonse-leie-mobil" hint-size="390px,1800px"></dc-import></sc-if>
+<sc-if value="{{ on.Annonse_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Annonse-mobil" hint-size="390px,1400px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_avtalt_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-avtalt-desktop" hint-size="1440px,1400px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_avtalt_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-avtalt-mobil" hint-size="390px,1500px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_fullfort_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-fullfort-desktop" hint-size="1440px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_fullfort_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-fullfort-mobil" hint-size="390px,1200px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_leie_aktiv_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-leie-aktiv-desktop" hint-size="1440px,2000px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_leie_aktiv_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-leie-aktiv-mobil" hint-size="390px,2100px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_motbud_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-motbud-mobil" hint-size="390px,1500px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_nyttbud_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-nyttbud-desktop" hint-size="1440px,1000px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_venter_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-venter-desktop" hint-size="1440px,1300px"></dc-import></sc-if>
+<sc-if value="{{ on.Avtale_venter_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Avtale-venter-mobil" hint-size="390px,1500px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsel_leie_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsel-leie-desktop" hint-size="1440px,1150px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsel_leie_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsel-leie-mobil" hint-size="390px,1800px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsel_salg_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsel-salg-desktop" hint-size="1440px,1250px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsel_salg_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsel-salg-mobil" hint-size="390px,1350px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsler_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsler-desktop" hint-size="1440px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsler_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsler-mobil" hint-size="390px,1500px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsler_tom_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsler-tom-desktop" hint-size="1440px,1000px"></dc-import></sc-if>
+<sc-if value="{{ on.Foresporsler_tom_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Foresporsler-tom-mobil" hint-size="390px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Innlogging_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Innlogging-desktop" hint-size="1280px,800px"></dc-import></sc-if>
+<sc-if value="{{ on.Innlogging_feil_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Innlogging-feil-desktop" hint-size="1280px,800px"></dc-import></sc-if>
+<sc-if value="{{ on.Innlogging_feil_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Innlogging-feil-mobil" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Innlogging_kode_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Innlogging-kode-desktop" hint-size="1280px,800px"></dc-import></sc-if>
+<sc-if value="{{ on.Innlogging_kode_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Innlogging-kode-mobil" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Kontooppsett_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Kontooppsett-desktop" hint-size="1280px,800px"></dc-import></sc-if>
+<sc-if value="{{ on.Kontooppsett_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Kontooppsett-mobil" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Legg_ut_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Legg-ut-desktop" hint-size="1440px,1500px"></dc-import></sc-if>
+<sc-if value="{{ on.Legg_ut_feil_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Legg-ut-feil-desktop" hint-size="1440px,1050px"></dc-import></sc-if>
+<sc-if value="{{ on.Legg_ut_feil_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Legg-ut-feil-mobil" hint-size="390px,1150px"></dc-import></sc-if>
+<sc-if value="{{ on.Legg_ut_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Legg-ut-mobil" hint-size="390px,2000px"></dc-import></sc-if>
+<sc-if value="{{ on.Main }}" hint-placeholder-val="{{ false }}"><dc-import name="Main" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Minside_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Minside-desktop" hint-size="1440px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Minside_historikk_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Minside-historikk-desktop" hint-size="1440px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Minside_historikk_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Minside-historikk-mobil" hint-size="390px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Minside_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Minside-mobil" hint-size="390px,1500px"></dc-import></sc-if>
+<sc-if value="{{ on.Profil_rediger_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Profil-rediger-desktop" hint-size="1440px,1000px"></dc-import></sc-if>
+<sc-if value="{{ on.Profil_rediger_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Profil-rediger-mobil" hint-size="390px,1000px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-desktop" hint-size="1440px,1100px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_feil_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-feil-desktop" hint-size="1440px,900px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_feil_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-feil-mobil" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_laster_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-laster-desktop" hint-size="1440px,900px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_laster_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-laster-mobil" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-mobil" hint-size="390px,1560px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_tomt_desktop }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-tomt-desktop" hint-size="1440px,900px"></dc-import></sc-if>
+<sc-if value="{{ on.Sok_tomt_mobil }}" hint-placeholder-val="{{ false }}"><dc-import name="Sok-tomt-mobil" hint-size="390px,844px"></dc-import></sc-if>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1600,"height":1000}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { i: 0, view: 'm' };
+}
+renderVals() {
+const slides = [{"wf": "WF-01", "title": "Logg inn", "who": "Alle", "state": "Start", "desc": "Brukeren skriver HiØ-e-posten sin. Ingen passord.", "m": "Main", "d": "Innlogging-desktop"}, {"wf": "WF-01", "title": "Feil e-postadresse", "who": "Alle", "state": "Feil", "desc": "Adressen er ikke @hiof.no. Brukeren kommer ikke videre.", "m": "Innlogging-feil-mobil", "d": "Innlogging-feil-desktop"}, {"wf": "WF-01", "title": "Skriv inn kode", "who": "Alle", "state": "Kode sendt", "desc": "Kode og lenke er sendt på e-post. Riktig kode eller klikk på lenken logger inn. Ny bruker går til kontooppsett.", "m": "Innlogging-kode-mobil", "d": "Innlogging-kode-desktop"}, {"wf": "WF-02", "title": "Fullfør kontoen", "who": "Ny bruker", "state": "Første innlogging", "desc": "Bare for nye kontoer. Navn og telefon fylles inn én gang.", "m": "Kontooppsett-mobil", "d": "Kontooppsett-desktop"}, {"wf": "WF-03", "title": "Annonser og søk", "who": "Innlogget bruker", "state": "Treff", "desc": "Forsiden etter innlogging. Søk i tittel og beskrivelse, filtrer på kategori, handelstype og Tilgjengelig nå / Alle.", "m": "Sok-mobil", "d": "Sok-desktop"}, {"wf": "WF-03", "title": "Henter annonser", "who": "Innlogget bruker", "state": "Laster", "desc": "Vises mens søket kjører.", "m": "Sok-laster-mobil", "d": "Sok-laster-desktop"}, {"wf": "WF-03", "title": "Ingen treff", "who": "Innlogget bruker", "state": "Tom liste", "desc": "Søket ga ingen annonser.", "m": "Sok-tomt-mobil", "d": "Sok-tomt-desktop"}, {"wf": "WF-03", "title": "Kunne ikke hente annonser", "who": "Innlogget bruker", "state": "Feil", "desc": "Serveren svarte ikke. Brukeren kan prøve igjen.", "m": "Sok-feil-mobil", "d": "Sok-feil-desktop"}, {"wf": "WF-04", "title": "Annonse: salg", "who": "Kjøper", "state": "Til salgs", "desc": "Bilder, pris, tilstand og beskrivelse. Kjøperen kan legge inn bud.", "m": "Annonse-mobil", "d": "Annonse-desktop"}, {"wf": "WF-04", "title": "Annonse: lån", "who": "Låner", "state": "Delvis utlånt", "desc": "Ukepris og kalender med opptatte datoer. Låneren sender en låneforespørsel.", "m": "Annonse-leie-mobil", "d": "Annonse-leie-desktop"}, {"wf": "WF-04", "title": "Annonsen er borte", "who": "Kjøper", "state": "Solgt / tatt ned", "desc": "Annonsen er solgt eller tatt ned av eieren.", "m": "Annonse-borte-mobil", "d": "Annonse-borte-desktop"}, {"wf": "WF-05", "title": "Legg ut annonse", "who": "Eier", "state": "Utfylt", "desc": "Salg, lån eller gis bort. 1–10 bilder, tittel, beskrivelse, kategori, tilstand og pris.", "m": "Legg-ut-mobil", "d": "Legg-ut-desktop"}, {"wf": "WF-05", "title": "Legg ut med feil", "who": "Eier", "state": "Feltfeil", "desc": "Påkrevde felt mangler. Feilene listes øverst og ved hvert felt.", "m": "Legg-ut-feil-mobil", "d": "Legg-ut-feil-desktop"}, {"wf": "WF-06", "title": "Legg inn bud", "who": "Kjøper", "state": "Bud", "desc": "Salg: kjøperen skriver bare inn et bud.", "m": "Foresporsel-salg-mobil", "d": "Foresporsel-salg-desktop"}, {"wf": "WF-06", "title": "Send låneforespørsel", "who": "Låner", "state": "Periode valgt", "desc": "Lån: låneren velger bare en periode, minst én uke. Opptatte datoer kan ikke velges.", "m": "Foresporsel-leie-mobil", "d": "Foresporsel-leie-desktop"}, {"wf": "WF-07", "title": "Min side: Forespørsler", "who": "Innlogget bruker", "state": "Blandet", "desc": "Mottatte og sendte bud og låneforespørsler med status og «Din tur».", "m": "Foresporsler-mobil", "d": "Foresporsler-desktop"}, {"wf": "WF-07", "title": "Ingen forespørsler", "who": "Innlogget bruker", "state": "Tom liste", "desc": "Brukeren har ikke sendt noe ennå.", "m": "Foresporsler-tom-mobil", "d": "Foresporsler-tom-desktop"}, {"wf": "WF-08a", "title": "Nytt bud", "who": "Selger", "state": "Venter på svar", "desc": "Selgeren godtar, avslår eller foreslår en annen pris.", "m": "Avtale-venter-mobil", "d": "Avtale-nyttbud-desktop"}, {"wf": "WF-08a", "title": "Motbud", "who": "Selger", "state": "Motbud", "desc": "Selgeren foreslår en annen pris. Kjøperen svarer på samme måte.", "m": "Avtale-motbud-mobil", "d": "Avtale-venter-desktop"}, {"wf": "WF-08b", "title": "Avtalt", "who": "Kjøper", "state": "Godtatt", "desc": "Kontaktinfo vises. Overlevering avtales på telefon eller e-post. Begge bekrefter.", "m": "Avtale-avtalt-mobil", "d": "Avtale-avtalt-desktop"}, {"wf": "WF-08c", "title": "Salget er fullført", "who": "Kjøper og selger", "state": "Fullført", "desc": "Begge har bekreftet overleveringen.", "m": "Avtale-fullfort-mobil", "d": "Avtale-fullfort-desktop"}, {"wf": "WF-08d", "title": "Lån i bruk", "who": "Låner", "state": "I bruk", "desc": "Forleng lånet (WV-01) eller rapporter et returproblem (WV-02).", "m": "Avtale-leie-aktiv-mobil", "d": "Avtale-leie-aktiv-desktop"}, {"wf": "WF-09", "title": "Min side: Mine annonser", "who": "Innlogget bruker", "state": "Profil", "desc": "Profil øverst, fanene Mine annonser, Forespørsler og Historikk.", "m": "Minside-mobil", "d": "Minside-desktop"}, {"wf": "WF-09", "title": "Min side: Historikk", "who": "Innlogget bruker", "state": "Historikk", "desc": "Fullførte salg og lån.", "m": "Minside-historikk-mobil", "d": "Minside-historikk-desktop"}, {"wf": "WF-09", "title": "Rediger profil", "who": "Innlogget bruker", "state": "Redigering", "desc": "Bytt bilde, navn og telefon. Logg ut.", "m": "Profil-rediger-mobil", "d": "Profil-rediger-desktop"}];
+const sizes = {"Annonse-borte-desktop": [1440, 900], "Annonse-borte-mobil": [390, 844], "Annonse-desktop": [1440, 1000], "Annonse-leie-desktop": [1440, 1250], "Annonse-leie-mobil": [390, 1800], "Annonse-mobil": [390, 1400], "Avtale-avtalt-desktop": [1440, 1400], "Avtale-avtalt-mobil": [390, 1500], "Avtale-fullfort-desktop": [1440, 1100], "Avtale-fullfort-mobil": [390, 1200], "Avtale-leie-aktiv-desktop": [1440, 2000], "Avtale-leie-aktiv-mobil": [390, 2100], "Avtale-motbud-mobil": [390, 1500], "Avtale-nyttbud-desktop": [1440, 1000], "Avtale-venter-desktop": [1440, 1300], "Avtale-venter-mobil": [390, 1500], "Foresporsel-leie-desktop": [1440, 1150], "Foresporsel-leie-mobil": [390, 1800], "Foresporsel-salg-desktop": [1440, 1250], "Foresporsel-salg-mobil": [390, 1350], "Foresporsler-desktop": [1440, 1100], "Foresporsler-mobil": [390, 1500], "Foresporsler-tom-desktop": [1440, 1000], "Foresporsler-tom-mobil": [390, 1100], "Innlogging-desktop": [1280, 800], "Innlogging-feil-desktop": [1280, 800], "Innlogging-feil-mobil": [390, 844], "Innlogging-kode-desktop": [1280, 800], "Innlogging-kode-mobil": [390, 844], "Kontooppsett-desktop": [1280, 800], "Kontooppsett-mobil": [390, 844], "Legg-ut-desktop": [1440, 1500], "Legg-ut-feil-desktop": [1440, 1050], "Legg-ut-feil-mobil": [390, 1150], "Legg-ut-mobil": [390, 2000], "Main": [390, 844], "Minside-desktop": [1440, 1100], "Minside-historikk-desktop": [1440, 1100], "Minside-historikk-mobil": [390, 1100], "Minside-mobil": [390, 1500], "Profil-rediger-desktop": [1440, 1000], "Profil-rediger-mobil": [390, 1000], "Sok-desktop": [1440, 1100], "Sok-feil-desktop": [1440, 900], "Sok-feil-mobil": [390, 844], "Sok-laster-desktop": [1440, 900], "Sok-laster-mobil": [390, 844], "Sok-mobil": [390, 1560], "Sok-tomt-desktop": [1440, 900], "Sok-tomt-mobil": [390, 844]};
+const keys = {"Annonse-borte-desktop": "Annonse_borte_desktop", "Annonse-borte-mobil": "Annonse_borte_mobil", "Annonse-desktop": "Annonse_desktop", "Annonse-leie-desktop": "Annonse_leie_desktop", "Annonse-leie-mobil": "Annonse_leie_mobil", "Annonse-mobil": "Annonse_mobil", "Avtale-avtalt-desktop": "Avtale_avtalt_desktop", "Avtale-avtalt-mobil": "Avtale_avtalt_mobil", "Avtale-fullfort-desktop": "Avtale_fullfort_desktop", "Avtale-fullfort-mobil": "Avtale_fullfort_mobil", "Avtale-leie-aktiv-desktop": "Avtale_leie_aktiv_desktop", "Avtale-leie-aktiv-mobil": "Avtale_leie_aktiv_mobil", "Avtale-motbud-mobil": "Avtale_motbud_mobil", "Avtale-nyttbud-desktop": "Avtale_nyttbud_desktop", "Avtale-venter-desktop": "Avtale_venter_desktop", "Avtale-venter-mobil": "Avtale_venter_mobil", "Foresporsel-leie-desktop": "Foresporsel_leie_desktop", "Foresporsel-leie-mobil": "Foresporsel_leie_mobil", "Foresporsel-salg-desktop": "Foresporsel_salg_desktop", "Foresporsel-salg-mobil": "Foresporsel_salg_mobil", "Foresporsler-desktop": "Foresporsler_desktop", "Foresporsler-mobil": "Foresporsler_mobil", "Foresporsler-tom-desktop": "Foresporsler_tom_desktop", "Foresporsler-tom-mobil": "Foresporsler_tom_mobil", "Innlogging-desktop": "Innlogging_desktop", "Innlogging-feil-desktop": "Innlogging_feil_desktop", "Innlogging-feil-mobil": "Innlogging_feil_mobil", "Innlogging-kode-desktop": "Innlogging_kode_desktop", "Innlogging-kode-mobil": "Innlogging_kode_mobil", "Kontooppsett-desktop": "Kontooppsett_desktop", "Kontooppsett-mobil": "Kontooppsett_mobil", "Legg-ut-desktop": "Legg_ut_desktop", "Legg-ut-feil-desktop": "Legg_ut_feil_desktop", "Legg-ut-feil-mobil": "Legg_ut_feil_mobil", "Legg-ut-mobil": "Legg_ut_mobil", "Main": "Main", "Minside-desktop": "Minside_desktop", "Minside-historikk-desktop": "Minside_historikk_desktop", "Minside-historikk-mobil": "Minside_historikk_mobil", "Minside-mobil": "Minside_mobil", "Profil-rediger-desktop": "Profil_rediger_desktop", "Profil-rediger-mobil": "Profil_rediger_mobil", "Sok-desktop": "Sok_desktop", "Sok-feil-desktop": "Sok_feil_desktop", "Sok-feil-mobil": "Sok_feil_mobil", "Sok-laster-desktop": "Sok_laster_desktop", "Sok-laster-mobil": "Sok_laster_mobil", "Sok-mobil": "Sok_mobil", "Sok-tomt-desktop": "Sok_tomt_desktop", "Sok-tomt-mobil": "Sok_tomt_mobil"};
+const i = this.state.i;
+const s = slides[i];
+let view = this.state.view;
+if (view === 'm' && !s.m) view = 'd';
+if (view === 'd' && !s.d) view = 'm';
+const file = view === 'm' ? s.m : s.d;
+const sc = view === 'm' ? 1.0 : 0.72;
+const wh = sizes[file];
+const on = {};
+Object.keys(keys).forEach((f) => { on[keys[f]] = f === file; });
+const go = (n) => this.setState({ i: Math.max(0, Math.min(slides.length - 1, n)) });
+return {
+wf: s.wf, title: s.title, who: 'Visning: ' + s.who, state: s.state, desc: s.desc,
+counter: (i + 1) + ' / ' + slides.length,
+on: on,
+boxStyle: 'width: ' + Math.round(wh[0] * sc) + 'px; height: ' + Math.round(wh[1] * sc) + 'px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 24px rgba(0,0,0,0.5); flex-shrink: 0',
+innerStyle: 'width: ' + wh[0] + 'px; height: ' + wh[1] + 'px; transform: scale(' + sc + '); transform-origin: top left',
+mPressed: view === 'm' ? 'true' : 'false', dPressed: view === 'd' ? 'true' : 'false',
+mDisabled: !s.m, dDisabled: !s.d,
+showM: () => this.setState({ view: 'm' }), showD: () => this.setState({ view: 'd' }),
+atStart: i === 0, atEnd: i === slides.length - 1,
+prev: () => go(i - 1), next: () => go(i + 1),
+idx: String(i),
+jump: (e) => go(Number(e.target.value)),
+options: slides.map((x, n) => ({ value: String(n), label: (n + 1) + '. ' + x.wf + ' ' + x.title }))
+};
+}
+}
+</script>
+</body>
+</html>

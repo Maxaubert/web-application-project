@@ -1,15 +1,21 @@
-import { useState } from "react"
+"use client";
+import { useState, type ChangeEvent } from "react"
 
-export default function PasswordField({ onValueChange = null, text = "password"}) {
-    const [value, setValue] = useState(value)
-    function valueChange(newVal) {
+type PasswordFieldProps = {
+    onValueChange?: (value: string) => void
+    text?: string
+}
+
+export default function PasswordField({ onValueChange, text = "password"}: PasswordFieldProps) {
+    const [value, setValue] = useState("")
+    function valueChange(newVal: ChangeEvent<HTMLInputElement>) {
         if (onValueChange) {
-            valueChange(newVal)
+            onValueChange(newVal.target.value)
         }
-        setValue(newVal)
+        setValue(newVal.target.value)
     }
-    
+
     return (
-        <input type = "password" placeholder = {text} onChange = {valueChange}></input>
+        <input type = "password" placeholder = {text} onChange = {valueChange} value = {value}></input>
     )
 }
