@@ -32,7 +32,7 @@ eller installerte programmer overføres via Git. Installer avhengighetene fra l�
 |---|---|
 | [Kravspesifikasjon](kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav, kvalitet, design og akseptansekriterier |
 | [Teknisk plan](docs/teknisk-plan.md) | Hvordan kravene skal realiseres; åpne teknologivalg, datamodell, API, innlogging og tester |
-| [Lærerens KI-avtale](docs/ki-avtale-canvas.md) og [gruppens arbeidsutkast](KI-AVTALE.md) | Canvas-teksten om KI-bruk, skilt fra avtalen Max og Emil må gjennomgå og bekrefte |
+| [Lærerens KI-avtale](docs/ki-avtale-canvas.md) og [gruppens KI-avtale](KI-AVTALE.md) | Canvas-teksten om KI-bruk, skilt fra avtalen Max og Emil har godtatt |
 | [CI, PR-regler og deploy](docs/ci-og-deploy.md) | Workflowen som finnes, blokkert branch protection og hva som må på plass ved appoppsett |
 | Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
 
@@ -42,7 +42,7 @@ samler Max og Emils timer.
 
 1. Les [krav og åpne frister](docs/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
 2. Gjennomgå [kravspesifikasjonen](kravspesifikasjon.md) og [teknisk plan](docs/teknisk-plan.md) sammen. Bruk [prosjektkortet](docs/prosjekt.md) til arbeidsdeling og fremdrift.
-3. Avtal [samarbeid](docs/samarbeid.md) og [KI-bruk](KI-AVTALE.md). Avtalene er foreløpig utkast.
+3. Avtal [samarbeid](docs/samarbeid.md) og [KI-bruk](KI-AVTALE.md). KI-avtalen er godtatt; samarbeidsavtalen er et utkast.
 4. Prøv appoppsettet, avklar åpne regler, og opprett den første lille appflyten med
    [teknisk sjekkliste](docs/teknikk.md). Start ikke med alle mulige funksjoner.
 5. Bruk [læringskartet](docs/laering.md) underveis og [leveransekontrollen](docs/leveranse.md) før fremvisning.
@@ -61,6 +61,7 @@ samler Max og Emils timer.
 | KI-grenser og hjelp fra Claude/Codex/ChatGPT | [KI-avtale](KI-AVTALE.md), [assistentbruk](docs/assistentbruk.md), [AGENTS.md](AGENTS.md) |
 | Egen forståelse, retrospekt og eksamen | [Læringskart](docs/laering.md) |
 | Lyntale, sign off, rapport og presentasjon | [Leveranser](docs/leveranse.md) |
+| Sluttrapporten (disposisjon, tittel og ingress) | [Rapport (PDF)](docs/rapport/rapport.pdf), kilde [rapport.md](docs/rapport/rapport.md), bygg med `scripts/rapport-til-pdf.mjs` |
 | Kontroll av dette grunnlaget | [Lokal review](docs/review.md), [verifikasjon](docs/verifikasjon.md) |
 
 ## Kjør kontroll av dokumentasjonen

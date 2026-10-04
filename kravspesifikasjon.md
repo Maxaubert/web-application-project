@@ -69,7 +69,22 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 
 Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer, publisering for alle tre handelstyper, bud og låneforespørsler med motforslag på omgang, deling av kontaktinfo etter aksept, overleveringsbekreftelse fra begge, forlengelse av lån, rapport om returproblem, e-postvarsler og Min side med egne annonser, forespørsler og historikk. Salgsflyten bygges først, deretter lån og gis bort; alle tre skal være med ved MVP-lansering (D-68).
 
-**Utenfor MVP:** chat, betalingsintegrasjon, frakt, depositum, vurderinger, tjenester som undervisning, forsinkelsesgebyrer, admin-dashboard og full intern tvisteløsning (D-70 til D-73, D-85, D-89). Møtested og hentetid registreres ikke i appen.
+### Ikke med i MVP
+
+| Ikke med | Hva vi gjør i stedet | Kilde |
+|---|---|---|
+| Chat i appen | Forespørsler, bud og motforslag dekker avtalen. Chat er ønsket etter MVP. | D-70 til D-73 |
+| Betaling i appen | Oppgjøret skjer utenfor appen. Pris og beregnet lånepris vises. | D-70 til D-73 |
+| Frakt | Varer hentes og leveres fysisk mellom studentene. | D-70 til D-73 |
+| Depositum | Ingen sikkerhet kreves; returproblemer kan rapporteres. | D-70 til D-73 |
+| Vurderinger og anmeldelser | Ingen omdømmesystem i første versjon. | D-70 til D-73 |
+| Tjenester, som undervisning og hjelp | Bare fysiske ting: salg, lån og gis bort. | D-70 til D-73 |
+| Forsinkelsesgebyrer | Ingen gebyr. Godkjent forlengelse gir ny returdato. | D-85 |
+| Admin-dashboard | Rapporter lagres og ses av den som skrev og admin. | D-88, D-89 |
+| Full tvisteløsning i appen | En returrapport lagres som påstand og avgjør ingenting. | D-87 |
+| Møtested og hentetid | Avtales mellom partene utenfor appen. | Max 29.09 |
+
+Begrunnelsen for hvert punkt er ikke skrevet ned ennå.
 
 ### Hele appen, utover MVP
 

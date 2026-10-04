@@ -2,7 +2,7 @@
 <html lang="nb">
 <head>
 <meta charset="utf-8">
-<title>Wireframes og hovedflyt</title>
+<title>Sign-off uke 40</title>
 <style>
 @page { size: A4; margin: 13mm 16mm 16mm; }
 * { box-sizing: border-box; }
@@ -19,7 +19,10 @@ table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 9.
 th, td { text-align: left; vertical-align: top; padding: 3pt 6pt; border-bottom: 1px solid #e2e2e2; }
 th { font-weight: 600; color: #444; border-bottom: 1px solid #bdbdbd; }
 code { font-family: Consolas, monospace; font-size: 8.8pt; background: #f2f2f2; padding: 0 3pt; border-radius: 2pt; }
-.intro { break-after: page; }
+.intro, .signoff, .evidence { break-after: page; }
+.st { white-space: nowrap; font-weight: 600; }
+.ok { color: #1e6b34; } .wip { color: #8a5a00; }
+.fig { margin: 0 0 12pt; } .fig img { display: block; width: 100%; border: 1px solid #c8c8c8; border-radius: 3pt; }
 .screen { break-inside: avoid; padding: 10pt 0 12pt; border-top: 1px solid #e2e2e2; }
 .screen:nth-of-type(2n+1) { break-before: page; border-top: 0; padding-top: 0; }
 .screen:first-of-type { break-before: auto; }
@@ -40,6 +43,31 @@ a { color: #1c1c1c; }
 </style>
 </head>
 <body>
+<div class="signoff">
+<h1>Sign-off uke 40</h1>
+<h2>Canvas-punktene</h2>
+<table>
+<tr><th style="width:4%">#</th><th style="width:27%">Punkt</th><th style="width:11%">Status (som på boardet)</th><th>Bevis</th></tr>
+<tr><td class="num">1</td><td>Enkel kravliste</td><td class="st ok">Ferdig</td><td><code>kravspesifikasjon.md</code>: funksjonskrav FK-01 til FK-12 og testbare akseptkriterier AK-01 til AK-40.</td></tr>
+<tr><td class="num">2</td><td>«Ikke med»-liste</td><td class="st ok">Ferdig</td><td>Tabell i <code>kravspesifikasjon.md</code>, avsnitt 2: ti punkter utenfor MVP, med hva vi gjør i stedet.</td></tr>
+<tr><td class="num">3</td><td>Prosessverktøy, oppgaver fordelt</td><td class="st ok">Ferdig</td><td>GitHub Projects-board med To do, In progress, Review og Done. Hver oppgave er en issue med ansvarlig (figur 1).</td></tr>
+<tr><td class="num">4</td><td>Designskisser med tanker om API og komponenter</td><td class="st ok">Ferdig</td><td>Wireframes for hele MVP i mobil og desktop, med komponenter og server per skjerm fra side 3. Full spesifikasjon i <code>docs/wireframes/README.md</code>.</td></tr>
+<tr><td class="num">5</td><td>Repo opprettet, gruppen invitert</td><td class="st ok">Ferdig</td><td><code>github.com/Maxaubert/web-application-project</code>. Emil er samarbeidspartner, og begge har commits.</td></tr>
+<tr><td class="num">6</td><td>KI-avtale</td><td class="st ok">Ferdig</td><td><code>KI-AVTALE.md</code>, godtatt av Max og Emil 30.09.</td></tr>
+<tr><td class="num">7</td><td>Alle kan starte prosjektet lokalt</td><td class="st ok">Ferdig</td><td><code>npm ci</code> og <code>npm run dev</code> i <code>app/</code>, prøvd av begge.</td></tr>
+<tr><td class="num">8</td><td>Grunnkomponenter, dummy-komponenter og utils</td><td class="st wip">I gang</td><td>Innloggingssiden: <code>Login</code>, <code>Email</code> og <code>PasswordField</code>. Util: <code>loanPrice</code> (lånepris per dag).</td></tr>
+<tr><td class="num">9</td><td>Minst én enkel test satt opp og kjørt</td><td class="st ok">Ferdig</td><td>Vitest, 7 av 7 grønne (figur 2). Playwright-test av innloggingssiden. CI kjører alt på GitHub.</td></tr>
+<tr><td class="num">10</td><td>Disposisjon for rapporten</td><td class="st wip">Til gjennomlesing</td><td><code>docs/rapport/rapport.pdf</code>: tittel (plassholder), ingress og de seks delene.</td></tr>
+<tr><td class="num">11</td><td>I gang med pensum</td><td class="st ok">Ferdig</td><td>Max og Emil har gått gjennom del 1 til 3 i Fullstækk-kurset webapp-2026.</td></tr>
+</table>
+<p>Figurer på neste side. Wireframes, hovedflyt og teknisk skisse fra side 3.</p>
+</div>
+<div class="evidence">
+<h2 style="margin-top:0">Figur 1: Kanban-boardet i tabellvisning, 30.09</h2>
+<figure class="fig"><img src="kanban.png" alt="Kanban-boardet: alle sign-off-oppgavene med status og ansvarlig"></figure>
+<h2>Figur 2: Testkjøring, 30.09</h2>
+<figure class="fig"><img src="testkjoring.png" alt="Vitest, 7 av 7 tester grønne"></figure>
+</div>
 <div class="intro">
 <h1>Wireframes og hovedflyt</h1>
 
