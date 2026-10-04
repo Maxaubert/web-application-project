@@ -9,10 +9,37 @@
 - [Kravspesifikasjon](docs/krav/kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/app/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
 - [Wireframes og skjermspesifikasjon](docs/design/wireframes/README.md) er byggegrunnlaget for skjermer, ruter,
-  datamodell og API. Nyere beslutninger der går foran kravspesifikasjonen til den er oppdatert.
+  datamodell og API. Den og kravspesifikasjonen skal si det samme; finner du avvik, stopp og spør.
 - [Dokumentkartet](docs/README.md) viser hvor alt ligger. Les [emnekrav](docs/emne/emnekrav.md) og
   [KI-avtale](docs/prosess/ki-avtale.md) før implementering. Les [teknikk](docs/app/teknikk.md) for berørte kodeområder og
   [læringskart](docs/emne/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.
+
+## Arbeidsmåte: forsiktig og stegvis (Max 05.10)
+
+- Én ting om gangen: ett issue, én branch, én liten PR. Utvid aldri omfanget uten å spørre.
+- Plan først: alt utover en triviell retting starter med en kort plan (hva, hvilke filer,
+  hvordan det testes). Ingen kode før Max eller Emil har sagt ja til planen.
+- Studentene bestemmer: legg frem alternativer med avveininger og en anbefaling, og forklar
+  hvorfor. Studenten velger og skal kunne forsvare valget (studentassistent, sign-off uke 40).
+- Vær en kritisk sparringspartner: si imot når et forslag er svakt, nevn svakheter og kostnader,
+  og legg frem det sterkeste argumentet for alternativet. Si deg enig bare når begrunnelsen holder.
+  «Best practice», «moderne» eller «skalerbart» uten konkret behov er ikke en begrunnelse.
+- Les før du skriver: les berørte filer og dokumenter først. Sjekk offisiell dokumentasjon
+  for versjonen vi bruker i stedet for å gjette API-er.
+- Verifiser før «ferdig»: kjør gatene og rapporter faktisk utfall, også feil.
+- Stopp og spør ved tvil, motstrid mellom dokumenter eller uventet tilstand
+  (skitten arbeidskatalog, ukjent branch, røde tester du ikke forårsaket).
+
+## Dokumentasjonen holdes konsistent
+
+- Ferdig betyr: samme PR oppdaterer alle berørte dokumenter (krav, akseptansekriterier,
+  wireframes, teknisk plan, README, AGENTS) og [endringsloggen](docs/endringslogg.md).
+- Én kilde per tema: krav i kravspesifikasjonen, kriterier i akseptansekriteriene, skjermer i
+  wireframes, arkitektur i teknisk plan. Lenk i stedet for å kopiere. Endres en beslutning,
+  oppdater kilden og fjern motstridende tekst andre steder i samme PR.
+- Statuslinjer dateres og rettes så snart de blir feil. Utdaterte dokumenter flyttes til
+  `docs/arkiv/` med en linje i arkivoversikten. Nye filer plasseres etter
+  [dokumentkartet](docs/README.md), og kartet oppdateres.
 
 ## Kilder og avvik
 
@@ -23,8 +50,11 @@
 - Ikke kall uavklart dato, ukjent fremdrift eller upublisert øving et bekreftet krav.
 - Søsterrepoet School (privat, `../School`, github.com/Maxaubert/School) er viktigste lokale
   kilde for ferske Canvas-uttrekk, kunngjøringer, sign-off, kursmateriell og Max' beslutningsnotat
-  `School/kravdiskusjon.md`. Start i `School/ITF31619-Webapplikasjoner/README.md` før krav- eller
-  planarbeid. Bare lesing; mangler det (f.eks. hos Emil), bruk Canvas direkte.
+  `School/kravdiskusjon.md`. Før krav-, plan-, sign-off-, leveranse- og reviewarbeid: kjør `git pull`
+  i School og start i `School/ITF31619-Webapplikasjoner/README.md`. Oppgi School-fil og dato som
+  kilde. Bare lesing; mangler det (f.eks. hos Emil), bruk Canvas direkte.
+- Lærerens Fullstækk-kurs ligger i `School/ITF31619-Webapplikasjoner/fullstaekk/`; følg oppslagsrutinen
+  i `fullstaekk/CLAUDE.md`. Kursmateriellet kopieres aldri inn i dette offentlige repoet; vis til leksjon.
 - Oppdater kilder ved milepæler. Følg [kilder](docs/emne/kilder.md); ikke hent andre emner eller
   kontodata. Ikke skriv til School, Claude-minner eller andre prosjekter.
 - Hvis kodeeksempel kolliderer med sikre API-er, dokumenter konflikten og sjekk offisiell
@@ -41,6 +71,9 @@
   ikke sesjons- og eierskapskontroll inne i handlingen. Autentisering er ikke autorisasjon.
 - Tester skal kunne avsløre feil. Bevis både avvisning og uendret lagring ved ulovlig skriving.
   Ikke bytt ekte databaseintegrasjon med stubber som alltid lykkes.
+- Review og kodeforslag sjekkes mot Fullstækk-kursene (hva læreren faktisk viser og forventer)
+  og mot anerkjent praksis i offisiell dokumentasjon. Oppgi leksjon eller kilde; ved avvik mellom
+  kurs og praksis, vis begge og la studentene velge.
 - Følg eksisterende struktur, én tydelig oppgave per fil, og refaktorer ved reelt behov.
   Ingen vilkårlige linjegrenser eller obligatoriske lag for en liten funksjon.
 - For UI: store lesbare tekster, god kontrast, store klikkflater, tastatur og høy zoom.
@@ -80,10 +113,10 @@
 - Alle repoendringer på branch, også docs. Ingen push til hovedbranch.
 - Opprett aldri PR og merge aldri uten Max' godkjenning. Spør gjerne om det skal gjøres,
   men gjør det aldri automatisk (Max 29.09).
-- Navngi branch etter arbeidet, eksempelvis `setup/initial-project`; ikke bruk codex/ai-prefiks.
+- Navngi branch `type/issue-slug`, eksempelvis `feat/12-innlogging`; ikke bruk codex/ai-prefiks.
 - Funksjonsendring: issue først, så branch, så PR når Max ber om det.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
-- Stopp før merge. Bare Oves eksplisitte godkjenning av den identifiserte PR-en gjelder.
+- Stopp før merge. Bare Max' eksplisitte godkjenning av den identifiserte PR-en gjelder.
 - Ikke opprett skyressurser eller kopier School/OS-arkiver, hemmeligheter og andre studenters data.
 - Hver student committer egne faktiske bidrag løpende. KI-arbeid skal være synlig, ikke tilskrives
   Max eller Emil som selvstendig læringsarbeid. Ikke omskriv historikk for å simulere deltakelse.

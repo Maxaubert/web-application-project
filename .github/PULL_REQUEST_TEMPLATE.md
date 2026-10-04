@@ -17,9 +17,11 @@ Forklar tester som kan fange feil, tilgangs-/feilstier og hva som ikke er verifi
 ## Gjennomgang og levering
 
 - [ ] Diff lest og reelle bidrag kontrollert, ingen oppdiktede forfattere eller læringsbevis.
-- [ ] Kilde/kravsporbarhet, README og relevante notater er oppdatert.
+- [ ] Alle berørte dokumenter er oppdatert (krav, akseptansekriterier, wireframes, teknisk plan, README, AGENTS), uten motstrid.
+- [ ] [Endringsloggen](../docs/endringslogg.md) har en linje for endringen.
+- [ ] Sjekket mot Fullstækk-kurset og offisiell dokumentasjon; avvik er beskrevet.
 - [ ] Ingen hemmeligheter, private kursarkiv eller andres sensitive data i diff/historikk.
 - [ ] Ved UI: branch-bygget prøvd lokalt før mergeanbefaling.
-- [ ] Medstudentens review og åpne problemer beskrevet.
+- [ ] Eventuell medstudentreview og åpne problemer beskrevet (review er frivillig).
 
-Status for mergegodkjenning: ikke gitt med mindre Ove har godkjent denne konkrete PR-en.
+Status for mergegodkjenning: ikke gitt med mindre Max har godkjent denne konkrete PR-en.

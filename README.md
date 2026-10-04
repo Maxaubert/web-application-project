@@ -92,7 +92,7 @@ avhengighetsfunn](docs/app/oppsett.md). Deploy/release er ikke konfigurert.
 
 Repoet er offentlig på GitHub. Alle endringer gjøres på branch og gjennom PR. GitHub
 krever PR og grønn `Repository checks` før merge til main; review er frivillig. Se
-[CI og PR-regler](docs/app/ci-og-deploy.md). Ingen merge uten Oves godkjenning av den konkrete PR-en.
+[CI og PR-regler](docs/app/ci-og-deploy.md). Ingen merge uten Max' godkjenning av den konkrete PR-en.
 
 Ikke legg inn Canvas-token, rå kursarkiv, persondata om andre studenter eller interne
 bedriftsdokumenter. Lisensvalg står åpent; dette grunnlaget gir ingen lisens til
