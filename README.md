@@ -8,7 +8,7 @@ forklare, vurdere og endre den uten KI på individuell muntlig vurdering.
 betalt utleie fra første versjon. Forespørsler og motforslag håndterer avtalene;
 eieren alene bekrefter retur og fullfører lån/leie. Chat kommer etter MVP.
 Offisiell RedwoodSDK/Vite-starter, TypeScript, lokal D1/Drizzle og testverktøy er satt opp i `app/`.
-Ingen markedsplassfunksjoner er implementert. Se [oppsettsnotatet](docs/app-oppsett.md).
+Ingen markedsplassfunksjoner er implementert. Se [oppsettsnotatet](docs/app/oppsett.md).
 Dokumentasjonen er laget med Codex og er ikke dokumentasjon på studentenes læring.
 
 ## Hent prosjektet på en annen PC
@@ -30,39 +30,39 @@ eller installerte programmer overføres via Git. Installer avhengighetene fra l�
 
 | Dokument | Hva det svarer på |
 |---|---|
-| [Kravspesifikasjon](kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav, kvalitet, design og akseptansekriterier |
-| [Teknisk plan](docs/teknisk-plan.md) | Hvordan kravene skal realiseres; åpne teknologivalg, datamodell, API, innlogging og tester |
-| [Lærerens KI-avtale](docs/ki-avtale-canvas.md) og [gruppens KI-avtale](KI-AVTALE.md) | Canvas-teksten om KI-bruk, skilt fra avtalen Max og Emil har godtatt |
-| [CI, PR-regler og deploy](docs/ci-og-deploy.md) | Workflowen som finnes, blokkert branch protection og hva som må på plass ved appoppsett |
+| [Kravspesifikasjon](docs/krav/kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav, kvalitet, design og akseptansekriterier |
+| [Teknisk plan](docs/app/teknisk-plan.md) | Hvordan kravene skal realiseres; åpne teknologivalg, datamodell, API, innlogging og tester |
+| [Lærerens KI-avtale](docs/emne/ki-avtale-mal.md) og [gruppens KI-avtale](docs/prosess/ki-avtale.md) | Canvas-teksten om KI-bruk, skilt fra avtalen Max og Emil har godtatt |
+| [CI, PR-regler og deploy](docs/app/ci-og-deploy.md) | Workflowen som finnes, blokkert branch protection og hva som må på plass ved appoppsett |
 | Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
 
 **[Kanban-boardet](https://github.com/users/Maxaubert/projects/1)** har oppgavene som GitHub Issues.
-[Felles arbeidslogg](arbeidslogg-max-og-emil.md) følger fremdriften, og [timelisten](timeliste.md)
+[Felles arbeidslogg](docs/prosess/arbeidslogg-max-og-emil.md) følger fremdriften, og [timelisten](docs/prosess/timeliste.md)
 samler Max og Emils timer.
 
-1. Les [krav og åpne frister](docs/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
-2. Gjennomgå [kravspesifikasjonen](kravspesifikasjon.md) og [teknisk plan](docs/teknisk-plan.md) sammen. Bruk [prosjektkortet](docs/prosjekt.md) til arbeidsdeling og fremdrift.
-3. Avtal [samarbeid](docs/samarbeid.md) og [KI-bruk](KI-AVTALE.md). KI-avtalen er godtatt; samarbeidsavtalen er et utkast.
+1. Les [krav og åpne frister](docs/emne/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
+2. Gjennomgå [kravspesifikasjonen](docs/krav/kravspesifikasjon.md) og [teknisk plan](docs/app/teknisk-plan.md) sammen. Bruk [prosjektkortet](docs/arkiv/prosjekt.md) til arbeidsdeling og fremdrift.
+3. Avtal [samarbeid](docs/prosess/samarbeid.md) og [KI-bruk](docs/prosess/ki-avtale.md). KI-avtalen er godtatt; samarbeidsavtalen er et utkast.
 4. Prøv appoppsettet, avklar åpne regler, og opprett den første lille appflyten med
-   [teknisk sjekkliste](docs/teknikk.md). Start ikke med alle mulige funksjoner.
-5. Bruk [læringskartet](docs/laering.md) underveis og [leveransekontrollen](docs/leveranse.md) før fremvisning.
+   [teknisk sjekkliste](docs/app/teknikk.md). Start ikke med alle mulige funksjoner.
+5. Bruk [læringskartet](docs/emne/laering.md) underveis og [leveransekontrollen](docs/leveranser/README.md) før fremvisning.
 
 ## Prosjektkart
 
 | Når dere trenger | Les |
 |---|---|
-| Gjeldende emnekrav, kilder, evidens | [Emnekrav](docs/emnekrav.md), [kildeindeks](docs/kilder.md) |
-| Produkt, omfang og gjennomføring | [Kravspesifikasjon](kravspesifikasjon.md), [teknisk plan](docs/teknisk-plan.md), [prosjektkort](docs/prosjekt.md) |
-| Historiske idéforslag | [Ideer til diskusjon med Emil](docs/ideer-til-diskusjon.md) |
-| Før byggestart: avklaringer, prioritering og oppgaver | [Før-bygg-listen](docs/for-bygg-start.md) |
-| Planlagt GitHub-oppsett, CI/CD, tester og presentasjon | [GitHub repo-oppsett](docs/github-repo-oppsett.md) |
-| Arkitektur, HTTP, database, sikkerhet, tester | [Teknikk og beslutningsmal](docs/teknikk.md) |
-| Arbeidsdeling, fremdrift og timer | [Samarbeid](docs/samarbeid.md), [felles arbeidslogg](arbeidslogg-max-og-emil.md), [timeliste](timeliste.md), [loggveiledning](docs/arbeidslogg.md) |
-| KI-grenser og hjelp fra Claude/Codex/ChatGPT | [KI-avtale](KI-AVTALE.md), [assistentbruk](docs/assistentbruk.md), [AGENTS.md](AGENTS.md) |
-| Egen forståelse, retrospekt og eksamen | [Læringskart](docs/laering.md) |
-| Lyntale, sign off, rapport og presentasjon | [Leveranser](docs/leveranse.md) |
-| Sluttrapporten (disposisjon, tittel og ingress) | [Rapport (PDF)](docs/rapport/rapport.pdf), kilde [rapport.md](docs/rapport/rapport.md), bygg med `scripts/rapport-til-pdf.mjs` |
-| Kontroll av dette grunnlaget | [Lokal review](docs/review.md), [verifikasjon](docs/verifikasjon.md) |
+| Gjeldende emnekrav, kilder, evidens | [Emnekrav](docs/emne/emnekrav.md), [kildeindeks](docs/emne/kilder.md) |
+| Produkt, omfang og gjennomføring | [Kravspesifikasjon](docs/krav/kravspesifikasjon.md), [teknisk plan](docs/app/teknisk-plan.md), [prosjektkort](docs/arkiv/prosjekt.md) |
+| Historiske idéforslag | [Ideer til diskusjon med Emil](docs/arkiv/ideer-til-diskusjon.md) |
+| Før byggestart: avklaringer, prioritering og oppgaver | [Før-bygg-listen](docs/arkiv/for-bygg-start.md) |
+| Planlagt GitHub-oppsett, CI/CD, tester og presentasjon | [GitHub repo-oppsett](docs/arkiv/github-repo-oppsett.md) |
+| Arkitektur, HTTP, database, sikkerhet, tester | [Teknikk og beslutningsmal](docs/app/teknikk.md) |
+| Arbeidsdeling, fremdrift og timer | [Samarbeid](docs/prosess/samarbeid.md), [felles arbeidslogg](docs/prosess/arbeidslogg-max-og-emil.md), [timeliste](docs/prosess/timeliste.md), [loggveiledning](docs/prosess/loggrutine.md) |
+| KI-grenser og hjelp fra Claude/Codex/ChatGPT | [KI-avtale](docs/prosess/ki-avtale.md), [assistentbruk](docs/prosess/assistentbruk.md), [AGENTS.md](AGENTS.md) |
+| Egen forståelse, retrospekt og eksamen | [Læringskart](docs/emne/laering.md) |
+| Lyntale, sign off, rapport og presentasjon | [Leveranser](docs/leveranser/README.md) |
+| Sluttrapporten (disposisjon, tittel og ingress) | [Rapport (PDF)](docs/leveranser/rapport/rapport.pdf), kilde [rapport.md](docs/leveranser/rapport/rapport.md), bygg med `scripts/rapport-til-pdf.mjs` |
+| Kontroll av dette grunnlaget | [Lokal review](docs/arkiv/review-pr-utkast-2026-09.md), [verifikasjon](docs/app/dokumentkontroll.md) |
 
 ## Kjør kontroll av dokumentasjonen
 
@@ -75,7 +75,7 @@ git diff --check
 
 Ingen pakkeinstallasjon kreves. Kontrollen sjekker lokale lenker, noen kritiske
 veiledningspunkter, filstruktur og en begrenset personvernkontroll. Den vurderer
-ikke studentenes forståelse eller om emnet er bestått. Se [begrensningene](docs/verifikasjon.md).
+ikke studentenes forståelse eller om emnet er bestått. Se [begrensningene](docs/app/dokumentkontroll.md).
 
 ## Installer og kjør appgrunnlaget
 
@@ -110,18 +110,18 @@ Playwright starter og stopper sin egen preview på port 4173; porten må være l
 På Linux installeres browseravhengighetene med `npx playwright install --with-deps chromium`.
 CI utfører installasjon og hele kontrollrekken. Startertester er ikke bevis på at
 hovedflyten, auth eller kursets dekningskrav er oppfylt. Se [begrensninger og kjente
-avhengighetsfunn](docs/app-oppsett.md). Deploy/release er ikke konfigurert.
+avhengighetsfunn](docs/app/oppsett.md). Deploy/release er ikke konfigurert.
 
 ## Publisering og rettigheter
 
 Repoet er privat på GitHub etter uttrykkelig bestilling. Offentlig GitHub-repo er et
 **senere innleveringskrav**, ikke en godkjenning til å endre synlighet nå.
 Alle endringer gjøres på branch og gjennom PR; lokal PR-tekst finnes i
-[review-fila](docs/review.md). Ingen merge uten Oves godkjenning av den konkrete PR-en.
+[review-fila](docs/arkiv/review-pr-utkast-2026-09.md). Ingen merge uten Oves godkjenning av den konkrete PR-en.
 GitHub håndhever ennå ikke PR-kravet: beskyttelsen for dette private repoet avvises
-på gjeldende abonnement. [Beskyttelsesoppsettet](docs/ci-og-deploy.md) er klart til
+på gjeldende abonnement. [Beskyttelsesoppsettet](docs/app/ci-og-deploy.md) er klart til
 aktivering når kontoen støtter det. En grønn workflow alene hindrer ikke direkte push.
 
 Ikke legg inn Canvas-token, rå kursarkiv, persondata om andre studenter eller interne
 bedriftsdokumenter. Lisensvalg står åpent; dette grunnlaget gir ingen lisens til
-å republisere lærerens materiale. [Kildeindeksen](docs/kilder.md) peker til det som er lest.
+å republisere lærerens materiale. [Kildeindeksen](docs/emne/kilder.md) peker til det som er lest.

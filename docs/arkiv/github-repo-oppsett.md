@@ -4,11 +4,11 @@ Planlagt 16.09.2026 for Max og Emil. **Dette er en oppgaveliste, ikke utført op
 Ingen remote, regler, issues, board, workflows, tester, deploy eller grafiske filer er
 opprettet gjennom denne planen. Eksisterende grunnlagsfiler og PR-mal er utkast.
 Begynn med [før-bygg-listen](for-bygg-start.md). Oppdatert produktretning står i
-[kravspesifikasjonen](../kravspesifikasjon.md): alle tre handelstyper ved lansering,
+[kravspesifikasjonen](../krav/kravspesifikasjon.md): alle tre handelstyper ved lansering,
 forespørsler/motforslag og chat senere. Historiske oppsettstatuser nedenfor er fra 16.09.
 
 **Oppdatering 19.09:** Max har nå bestilt PR-beskyttelse og pipelinegrunnlag. Konkret
-[CI-oppsett og beskyttelsesstatus](ci-og-deploy.md) er skrevet sammen med workflow og
+[CI-oppsett og beskyttelsesstatus](../app/ci-og-deploy.md) er skrevet sammen med workflow og
 regelkonfigurasjon. GitHub avviser håndheving på det private repoets abonnement;
 G03 er derfor fortsatt åpen. Deploy er ikke implementert. Delvis utførte oppgaver krysses ikke av som ferdige her;
 løpende status står på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
@@ -22,7 +22,7 @@ project» (To do), «Item closed» (Done), «Auto-close issue», «Pull request 
 
 ## Hva som teller
 
-**K = emnekrav**, fra [emnekrav](emnekrav.md), kontrollert mot Canvas 14.09.
+**K = emnekrav**, fra [emnekrav](../emne/emnekrav.md), kontrollert mot Canvas 14.09.
 **U = undervisningsråd/øving**, ikke automatisk innleveringskrav.
 **T = foreslått teamstandard**, må avtales. **V = valgfri presentasjonspolering**.
 Ingen ny Canvas-kontroll er utført 16.09. Kilder og skillet mellom 2025 og 2026 står
@@ -58,7 +58,7 @@ er stabile; ikke opprett en parallell detaljbacklog når GitHub Issues tas i bru
   KI-bidrag, dokumentasjonsendring og eventuelle migrasjoner. Bilder ved nytt UI er støtte,
   ikke erstatning for testing. Review skal kontrollere funksjon, tilgang og forståelighet.
 - [ ] **G06 · K P02/T:** Avtal commit- og mergepraksis som bevarer ekte bidrag. Følg
-  [samarbeid](samarbeid.md) for arkivering før eventuell squash og branchsletting.
+  [samarbeid](../prosess/samarbeid.md) for arkivering før eventuell squash og branchsletting.
   Verifiser at den leverte .git-historikken inneholder bidragene; ikke bruk commit-antall som mål.
 
 ## B. Issues, Kanban og prioritering
@@ -162,7 +162,7 @@ emnet, ikke obligatorisk. Kursets RedwoodSDK/Cloudflare-valg gjør ikke Vercel t
 
 ## Kildegrunnlag og avgrensning
 
-Formelle krav er sporbare gjennom [emnekrav](emnekrav.md) og [kildeindeks](kilder.md):
+Formelle krav er sporbare gjennom [emnekrav](../emne/emnekrav.md) og [kildeindeks](../emne/kilder.md):
 K01 §8 for T07/T08/P01/P02, K02 for KI-avtale og A29/A04 for samarbeid. Disse er
 lokale, tidligere kontrollerte kilder, ikke en ny bekreftelse på dagens Canvas-status.
 Tekniske nettlenker over ble undersøkt 16.09.2026 og må kontrolleres igjen ved oppsett.

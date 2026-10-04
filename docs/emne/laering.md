@@ -17,7 +17,7 @@ Slå opp etter forsøket, test og prøv igjen. Fem gode minutter er bedre enn ma
 automatisk utfylte avkrysninger. Vanlig produktivt KI-arbeid kan fortsette mellom øvingene.
 
 Nivåene er **ikke prøvd → med støtte → forklart uten støtte → endret/feilsøkt uten støtte**.
-Før faktisk dato, oppgave og observasjon i [arbeidsloggen](arbeidslogg.md). Mestring er
+Før faktisk dato, oppgave og observasjon i [arbeidsloggen](../prosess/loggrutine.md). Mestring er
 temaavhengig. Lesing, fullført video og KI-forklaring er ikke alene bevis på mestring.
 Studentene skriver egne refleksjoner; ingen assistent fyller dem inn på deres vegne.
 

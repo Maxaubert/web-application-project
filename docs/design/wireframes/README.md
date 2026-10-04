@@ -3,7 +3,7 @@
 **Laget 29.09.2026** med Claude Design i Claude Code, etter Max sine valg underveis.
 Emil har ikke gjennomgått innholdet ennå. Dette dokumentet er byggegrunnlaget for
 skjermene. Det er ikke implementert kode. Beslutningene nedenfor er også ført inn i
-[kravspesifikasjonen](../../kravspesifikasjon.md) (29.09.2026), som eier kravene.
+[kravspesifikasjonen](../../krav/kravspesifikasjon.md) (29.09.2026), som eier kravene.
 
 - **Redigerbart lerret:** <https://claude.ai/artifact/CnhymdWdfZZRhE5t6VTtE7>
   (privat, må deles fra Share-menyen før andre kan åpne det). Lerretet åpner i
@@ -11,8 +11,8 @@ skjermene. Det er ikke implementert kode. Beslutningene nedenfor er også ført 
 - **Bilder:** [png/](png/) har én PNG per skjerm, mobil (390 px) og desktop (1280–1440 px).
 - **Kildefiler:** [kilde/](kilde/) er en kopi av lerretet (`.dc.html` per skjerm og
   `canvas.json`) per 29.09.2026. Lerretet er fasiten hvis de to spriker.
-- **Sign-off:** [rapporten](../sign-off/rapport.pdf) viser et utvalg av skjermene.
-  Kilden er [rapport.html](../sign-off/rapport.html).
+- **Sign-off:** [rapporten](../../leveranser/sign-off/rapport.pdf) viser et utvalg av skjermene.
+  Kilden er [rapport.html](../../leveranser/sign-off/rapport.html).
 - **Eksportere på nytt** etter endringer på lerretet: last ned filene til `kilde/`, og kjør
   fra repo-roten `node scripts/wireframes-til-png.mjs <abs>/docs/wireframes/kilde <abs>/docs/wireframes <abs>/app`
   og `node scripts/html-til-pdf.mjs <abs>/docs/sign-off/rapport.html <abs>/docs/sign-off/rapport.pdf <abs>/app`,

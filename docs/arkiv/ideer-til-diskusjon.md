@@ -107,7 +107,7 @@ fra en vurdering basert på produktdata. Verken datamodell, stack eller løsning
 3. Hvilken usikkerhet bør prøves først: tilgang til datakilder, faktisk behov eller omfang?
 4. Hva vil begge lære, og hvordan kan begge forklare hele løsningen til eksamen?
 
-Kandidatene gir muligheter til å dekke [T01–T08](emnekrav.md), men en idéskisse
+Kandidatene gir muligheter til å dekke [T01–T08](../emne/emnekrav.md), men en idéskisse
 beviser ikke at kravene er oppfylt. Endelig valg, omfang og begrunnelse føres i
 [prosjektkortet](prosjekt.md) når Max og Emil faktisk har diskutert og bestemt dem.
 

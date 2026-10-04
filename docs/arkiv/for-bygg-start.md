@@ -3,10 +3,10 @@
 Aktive oppgaver ligger på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 
 Arbeidsliste opprettet 16.09.2026, status oppdatert 19.09.2026. Helhetspunktene
-nedenfor er fortsatt åpne; utført arbeid står i [arbeidsloggen](../arbeidslogg-max-og-emil.md).
+nedenfor er fortsatt åpne; utført arbeid står i [arbeidsloggen](../prosess/arbeidslogg-max-og-emil.md).
 Avklart av Max 19.09: salg, gratis lån og betalt leie inngår i MVP, med forespørsler og
 motforslag. Henting/retur avtales i forespørselen. Chat kommer senere, og hjelp/opplæring
-er fortsatt åpent. Se [gjeldende kravspesifikasjon](../kravspesifikasjon.md).
+er fortsatt åpent. Se [gjeldende kravspesifikasjon](../krav/kravspesifikasjon.md).
 
 Listen er ingen bestilling på implementering. [GitHub-planen](github-repo-oppsett.md)
 beskriver oppsettet som skal støtte arbeidet. Repoer er nå opprettet; øvrige punkter
@@ -73,7 +73,7 @@ Foreslått teammetode, ikke et påstått lærerkrav:
 - [ ] **F22:** Lag logo, utvalgte sannferdige badges og trailer via G26–G29. Bruk fungerende
   app og eksempeldata. Dette skal ikke spise opp tid til testing og egen forståelse.
 - [ ] **F23:** Gjennomfør brukertest, rett vesentlige problemer, prøv demoen og gå gjennom
-  [leveranse](leveranse.md) og [læringskart](laering.md). Studentenes refleksjoner skrives av dem.
+  [leveranse](../leveranser/README.md) og [læringskart](../emne/laering.md). Studentenes refleksjoner skrives av dem.
 
 ## Kontrollpunkt før neste fase
 
@@ -82,6 +82,6 @@ forretningsreglene, akseptansekriteriene, viktigste risiko og hvem som gjør/rev
 Kravspekk og teknisk gjennomføringsplan gjennomgås samlet. Nye funksjoner får sin egen
 korte avklaring; dere trenger ikke designe hele semesteret i detalj på forhånd.
 
-Grunnlag: U26 s. 152–158 for specify/clarify/plan/tasks, og [emnekrav](emnekrav.md).
+Grunnlag: U26 s. 152–158 for specify/clarify/plan/tasks, og [emnekrav](../emne/emnekrav.md).
 Prioriteringsmetoden, brukerundersøkelsen og den foreslåtte faseinndelingen er assistentforslag.
 Se [GitHub-planens kildeavgrensning](github-repo-oppsett.md) før noe omtales som lærerkrav.

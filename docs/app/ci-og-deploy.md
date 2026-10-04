@@ -1,7 +1,7 @@
 # CI, PR-regler og videre deploy
 
 Oppdatert 20.09.2026, bestilt av Max. Dette er den konkrete driftsveiledningen;
-[GitHub-planen](github-repo-oppsett.md) beholder den større sjekklisten.
+[GitHub-planen](../arkiv/github-repo-oppsett.md) beholder den større sjekklisten.
 
 ## Hva som finnes nå
 
@@ -22,7 +22,7 @@ at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 
 ## Slå på PR-beskyttelsen når GitHub tillater det
 
-[Ferdig beskyttelseskonfigurasjon](../.github/branch-protection.json) krever:
+[Ferdig beskyttelseskonfigurasjon](../../.github/branch-protection.json) krever:
 
 - PR før endring av main, også for administratoren.
 - Ingen påkrevd godkjenning. Max fjernet kravet om review fra Emil 05.10.2026
@@ -58,7 +58,7 @@ Vitest-dekning og Playwright-rapporter/traces lagres som CI-artefakter i sju dag
 
 Gaten kjører i én jobb og stopper ved feil. Ingen test bruker produksjonsdata,
 Cloudflare-konto eller hemmeligheter. `npm run generate` bruker bare lokal Wrangler-konfigurasjon.
-For konkrete versjoner, opphav og begrensninger, se [appoppsettet](app-oppsett.md).
+For konkrete versjoner, opphav og begrensninger, se [appoppsettet](oppsett.md).
 
 Ved produktutvikling: utvid med reelle enhets-/integrasjonstester, hovedflyt-E2E,
 syntetiske aktører og minst 50 % dekning etter T07. Bevis at tilgangsfeil ikke endrer

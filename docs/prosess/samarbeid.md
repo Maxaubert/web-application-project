@@ -2,7 +2,7 @@
 
 **Utkast til gruppekontrakt, ikke inngått avtale.** Max og Emil er gruppen etter
 brukerens opplysning. Formell gruppeendring og fast studentassistent er ikke kontrollert.
-Kurskilder: [P02–P04](emnekrav.md). PR/merge-gaten nedenfor er Oves arbeidsregel,
+Kurskilder: [P02–P04](../emne/emnekrav.md). PR/merge-gaten nedenfor er Oves arbeidsregel,
 ikke et ekstra Canvas-krav. Scrum, sprinter og egen timelogg er ikke påkrevd i K01.
 
 ## Gruppekontrakt: fylles av begge
@@ -13,8 +13,8 @@ ikke et ekstra Canvas-krav. Scrum, sprinter og egen timelogg er ikke påkrevd i 
 | Arbeidstid, møtepunkt og svarfrist | TBD |
 | Oppgavefordeling og ansvar ved forsinkelse | TBD |
 | Roterende implementering/review og felles eierskap | Forslag: den andre reviewer, bytt fagområde jevnlig |
-| KI-verktøy og grenser | [KI-avtalen](../KI-AVTALE.md), godtatt av begge 30.09 |
-| Tema, minste omfang og kuttliste | [Prosjektkort](prosjekt.md), ikke bestemt |
+| KI-verktøy og grenser | [KI-avtalen](ki-avtale.md), godtatt av begge 30.09 |
+| Tema, minste omfang og kuttliste | [Prosjektkort](../arkiv/prosjekt.md), ikke bestemt |
 | Uenighet, fravær og manglende bidrag | Forslag: ta det opp tidlig, vis konkret hindring, avtal tiltak, kontakt faglærer ved behov |
 | Gruppeendring og studentassistent | Avklares av studentene; ingen henvendelse sendt av assistenten |
 | Bekreftelse | Max: ikke gitt. Emil: ikke gitt. Dato: TBD |
@@ -29,14 +29,14 @@ funksjonssignaturer og grensesnitt før dere jobber separat.
 1. Bruk egen reell Git-identitet. Kontroller `git config user.name` og `git config user.email`.
    Ikke bruk medstudentens navn eller del innlogging. Ikke sett studentidentitet for KI-jobber.
 2. Funksjonsendringer beskrives i issue først. Uten godkjent remote brukes lokal oppgave
-   i [review](review.md), som senere kan overføres til issue. Ikke oppfinn issue-nummer.
+   i [review](../arkiv/review-pr-utkast-2026-09.md), som senere kan overføres til issue. Ikke oppfinn issue-nummer.
 3. Opprett branch `type/issue-slug`, for eksempel `feat/ressursflyt` uten nummer til issue finnes.
    Små docs-/feilrettinger trenger også branch og PR. Ingen endring pushes direkte til hovedbranch.
 4. Commit faktiske sammenhengende endringer underveis: `type(scope): kort beskrivelse`.
    Ved KI-bidrag skal verktøy og rolle være synlige; bruk harnessens co-author-trailer der relevant.
    Ikke tilbakedater, del opp en ferdig leveranse for å late som semesterarbeid eller fabrikér bidrag.
 5. Den andre studenten leser diffen, prøver berørt flyt og kan forklare endringen.
-   Bruk [PR-malen](../.github/PULL_REQUEST_TEMPLATE.md), krav-ID og faktisk verifikasjon.
+   Bruk [PR-malen](../../.github/PULL_REQUEST_TEMPLATE.md), krav-ID og faktisk verifikasjon.
 6. Kjør relevante gater. App: full unit/typecheck/lint, integrasjon/dekning og Playwright
    lokalt ved UI. Docs: docsjekk og diffkontroll. Skill «kjørt» fra «planlagt».
 7. Vis branch-bygget lokalt for brukerprøving før mergeanbefaling av UI-endring.

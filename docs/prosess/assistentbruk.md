@@ -1,6 +1,6 @@
 # Bruk med Claude, Codex og ChatGPT
 
-Felles veiledning er [AGENTS.md](../AGENTS.md). Det er prosjektkontekst og arbeidsregler,
+Felles veiledning er [AGENTS.md](../../AGENTS.md). Det er prosjektkontekst og arbeidsregler,
 ikke teknisk håndheving, en ferdig besvarelse eller bevis på at en assistent følger alt.
 
 ## Hva lastes faktisk?

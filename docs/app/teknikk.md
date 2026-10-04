@@ -1,7 +1,7 @@
 # Teknikk, kodekvalitet og beslutninger
 
 Ingen arkitektur er besluttet. Dette er en **teamstandard og faglig sjekkliste**,
-med kurskrav merket T/P. Kilder: [K01 og U26](kilder.md). Bruk bare delene som berører
+med kurskrav merket T/P. Kilder: [K01 og U26](../emne/kilder.md). Bruk bare delene som berører
 endringen; hele listen er en gjennomgang før milepæl, ikke ritual for hver linje.
 
 ## Første appoppsett

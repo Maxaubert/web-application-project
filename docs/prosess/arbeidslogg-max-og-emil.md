@@ -5,7 +5,7 @@ Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 
 ## 14.09.2026 – Kursgrunnlag
 
-- Samlet emnekrav, kursplan og undervisningsmateriale i et dokumentasjonsgrunnlag med kildeliste og veiledning for kodeassistenter (Codex). Kontrollene står i [verifikasjonen](docs/verifikasjon.md).
+- Samlet emnekrav, kursplan og undervisningsmateriale i et dokumentasjonsgrunnlag med kildeliste og veiledning for kodeassistenter (Codex). Kontrollene står i [verifikasjonen](../app/dokumentkontroll.md).
 
 ## 18.09.2026 – Repo, oppsettplan og første kravutkast (2,5 t)
 
@@ -45,9 +45,9 @@ Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 - Tegnet wireframes for hele MVP-en i mobil og desktop med Claude Design, én skjerm om gangen: innlogging, søk, annonse, bud og lån, forespørsler, avtale, Min side og profil.
 - Valgte innlogging med e-postkode eller lenke, bare for @hiof.no. Kategoriene ble salg, lån og gis bort, med bud ved salg og periode ved lån. Sted og tid avtales utenfor appen.
 - Avklarte reglene: eier bekrefter retur, lånepris er ukepris delt på 7 per dag, ubesvarte forespørsler utløper etter 7 dager, og overlevering regnes som bekreftet etter 3 dager. Returrapporter ses bare av den som skrev dem og admin. Solgte annonser kan ikke legges ut på nytt.
-- Skrev [skjermspesifikasjon](docs/wireframes/README.md) med ruter, datamodell, API og komponentnavn på engelsk (Claude Code).
-- Laget [sign-off-rapport](docs/sign-off/rapport.pdf) med hovedflyten, én mobil- og én desktopskjerm per steg.
-- Oppdaterte [kravspesifikasjonen](kravspesifikasjon.md) med beslutningene fra 28. og 29.09.
+- Skrev [skjermspesifikasjon](../design/wireframes/README.md) med ruter, datamodell, API og komponentnavn på engelsk (Claude Code).
+- Laget [sign-off-rapport](../leveranser/sign-off/rapport.pdf) med hovedflyten, én mobil- og én desktopskjerm per steg.
+- Oppdaterte [kravspesifikasjonen](../krav/kravspesifikasjon.md) med beslutningene fra 28. og 29.09.
 - Merget wireframes og rapport inn i develop ([PR #11](https://github.com/Maxaubert/web-application-project/pull/11)).
 - Innførte daglig WAL og førte timelisten bakover fra commit-historikken.
 - Satte opp Kanban-board i GitHub Projects og fordelte sign-off-oppgavene.

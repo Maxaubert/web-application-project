@@ -2,9 +2,9 @@
 
 **Godtatt av Max og Emil** (registrert 30.09.2026). Grunnlaget er skrevet med Codex og
 tilpasset etter våre valg. Filen dokumenterer ikke hva Max eller Emil allerede kan.
-Kilde: [K02 og U26](docs/kilder.md).
+Kilde: [K02 og U26](../emne/kilder.md).
 
-**Start med [lærerens KI-avtale fra Canvas](docs/ki-avtale-canvas.md)**, hentet og
+**Start med [lærerens KI-avtale fra Canvas](../emne/ki-avtale-mal.md)**, hentet og
 kontrollert 19.09.2026. Den er bevart som egen kildetekst; denne filen er gruppens
 arbeidsutkast. Canvas-avtalen åpner for KI som hjelp i arbeidet, men krever egen
 forståelse og kontroll av resultatene. Den er ikke en generell tillatelse til KI
@@ -60,7 +60,7 @@ inn i rapporten eller loggen. Ved tvil om bearbeiding/korrektur: avklar konkret 
 ## 4. Hvordan holder vi avtalen levende?
 
 Avtalen ligger i repoet og brukes som grunnlag for ærlig omtale av KI i rapporten.
-Før vesentlig KI-bidrag i [arbeidsloggen](docs/arbeidslogg.md): verktøy, oppgave,
+Før vesentlig KI-bidrag i [arbeidsloggen](loggrutine.md): verktøy, oppgave,
 faktisk bidrag, kontroll, feil og eget læringsbehov. Ikke lag et referat av enhver prompt.
 Ikke logg hemmeligheter, sensitive promptdata eller andres private opplysninger.
 
