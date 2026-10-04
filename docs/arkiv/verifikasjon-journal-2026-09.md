@@ -1,51 +1,10 @@
-# Verifikasjon av dokumentasjonsgrunnlaget
+# Kontrolljournal for dokumentasjonsgrunnlaget, september 2026
 
-Dette dokumentet skiller faktisk gjennomført kontroll fra fremtidige appgater.
-Det er **ikke en sikkerhetsrevisjon**, karaktervurdering eller attest på studentenes arbeid.
+**Arkivert 05.10.2026.** Dette er den historiske delen av det tidligere `docs/verifikasjon.md`.
+Påstander som «ingen app», Node 22 og privat repo gjaldt da de ble skrevet og er ikke oppdatert.
+Gjeldende kontrollbeskrivelse er [dokumentkontroll](../app/dokumentkontroll.md).
 
-## Kjør lokalt
-
-Fra repo-roten, Node.js 22+ og Git:
-
-```powershell
-node scripts/verify-docs.mjs
-git diff --check
-git diff --cached --check
-```
-
-Ingen avhengigheter eller nettverk kreves. Kjør også etter at filer er staged.
-`git diff --check` alene kontrollerer ikke untracked filer; Node-kontrollen tar med
-sporede og ikke-ignorerte untracked filer. Den krever ikke søsterrepoet School.
-
-## Hva kontrollen gjør
-
-- Kontrollerer at prosjektets sentrale filer og krav-ID-rader finnes.
-- Kontrollerer vanlige relative Markdown-lenker utenfor kodeblokker innenfor repoet.
-- Kontrollerer 200-linjersgrense i AGENTS/CLAUDE og CLAUDE-importen.
-- Søker etter utvalgte formuleringer som beskytter kjent kritisk veiledning.
-- Validerer kilde-ID, kontrolldato og hash-format i manifestet, uten å lese kursarkivet.
-- Flagger visse hemmelighetsmønstre og uønskede kilde-/nøkkelfiler i Git-utvalget.
-- Avviser em dash og tekstfiler større enn kontrollgrensen.
-
-## Begrensninger
-
-Tekstkontroll beviser ikke at en regel er faglig riktig, at kilder fortsatt er gjeldende,
-eller at en assistent følger den. Formuleringskontroller er vedlikeholdspunkter, ikke
-semantisk analyse. Ved legitim omskriving må kontroll og dokument vurderes sammen.
-Scriptet tolker ikke all Markdown-syntaks, sjekker ikke eksterne lenker, og lokale
-ankere må ha eksplisitt HTML-id. Det kjører ingen app og måler ingen testdekning.
-
-Personvernsjekken er begrenset: ingen full historikk-/binær-/OCR-/høyentropiskanning,
-ingen inspeksjon av ignorerte filer, og ingen garanti for å finne alle persondata eller
-hemmeligheter. Før publisering må mennesker lese den faktiske diffen og historikken.
-En kontroll av arbeidsfilene er ikke bevis på at staged versjon er identisk; kontroller
-`git status` og staged diff før commit. .gitignore fjerner aldri allerede sporet innhold.
-
-Manifestet identifiserer lest kildeversjon, men validatoren sammenligner ikke hash med
-Canvas eller School. Oppdatering av krav krever [kilderutinen](kilder.md).
-Live innlasting i en ny assistentsesjon og visuell Markdown-rendering er separate kontroller.
-
-## Kontrolljournal
+### Kontrolljournal
 
 | Kontroll | Status |
 |---|---|
@@ -79,14 +38,14 @@ Tidligere tall og uavhengig review ovenfor gjelder grunnlaget før dette tillegg
 Notattilleggets lokale kontroll besto: 21 Git-filer, 21 tekstfiler og 63 lokale lenker,
 samt arbeidsdiff og staged diff uten whitespace-feil. Ingen ny kritiker er brukt.
 
-## Første app-PR må etablere neste verifikasjonsnivå
+### Første app-PR må etablere neste verifikasjonsnivå
 
 Erstatt README-TBD med prøvde kommandoer, kjør full unit/typecheck/lint og relevante
 integrasjonstester. Test UI med Playwright lokalt. Sett opp reell app-CI på PR/push når
 remote er godkjent, og test branch-bygget lokalt før mergeanbefaling. Dokumentgrunnlagets
 grønne kontroll kan aldri erstatte disse gatene.
 
-## Planleggingsdokumenter 16.09.2026
+### Planleggingsdokumenter 16.09.2026
 
 Codex har skrevet [GitHub-oppsett](github-repo-oppsett.md) og [før-bygg-liste](for-bygg-start.md)
 etter brukerbestilling, samt lagt navigasjon og PR-utkast til eksisterende dokumentasjon.
@@ -105,9 +64,9 @@ besto uten whitespace-feil. Dette verifiserer dokumentene, ikke fremtidig CI ell
 
 Ingen faktisk GitHub-PR kan åpnes her uten en remote og basehistorikk. De tidligere
 staged filene er bevart på ny arbeidsbranch `codex/repo-setup-plan`; intet er committet,
-publisert eller merget. PR-utkastet står i [review](review.md).
+publisert eller merget. PR-utkastet står i [review](review-pr-utkast-2026-09.md).
 
-## Dokumentstruktur og produktavklaringer 19.09.2026
+### Dokumentstruktur og produktavklaringer 19.09.2026
 
 Etter Max' bestilling er produktutkastet omdøpt til kravspesifikasjon, med en separat
 teknisk plan og README som inngang. Alle tre handelstyper inngår i første versjon;
@@ -120,7 +79,7 @@ av chat er rettet. En tidlig validatorkjøring under review så den ennå ikke s
 omdøpingen; etter staging besto kontrollen med 26 filer og 113 lokale lenker.
 Diffkontroll besto. Ingen app, tester eller GitHub-workflows er implementert her.
 
-## Presisering av avtaler og retur 19.09.2026
+### Presisering av avtaler og retur 19.09.2026
 
 Max avklarte at eieren alene bekrefter mottatt retur og fullfører gratis lån og betalt
 leie. Codex har innarbeidet dette som FK-07 og AK-26–AK-29, presisert aktører og
@@ -136,7 +95,7 @@ arbeidsdiff besto uten whitespace-feil. Dette er dokumentkontroll, ikke app- ell
 E2E-testing. Ingen ny Canvas-kontroll eller bekreftelse fra Emil er utført.
 Brukeren har uttrykkelig godkjent PR og merge for denne web-dokumentasjonen.
 
-## Lærerens KI-avtale fra Canvas 19.09.2026
+### Lærerens KI-avtale fra Canvas 19.09.2026
 
 Etter bestilling fra Max hentet Codex den publiserte K02-siden direkte fra Canvas.
 Kun denne avtalens tekst er lagt inn som kildekopi, i docs/ki-avtale-canvas.md;
@@ -156,7 +115,7 @@ og 120 lokale lenker; staged diffkontroll besto uten whitespace-feil. Ingen appk
 er endret eller apptester kjørt. Reviewet er ikke en bekreftelse fra Emil.
 Dette tillegget går i en ny PR og omfattes ikke av tidligere mergegodkjenning.
 
-## Løpende fremdrift og felles timeliste 19.09.2026
+### Løpende fremdrift og felles timeliste 19.09.2026
 
 Etter ny bestilling fra Max er TODO oppdatert med utførte delresultater og neste
 oppgaver, mens de ti planleggingstemaene fortsatt krever gruppegjennomgang.
@@ -174,7 +133,7 @@ Uavhengig review fant ingen handlingskrevende funn. Dokumentvalidator besto med
 Dette er dokumentarbeid utført av Codex etter Max' innspill, ikke studentrefleksjon
 eller apptesting. Endringene inngår i samme åpne PR som KI-kildetillegget.
 
-## CI og forsøk på PR-beskyttelse 19.09.2026
+### CI og forsøk på PR-beskyttelse 19.09.2026
 
 Max bestilte teknisk PR-krav og grunnlag for test-/deploy-pipelines. Codex la til
 CI-workflow for PR mot main, push til main og manuell kjøring, Node 22.x-valg,
@@ -203,7 +162,7 @@ Det er fremdeles ingen apptester. Faktisk blokkering av merge kan først verifis
 når kontoen støtter branch protection. Workflowfilene ligger i åpen PR; hovedbranch-
 trigger og Dependabot-oppsett forutsetter merge. Nye PR-commits må få egen grønn kjøring.
 
-## Lokal WAL og overføring til arbeidslogg 19.09.2026
+### Lokal WAL og overføring til arbeidslogg 19.09.2026
 
 Max ba om en Git-ignorert arbeids-WAL som senere gjennomgås og oppsummeres i
 arbeidsloggen. Codex opprettet lokal WAL.md og dokumenterte rutinen i AGENTS.md

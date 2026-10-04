@@ -17,7 +17,7 @@ Slå opp etter forsøket, test og prøv igjen. Fem gode minutter er bedre enn ma
 automatisk utfylte avkrysninger. Vanlig produktivt KI-arbeid kan fortsette mellom øvingene.
 
 Nivåene er **ikke prøvd → med støtte → forklart uten støtte → endret/feilsøkt uten støtte**.
-Før faktisk dato, oppgave og observasjon i [arbeidsloggen](arbeidslogg.md). Mestring er
+Før faktisk dato, oppgave og observasjon i [arbeidsloggen](../prosess/loggrutine.md). Mestring er
 temaavhengig. Lesing, fullført video og KI-forklaring er ikke alene bevis på mestring.
 Studentene skriver egne refleksjoner; ingen assistent fyller dem inn på deres vegne.
 
@@ -68,6 +68,21 @@ U26 s. 232 sier uttrykkelig at L11–15-prinsippene er eksamensrelevante, uten k
 | L13 sikkerhet s. 275–296, særlig 292–293 | SQLi/parametre, XSS/escaping, CSP/nonce, CSRF/Origin/SameSite, inputvalidering, eierskap i handler, action origin, trusselmodell | Velg én angrepssti og forklar både kontroll og test. Hva beskytter ikke en skjult knapp eller TypeScript-type mot? |
 | L14 filer s. 297–313, særlig 309 | Object storage mot DB-blob, multipart/streaming, type/størrelse, metadata og tilgang, cache-control/ETag, preview/object URL, foreldreløse filer, unik nøkkel/cacheinvalidering | Hvordan håndteres at filopplasting lykkes, men DB-skriving feiler? Hvordan hindres at en annen bruker leser en privat fil? |
 | L15 cron s. 314–333, særlig 331 | Cronuttrykk/UTC, scheduled kontra fetch, dispatch/waitUntil, opprydding/digest/reindeksering, idempotens/retries, batcher, lokal trigger og logger | Hva skjer hvis jobben kjører to ganger eller avbrytes halvveis? Hvilken tilstand og logg lar deg reparere trygt? |
+
+## Forklar grunnmuren i koden
+
+Øvingsspørsmål fra forberedelsen til sign-off uke 40 (Claude Code, 28.09.2026). Svar med
+egne ord og uten KI; spørsmålene har ingen fasit her.
+
+1. `app/src/worker.tsx`: hvilken rute viser hvilken komponent, og hva gjør
+   `setCommonHeaders()` og `render(Document, ...)`?
+2. Server og klient: hvorfor trenger `login.tsx`, `email.tsx` og `password.tsx`
+   `"use client"`, og hva kjører på serveren?
+3. Komponentene: hvilke props tar `Email` og `PasswordField`, og hvordan går en verdi
+   fra input-feltet opp til `Login`?
+4. Testen: hva tester den, og hvilken feil i koden ville den avslørt?
+5. Videre vekst: hvilke komponenter og API-endepunkter i
+   [skjermspesifikasjonen](../design/wireframes/README.md) bygger på dette?
 
 ## Øvingsrunde for to
 

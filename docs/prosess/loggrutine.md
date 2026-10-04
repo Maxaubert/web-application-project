@@ -2,15 +2,15 @@
 
 Dette er en lett **teamhjelp**, ikke et ekstra Canvas-krav om dagbok eller timelister.
 Git-historikken viser faktiske kodebidrag; korte notater hjelper dere å skrive en ærlig
-rapport og følge opp læringshull. [P02/P04/P05](emnekrav.md) styrer.
+rapport og følge opp læringshull. [P02/P04/P05](../emne/emnekrav.md) styrer.
 
 ## Hvor fører vi arbeidet?
 
-- [Felles arbeidslogg for Max og Emil](../arbeidslogg-max-og-emil.md): hovedpunkter per
+- [Felles arbeidslogg for Max og Emil](arbeidslogg-max-og-emil.md): hovedpunkter per
   arbeidsdag i jeg-form.
-- [Timeliste](../timeliste.md): én rad per person og økt; ukjent tid føres ikke som null.
+- [Timeliste](timeliste.md): én rad per person og økt; ukjent tid føres ikke som null.
 - [Kanban-board](https://github.com/users/Maxaubert/projects/1): oppgavene som GitHub Issues.
-- [Verifikasjon](verifikasjon.md): tekniske kontrollresultater og begrensninger.
+- [Verifikasjon](../app/dokumentkontroll.md): tekniske kontrollresultater og begrensninger.
 
 Denne filen er veiledning og mal, ikke en parallell fremdriftslogg. Den første
 registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjonen.
@@ -19,7 +19,6 @@ registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjo
 
 Samme opplegg som i Max' OS-prosjekt (avklart 29.09.2026). Hver arbeidsdag har en egen fil
 `wal/wal-<ÅÅÅÅ-MM-DD>.md` i repo-roten. Mappen er Git-ignorert og skal ikke committes.
-Den gamle enkeltfilen `WAL.md` (19.09) er flyttet inn i `wal/wal-2026-09-19.md`.
 
 ```markdown
 # WAL 29.09.2026
@@ -34,8 +33,8 @@ Løpende arbeidslogg med tidsstempler. Skrives underveis, ikke i etterkant.
 1. Ved øktstart: opprett dagens fil hvis den mangler, og les forrige fil for åpne punkter.
 2. Underveis: skriv en rad når noe skjer. Klokkeslett hentes med `date "+%H:%M"`, aldri gjettet.
    Etterførte rader merkes med `~` foran klokkeslettet. Blindveier og forkastede spor skal stå.
-3. Ved dagens slutt: destiller WAL til [arbeidsloggen](../arbeidslogg-max-og-emil.md) som én
-   oppføring per dag (`## dd.mm.åååå – Tittel (x t)`), og til [timelisten](../timeliste.md) med
+3. Ved dagens slutt: destiller WAL til [arbeidsloggen](arbeidslogg-max-og-emil.md) som én
+   oppføring per dag (`## dd.mm.åååå – Tittel (x t)`), og til [timelisten](timeliste.md) med
    én rad per person og dag: dato, kort punkt om hva som ble gjort, timer og grunnlag.
    Arbeidsloggen skrives som Max' OS-praksislogg: jeg-form med verb først («Satte opp», «Skrev»),
    korte konkrete punkter, bare utført arbeid, ingen blindveier eller sidespor. Aldri «Max gjorde».

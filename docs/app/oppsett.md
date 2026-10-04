@@ -1,7 +1,7 @@
 # Første appoppsett
 
 Opprettet 20.09.2026 etter Max' bestilling: initialiser verktøy og appgrunnlag,
-uten produktkode. [Emnekrav](emnekrav.md) T01/T02/T07/T08 styrer verktøyvalget.
+uten produktkode. [Emnekrav](../emne/emnekrav.md) T01/T02/T07/T08 styrer verktøyvalget.
 Dette er et teknisk oppsettsnotat, ikke studentenes arkitekturbegrunnelse til rapporten.
 
 ## Hva som er satt opp
@@ -24,7 +24,7 @@ Ved oppdatering må eventuelle nye skriptversjoner vurderes, ikke automatisk til
 Appen ligger i `app/` for å bevare kurs- og plandokumentene i repo-roten.
 Samme Git-repo dekker alt; ingen ny Git-init eller nested repo. npm installerer
 rammeverk og verktøy lokalt i appen, ikke globalt på PC-en. Node/npm må installeres
-separat på Emils/skole-PC-en. Se [README](../README.md) for kommandoer.
+separat på Emils/skole-PC-en. Se [README](../../README.md) for kommandoer.
 
 ## Database uten produktmodell
 
@@ -84,7 +84,7 @@ Kontrollert 20.09.2026, sammen med repoets kursgrunnlag:
 - [RedwoodSDK og Vitest](https://docs.rwsdk.com/guides/vitest), referanse for senere runtime-integrasjon
 
 Ingen ny full Canvas-revisjon er utført i oppsettsøkten. Kursreglene og særgrensene
-for KI i [KI-avtalen](../KI-AVTALE.md) gjelder fortsatt.
+for KI i [KI-avtalen](../prosess/ki-avtale.md) gjelder fortsatt.
 
 ## Verifikasjon av oppsettet 20.09.2026
 

@@ -1,16 +1,16 @@
 # CI, PR-regler og videre deploy
 
-Oppdatert 20.09.2026, bestilt av Max. Dette er den konkrete driftsveiledningen;
-[GitHub-planen](github-repo-oppsett.md) beholder den større sjekklisten.
+Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
+[GitHub-planen](../arkiv/github-repo-oppsett.md) fra 16.09 er arkivert; åpne punkter følges på Kanban-boardet.
 
 ## Hva som finnes nå
 
 | Del | Status |
 |---|---|
-| CI | Samlet `Repository checks`: dokumenter, whitespace, npm ci, typecheck, lint, Vitest/dekning, lokal D1, bygg og Playwright. Appkontrollene ligger på oppsettsbranchen frem til merge. |
+| CI | Samlet `Repository checks`: dokumenter, whitespace, npm ci, typecheck, lint, Vitest/dekning, lokal D1, bygg og Playwright. Kjører på PR og push mot main. |
 | Node/npm | Node 24.19.0 fra `.node-version`, npm 11.17.0. Samme versjoner lokalt og i CI. |
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig. Ingen automatisk merge. |
-| PR-beskyttelse | **Blokkert av GitHub-abonnementet.** Sist prøvd 19.09: private repo krever Pro eller offentlig repo. Repoet beholdes privat; direkte push er ikke teknisk sperret. |
+| PR-beskyttelse | **Aktiv på main** (kontrollert 05.10.2026). Repoet er offentlig. PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. |
 | Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
 | Deploy og release | Ingen hosting, hemmeligheter, deploy eller automatisk GitHub-utgivelse konfigurert. |
 
@@ -20,9 +20,9 @@ skrivetoken trengs. Eldre kjøringer av samme PR kanselleres; hovedbranch-kjøri
 kanselleres ikke på denne måten. Påkrevde sjekker må ikke få path-filtre som gjør
 at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 
-## Slå på PR-beskyttelsen når GitHub tillater det
+## PR-beskyttelsen på main
 
-[Ferdig beskyttelseskonfigurasjon](../.github/branch-protection.json) krever:
+[Ferdig beskyttelseskonfigurasjon](../../.github/branch-protection.json) krever:
 
 - PR før endring av main, også for administratoren.
 - Ingen påkrevd godkjenning. Max fjernet kravet om review fra Emil 05.10.2026
@@ -34,19 +34,16 @@ Emil-18 er registrert som samarbeidspartner ved kontroll 20.09.2026.
 KI-review erstatter ikke medstudentreview når review gjøres. Admin kan fremdeles endre repoets
 innstillinger; regelen er en sperre i arbeidsflyten, ikke umulighet for en eier å endre policy.
 
-Når abonnementet støtter dette, kontroller eksisterende regler først og sammenhold
-dem med filen slik at nye regler ikke overskriver senere endringer. Deretter, fra repo-roten:
+Ved endring: kontroller eksisterende regler først og sammenhold dem med filen slik at
+nye regler ikke overskriver senere endringer. Deretter, fra repo-roten:
 
 ```powershell
 gh api --method PUT repos/Maxaubert/web-application-project/branches/main/protection --input .github/branch-protection.json
 gh api repos/Maxaubert/web-application-project/branches/main/protection
 ```
 
-JSON-filen er en oppskrift, ikke aktiv GitHub-beskyttelse. Bekreft lagrede verdier
-med API-et og at en PR uten review eller bestått sjekk faktisk vises som blokkert.
-Dokumenter en kontrollert feilsjekk før dere kaller merge-gaten verifisert. Ikke prøv
-en direkte push til main med ekte endringer som test. Ikke gjør repoet offentlig
-eller kjøp abonnement uten eksplisitt bestilling.
+JSON-filen er oppskriften; den aktive regelen ligger i GitHub. Bekreft lagrede verdier
+med API-et etter endring. Ikke prøv en direkte push til main med ekte endringer som test.
 
 ## Appkontroller og videre utvidelse
 
@@ -58,7 +55,7 @@ Vitest-dekning og Playwright-rapporter/traces lagres som CI-artefakter i sju dag
 
 Gaten kjører i én jobb og stopper ved feil. Ingen test bruker produksjonsdata,
 Cloudflare-konto eller hemmeligheter. `npm run generate` bruker bare lokal Wrangler-konfigurasjon.
-For konkrete versjoner, opphav og begrensninger, se [appoppsettet](app-oppsett.md).
+For konkrete versjoner, opphav og begrensninger, se [appoppsettet](oppsett.md).
 
 Ved produktutvikling: utvid med reelle enhets-/integrasjonstester, hovedflyt-E2E,
 syntetiske aktører og minst 50 % dekning etter T07. Bevis at tilgangsfeil ikke endrer

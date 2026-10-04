@@ -1,5 +1,7 @@
 # Lokal oppgave og PR-utkast
 
+> **Arkivert 05.10.2026.** Historisk dokument som ikke vedlikeholdes. Se [arkivoversikten](README.md).
+
 **Lokal oppgave:** etabler et kildebasert prosjektgrunnlag for Max og Emil i ITF31619
 26H, med AI-veiledning, kravsporbarhet, samarbeid, egen læring og reell docsverifikasjon.
 Dette er bestilt arbeid. Valg av appidé og appimplementering er utenfor denne endringen.
@@ -28,7 +30,7 @@ Dokumentasjon er laget med Codex og tilskrives ikke studentene som egen innsats.
 
 En Node-kontroll verifiserer struktur, lokale lenker og utvalgte beskyttelsesregler,
 med begrenset personvernkontroll. Resultater og uavhengig kritikk dokumenteres i
-[verifikasjonsloggen](verifikasjon.md). Det finnes ingen app, apptester, dekningsprosent
+[verifikasjonsloggen](../app/dokumentkontroll.md). Det finnes ingen app, apptester, dekningsprosent
 eller deploy å påstå fungerer.
 
 ## Akseptansekriterier for denne endringen
@@ -70,5 +72,5 @@ Krav, undervisning, teamforslag og presentasjonspolering skilles eksplisitt.
 Emnekravene bygger på den tidligere Canvas-kontrollen, ikke en ny live-kontroll.
 Den historiske lærertranskripsjonen og relevant 2026-undervisning er lest på nytt.
 
-Kontroll og uavhengig review føres i [verifikasjon](verifikasjon.md). Dette tillegget
+Kontroll og uavhengig review føres i [verifikasjon](../app/dokumentkontroll.md). Dette tillegget
 implementerer ingen appfunksjon eller GitHub-innstilling. Ingen publisering/merge er utført.

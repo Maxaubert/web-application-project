@@ -1,7 +1,7 @@
 # Teknisk plan for studentmarkedet
 
 **Oppdatert 20.09.2026. Appgrunnlag finnes; produktarkitekturen er fortsatt utkast.**
-[Kravspesifikasjonen](../kravspesifikasjon.md) eier produktets oppførsel og omfang.
+[Kravspesifikasjonen](../krav/kravspesifikasjon.md) eier produktets oppførsel og omfang.
 Dette dokumentet skal beskrive hvordan den oppfylles. [Teknikk](teknikk.md) er den
 generelle faglige sjekklisten, ikke en parallell apparkitektur.
 
@@ -9,7 +9,7 @@ generelle faglige sjekklisten, ikke en parallell apparkitektur.
 
 | Område | Nåværende status | Neste avklaring |
 |---|---|---|
-| Rammeverk og språk | RedwoodSDK 1.7.3, React, Vite og TypeScript satt opp etter Max sin bestilling | [Oppsett og versjoner](app-oppsett.md); studentenes egen begrunnelse gjenstår. |
+| Rammeverk og språk | RedwoodSDK 1.7.3, React, Vite og TypeScript satt opp etter Max sin bestilling | [Oppsett og versjoner](oppsett.md); studentenes egen begrunnelse gjenstår. |
 | Styling | Max ønsker moderne verktøy, eksempelvis Tailwind CSS | Velg sammen med stacken; verktøyet erstatter ikke designkravene. |
 | Database og ORM | Drizzle og lokal D1 er satt opp, ingen tabeller | Følg T02; gruppen designer eget skjema etter regelavklaring. |
 | Innlogging | Feide undersøkt og valgt bort av Max 19.09 | Velg alternativ innlogging og hvordan studentmålgruppen verifiseres. Ingen alternativ løsning er valgt eller prøvd. |
@@ -41,7 +41,7 @@ Ingen chatkomponent eller betalingsintegrasjon skal bygges som del av MVP.
 **Beslutning oppgitt av Max 19.09.2026:** Feide er ikke riktig løsning for prosjektet
 og velges bort. Undersøkelsen nedenfor er dokumentgrunnlaget, ikke en påstand om
 at Feide er teknisk umulig eller at HiØ har avslått tilgang. Detaljert begrunnelse
-for valget er ikke oppgitt. Se 19.09 i [arbeidsloggen](../arbeidslogg-max-og-emil.md).
+for valget er ikke oppgitt. Se 19.09 i [arbeidsloggen](../prosess/arbeidslogg-max-og-emil.md).
 
 Offisielle kilder undersøkt 19.09.2026:
 
@@ -66,16 +66,16 @@ er fortsatt forskjellige spørsmål; begge må avklares for valgt løsning.
 | Foreslåtte tillegg: foreldet motforslag, tapt svar og ny innsending uten doble handlinger | Gjennomgå reglene før nye kriterier fastsettes |
 | REST-kontrakt med relevant metode, status og feilsvar | T03 |
 | Vitest-integrasjon av hovedflyt og minst 50 % dekning, med avklart målegrunnlag | T07 |
-| Playwright av hovedflytene og manuell kontroll av tilgjengelighet | Teamstandard i [GitHub-plan](github-repo-oppsett.md) |
-| Reproduserbare kommandoer og nødvendig konfigurasjon uten hemmeligheter | T08, [README](../README.md) |
+| Playwright av hovedflytene og manuell kontroll av tilgjengelighet | Teamstandard i [GitHub-plan](../arkiv/github-repo-oppsett.md) |
+| Reproduserbare kommandoer og nødvendig konfigurasjon uten hemmeligheter | T08, [README](../../README.md) |
 
-Starterens testmiljø og kommandoer finnes i [README](../README.md). Produktets tester
+Starterens testmiljø og kommandoer finnes i [README](../../README.md). Produktets tester
 og hovedflytintegrasjon finnes ikke ennå; scaffoldtester oppfyller ikke T07. Emnekrav bygger på sist kontrollerte
-kurskilder i [kildeindeksen](kilder.md); ingen ny Canvas-kontroll er utført her.
+kurskilder i [kildeindeksen](../emne/kilder.md); ingen ny Canvas-kontroll er utført her.
 
 ## Neste planlegging
 
 Avklar reglene, velg stack, tegn datamodell og kontrakter, og bryt første komplette flyt
-ned i små oppgaver. Bruk [prosjektplanen](prosjekt.md) og [Kanban-boardet](https://github.com/users/Maxaubert/projects/1) til arbeidsdeling.
+ned i små oppgaver. Bruk [prosjektplanen](../arkiv/prosjekt.md) og [Kanban-boardet](https://github.com/users/Maxaubert/projects/1) til arbeidsdeling.
 For hvert vesentlig valg: noter alternativ, begrunnelse, kostnad og hva som ville endret valget.
 Studentenes beskyttede arkitekturbegrunnelse i rapporten skal fortsatt skrives av dem selv.

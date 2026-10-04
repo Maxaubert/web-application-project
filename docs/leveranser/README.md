@@ -1,6 +1,6 @@
 # Leveranser, fremvisning og eksamen
 
-Kildene er [emnekrav](emnekrav.md) A0–A5/E1–E2 og [K01 §8–12, U26 s. 229–232](kilder.md).
+Kildene er [emnekrav](../emne/emnekrav.md) A0–A5/E1–E2 og [K01 §8–12, U26 s. 229–232](../emne/kilder.md).
 Dette er en sjekkliste og en disposisjon, **ikke ferdig studentrapport**.
 Ingen avkrysninger er gjort på studentenes vegne.
 
@@ -85,5 +85,5 @@ historikk. Ved funn av hemmelighet: stopp publisering og avklar konkret oppryddi
 Kontroller individuell godkjenning av alle arbeidskrav. Øv 20–30 minutter uten
 hjelpemidler på et nytt case, så begge må resonnere fremfor å gjengi en memorert demo.
 Case gis ved eksamen eller inntil én uke før; innholdet er ukjent. Karakter er individuell.
-Bruk [læringskartet](laering.md), inkludert L11–15-prinsippene, og repeter faktiske hull.
+Bruk [læringskartet](../emne/laering.md), inkludert L11–15-prinsippene, og repeter faktiske hull.
 Ingen assistent skal levere live-svar under denne vurderingen.

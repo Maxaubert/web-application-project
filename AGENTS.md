@@ -4,15 +4,15 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, lån og gis bort
+- Appgrunnlag i `app/` med påbegynt innlogging og enkel prisberegning; markedsplassfunksjonene er ikke bygget. Studentmarked med salg, lån og gis bort
   (Max 29.09); bud eller låneperiode med motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp.
-- [Kravspesifikasjon](kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/teknisk-plan.md)
+- [Kravspesifikasjon](docs/krav/kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/app/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
-- [Wireframes og skjermspesifikasjon](docs/wireframes/README.md) er byggegrunnlaget for skjermer, ruter,
+- [Wireframes og skjermspesifikasjon](docs/design/wireframes/README.md) er byggegrunnlaget for skjermer, ruter,
   datamodell og API. Nyere beslutninger der går foran kravspesifikasjonen til den er oppdatert.
-- Les [emnekrav](docs/emnekrav.md), [prosjektkort](docs/prosjekt.md) og [KI-avtale](KI-AVTALE.md)
-  før implementering. Les [teknikk](docs/teknikk.md) for berørte kodeområder og
-  [læringskart](docs/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.
+- [Dokumentkartet](docs/README.md) viser hvor alt ligger. Les [emnekrav](docs/emne/emnekrav.md) og
+  [KI-avtale](docs/prosess/ki-avtale.md) før implementering. Les [teknikk](docs/app/teknikk.md) for berørte kodeområder og
+  [læringskart](docs/emne/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.
 
 ## Kilder og avvik
 
@@ -25,7 +25,7 @@
   kilde for ferske Canvas-uttrekk, kunngjøringer, sign-off, kursmateriell og Max' beslutningsnotat
   `School/kravdiskusjon.md`. Start i `School/ITF31619-Webapplikasjoner/README.md` før krav- eller
   planarbeid. Bare lesing; mangler det (f.eks. hos Emil), bruk Canvas direkte.
-- Oppdater kilder ved milepæler. Følg [kilder](docs/kilder.md); ikke hent andre emner eller
+- Oppdater kilder ved milepæler. Følg [kilder](docs/emne/kilder.md); ikke hent andre emner eller
   kontodata. Ikke skriv til School, Claude-minner eller andre prosjekter.
 - Hvis kodeeksempel kolliderer med sikre API-er, dokumenter konflikten og sjekk offisiell
   dokumentasjon for valgt versjon. Ikke kopier tidlige, ufullstendige demonstrasjoner blindt.
@@ -44,7 +44,7 @@
 - Følg eksisterende struktur, én tydelig oppgave per fil, og refaktorer ved reelt behov.
   Ingen vilkårlige linjegrenser eller obligatoriske lag for en liten funksjon.
 - For UI: store lesbare tekster, god kontrast, store klikkflater, tastatur og høy zoom.
-  Bruk relevante designferdigheter før UI-design. Vi bygger ingen UI i dette grunnlaget.
+  Bruk relevante designferdigheter før UI-design.
 
 ## KI og læring
 
@@ -62,15 +62,16 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
-- Etter hver meningsfull økt: oppdater [felles arbeidslogg](arbeidslogg-max-og-emil.md). Oppgaver styres
+- Etter hver meningsfull økt: oppdater [felles arbeidslogg](docs/prosess/arbeidslogg-max-og-emil.md). Før vesentlige
+  endringer (funksjon, struktur, krav, beslutning) inn i [endringsloggen](docs/endringslogg.md) samme dag. Oppgaver styres
   som GitHub Issues på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1). Bevar historikk og lenk til utført arbeid.
 - **WAL (Max 29.09):** før alltid en løpende, tidsstemplet arbeidslogg hver arbeidsdag i
   `wal/wal-<ÅÅÅÅ-MM-DD>.md` (Git-ignorert, lokal). Opprett dagens fil hvis den mangler. Skriv en rad
   `| Tid | Hva |` når noe faktisk skjer, ikke i etterkant. Hent klokkeslett med `date "+%H:%M"`;
   gjett aldri. Etterførte rader merkes `~` (omtrentlig). Blindveier og forkastede spor skal stå der.
-  Aldri hemmeligheter. Ikke force-add WAL eller kopier rånotatene inn i PR-er. Se [loggrutinen](docs/arbeidslogg.md).
-- Ved dagens slutt: destiller WAL til [arbeidsloggen](arbeidslogg-max-og-emil.md) (én oppføring per dag, jeg-form som OS-praksisloggen, bare utført arbeid)
-  og [timelisten](timeliste.md) (én rad per dag med kort punkt om hva som ble gjort). Timer kan
+  Aldri hemmeligheter. Ikke force-add WAL eller kopier rånotatene inn i PR-er. Se [loggrutinen](docs/prosess/loggrutine.md).
+- Ved dagens slutt: destiller WAL til [arbeidsloggen](docs/prosess/arbeidslogg-max-og-emil.md) (én oppføring per dag, jeg-form som OS-praksisloggen, bare utført arbeid)
+  og [timelisten](docs/prosess/timeliste.md) (én rad per dag med kort punkt om hva som ble gjort). Timer kan
   foreslås som anslag fra WAL og commits, merket «anslag», og gjelder først når Max har godkjent dem.
   Ukjent tid er ikke null.
 
@@ -80,15 +81,14 @@
 - Opprett aldri PR og merge aldri uten Max' godkjenning. Spør gjerne om det skal gjøres,
   men gjør det aldri automatisk (Max 29.09).
 - Navngi branch etter arbeidet, eksempelvis `setup/initial-project`; ikke bruk codex/ai-prefiks.
-- Funksjonsendring: issue først, så branch, så PR når Max ber om det. Lokalt uten remote: beskriv oppgaven og
-  PR-utkastet i [review](docs/review.md); opprett faktisk issue/PR først når remote er godkjent.
+- Funksjonsendring: issue først, så branch, så PR når Max ber om det.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
 - Stopp før merge. Bare Oves eksplisitte godkjenning av den identifiserte PR-en gjelder.
 - Ikke opprett skyressurser eller kopier School/OS-arkiver, hemmeligheter og andre studenters data.
 - Hver student committer egne faktiske bidrag løpende. KI-arbeid skal være synlig, ikke tilskrives
   Max eller Emil som selvstendig læringsarbeid. Ikke omskriv historikk for å simulere deltakelse.
 - Unngå å squash'e bort andre studenters sporbare bidrag uten å bevare ekte forfattere og
-  originalhistorikk til innleveringen. Se [samarbeid](docs/samarbeid.md).
+  originalhistorikk til innleveringen. Se [samarbeid](docs/prosess/samarbeid.md).
 - Norsk i dokumentasjon og leveranser. Ingen em dash. Bevar studentens ordlyd ved korrektur.
 
 ## Kjøring og verifikasjon
@@ -101,10 +101,10 @@
 - Hele appgaten: `npm run check`. CI kjører samme gate og låst installasjon på Linux.
 - Dokumenter fra repo-roten: `node scripts/verify-docs.mjs` og `git diff --check`.
 - Lokal install/start etter merge: `npm ci` og `npm run dev` i app/. Versjon i `app/package.json`.
-- Kjente testfeil som tolereres: ingen. Avhengighetsfunn er dokumentert i [appoppsett](docs/app-oppsett.md).
+- Kjente testfeil som tolereres: ingen. Avhengighetsfunn er dokumentert i [appoppsett](docs/app/oppsett.md).
 - Release/deploy/signering: ikke konfigurert. Ingen publisering eller skyressurser uten fullmakt.
 - Produktkode: legg til meningsfulle Vitest-enhets-/integrasjonstester og Playwright av hovedflyten.
   Minst 50 % dekning kreves til leveransen; ikke skjul manglende produktbevis bak grønn scaffold-CI.
-- PR-kravet er ikke teknisk håndhevet ennå; se [CI-status](docs/ci-og-deploy.md).
+- main er beskyttet: PR, grønn CI og oppdatert branch kreves; review er frivillig (Max 05.10). Se [CI](docs/app/ci-og-deploy.md).
 - Test relevante brukerhandlinger på branch-bygget før mergeforslag. Rapporter faktiske utfall.
 - Hold AGENTS.md og CLAUDE.md under ca. 200 linjer; detaljer skal bo i lenkede fagfiler.
