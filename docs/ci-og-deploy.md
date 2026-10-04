@@ -25,13 +25,13 @@ at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 [Ferdig beskyttelseskonfigurasjon](../.github/branch-protection.json) krever:
 
 - PR før endring av main, også for administratoren.
-- Én godkjenning fra en annen godkjenner enn den som gjorde siste push. Gamle
-  godkjenninger fjernes når nye endringer krever review.
+- Ingen påkrevd godkjenning. Max fjernet kravet om review fra Emil 05.10.2026
+  (`required_approving_review_count: 0`). Review er frivillig, men anbefales.
 - Løste reviewtråder, oppdatert branch og bestått `Repository checks` fra GitHub Actions.
 - Ingen force-push eller sletting av main.
 
 Emil-18 er registrert som samarbeidspartner ved kontroll 20.09.2026.
-KI-review erstatter ikke medstudentreview. Admin kan fremdeles endre repoets
+KI-review erstatter ikke medstudentreview når review gjøres. Admin kan fremdeles endre repoets
 innstillinger; regelen er en sperre i arbeidsflyten, ikke umulighet for en eier å endre policy.
 
 Når abonnementet støtter dette, kontroller eksisterende regler først og sammenhold
