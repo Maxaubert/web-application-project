@@ -71,6 +71,7 @@
   ikke sesjons- og eierskapskontroll inne i handlingen. Autentisering er ikke autorisasjon.
 - Tester skal kunne avsløre feil. Bevis både avvisning og uendret lagring ved ulovlig skriving.
   Ikke bytt ekte databaseintegrasjon med stubber som alltid lykkes.
+- Review følger [review-sjekklisten](docs/prosess/review-sjekkliste.md) (i Claude Code: `/prosjektreview`).
 - Review og kodeforslag sjekkes mot Fullstækk-kursene (hva læreren faktisk viser og forventer)
   og mot anerkjent praksis i offisiell dokumentasjon. Oppgi leksjon eller kilde; ved avvik mellom
   kurs og praksis, vis begge og la studentene velge.

@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-05
 
+- [Review-sjekkliste](prosess/review-sjekkliste.md) for krav, dokumentasjon, struktur, overkomplisering,
+  Fullstækk, sikkerhet, tester og logging, og `/prosjektreview` i Claude Code som kjører den. (Max)
 - Arbeidsregler skjerpet i AGENTS.md: stegvis arbeid med plan først, studentene bestemmer,
   dokumentasjonen holdes konsistent i samme PR, School og Fullstækk-kurset sjekkes før krav og review.
   Max er eneste mergegodkjenner i reglene. PR-malen har ny sjekkliste. Claude Code skal utfordre hvert ikke-opplagt valg
