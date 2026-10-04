@@ -52,3 +52,12 @@ Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 - Innførte daglig WAL og førte timelisten bakover fra commit-historikken.
 - Satte opp Kanban-board i GitHub Projects og fordelte sign-off-oppgavene.
 - Emil: oppdaterte innloggingssiden og rettet komponentene.
+
+## 05.10.2026 – Dokumentstruktur, endringslogg og grenbeskyttelse
+
+- Fjernet kravet om godkjent review før merge til main; PR og grønn CI kreves fortsatt ([PR #38](https://github.com/Maxaubert/web-application-project/pull/38)).
+- Merget develop til main ([PR #35](https://github.com/Maxaubert/web-application-project/pull/35)) og Kanban-overgangen ([PR #36](https://github.com/Maxaubert/web-application-project/pull/36)).
+- Bestilte en gjennomgang av alle dokumentene og en ny mappestruktur i `docs/`, og godkjente planen. Claude Code gjennomførte flyttingen, splittet ut akseptansekriteriene og arkiverte utdaterte planfiler.
+- Opprettet [endringsloggen](../endringslogg.md), som studentassistenten anbefalte på sign-off.
+- Førte inn studentassistentens KI-veiledning fra sign-off i [KI-avtalen](ki-avtale.md).
+- La åpne punkter som issues på Kanban-boardet (#39, #40, #41).
