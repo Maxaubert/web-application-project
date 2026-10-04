@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-05
 
+- Arbeidsregler skjerpet i AGENTS.md: stegvis arbeid med plan først, studentene bestemmer,
+  dokumentasjonen holdes konsistent i samme PR, School og Fullstækk-kurset sjekkes før krav og review.
+  Max er eneste mergegodkjenner i reglene. PR-malen har ny sjekkliste. (Max)
 - Dokumentasjonen samlet i `docs/` med undermapper for krav, app, design, prosess, emne,
   leveranser og arkiv. Akseptansekriteriene er skilt ut fra kravspesifikasjonen.
   Utdaterte planfiler er flyttet til [arkivet](arkiv/README.md). (Max, med Claude Code)

@@ -2,7 +2,7 @@
 
 **Utkast til gruppekontrakt, ikke inngått avtale.** Max og Emil er gruppen etter
 brukerens opplysning. Formell gruppeendring og fast studentassistent er ikke kontrollert.
-Kurskilder: [P02–P04](../emne/emnekrav.md). PR/merge-gaten nedenfor er Oves arbeidsregel,
+Kurskilder: [P02–P04](../emne/emnekrav.md). PR/merge-gaten nedenfor er Max' arbeidsregel,
 ikke et ekstra Canvas-krav. Scrum, sprinter og egen timelogg er ikke påkrevd i K01.
 
 ## Gruppekontrakt: fylles av begge
@@ -40,7 +40,7 @@ funksjonssignaturer og grensesnitt før dere jobber separat.
 6. Kjør relevante gater. App: full unit/typecheck/lint, integrasjon/dekning og Playwright
    lokalt ved UI. Docs: docsjekk og diffkontroll. Skill «kjørt» fra «planlagt».
 7. Vis branch-bygget lokalt for brukerprøving før mergeanbefaling av UI-endring.
-   Oppgi konkret PR og spør Ove «merge?» én gang når den er klar.
+   Oppgi konkret PR og spør Max «merge?» én gang når den er klar.
 8. Merge bare etter godkjenning av den konkrete PR-en. Ingen auto-merge eller gjenbruk
    av godkjenning fra en annen PR. Squash-merge med reelle forfattertrailere der relevant.
 
