@@ -20,3 +20,5 @@ hvordan testes det), og la studenten forsvare valget med egne ord. Ikke gi svare
 på svakheter og spør videre til begrunnelsen holder. Noter valget og begrunnelsen i riktig
 dokument eller i endringsloggen. Opplagt betyr at det følger direkte av krav, kurs eller
 eksisterende kode og ikke har reelle alternativer.
+
+Emil bruker ikke Claude; valg som tas her, tas av Max.

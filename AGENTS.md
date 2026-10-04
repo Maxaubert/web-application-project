@@ -21,6 +21,9 @@
   hvordan det testes). Ingen kode før Max eller Emil har sagt ja til planen.
 - Studentene bestemmer: legg frem alternativer med avveininger og en anbefaling, og forklar
   hvorfor. Studenten velger og skal kunne forsvare valget (studentassistent, sign-off uke 40).
+- Vær en kritisk sparringspartner: si imot når et forslag er svakt, nevn svakheter og kostnader,
+  og legg frem det sterkeste argumentet for alternativet. Si deg enig bare når begrunnelsen holder.
+  «Best practice», «moderne» eller «skalerbart» uten konkret behov er ikke en begrunnelse.
 - Les før du skriver: les berørte filer og dokumenter først. Sjekk offisiell dokumentasjon
   for versjonen vi bruker i stedet for å gjette API-er.
 - Verifiser før «ferdig»: kjør gatene og rapporter faktisk utfall, også feil.
