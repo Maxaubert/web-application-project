@@ -36,10 +36,9 @@ eller installerte programmer overføres via Git. Installer avhengighetene fra l�
 | [CI, PR-regler og deploy](docs/ci-og-deploy.md) | Workflowen som finnes, blokkert branch protection og hva som må på plass ved appoppsett |
 | Denne README-en | Prosjektoversikt, dokumentkart og kjøreoppskrift når appen finnes |
 
-**[To-do: dokumentene vi skal skrive](TODO.md)** samler MVP, kravspekk,
-akseptansekriterier, prioritering og resten av planleggingen, med utført arbeid og neste steg.
+**[Kanban-boardet](https://github.com/users/Maxaubert/projects/1)** har oppgavene som GitHub Issues.
 [Felles arbeidslogg](arbeidslogg-max-og-emil.md) følger fremdriften, og [timelisten](timeliste.md)
-samler Max og Emils faktiske timer. TODO vedlikeholdes frem til Issues og Kanban overtar.
+samler Max og Emils timer.
 
 1. Les [krav og åpne frister](docs/emnekrav.md). Sign off er 29.09.2026 kl. 12–14 norsk tid.
 2. Gjennomgå [kravspesifikasjonen](kravspesifikasjon.md) og [teknisk plan](docs/teknisk-plan.md) sammen. Bruk [prosjektkortet](docs/prosjekt.md) til arbeidsdeling og fremdrift.

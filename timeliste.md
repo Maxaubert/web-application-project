@@ -6,7 +6,7 @@ godkjent av Max samme dag. Ren studietid (kursmateriell, eksamensøving) føres 
 Dette er gruppens egen oversikt, ikke et påstått emnekrav.
 
 Samme dato finnes i [arbeidsloggen](arbeidslogg-max-og-emil.md). Knytt økten senere
-til en issue. [TODO](TODO.md) viser neste arbeid.
+til en issue på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 
 ## Registreringer
 

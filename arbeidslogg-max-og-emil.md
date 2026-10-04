@@ -1,6 +1,6 @@
 # Arbeidslogg
 
-Hovedpunkter per arbeidsdag. Timer står i [timelisten](timeliste.md), neste arbeid i [TODO](TODO.md).
+Hovedpunkter per arbeidsdag. Timer står i [timelisten](timeliste.md), neste arbeid på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 
 ## 14.09.2026 – Kursgrunnlag
@@ -50,4 +50,5 @@ Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 - Oppdaterte [kravspesifikasjonen](kravspesifikasjon.md) med beslutningene fra 28. og 29.09.
 - Merget wireframes og rapport inn i develop ([PR #11](https://github.com/Maxaubert/web-application-project/pull/11)).
 - Innførte daglig WAL og førte timelisten bakover fra commit-historikken.
+- Satte opp Kanban-board i GitHub Projects og fordelte sign-off-oppgavene.
 - Emil: oppdaterte innloggingssiden og rettet komponentene.

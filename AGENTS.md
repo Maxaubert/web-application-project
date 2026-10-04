@@ -62,8 +62,8 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
-- Etter hver meningsfull økt: oppdater [TODO](TODO.md) og [felles arbeidslogg](arbeidslogg-max-og-emil.md).
-  TODO er aktiv backlog frem til Issues/Kanban overtar. Bevar historikk og lenk til utført arbeid.
+- Etter hver meningsfull økt: oppdater [felles arbeidslogg](arbeidslogg-max-og-emil.md). Oppgaver styres
+  som GitHub Issues på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1). Bevar historikk og lenk til utført arbeid.
 - **WAL (Max 29.09):** før alltid en løpende, tidsstemplet arbeidslogg hver arbeidsdag i
   `wal/wal-<ÅÅÅÅ-MM-DD>.md` (Git-ignorert, lokal). Opprett dagens fil hvis den mangler. Skriv en rad
   `| Tid | Hva |` når noe faktisk skjer, ikke i etterkant. Hent klokkeslett med `date "+%H:%M"`;
