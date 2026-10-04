@@ -19,7 +19,7 @@ Forklar tester som kan fange feil, tilgangs-/feilstier og hva som ikke er verifi
 - [ ] Diff lest og reelle bidrag kontrollert, ingen oppdiktede forfattere eller læringsbevis.
 - [ ] Alle berørte dokumenter er oppdatert (krav, akseptansekriterier, wireframes, teknisk plan, README, AGENTS), uten motstrid.
 - [ ] [Endringsloggen](../docs/endringslogg.md) har en linje for endringen.
-- [ ] Sjekket mot Fullstækk-kurset og offisiell dokumentasjon; avvik er beskrevet.
+- [ ] Gått gjennom [review-sjekklisten](../docs/prosess/review-sjekkliste.md), inkludert Fullstækk-kurset; avvik er beskrevet.
 - [ ] Ingen hemmeligheter, private kursarkiv eller andres sensitive data i diff/historikk.
 - [ ] Ved UI: branch-bygget prøvd lokalt før mergeanbefaling.
 - [ ] Eventuell medstudentreview og åpne problemer beskrevet (review er frivillig).
