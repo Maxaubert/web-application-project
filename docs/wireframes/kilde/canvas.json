@@ -1,0 +1,627 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Annonse-borte-desktop.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "WF-04 Ikke tilgjengelig – desktop",
+      "w": 1440,
+      "x": 4450,
+      "y": 4508
+    },
+    "Annonse-borte-mobil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "WF-04 Ikke tilgjengelig – mobil",
+      "w": 390,
+      "x": 2460,
+      "y": 4508
+    },
+    "Annonse-desktop.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "WF-04 Annonse, salg – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 4508
+    },
+    "Annonse-leie-desktop.dc.html": {
+      "h": 1250,
+      "is_interactive": true,
+      "title": "WF-04 Annonse, lån – desktop",
+      "w": 1440,
+      "x": 2930,
+      "y": 4508
+    },
+    "Annonse-leie-mobil.dc.html": {
+      "h": 1800,
+      "is_interactive": true,
+      "title": "WF-04 Annonse, lån – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 4508
+    },
+    "Annonse-mobil.dc.html": {
+      "h": 1400,
+      "is_interactive": true,
+      "title": "WF-04 Annonse, salg – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 4508
+    },
+    "Avtale-avtalt-desktop.dc.html": {
+      "h": 1400,
+      "is_interactive": true,
+      "title": "WF-08b Avtalt, venter på overlevering (kjøper) – desktop",
+      "w": 1440,
+      "x": 3400,
+      "y": 12988
+    },
+    "Avtale-avtalt-mobil.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "WF-08b Avtalt, venter på overlevering (kjøper) – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 12988
+    },
+    "Avtale-fullfort-desktop.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-08c Salg fullført – desktop",
+      "w": 1440,
+      "x": 4920,
+      "y": 12988
+    },
+    "Avtale-fullfort-mobil.dc.html": {
+      "h": 1200,
+      "is_interactive": true,
+      "title": "WF-08c Salg fullført – mobil",
+      "w": 390,
+      "x": 2460,
+      "y": 12988
+    },
+    "Avtale-leie-aktiv-desktop.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "WF-08d Lån i bruk + WV-01 + WV-02 – desktop",
+      "w": 1440,
+      "x": 6440,
+      "y": 12988
+    },
+    "Avtale-leie-aktiv-mobil.dc.html": {
+      "h": 2100,
+      "is_interactive": true,
+      "title": "WF-08d Lån i bruk + WV-01 + WV-02 – mobil",
+      "w": 390,
+      "x": 2930,
+      "y": 12988
+    },
+    "Avtale-motbud-mobil.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "WF-08a Motbud (selger) – mobil",
+      "w": 390,
+      "x": 9480,
+      "y": 12988
+    },
+    "Avtale-nyttbud-desktop.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "WF-08a Nytt bud (selger) – desktop",
+      "w": 1440,
+      "x": 7960,
+      "y": 12988
+    },
+    "Avtale-venter-desktop.dc.html": {
+      "h": 1300,
+      "is_interactive": true,
+      "title": "WF-08a Motbud (selger) – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 12988
+    },
+    "Avtale-venter-mobil.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "WF-08a Nytt bud (selger) – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 12988
+    },
+    "Foresporsel-leie-desktop.dc.html": {
+      "h": 1150,
+      "is_interactive": true,
+      "title": "WF-06 Låneforespørsel – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 9048
+    },
+    "Foresporsel-leie-mobil.dc.html": {
+      "h": 1800,
+      "is_interactive": true,
+      "title": "WF-06 Låneforespørsel – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 9048
+    },
+    "Foresporsel-salg-desktop.dc.html": {
+      "h": 1250,
+      "is_interactive": true,
+      "title": "WF-06 Bud (salg) – desktop",
+      "w": 1440,
+      "x": 2460,
+      "y": 9048
+    },
+    "Foresporsel-salg-mobil.dc.html": {
+      "h": 1350,
+      "is_interactive": true,
+      "title": "WF-06 Bud (salg) – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 9048
+    },
+    "Foresporsler-desktop.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-07 Min side: Forespørsler – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 11268
+    },
+    "Foresporsler-mobil.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "WF-07 Min side: Forespørsler – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 11268
+    },
+    "Foresporsler-tom-desktop.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "WF-07 Min side: ingen forespørsler – desktop",
+      "w": 1440,
+      "x": 2460,
+      "y": 11268
+    },
+    "Foresporsler-tom-mobil.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-07 Min side: ingen forespørsler – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 11268
+    },
+    "Gjennomgang.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Gjennomgang (slideshow)",
+      "w": 1600,
+      "x": 0,
+      "y": -1500
+    },
+    "Innlogging-desktop.dc.html": {
+      "h": 800,
+      "is_interactive": true,
+      "title": "WF-01 E-post – desktop",
+      "w": 1280,
+      "x": 470,
+      "y": 0
+    },
+    "Innlogging-feil-desktop.dc.html": {
+      "h": 800,
+      "is_interactive": true,
+      "title": "WF-01 Feil adresse – desktop",
+      "w": 1280,
+      "x": 4130,
+      "y": 0
+    },
+    "Innlogging-feil-mobil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "WF-01 Feil adresse – mobil",
+      "w": 390,
+      "x": 1830,
+      "y": 0
+    },
+    "Innlogging-kode-desktop.dc.html": {
+      "h": 800,
+      "is_interactive": true,
+      "title": "WF-01 Kode – desktop",
+      "w": 1280,
+      "x": 2770,
+      "y": 0
+    },
+    "Innlogging-kode-mobil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "WF-01 Kode – mobil",
+      "w": 390,
+      "x": 2300,
+      "y": 0
+    },
+    "Kontooppsett-desktop.dc.html": {
+      "h": 800,
+      "is_interactive": true,
+      "title": "WF-02 Kontooppsett – desktop",
+      "w": 1280,
+      "x": 470,
+      "y": 1264
+    },
+    "Kontooppsett-mobil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "WF-02 Kontooppsett – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 1264
+    },
+    "Legg-ut-desktop.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "WF-05 Legg ut annonse – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 6628
+    },
+    "Legg-ut-feil-desktop.dc.html": {
+      "h": 1050,
+      "is_interactive": true,
+      "title": "WF-05 Feltfeil – desktop",
+      "w": 1440,
+      "x": 2460,
+      "y": 6628
+    },
+    "Legg-ut-feil-mobil.dc.html": {
+      "h": 1150,
+      "is_interactive": true,
+      "title": "WF-05 Feltfeil – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 6628
+    },
+    "Legg-ut-mobil.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "WF-05 Legg ut annonse – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 6628
+    },
+    "Main.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "WF-01 E-post – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    },
+    "Minside-desktop.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-09 Min side: Mine annonser – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 15508
+    },
+    "Minside-historikk-desktop.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-09 Min side: Historikk – desktop",
+      "w": 1440,
+      "x": 2460,
+      "y": 15508
+    },
+    "Minside-historikk-mobil.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-09 Min side: Historikk – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 15508
+    },
+    "Minside-mobil.dc.html": {
+      "h": 1500,
+      "is_interactive": true,
+      "title": "WF-09 Min side: Mine annonser – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 15508
+    },
+    "Profil-rediger-desktop.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "WF-09 Rediger profil – desktop",
+      "w": 1440,
+      "x": 4450,
+      "y": 15508
+    },
+    "Profil-rediger-mobil.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "WF-09 Rediger profil – mobil",
+      "w": 390,
+      "x": 3980,
+      "y": 15508
+    },
+    "Sok-desktop.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "title": "WF-03 Søk – desktop",
+      "w": 1440,
+      "x": 470,
+      "y": 2528
+    },
+    "Sok-feil-desktop.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "WF-03 Feil – desktop",
+      "w": 1440,
+      "x": 6440,
+      "y": 2528
+    },
+    "Sok-feil-mobil.dc.html": {
+      "h": 844,
+      "title": "WF-03 Feil – mobil",
+      "w": 390,
+      "x": 2930,
+      "y": 2528
+    },
+    "Sok-laster-desktop.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "WF-03 Laster – desktop",
+      "w": 1440,
+      "x": 3400,
+      "y": 2528
+    },
+    "Sok-laster-mobil.dc.html": {
+      "h": 844,
+      "title": "WF-03 Laster – mobil",
+      "w": 390,
+      "x": 1990,
+      "y": 2528
+    },
+    "Sok-mobil.dc.html": {
+      "h": 1560,
+      "is_interactive": true,
+      "title": "WF-03 Søk – mobil",
+      "w": 390,
+      "x": 0,
+      "y": 2528
+    },
+    "Sok-tomt-desktop.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "WF-03 Ingen treff – desktop",
+      "w": 1440,
+      "x": 4920,
+      "y": 2528
+    },
+    "Sok-tomt-mobil.dc.html": {
+      "h": 844,
+      "title": "WF-03 Ingen treff – mobil",
+      "w": 390,
+      "x": 2460,
+      "y": 2528
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-09-29T08:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "file": "Gjennomgang.dc.html",
+    "view": "focused"
+  },
+  "notes": {
+    "flow": {
+      "fill": "blue",
+      "text": "Salgsflyt for sign-off\n\n1. WF-01 Logg inn med HiØ-e-post og kode\n2. WF-02 Fullfør kontoen\n3. WF-05 Selger legger ut annonse\n4. WF-03 Kjøper finner den\n5. WF-04 Kjøper åpner annonsen\n6. WF-06 Kjøper legger inn bud\n7. WF-08a Selger godtar, avslår eller foreslår annen pris\n8. WF-08b Avtaler overlevering på telefon/e-post, begge bekrefter\n9. WF-08c Salget er fullført\n10. WF-09 Begge finner salget i historikken\n\nDen stiplede merkelappen øverst på hver skjerm viser hvem som bruker den.",
+      "w": 440,
+      "x": 5490,
+      "y": 0
+    },
+    "n1": {
+      "fill": "orange",
+      "text": "Våre notater (WF-01)\n\nBrukerens mål: Logge inn eller lage konto med HiØ-e-post, uten passord.\n\nData: user (email). better-auth lagrer engangskode, lenke og sesjon.\n\nKomponenter: EmailForm, CodeForm, ErrorMessage.\n\nServerhandling / API: better-auth sender kode og lenke (bare @hiof.no), sjekker koden og oppretter sesjon. Ny bruker sendes til kontooppsett.\n\nAvklart: bare e-post, ingen passord. Kode og lenke sendes på e-post. Kun @hiof.no. Samme flyt for ny og eksisterende konto; ny konto går til kontooppsett.",
+      "w": 420,
+      "x": 5970,
+      "y": 0
+    },
+    "n2": {
+      "fill": "orange",
+      "text": "Våre notater (WF-02)\n\nBrukerens mål: Fullføre kontoen første gang.\n\nData: user (name, phone).\n\nKomponenter: AccountSetupForm.\n\nServerhandling / API: Action completeAccount: krever sesjon, sjekker navn og telefon og lagrer dem.\n\nAvklart: bare for nye kontoer. Navn og telefon fylles inn én gang. Telefon deles bare etter aksept (D-13–D-14).",
+      "w": 420,
+      "x": 1830,
+      "y": 1264
+    },
+    "n3": {
+      "fill": "orange",
+      "text": "Våre notater (WF-03)\n\nBrukerens mål: Finne noe å kjøpe, låne eller få.\n\nData: Annonse (tittel, type, pris, status), første bilde, opptatte perioder for lån.\n\nKomponenter: Toppmeny, SearchField, Filters, ListingCard, AnnonseListe.\n\nServerhandling / API: GET /api/listings?q=&category=&type=&available= gir 200 med liste, 400 ved ugyldige filtre, 401 uten sesjon.\n\nAvklart: søk i tittel og beskrivelse, filtre kategori, handelstype, Tilgjengelig nå / Alle (D-58–D-62).",
+      "w": 420,
+      "x": 7960,
+      "y": 2528
+    },
+    "n4": {
+      "fill": "orange",
+      "text": "Våre notater (WF-04)\n\nBrukerens mål: Se detaljene og bestemme seg.\n\nData: listing, listing_image, eierens fornavn, opptatte perioder (lån). Telefon sendes ikke med.\n\nKomponenter: ImageGallery, ListingInfo, AvailabilityCalendar (lån), OwnerCard, ActionButton.\n\nServerhandling / API: GET /api/listings/:id gir 200, eller 404 hvis annonsen ikke finnes eller er tatt ned.\n\nAvklart: telefon vises ikke før avtale. Eier setter ingen kalender (D-61), men bookede dager vises.",
+      "w": 420,
+      "x": 5970,
+      "y": 4508
+    },
+    "n5": {
+      "fill": "orange",
+      "text": "Våre notater (WF-05)\n\nBrukerens mål: Legge ut en ting for salg, lån eller gis bort.\n\nData: listing, listing_image (1–10).\n\nKomponenter: ListingForm, TypePicker, ImageUploader, ErrorSummary.\n\nServerhandling / API: Action createListing: krever sesjon, sjekker påkrevde felt, 1–10 bilder og pris som heltall, lagrer med innlogget bruker som eier. Bare eier kan redigere eller ta ned.\n\nAvklart: én type per annonse (salg, lån eller gis bort; lån kan ha valgfri ukepris), 1–10 bilder, påkrevde felt og tilstander (D-01–D-02, D-46–D-49). Kategorilisten er åpen.",
+      "w": 420,
+      "x": 3980,
+      "y": 6628
+    },
+    "n6": {
+      "fill": "orange",
+      "text": "Våre notater (WF-06)\n\nBrukerens mål: Legge inn bud (salg) eller be om en periode (lån).\n\nData: request (listing_id, requester_id, status) og offer (price eller start_date/end_date).\n\nKomponenter: BidForm, PeriodPicker, Summary.\n\nServerhandling / API: Action sendRequest: krever sesjon, ikke egen annonse, annonsen må være aktiv. Lån: minst én uke og ingen overlapp med godtatte lån.\n\nAvklart: salg = bare et bud. Lån = bare en periode (minst én uke). Sted og tid avtales på telefon/e-post etter aksept. Lån med ukepris koster ukepris / 7 per dag.",
+      "w": 420,
+      "x": 3980,
+      "y": 9048
+    },
+    "n7": {
+      "fill": "orange",
+      "text": "Våre notater (WF-07)\n\nBrukerens mål: Se hva som venter på meg.\n\nData: Forespørsel med siste forslag, annonse og motpart.\n\nKomponenter: MyPageTabs, ReceivedSentToggle, RequestRow.\n\nServerhandling / API: GET /api/requests?retning=mottatt|sendt gir bare brukerens egne.\n\nAvklart: Forespørsler er en fane på Min side. Mottatt/Sendt, bud og låneforespørsler. Ingen chat.",
+      "w": 420,
+      "x": 3980,
+      "y": 11268
+    },
+    "n8": {
+      "fill": "orange",
+      "text": "Våre notater (WF-08)\n\nBrukerens mål: Bli enige og gjennomføre overleveringen.\n\nData: request, offer-historikk, bekreftelser, kontaktinfo (først etter aksept), issue_report.\n\nKomponenter: StatusBanner, OfferCard, CounterOfferForm, ContactCard, HandoverConfirmation, Historikk, ExtensionPanel, ReturnIssuePanel.\n\nServerhandling / API: Actions acceptOffer, declineOffer, sendCounterOffer, bekreftOverlevering, avbestill, foreslaForlengelse, rapporterProblem. Hver sjekker riktig part og at statusen tillater handlingen.\n\nAvklart: mottaker godtar, avslår eller foreslår annen pris/periode, på omgang. Kontakt (telefon og e-post) vises etter aksept. Begge bekrefter overlevering. Bare eieren bekrefter retur ved lån. Har bare én bekreftet overlevering, regnes den som bekreftet etter 3 dager. Ubesvart forespørsel utløper etter 7 dager. Returrapporter ses bare av den som skrev og admin.",
+      "w": 420,
+      "x": 9950,
+      "y": 12988
+    },
+    "n9": {
+      "fill": "orange",
+      "text": "Våre notater (WF-09)\n\nBrukerens mål: Se egne annonser og historikk, og endre profilen.\n\nData: user, egne listing-rader, fullførte request-rader.\n\nKomponenter: ProfileCard, MyPageTabs, ListingCard, HistoryList, ProfileForm.\n\nServerhandling / API: GET /api/me/listings og GET /api/me/history. Actions updateProfile, unpublishListing. Logg ut via better-auth.\n\nAvklart: Min side = profil (bilde, navn, telefon) + fanene Mine annonser, Forespørsler og Historikk. Solgte annonser forsvinner fra søket. Låneannonser blir liggende med opptatte datoer markert.",
+      "w": 420,
+      "x": 5970,
+      "y": 15508
+    },
+    "t0": {
+      "kind": "title1",
+      "maxW": 1600,
+      "text": "Gjennomgang",
+      "w": 240,
+      "x": 0,
+      "y": -1800
+    },
+    "t1": {
+      "kind": "title1",
+      "maxW": 5410,
+      "text": "WF-01 Innlogging med e-post",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "t1b": {
+      "kind": "title1",
+      "maxW": 1750,
+      "text": "WF-02 Førstegangs kontooppsett",
+      "w": 240,
+      "x": 0,
+      "y": 964
+    },
+    "t3": {
+      "kind": "title1",
+      "maxW": 7880,
+      "text": "WF-03 Annonseoversikt og søk",
+      "w": 240,
+      "x": 0,
+      "y": 2228
+    },
+    "t4": {
+      "kind": "title1",
+      "maxW": 5890,
+      "text": "WF-04 Annonsedetaljer",
+      "w": 240,
+      "x": 0,
+      "y": 4208
+    },
+    "t5": {
+      "kind": "title1",
+      "maxW": 3900,
+      "text": "WF-05 Opprett annonse",
+      "w": 240,
+      "x": 0,
+      "y": 6328
+    },
+    "t6": {
+      "kind": "title1",
+      "maxW": 3900,
+      "text": "WF-06 Send forespørsel",
+      "w": 240,
+      "x": 0,
+      "y": 8748
+    },
+    "t7": {
+      "kind": "title1",
+      "maxW": 3900,
+      "text": "WF-07 Min side: Forespørsler",
+      "w": 240,
+      "x": 0,
+      "y": 10968
+    },
+    "t8": {
+      "kind": "title1",
+      "maxW": 8000,
+      "text": "WF-08 Forespørsel og avtale",
+      "w": 240,
+      "x": 0,
+      "y": 12688
+    },
+    "t9": {
+      "kind": "title1",
+      "maxW": 5890,
+      "text": "WF-09 Min side: profil, annonser og historikk",
+      "w": 240,
+      "x": 0,
+      "y": 15208
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Innlogging-desktop.dc.html",
+    "Innlogging-feil-mobil.dc.html",
+    "Innlogging-kode-mobil.dc.html",
+    "Innlogging-kode-desktop.dc.html",
+    "Kontooppsett-mobil.dc.html",
+    "Kontooppsett-desktop.dc.html",
+    "Sok-mobil.dc.html",
+    "Sok-desktop.dc.html",
+    "Sok-laster-mobil.dc.html",
+    "Sok-tomt-mobil.dc.html",
+    "Sok-feil-mobil.dc.html",
+    "Annonse-mobil.dc.html",
+    "Annonse-desktop.dc.html",
+    "Annonse-leie-mobil.dc.html",
+    "Annonse-borte-mobil.dc.html",
+    "Legg-ut-mobil.dc.html",
+    "Legg-ut-desktop.dc.html",
+    "Legg-ut-feil-mobil.dc.html",
+    "Foresporsel-salg-mobil.dc.html",
+    "Foresporsel-leie-desktop.dc.html",
+    "Foresporsel-leie-mobil.dc.html",
+    "Foresporsler-mobil.dc.html",
+    "Foresporsler-desktop.dc.html",
+    "Foresporsler-tom-mobil.dc.html",
+    "Avtale-venter-mobil.dc.html",
+    "Avtale-venter-desktop.dc.html",
+    "Avtale-avtalt-mobil.dc.html",
+    "Avtale-fullfort-mobil.dc.html",
+    "Avtale-leie-aktiv-mobil.dc.html",
+    "Minside-mobil.dc.html",
+    "Minside-desktop.dc.html",
+    "Minside-historikk-mobil.dc.html",
+    "Profil-rediger-mobil.dc.html",
+    "Minside-historikk-desktop.dc.html",
+    "Profil-rediger-desktop.dc.html",
+    "Gjennomgang.dc.html",
+    "Sok-laster-desktop.dc.html",
+    "Sok-tomt-desktop.dc.html",
+    "Sok-feil-desktop.dc.html",
+    "Annonse-leie-desktop.dc.html",
+    "Annonse-borte-desktop.dc.html",
+    "Legg-ut-feil-desktop.dc.html",
+    "Foresporsel-salg-desktop.dc.html",
+    "Avtale-avtalt-desktop.dc.html",
+    "Avtale-fullfort-desktop.dc.html",
+    "Avtale-leie-aktiv-desktop.dc.html",
+    "Innlogging-feil-desktop.dc.html",
+    "Foresporsler-tom-desktop.dc.html",
+    "Avtale-nyttbud-desktop.dc.html",
+    "Avtale-motbud-mobil.dc.html"
+  ],
+  "pages": [],
+  "title": "Studentmarked wireframes"
+}

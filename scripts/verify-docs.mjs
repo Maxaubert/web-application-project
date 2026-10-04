@@ -109,7 +109,7 @@ const guards = [
   ['AGENTS.md', 'Ikke dikt bidrag', 'Autentisk dokumentasjon'],
   ['AGENTS.md', 'Bare Oves eksplisitte godkjenning', 'Mergegate'],
   ['README.md', 'Ingen markedsplassfunksjoner er implementert', 'Ærlig appstatus'],
-  ['KI-AVTALE.md', 'ikke bekreftet av studentene', 'Avtalestatus'],
+  ['KI-AVTALE.md', 'Godtatt av Max og Emil', 'Avtalestatus'],
   ['docs/emnekrav.md', 'etter uke 42', 'Datokonflikt'],
   ['docs/emnekrav.md', 'fremtidig pensum', 'Retrospektpresisering'],
   ['docs/laering.md', 'prinsippene er pensum', 'Eksamensfordypning'],
