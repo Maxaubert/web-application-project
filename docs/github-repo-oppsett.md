@@ -45,13 +45,13 @@ er stabile; ikke opprett en parallell detaljbacklog når GitHub Issues tas i bru
   bare for å få en funksjon uten at dette er avtalt.
 - [ ] **G02 · T:** Avtal første basebranch og hvordan dagens ucommittede grunnlag skal inn
   gjennom en gjennomgått PR. Bevar eksisterende arbeid. Ikke lag fiktiv studenthistorikk.
-- [ ] **G03 · T:** Beskytt hovedbranch: PR påkrevd, én godkjenning fra den andre studenten,
-  foreldet godkjenning fjernes ved nye kodeendringer, samt løste reviewtråder og påkrevde
-  CI-sjekker. Unngå normal admin-omgåelse, force-push og sletting. Kontroller faktisk
+- [ ] **G03 · T:** Beskytt hovedbranch: PR påkrevd, samt løste reviewtråder og påkrevde
+  CI-sjekker. Godkjenning fra den andre studenten er ikke
+  påkrevd (Max 05.10.2026). Unngå normal admin-omgåelse, force-push og sletting. Kontroller faktisk
   håndheving med en test-PR. Hvis abonnementet mangler støtte, dokumenter at manuell
   praksis ikke er teknisk håndheving. Se [GitHub branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
 - [ ] **G04 · T:** Avtal små branches og PR-er, hvem som reviewer og forventet svartid.
-  Én student godkjenner den andres arbeid; KI-review erstatter ikke studenten. Ved
+  Review fra den andre studenten er frivillig, ikke en mergesperre (Max 05.10.2026); KI-review erstatter ikke studenten. Ved
   assistentstyrt merge gjelder i tillegg eksisterende krav om Oves konkrete PR-godkjenning.
   Ikke krev to andre godkjennere i en gruppe med to studenter.
 - [ ] **G05 · T:** Tilpass eksisterende PR-mal: problem, krav-/issue-ID, endring, testbevis,
