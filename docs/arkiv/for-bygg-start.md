@@ -1,5 +1,7 @@
 # Før vi bygger: beslutninger og to-do
 
+> **Arkivert 05.10.2026.** Historisk dokument som ikke vedlikeholdes. Se [arkivoversikten](README.md).
+
 Aktive oppgaver ligger på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 
 Arbeidsliste opprettet 16.09.2026, status oppdatert 19.09.2026. Helhetspunktene

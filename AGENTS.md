@@ -4,14 +4,14 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Offisiell RedwoodSDK/Vite-starter og verktøy i `app/`, ingen produktfunksjoner. Studentmarked med salg, lån og gis bort
+- Appgrunnlag i `app/` med påbegynt innlogging og enkel prisberegning; markedsplassfunksjonene er ikke bygget. Studentmarked med salg, lån og gis bort
   (Max 29.09); bud eller låneperiode med motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp.
 - [Kravspesifikasjon](docs/krav/kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/app/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
 - [Wireframes og skjermspesifikasjon](docs/design/wireframes/README.md) er byggegrunnlaget for skjermer, ruter,
   datamodell og API. Nyere beslutninger der går foran kravspesifikasjonen til den er oppdatert.
-- Les [emnekrav](docs/emne/emnekrav.md), [prosjektkort](docs/arkiv/prosjekt.md) og [KI-avtale](docs/prosess/ki-avtale.md)
-  før implementering. Les [teknikk](docs/app/teknikk.md) for berørte kodeområder og
+- [Dokumentkartet](docs/README.md) viser hvor alt ligger. Les [emnekrav](docs/emne/emnekrav.md) og
+  [KI-avtale](docs/prosess/ki-avtale.md) før implementering. Les [teknikk](docs/app/teknikk.md) for berørte kodeområder og
   [læringskart](docs/emne/laering.md) for faglig veiledning. Vanlige lenker er ikke automatisk innlastet.
 
 ## Kilder og avvik
@@ -44,7 +44,7 @@
 - Følg eksisterende struktur, én tydelig oppgave per fil, og refaktorer ved reelt behov.
   Ingen vilkårlige linjegrenser eller obligatoriske lag for en liten funksjon.
 - For UI: store lesbare tekster, god kontrast, store klikkflater, tastatur og høy zoom.
-  Bruk relevante designferdigheter før UI-design. Vi bygger ingen UI i dette grunnlaget.
+  Bruk relevante designferdigheter før UI-design.
 
 ## KI og læring
 
@@ -62,7 +62,8 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
-- Etter hver meningsfull økt: oppdater [felles arbeidslogg](docs/prosess/arbeidslogg-max-og-emil.md). Oppgaver styres
+- Etter hver meningsfull økt: oppdater [felles arbeidslogg](docs/prosess/arbeidslogg-max-og-emil.md). Før vesentlige
+  endringer (funksjon, struktur, krav, beslutning) inn i [endringsloggen](docs/endringslogg.md) samme dag. Oppgaver styres
   som GitHub Issues på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1). Bevar historikk og lenk til utført arbeid.
 - **WAL (Max 29.09):** før alltid en løpende, tidsstemplet arbeidslogg hver arbeidsdag i
   `wal/wal-<ÅÅÅÅ-MM-DD>.md` (Git-ignorert, lokal). Opprett dagens fil hvis den mangler. Skriv en rad
@@ -80,8 +81,7 @@
 - Opprett aldri PR og merge aldri uten Max' godkjenning. Spør gjerne om det skal gjøres,
   men gjør det aldri automatisk (Max 29.09).
 - Navngi branch etter arbeidet, eksempelvis `setup/initial-project`; ikke bruk codex/ai-prefiks.
-- Funksjonsendring: issue først, så branch, så PR når Max ber om det. Lokalt uten remote: beskriv oppgaven og
-  PR-utkastet i [review](docs/arkiv/review-pr-utkast-2026-09.md); opprett faktisk issue/PR først når remote er godkjent.
+- Funksjonsendring: issue først, så branch, så PR når Max ber om det.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
 - Stopp før merge. Bare Oves eksplisitte godkjenning av den identifiserte PR-en gjelder.
 - Ikke opprett skyressurser eller kopier School/OS-arkiver, hemmeligheter og andre studenters data.
@@ -105,6 +105,6 @@
 - Release/deploy/signering: ikke konfigurert. Ingen publisering eller skyressurser uten fullmakt.
 - Produktkode: legg til meningsfulle Vitest-enhets-/integrasjonstester og Playwright av hovedflyten.
   Minst 50 % dekning kreves til leveransen; ikke skjul manglende produktbevis bak grønn scaffold-CI.
-- PR-kravet er ikke teknisk håndhevet ennå; se [CI-status](docs/app/ci-og-deploy.md).
+- main er beskyttet: PR, grønn CI og oppdatert branch kreves; review er frivillig (Max 05.10). Se [CI](docs/app/ci-og-deploy.md).
 - Test relevante brukerhandlinger på branch-bygget før mergeforslag. Rapporter faktiske utfall.
 - Hold AGENTS.md og CLAUDE.md under ca. 200 linjer; detaljer skal bo i lenkede fagfiler.

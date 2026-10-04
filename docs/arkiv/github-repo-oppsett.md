@@ -1,5 +1,7 @@
 # GitHub-oppsett: plan og sjekkliste
 
+> **Arkivert 05.10.2026.** Historisk dokument som ikke vedlikeholdes. Se [arkivoversikten](README.md).
+
 Planlagt 16.09.2026 for Max og Emil. **Dette er en oppgaveliste, ikke utført oppsett.**
 Ingen remote, regler, issues, board, workflows, tester, deploy eller grafiske filer er
 opprettet gjennom denne planen. Eksisterende grunnlagsfiler og PR-mal er utkast.

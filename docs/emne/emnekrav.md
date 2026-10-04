@@ -57,7 +57,7 @@ U26 s. 136 har et eget 60 %-mål i en komponentøving, ikke et nytt globalt mini
 | P01 | .git følger leveransen; GitHub-repo offentlig ved innlevering og lenke i rapport | Privat GitHub-repo finnes. Fremtidig offentliggjøring og pakking må avklares og verifiseres | K01 §8 krav 0, punkt 4 |
 | P02 | Ekte bidrag under eget navn gjennom semesteret; historikken må stemme med refleksjonen | Studentbidrag ikke etablert her. Commit-antall er ikke forståelsesmål | K01 §8, Om git-historikken |
 | P03 | Gruppekontrakt og felles forståelse av ambisjon, arbeidsform, KI og tema | [Utkast](../prosess/samarbeid.md), ikke avtalt av studentene | A29, A04 |
-| P04 | KI-avtale i repo, svar verifiseres, KI-bruk dokumenteres og avtalen oppdateres ved behov | [KI-avtalen](../prosess/ki-avtale.md), godtatt av Max og Emil 30.09 | K02; K01 §8 krav 5 |
+| P04 | KI-avtale i repo, svar verifiseres, KI-bruk dokumenteres og avtalen oppdateres ved behov | [KI-avtalen](../prosess/ki-avtale.md), godtatt av Max og Emil 30.09; studentassistentens veiledning ved sign-off 01.10 står samme sted | K02; K01 §8 krav 5 |
 | P05 | Egne arkitekturbegrunnelser i rapporten uten KI-generert tekst | Ikke skrevet. Nøytral [mal](../app/teknikk.md) og kildestøtte er hjelp, ikke besvarelse | U26 s. 230, linje 8089–8095 |
 | P06 | Alle deltar, viser respons på tilbakemelding og svarer uten hjelpemidler. KI kan brukes i forberedelse, ikke live-svar | Individuell status ukjent | K01 §9 og §8 krav 0/4 |
 

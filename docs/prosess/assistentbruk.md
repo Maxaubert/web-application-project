@@ -13,7 +13,7 @@ ikke teknisk håndheving, en ferdig besvarelse eller bevis på at en assistent f
 
 En vanlig Markdown-lenke laster ikke automatisk hele målfilen. Start med krav/prosjekt/KI,
 og last teknikk eller læringskart etter oppgaven. Hold veiledningen kort og sjekk i en
-ny sesjon at assistenten kan finne T04, P05, KI-øvingsgrensene og at appidé er åpen.
+ny sesjon at assistenten kan finne T04, P05, KI-øvingsgrensene og dokumentkartet i docs/README.md.
 Ikke send rå kursarkiv, legitimasjon eller privat materiale for å «gi mer kontekst».
 
 Kildene for innlasting er kontrollert 14.09.2026:
@@ -28,7 +28,7 @@ Velg den modusen som passer. Ikke skriv studentens svar inn på forhånd.
 
 **Bygg en avklart funksjon:**
 
-> Les AGENTS.md, docs/emnekrav.md, KI-AVTALE.md og relevant del av docs/teknikk.md.
+> Les AGENTS.md, docs/emne/emnekrav.md, docs/prosess/ki-avtale.md og relevant del av docs/app/teknikk.md.
 > Utfør denne avklarte oppgaven: [oppgave]. Vis krav-ID-er og åpne antakelser.
 > Ikke skriv beskyttet studenttekst. Implementer, test og forklar dataflyten kort.
 > Tilby én liten endringsoppgave så hver av oss kan prøve forståelsen selv.
@@ -41,7 +41,7 @@ Velg den modusen som passer. Ikke skriv studentens svar inn på forhånd.
 
 **Øv til muntlig:**
 
-> Bruk docs/laering.md. Gi et nytt case om [tema], uten fasit eller ledende svar.
+> Bruk docs/emne/laering.md. Gi et nytt case om [tema], uten fasit eller ledende svar.
 > Still oppfølgingsspørsmål etter svaret mitt. Vurder korrekthet, forklaring av flyt,
 > alternativ og avveining. Registrer bare observert mestring, og be meg skrive min egen refleksjon.
 
@@ -56,7 +56,7 @@ Velg den modusen som passer. Ikke skriv studentens svar inn på forhånd.
 En nyttig melding har formen: «T04 krever tilgangskontroll i skrivehandler (K01 §8).
 Denne handleren bruker bare rutebeskyttelsen. Et direkte actionkall kan derfor mangle
 kontroll. Legg inn sesjon/eierskap og test uendret DB ved avvisning.» Dette er et
-generisk eksempel, ikke et funn i en app som ennå ikke finnes.
+generisk eksempel, ikke et funn i appen.
 
 Ved ny brukeridé: undersøk og forklar konsekvensene før omfang utvides. Ved beskyttet
 egenarbeid: forklar kildegrensen og hjelp med begreper/øving. Ved ukjent kilde: merk

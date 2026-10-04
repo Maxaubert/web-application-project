@@ -1,5 +1,7 @@
 # Prosjektideer til diskusjon med Emil
 
+> **Arkivert 05.10.2026.** Historisk dokument som ikke vedlikeholdes. Se [arkivoversikten](README.md).
+
 **Status 14.09.2026: kandidater til diskusjon med Emil. Ingen endelig prosjektidé er valgt.**
 Notatet bevarer Max' tilbakemeldinger fra idérundene så langt. Det er skrevet med Codex,
 ikke en avtale med Emil, egen studentrefleksjon eller rapportens arkitekturbegrunnelse.

@@ -1,4 +1,4 @@
-# Canvas: KI-avtale (lærerens tekst)
+# KI-avtale: lærerens mal fra Canvas
 
 **Kildereferanse K02, hentet og kontrollert 19.09.2026.**
 Original: [KI-avtale i Canvas](https://hiof.instructure.com/courses/11084/pages/ki-avtale),
@@ -9,7 +9,7 @@ Teksten nedenfor er gjengitt fra lærerens side. Bare overskriftsnivåer, punktt
 og mellomrom er tilpasset Markdown; ordlyden er beholdt. Dette er kildeteksten,
 ikke Max og Emils utfylte eller godkjente gruppeavtale.
 
-Gruppens avtale er [KI-AVTALE.md](../prosess/ki-avtale.md). Der står også særregler
+Gruppens avtale er [docs/prosess/ki-avtale.md](../prosess/ki-avtale.md). Der står også særregler
 fra bestemte øvinger og rapporten. Denne generelle Canvas-teksten gir ikke alene
 svar på tillatt KI-bruk i alle vurderingssituasjoner. Les den konkrete oppgaven.
 

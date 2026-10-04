@@ -65,3 +65,18 @@ faktisk bidrag, kontroll, feil og eget læringsbehov. Ikke lag et referat av enh
 Ikke logg hemmeligheter, sensitive promptdata eller andres private opplysninger.
 
 Oppdater når praksisen ikke fungerer. Max og Emil har godtatt avtalen (registrert 30.09.2026).
+
+## Veiledning fra sign-off uke 40
+
+Muntlig veiledning fra studentassistenten ved sign-off, slik Max gjenga den 05.10.2026.
+Datoen er utledet: sign-off-dagene var 29.09 og 01.10, og bevisene ble laget kvelden
+30.09, så møtet var trolig torsdag 01.10.2026. Dette er veiledning, ikke et nytt
+emnekrav, og endrer ikke avtalen over.
+
+- Det er helt greit å bruke KI.
+- Det som ikke er greit, er å bare be KI gjøre ting for seg.
+- Styr KI i stedet: planlegg, vit omtrent hva dere gjør, og kunne forklare hvorfor
+  dere tar et valg. Kan dere forsvare beslutningene, er KI-bruken i orden.
+
+Dette samsvarer med punkt 1 over («Vi styrer arbeidet selv») og med Canvas-malens krav
+om egen forståelse. Samme sign-off anbefalte også en løpende [endringslogg](../endringslogg.md).

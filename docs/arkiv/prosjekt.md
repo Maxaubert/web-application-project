@@ -1,5 +1,7 @@
 # Prosjektkort og første plan
 
+> **Arkivert 05.10.2026.** Historisk dokument som ikke vedlikeholdes. Se [arkivoversikten](README.md).
+
 **Teamutkast, oppdatert 19.09.2026.** Dette er arbeidsplanen, ikke en parallell kravspesifikasjon.
 Kilde: [emnekrav](../emne/emnekrav.md) T01–T08 og [kilder](../emne/kilder.md) K01, U26 s. 152–159, 229.
 Kvitter er undervisningsdemo. Velg et meningsfullt problem med sammenlignbart omfang,

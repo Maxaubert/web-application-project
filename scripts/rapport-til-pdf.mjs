@@ -1,5 +1,5 @@
 // Lager rapportens PDF fra Markdown-kilden. Fra repo-roten:
-// node scripts/rapport-til-pdf.mjs docs/rapport/rapport.md docs/rapport/rapport.pdf
+// node scripts/rapport-til-pdf.mjs docs/leveranser/rapport/rapport.md docs/leveranser/rapport/rapport.pdf
 // Støtter det rapporten bruker: overskrifter, avsnitt, *kursiv*, `kode` og
 // HTML-kommentarer, som vises som grå veiledning under overskriften.
 import fs from "node:fs";

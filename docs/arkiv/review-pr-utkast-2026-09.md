@@ -1,5 +1,7 @@
 # Lokal oppgave og PR-utkast
 
+> **Arkivert 05.10.2026.** Historisk dokument som ikke vedlikeholdes. Se [arkivoversikten](README.md).
+
 **Lokal oppgave:** etabler et kildebasert prosjektgrunnlag for Max og Emil i ITF31619
 26H, med AI-veiledning, kravsporbarhet, samarbeid, egen læring og reell docsverifikasjon.
 Dette er bestilt arbeid. Valg av appidé og appimplementering er utenfor denne endringen.

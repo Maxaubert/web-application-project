@@ -19,7 +19,6 @@ registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjo
 
 Samme opplegg som i Max' OS-prosjekt (avklart 29.09.2026). Hver arbeidsdag har en egen fil
 `wal/wal-<ÅÅÅÅ-MM-DD>.md` i repo-roten. Mappen er Git-ignorert og skal ikke committes.
-Den gamle enkeltfilen `WAL.md` (19.09) er flyttet inn i `wal/wal-2026-09-19.md`.
 
 ```markdown
 # WAL 29.09.2026

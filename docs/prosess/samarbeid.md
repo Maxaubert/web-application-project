@@ -14,7 +14,7 @@ ikke et ekstra Canvas-krav. Scrum, sprinter og egen timelogg er ikke påkrevd i 
 | Oppgavefordeling og ansvar ved forsinkelse | TBD |
 | Roterende implementering/review og felles eierskap | Forslag: den andre reviewer, bytt fagområde jevnlig |
 | KI-verktøy og grenser | [KI-avtalen](ki-avtale.md), godtatt av begge 30.09 |
-| Tema, minste omfang og kuttliste | [Prosjektkort](../arkiv/prosjekt.md), ikke bestemt |
+| Tema, minste omfang og kuttliste | Studentmarked (Max 29.09); omfang i [kravspesifikasjonen](../krav/kravspesifikasjon.md) |
 | Uenighet, fravær og manglende bidrag | Forslag: ta det opp tidlig, vis konkret hindring, avtal tiltak, kontakt faglærer ved behov |
 | Gruppeendring og studentassistent | Avklares av studentene; ingen henvendelse sendt av assistenten |
 | Bekreftelse | Max: ikke gitt. Emil: ikke gitt. Dato: TBD |
@@ -28,8 +28,8 @@ funksjonssignaturer og grensesnitt før dere jobber separat.
 
 1. Bruk egen reell Git-identitet. Kontroller `git config user.name` og `git config user.email`.
    Ikke bruk medstudentens navn eller del innlogging. Ikke sett studentidentitet for KI-jobber.
-2. Funksjonsendringer beskrives i issue først. Uten godkjent remote brukes lokal oppgave
-   i [review](../arkiv/review-pr-utkast-2026-09.md), som senere kan overføres til issue. Ikke oppfinn issue-nummer.
+2. Funksjonsendringer beskrives i issue først, på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
+   Ikke oppfinn issue-nummer.
 3. Opprett branch `type/issue-slug`, for eksempel `feat/ressursflyt` uten nummer til issue finnes.
    Små docs-/feilrettinger trenger også branch og PR. Ingen endring pushes direkte til hovedbranch.
 4. Commit faktiske sammenhengende endringer underveis: `type(scope): kort beskrivelse`.
@@ -52,9 +52,8 @@ Bruk faktisk commit, ikke skriv vinkelparentes-placeholder som kommando. Avklar 
 av arkivtags før push. Kontroller at .git-pakken som leveres inneholder sporene. Git-statistikk
 alene er ikke forståelse, og et co-author-navn er ikke bevis på at noen skrev eller kan koden.
 
-Privat GitHub-remote er opprettet med fullmakt. Ikke endre synlighet eller publiser
-nye ressurser som del av «oppsett» uten fullmakt. Fremtidig offentlig innlevering
-må fortsatt oppfylle P01.
+GitHub-repoet er offentlig (kontrollert 05.10.2026). Ikke publiser nye ressurser som del
+av «oppsett» uten fullmakt. Innleveringen må fortsatt oppfylle P01.
 
 ## Konflikter og kvalitet
 
