@@ -16,6 +16,9 @@ export const emailNotConfigured: SendLoginCode = async () => {
   throw new Error("E-postutsending er ikke satt opp ennå (issue #46).");
 };
 
+// Lås nummer to: koden når nettleseren bare under utviklingsserveren (npm run dev). Vite setter
+// import.meta.env.DEV ved bygging, så et produksjonsbygg kan aldri slå dette på via en innstilling.
 export function getDevCode(email: string): string | undefined {
+  if (!import.meta.env.DEV) return undefined;
   return devCodes.get(email.toLowerCase());
 }

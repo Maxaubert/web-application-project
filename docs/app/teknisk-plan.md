@@ -56,6 +56,8 @@ Koden ligger i `app/src/app/auth/` (funksjonsmappe). Andre deler importerer bare
 (`requireUser`) og `session.ts`. Lokalt skrives koden til terminalen og nettleserkonsollen; ekte
 e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `printLoginCode`, som
 brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
+Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.meta.env.DEV`, satt
+ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
 Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
 
 ## Vurdert alternativ: Feide
