@@ -111,7 +111,7 @@
 
 ## Git, personvern og samarbeid
 
-- Alle repoendringer på branch, også docs. Ingen push til hovedbranch.
+- Alle repoendringer på branch fra `develop`, også docs. PR til `develop`; `develop` → `main` i egen PR. Ingen direkte push.
 - Opprett aldri PR og merge aldri uten Max' godkjenning. Spør gjerne om det skal gjøres,
   men gjør det aldri automatisk (Max 29.09).
 - Navngi branch `type/issue-slug`, eksempelvis `feat/12-innlogging`; ikke bruk codex/ai-prefiks.

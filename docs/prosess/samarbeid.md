@@ -30,8 +30,8 @@ funksjonssignaturer og grensesnitt før dere jobber separat.
    Ikke bruk medstudentens navn eller del innlogging. Ikke sett studentidentitet for KI-jobber.
 2. Funksjonsendringer beskrives i issue først, på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
    Ikke oppfinn issue-nummer.
-3. Opprett branch `type/issue-slug`, for eksempel `feat/ressursflyt` uten nummer til issue finnes.
-   Små docs-/feilrettinger trenger også branch og PR. Ingen endring pushes direkte til hovedbranch.
+3. Opprett branch `type/nr-slug` fra `develop` og lag PR til `develop` ([Kanban-flyt](kanban.md)).
+   Små docs-/feilrettinger trenger også branch og PR. Ingen endring pushes direkte til `develop` eller `main`.
 4. Commit faktiske sammenhengende endringer underveis: `type(scope): kort beskrivelse`.
    Ved KI-bidrag skal verktøy og rolle være synlige; bruk harnessens co-author-trailer der relevant.
    Ikke tilbakedater, del opp en ferdig leveranse for å late som semesterarbeid eller fabrikér bidrag.
