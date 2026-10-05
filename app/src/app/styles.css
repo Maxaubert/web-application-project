@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Fargene og typografien fra wireframes: varm, lys bakgrunn, nesten svart tekst, mørke knapper. */
+@theme {
+  --font-sans: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f5f3ee;
+  --color-surface: #ffffff;
+  --color-ink: #1d1b18;
+  --color-muted: #57534c;
+  --color-line: #6f6a62;
+  --color-hairline: #d9d5cc;
+  --color-action: #2a2826;
+  --color-action-hover: #000000;
+  --color-danger: #a32116;
+  --color-focus: #1f5fbf;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  input,
+  select {
+    caret-color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+}
