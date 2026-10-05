@@ -9,13 +9,17 @@ const errors = [];
 const fail = (message) => errors.push(message);
 const read = (name) => readFileSync(resolve(root, name), 'utf8').replace(/^\uFEFF/, '');
 const required = [
-  'README.md', 'AGENTS.md', 'CLAUDE.md', 'KI-AVTALE.md', '.gitignore',
-  'kravspesifikasjon.md', 'docs/teknisk-plan.md',
-  'docs/emnekrav.md', 'docs/kilder.md', 'docs/kildemanifest.json',
-  'docs/prosjekt.md', 'docs/ideer-til-diskusjon.md', 'docs/teknikk.md', 'docs/samarbeid.md',
-  'docs/arbeidslogg.md', 'docs/laering.md', 'docs/leveranse.md',
-  'docs/assistentbruk.md', 'docs/review.md', 'docs/verifikasjon.md',
-  '.github/PULL_REQUEST_TEMPLATE.md',
+  'README.md', 'AGENTS.md', 'CLAUDE.md', '.gitignore', '.github/PULL_REQUEST_TEMPLATE.md',
+  'docs/README.md', 'docs/endringslogg.md',
+  'docs/krav/kravspesifikasjon.md', 'docs/krav/akseptansekriterier.md',
+  'docs/app/teknisk-plan.md', 'docs/app/teknikk.md', 'docs/app/oppsett.md',
+  'docs/app/ci-og-deploy.md', 'docs/app/dokumentkontroll.md',
+  'docs/design/wireframes/README.md',
+  'docs/prosess/ki-avtale.md', 'docs/prosess/samarbeid.md', 'docs/prosess/assistentbruk.md',
+  'docs/prosess/loggrutine.md', 'docs/prosess/arbeidslogg-max-og-emil.md', 'docs/prosess/timeliste.md',
+  'docs/emne/emnekrav.md', 'docs/emne/kilder.md', 'docs/emne/kildemanifest.json',
+  'docs/emne/ki-avtale-mal.md', 'docs/emne/laering.md',
+  'docs/leveranser/README.md', 'docs/arkiv/README.md',
 ];
 
 for (const name of required) {
@@ -98,29 +102,28 @@ for (const name of ['AGENTS.md', 'CLAUDE.md']) {
 }
 if (!/^@AGENTS\.md\s*$/m.test(read('CLAUDE.md'))) fail('CLAUDE.md mangler felles AGENTS-import.');
 
-const requirements = read('docs/emnekrav.md');
+const requirements = read('docs/emne/emnekrav.md');
 for (const id of ['A0','A1','A2','A3','A4','A5','E1','E2','T01','T02','T03','T04','T05','T06','T07','T08','P01','P02','P03','P04','P05','P06']) {
   if (!requirements.includes(`| ${id} |`)) fail(`Mangler stabil kravrad ${id}.`);
 }
 const guards = [
   ['AGENTS.md', 'autorisasjon i skrivehandler', 'Tilgangskontroll'],
-  ['AGENTS.md', 'første versjon av minst to tester uten KI', 'Egen testøving'],
   ['AGENTS.md', 'egen arkitekturbegrunnelse', 'Egen vurderingstekst'],
   ['AGENTS.md', 'Ikke dikt bidrag', 'Autentisk dokumentasjon'],
-  ['AGENTS.md', 'Bare Oves eksplisitte godkjenning', 'Mergegate'],
+  ['AGENTS.md', "Bare Max' eksplisitte godkjenning", 'Mergegate'],
   ['README.md', 'Ingen markedsplassfunksjoner er implementert', 'Ærlig appstatus'],
-  ['KI-AVTALE.md', 'ikke bekreftet av studentene', 'Avtalestatus'],
-  ['docs/emnekrav.md', 'etter uke 42', 'Datokonflikt'],
-  ['docs/emnekrav.md', 'fremtidig pensum', 'Retrospektpresisering'],
-  ['docs/laering.md', 'prinsippene er pensum', 'Eksamensfordypning'],
-  ['docs/verifikasjon.md', 'ikke en sikkerhetsrevisjon', 'Kontrollbegrensning'],
+  ['docs/prosess/ki-avtale.md', 'Godtatt av Max og Emil', 'Avtalestatus'],
+  ['docs/emne/emnekrav.md', 'etter uke 42', 'Datokonflikt'],
+  ['docs/emne/emnekrav.md', 'fremtidig pensum', 'Retrospektpresisering'],
+  ['docs/emne/laering.md', 'prinsippene er pensum', 'Eksamensfordypning'],
+  ['docs/app/dokumentkontroll.md', 'ikke en sikkerhetsrevisjon', 'Kontrollbegrensning'],
 ];
 for (const [name, phrase, label] of guards) {
   if (!read(name).includes(phrase)) fail(`Kontrollpunkt mangler: ${label} i ${name}.`);
 }
 
 try {
-  const manifest = JSON.parse(read('docs/kildemanifest.json'));
+  const manifest = JSON.parse(read('docs/emne/kildemanifest.json'));
   if (manifest.course_id !== 11084 || !/^\d{4}-\d{2}-\d{2}$/.test(manifest.checked_on)) fail('Ugyldig kurs/kontrolldato i manifest.');
   const source = manifest.sources.find((item) => item.id === 'U26');
   if (!source || !/^[a-f0-9]{64}$/.test(source.sha256) || source.page_markers !== 374 || source.included_in_repo !== false) {

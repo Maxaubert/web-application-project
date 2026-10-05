@@ -1,0 +1,3 @@
+# Kopieres automatisk til .dev.vars av scripts/ensure-dev-vars.mjs (npm run dev / npm run check).
+BETTER_AUTH_SECRET=lang-tilfeldig-streng-minst-32-tegn
+LOGIN_CODE_DELIVERY=log

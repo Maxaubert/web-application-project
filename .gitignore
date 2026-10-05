@@ -23,6 +23,7 @@ test-results/
 CLAUDE.local.md
 .codex-log/
 /WAL.md
+/wal/
 private/
 local-sources/
 kursmateriell/
@@ -30,3 +31,7 @@ canvas/
 node_modules.zip
 .DS_Store
 Thumbs.db
+
+# Claude Code: lokale innstillinger og worktrees
+.claude/settings.local.json
+.claude/worktrees/

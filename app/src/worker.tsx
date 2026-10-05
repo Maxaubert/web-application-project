@@ -3,13 +3,23 @@ import { defineApp } from "rwsdk/worker";
 
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
-import { Home } from "@/app/pages/home";
-import Login from "./login";
-import Email from "./email";
+import { getAuth } from "@/app/auth/instance";
+import { AccountSetupPage, CodePage, LoginPage } from "@/app/auth/pages";
+import { requireAnonymous, requireSetupPending, requireUser, type AppSession } from "@/app/auth/guards";
+import { sessionMiddleware } from "@/app/auth/session";
+import { HomePage } from "@/app/home/HomePage";
 
-export type AppContext = Record<string, never>;
+export type AppContext = { session: AppSession };
 
 export default defineApp([
   setCommonHeaders(),
-  render(Document, [route("/", Login)]),
+  sessionMiddleware,
+  // better-auth sine egne endepunkter. Domene- og kodegrensen gjelder også her (hooks i auth.ts).
+  route("/api/auth/*", ({ request }) => getAuth().handler(request)),
+  render(Document, [
+    route("/", [requireUser, HomePage]),
+    route("/login", [requireAnonymous, LoginPage]),
+    route("/login/code", [requireAnonymous, CodePage]),
+    route("/account-setup", [requireSetupPending, AccountSetupPage]),
+  ]),
 ]);
