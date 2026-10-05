@@ -6,6 +6,7 @@ import { CodeForm } from "./CodeForm";
 import { LoginForm } from "./LoginForm";
 import { readPendingEmail } from "./pending-email";
 import { countryOptions } from "./phone";
+import { getDevCode } from "./send-login-code";
 import { redirectTo } from "./guards";
 
 const heading = "text-center text-4xl font-bold tracking-tight text-balance";
@@ -29,7 +30,7 @@ export function CodePage({ request }: RequestInfo) {
         Kode sendt til
         <strong className="block font-semibold [overflow-wrap:anywhere]">{email}</strong>
       </p>
-      <CodeForm />
+      <CodeForm devCode={getDevCode(email)} />
     </PageShell>
   );
 }

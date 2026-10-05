@@ -13,7 +13,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 - Innlogging med engangskode på e-post bygget (#47): bare kode, 6 sifre, 5 min, 3 forsøk,
   maks 5 koder per adresse per time, økt i 30 dager, kontooppsett med land og telefon, logger med
   maskert e-post, Tailwind. Telefon på én rad med rundt flagg og landskode; skjema i kort på
-  desktop som i wireframes (Max' håndtest). Valgene forsvart av Max i gjennomgang med Claude Code; koden skrevet
+  desktop som i wireframes (Max' håndtest). Lokalt vises koden også i nettleserkonsollen. Valgene forsvart av Max i gjennomgang med Claude Code; koden skrevet
   av Claude Code. Lokalt skrives koden til terminalen; ekte e-post er #46. (Max)
 - Innloggingslenken i e-posten er tatt ut av kravene (Microsoft Safe Links). Feide er bekreftet
   valgt bort: krever godkjenning hos Sikt og aktivering hos HiØ. (Max)

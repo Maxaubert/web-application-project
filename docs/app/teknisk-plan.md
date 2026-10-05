@@ -53,7 +53,9 @@ en gjennomgang med Claude Code der Max forsvarte hvert valg.
 | Logger med maskert e-post | Nok til feilsøking uten å lagre personopplysninger i loggen (GDPR: dataminimering). |
 
 Koden ligger i `app/src/app/auth/` (funksjonsmappe). Andre deler importerer bare `guards.ts`
-(`requireUser`) og `session.ts`. Lokalt skrives koden til terminalen; ekte e-post er #46.
+(`requireUser`) og `session.ts`. Lokalt skrives koden til terminalen og nettleserkonsollen; ekte
+e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `printLoginCode`, som
+brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
 Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
 
 ## Vurdert alternativ: Feide

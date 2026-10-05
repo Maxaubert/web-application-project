@@ -66,7 +66,8 @@ npm run dev
 ```
 
 Åpne adressen Vite viser, normalt `http://127.0.0.1:5173`, og logg inn med en `@hiof.no`-adresse.
-Lokalt sendes ingen e-post: **innloggingskoden skrives i terminalen** der `npm run dev` kjører.
+Lokalt sendes ingen e-post: **innloggingskoden skrives i terminalen** der `npm run dev` kjører,
+og i nettleserens utviklerkonsoll (F12, Console) på kodesiden.
 Første `npm run dev` lager `app/.dev.vars` med en tilfeldig lokal hemmelighet (Git-ignorert).
 Ingen Cloudflare-innlogging trengs lokalt.
 Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
