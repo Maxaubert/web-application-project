@@ -20,6 +20,20 @@ En lang fil er et signal om å se etter, ikke en regel. Hjelpekomponenter som ba
 blir private funksjoner i den filen. Start enkelt og del når et faktisk problem oppstår
 (RR/06-react-basis-komponent.md:22-43). Lag ikke komponenter «for sikkerhets skyld».
 
+**Hvorfor:** dette er Single Responsibility-prinsippet brukt på komponenter, slik kurset begrunner
+oppdelingen i leksjon 8 (RR/08:30-40): en del med ett ansvar er lettere å forstå, teste og endre.
+React-dokumentasjonen sier det samme: en komponent bør helst gjøre én ting, og deles når den vokser
+(react.dev, «Thinking in React»). Grensen mellom server og klient er også en reell arkitekturgrense,
+fordi alt under en `"use client"`-grense sendes til nettleseren.
+
+**Hvorfor ikke en linjegrense (for eksempel 100 linjer):** kursets egen fasit avviser linjeantall som
+begrunnelse (RR/08:1071), og AGENTS.md sier «ingen vilkårlige linjegrenser». En linjegrense deler
+koden på feil sted: den kan splitte én sammenhengende oppgave i to, og la to ulike oppgaver stå sammen.
+
+**Hvorfor ikke mange små komponenter fra start:** for tidlig abstraksjon gir flere filer, flere props
+og mer å forklare uten at noen trenger det. Kurset kaller det over-engineering av ukjente problemer
+(RR/06:38-43) og spør eksplisitt når abstraksjon er «for tidlig» (RR/10:1697).
+
 ## Delt UI i `app/src/app/shared/`
 
 | Komponent | Ansvar | Status |
@@ -30,11 +44,45 @@ blir private funksjoner i den filen. Start enkelt og del når et faktisk problem
 | `ErrorSummary` | Feiloppsummering øverst i lange skjemaer, med lenker til feltene. | Lages med «Legg ut annonse». |
 | `PageShell` | Topplinje og sideramme. Trenger et bredt oppsett for søk og detalj. | Finnes, smalt (#65). |
 
-**Button, begrunnelse:** kurset viser en variant-`Button` (RR/04-valg-rammeverk.md:553-597) og en
-privat knapp med fargekart (RR/11-tailwind-v4.md:499-612), men eksempelappen har ingen delt knapp.
-Avgjørende for oss: knappene våre hadde allerede glidd fra hverandre (ventetilstand kopiert tre steder,
-`aria-busy` manglet på to). **Alternativet som ble valgt bort** (Emils syn): rå `<button>` med delte
-klassekonstanter, nærmere kursets eksempelapp, men med risiko for at `type` og `aria-busy` glemmes.
+### Hvorfor én delt `Button`
+
+1. **En knapp er mer enn utseende.** Hver knapp i skjemaene må ha riktig `type` (en `<button>` i et
+   skjema sender skjemaet som standard), være deaktivert og merket `aria-busy` mens serveren jobber
+   (hindrer dobbel innsending, `teknikk.md`), ha synlig fokus og minst 44 px klikkflate (DK-03).
+   Dette er oppførsel og tilgjengelighet, ikke bare farge. Én komponent gir én kilde til sannhet
+   for alle disse kravene.
+2. **Problemet er allerede målt i koden, ikke tenkt.** Ventetilstanden var kopiert på tre steder, og
+   to av knappene manglet `aria-busy`. Det er glidningen kurset nevner som kostnad ved lange,
+   gjentatte klassestrenger og ulik praksis i et team (RR/11-tailwind-v4.md:883-887).
+3. **Det oppfyller vår egen deleregel.** Knappen brukes i mange filer (rundt 20 handlinger i fire
+   roller i wireframes) og bærer egen logikk (ventetilstand). Tailwinds egen veiledning sier at
+   gjentakelse innenfor én fil er greit, men at stiler som gjenbrukes på tvers av filer, best samles
+   i en komponent (tailwindcss.com, «Managing duplication»).
+4. **Kurset støtter mønsteret.** Leksjon 4 viser en `Button` med varianter som eksempel på bruk
+   (RR/04-valg-rammeverk.md:553-597), leksjon 11 bygger en knapp med fargekart for varianter
+   (RR/11:499-612), og leksjon 8 anbefaler egne felt-komponenter for likt utseende og riktig kobling
+   (RR/08:288-290). Prinsippet er det samme for knapper.
+5. **Vi holder den liten.** Tre varianter og standardverdier (convention over configuration,
+   RR/10:30-36), ingen `size`- eller `icon`-props. Det unngår fella kurset advarer mot: komponenter med
+   mange av/på-props (RR/10:1679).
+
+### Hvorfor ikke Emils forslag (ingen knappekomponent)
+
+Emils syn har gode argumenter: kursets eksempelapp har ingen delt knapp (hvert skjema lager sin egen
+`SubmitButton`, RR/19:747-764), Tailwind-leksjonen skriver klasser rett i markupen (RR/11:903), og
+en komponent er ett lag til å lære. Likt utseende kan løses med tema-tokens i `@theme`.
+
+Det som veier tyngre for oss:
+- Tokens og klassekonstanter sikrer **utseendet**, men ikke **oppførselen**. `type`, ventetilstand og
+  `aria-busy` må fortsatt huskes på hver knapp, og vi har allerede glemt dem to ganger.
+- Kursets eksempelapp lærer ett tema per leksjon; den viser ikke hvordan en app med mange skjermer
+  holdes konsistent. At den kopierer `SubmitButton` fire ganger med ulike farger, er et eksempel på
+  glidningen, ikke en anbefaling.
+- Endring blir dyr uten komponent: skal alle primærknapper endres (farge, høyde, ventetekst), må det
+  gjøres på hvert sted i stedet for ett.
+
+**Hva som ville endret valget:** hvis appen bare hadde én eller to knapper, eller knappene ikke hadde
+noen felles oppførsel, ville rå `<button>` med tokens vært det enkleste og riktige.
 
 ## «Legg ut annonse» (WF-05)
 
@@ -47,8 +95,27 @@ Ett `ListingForm` eier skjemaet og `useActionState`, og brukes både til å oppr
 
 Typevelger og prisfelt blir i `ListingForm` til de trengs andre steder. Prisreglene (heltall ≥ 0,
 ukepris valgfri ved lån) testes i en egen funksjon ved siden av `shared/loanPrice.ts`.
-**Alternativet som ble valgt bort:** én stor komponent med alt (RR/06), fordi skjemaet har sju felt,
-opptil ti bilder og pris som avhenger av type.
+**Hvorfor ett skjema:** skjemaet er én handling (opprett eller rediger én annonse) med én
+serverhandling og én valideringsregel. Å dele selve skjemaet ville spredd state og feilhåndtering
+over flere komponenter som må koordineres. Kurset bruker ett skjema per entitet, og samme skjema for
+opprett og rediger (RR/19:353-377). Det gir én kode å teste og forklare.
+
+**Hvorfor skille ut akkurat de tre:** hver av dem treffer deleregelen.
+- `ImageUploader` har eget ansvar og egen state (forhåndsvisninger, fjerning, grensen 1–10) og er
+  klientkode. Inne i skjemaet ville den blandet bildelogikk med feltlogikk; alene kan grensene
+  testes (separation of concerns, RR/08:30-40).
+- `ErrorSummary` brukes i alle lange skjemaer (gjenbruk på tvers av filer).
+- `ListingCard` brukes i søk, på Min side og i forhåndsvisningen. Én komponent betyr at
+  forhåndsvisningen viser nøyaktig det kjøperen vil se.
+
+**Hvorfor ikke én stor komponent:** kurset starter med én komponent (RR/06), men den har to felt.
+Vårt skjema har sju felt, opptil ti bilder og pris som avhenger av type, og bildeopplastingen har sin
+egen tilstand. Én stor komponent ville samlet flere ansvar, gjort testing av bildegrensene vanskelig
+og gitt dobbel kode for kortet.
+
+**Hvorfor ikke dele alt (egen TypePicker, PriceField og så videre):** de brukes bare i dette skjemaet
+og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å sende uten gevinst
+(for tidlig abstraksjon, RR/10:1697).
 
 ## Annonsesider (WF-03, WF-04)
 
@@ -57,6 +124,18 @@ opptil ti bilder og pris som avhenger av type.
   brukes i søk, på Min side og i forhåndsvisningen.
 - Detaljsiden er én side med seksjoner som avhenger av handelstype; lån er «som salg, pluss» kalender.
 - Interaktive deler (søkefilter, bildegalleri, kalender) er små klientkomponenter.
+
+**Hvorfor:** dette er mønsteret fra leksjon 8 og 19 (en side som koordinerer, deler med ett ansvar)
+og fra KI-kurset: hold så mye som mulig på serveren, og gjør bare de interaktive delene til klient
+(KI/05:54). Det gir mindre JavaScript i nettleseren, og datahenting og tilgangssjekk skjer på serveren.
+Ett annonseobjekt som prop gir ett sted å utvide kortet (KI/05:609-612).
+
+**Hvorfor ikke tre detaljsider (salg, lån, gis bort):** de deler galleri, tittel, beskrivelse og
+eierinfo; bare handlingen og kalenderen skiller dem. Tre sider ville kopiert det felles og latt
+sidene gli fra hverandre, samme problem som med knappene.
+
+**Hvorfor kortet er egen fil, når kursets liste skriver kortene rett i siden (RR/19:1030-1125):**
+der brukes kortet ett sted. Vårt brukes tre steder, så det treffer gjenbruksregelen.
 
 Kode legges i funksjonsmappen `app/src/app/listings/`, som `auth/`. Mappestrukturen vokser når
 skjermene bygges; den lages ikke på forhånd.
