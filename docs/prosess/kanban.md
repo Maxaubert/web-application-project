@@ -7,11 +7,17 @@ før den implementeres, og flyttes gjennom kolonnene etter hvert som arbeidet g�
 |---|---|
 | To do | Issue er opprettet og lagt på boardet, før noe arbeid starter. |
 | In progress | Arbeidet starter (branch opprettet, planen godkjent). |
-| Review | PR-en er åpnet og venter på håndtest og «merge?». |
-| Done | PR-en er merget. Lukkede issues flyttes hit automatisk eller for hånd. |
+| Review | PR-en til `develop` er åpnet og venter på håndtest og «merge?». |
+| Done | PR-en er merget til `develop`. Lukkede issues flyttes hit automatisk eller for hånd. |
 
-Én branch per issue, alltid fra `main` (`type/nr-slug`, for eksempel `feat/47-innlogging`).
-`develop` er avviklet 05.10.2026; `main` er eneste faste branch.
+## Brancher (Max 05.10.2026)
+
+- `main` er det leverte, stabile. `develop` er integrasjonsbranchen.
+- Én branch per issue, alltid fra `develop` (`type/nr-slug`, for eksempel `feat/52-annonser`).
+  PR-en går til `develop` og squash-merges etter Max' godkjenning.
+- Når `develop` er klar, åpnes en egen PR `develop` → `main`. Den merges med **merge commit**,
+  ikke squash, ellers glir historikken i `develop` og `main` fra hverandre og gir konflikter.
+- CI kjører på PR-er og push til både `develop` og `main`. Bare `main` har grenbeskyttelse.
 
 ## Kommandoer
 
