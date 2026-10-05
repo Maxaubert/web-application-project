@@ -14,6 +14,7 @@ generelle faglige sjekklisten, ikke en parallell apparkitektur.
 | Database og ORM | Drizzle og lokal D1. Første migrasjon har innloggingstabellene (#47) | Annonse- og forespørselstabeller designes i neste del (T02). |
 | Innlogging | Engangskode på e-post med better-auth, bygget 05.10 (#47). Feide valgt bort | Ekte e-postutsending og domene (#46). Se «Innlogging» under. |
 | Hosting | Ikke valgt | Avklar etter stack, tilgang og budsjett. Ingen deploy er bestilt her. |
+| Komponenter | Prinsipper og plan valgt av Max 05.10 | [Komponenter](komponenter.md); åpne beslutninger #61–#65. |
 | API og skrivehandlinger | Ikke designet | Knytt T03/T04 til konkrete handlinger med input, svar, feil og eierskap. |
 
 ## Datamodell og requestflyt som skal konkretiseres

@@ -76,6 +76,7 @@
   og mot anerkjent praksis i offisiell dokumentasjon. Oppgi leksjon eller kilde; ved avvik mellom
   kurs og praksis, vis begge og la studentene velge.
 - Følg eksisterende struktur, én tydelig oppgave per fil, og refaktorer ved reelt behov.
+  Komponentregler og delt UI: [komponenter](docs/app/komponenter.md) (del etter ansvar, ikke linjeantall).
   Ingen vilkårlige linjegrenser eller obligatoriske lag for en liten funksjon.
 - For UI: store lesbare tekster, god kontrast, store klikkflater, tastatur og høy zoom.
   Bruk relevante designferdigheter før UI-design.
