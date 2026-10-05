@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-05
 
+- `develop` har samme grenbeskyttelse som `main`; direkte push blokkeres. Oppskriften
+  `.github/branch-protection.json` rettet (tom `contexts` sammen med `checks` ble avvist av GitHub). (Max, #58)
 - Dependabot lager PR-er mot `develop` (Max).
 - `develop` gjenopprettet som integrasjonsbranch: PR-er til `develop`, `develop` → `main` i egen PR
   med merge commit. CI kjører også for `develop` (Max, #51).
