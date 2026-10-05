@@ -10,9 +10,9 @@ generelle faglige sjekklisten, ikke en parallell apparkitektur.
 | Område | Nåværende status | Neste avklaring |
 |---|---|---|
 | Rammeverk og språk | RedwoodSDK 1.7.3, React, Vite og TypeScript satt opp etter Max sin bestilling | [Oppsett og versjoner](oppsett.md); studentenes egen begrunnelse gjenstår. |
-| Styling | Max ønsker moderne verktøy, eksempelvis Tailwind CSS | Velg sammen med stacken; verktøyet erstatter ikke designkravene. |
-| Database og ORM | Drizzle og lokal D1 er satt opp, ingen tabeller | Følg T02; gruppen designer eget skjema etter regelavklaring. |
-| Innlogging | Feide undersøkt og valgt bort av Max 19.09 | Velg alternativ innlogging og hvordan studentmålgruppen verifiseres. Ingen alternativ løsning er valgt eller prøvd. |
+| Styling | Tailwind CSS v4, valgt av Max 05.10 (som React-kurset leksjon 11) | Farger og typografi fra wireframes ligger som tema i `app/src/app/styles.css`. |
+| Database og ORM | Drizzle og lokal D1. Første migrasjon har innloggingstabellene (#47) | Annonse- og forespørselstabeller designes i neste del (T02). |
+| Innlogging | Engangskode på e-post med better-auth, bygget 05.10 (#47). Feide valgt bort | Ekte e-postutsending og domene (#46). Se «Innlogging» under. |
 | Hosting | Ikke valgt | Avklar etter stack, tilgang og budsjett. Ingen deploy er bestilt her. |
 | API og skrivehandlinger | Ikke designet | Knytt T03/T04 til konkrete handlinger med input, svar, feil og eierskap. |
 
@@ -36,6 +36,30 @@ Dette er et implementeringsforslag, ikke ferdig kode. Eksakte ruter, komponentgr
 tabeller og mekanismen for samtidighet bestemmes etter stack- og regelavklaringen.
 Ingen chatkomponent eller betalingsintegrasjon skal bygges som del av MVP.
 
+## Innlogging (#47, valgt av Max 05.10.2026)
+
+Studenten skriver HiØ-e-posten, får en sekssifret kode og logger inn med den. Koden beviser
+at studenten eier adressen, og appen lagrer ingen passord. Valgene og begrunnelsene kom fra
+en gjennomgang med Claude Code der Max forsvarte hvert valg.
+
+| Valg | Hvorfor |
+|---|---|
+| Bare kode, ingen lenke | Microsoft Safe Links hos HiØ kan åpne og bruke opp engangslenker før studenten klikker. |
+| 6 sifre, 5 min, 3 forsøk | better-auth sine standardverdier; liten gjettesjanse per kode. |
+| 5 koder per adresse per time, 60 s mellom | Uten taket kan en angriper be om nye koder i det uendelige. better-auth teller bare per IP, så vi teller per adresse selv i D1 (en hash av adressen, ikke adressen). |
+| Domenesjekk også i better-auth sin hook | Noen kan kalle `/api/auth/*` direkte og hoppe over skjemaet. |
+| Økt i 30 dager, rullerende | Praktisk på egen telefon. Risikoen på delte PC-er dempes med synlig «Logg ut» som sletter økten på serveren. |
+| Telefon med land, libphonenumber-js | Utvekslingsstudenter har ofte utenlandsk nummer. Lagres som E.164. |
+| Logger med maskert e-post | Nok til feilsøking uten å lagre personopplysninger i loggen (GDPR: dataminimering). |
+
+Koden ligger i `app/src/app/auth/` (funksjonsmappe). Andre deler importerer bare `guards.ts`
+(`requireUser`) og `session.ts`. Lokalt skrives koden til terminalen og nettleserkonsollen; ekte
+e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `printLoginCode`, som
+brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
+Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.meta.env.DEV`, satt
+ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
+Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
+
 ## Vurdert alternativ: Feide
 
 **Beslutning oppgitt av Max 19.09.2026:** Feide er ikke riktig løsning for prosjektet
@@ -50,9 +74,15 @@ Offisielle kilder undersøkt 19.09.2026:
 - [Institusjonsaktivering](https://docs.feide.no/service_providers/manage/access_to_services/activation.html): institusjonen må aktivere tjenesten før dens brukere får tilgang.
 
 Ingen henvendelse er sendt, konto opprettet eller registrering gjort, og ingen praktisk
-Feide-integrasjon er prøvd. Ved eventuell revurdering må institusjonstilgang avklares.
-Neste arbeid er å velge et alternativ. Innlogging og verifisering av studentstatus
-er fortsatt forskjellige spørsmål; begge må avklares for valgt løsning.
+Feide-integrasjon er prøvd.
+
+**Kontrollert på nytt 05.10.2026:** Feide krever to godkjenninger vi ikke styrer. Sikt vurderer
+en søknad før tjenesteleverandøren får tilgang ([kundeportal](https://docs.feide.no/service_providers/getting_started/customer_portal.html)),
+og HiØ må selv aktivere tjenesten før studentene kan logge inn
+([aktivering](https://docs.feide.no/service_providers/manage/access_to_services/activation.html)).
+Ingen behandlingstid er oppgitt. Testbrukere finnes, men er ikke ekte studenter. Med frist
+5. november er det ikke realistisk. Engangskode til `@hiof.no` løser både innlogging og
+verifisering av HiØ-tilknytning.
 
 ## Testplan og kobling til emnet
 

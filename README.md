@@ -7,8 +7,8 @@ forklare, vurdere og endre den uten KI på individuell muntlig vurdering.
 **Status 05.10.2026:** prosjektet er et studentmarked med kjøp/salg, gratis lån og
 betalt utleie fra første versjon. Forespørsler og motforslag håndterer avtalene;
 eieren alene bekrefter retur og fullfører lån/leie. Chat kommer etter MVP.
-RedwoodSDK, TypeScript, lokal D1/Drizzle og testverktøy er satt opp i `app/`, med en
-påbegynt innloggingsside og en enkel prisberegning. Ingen markedsplassfunksjoner er implementert.
+RedwoodSDK, TypeScript, lokal D1/Drizzle, Tailwind og testverktøy er satt opp i `app/`, med
+innlogging med engangskode på e-post og en enkel prisberegning. Ingen markedsplassfunksjoner er implementert.
 Se [oppsettsnotatet](docs/app/oppsett.md). Dokumentasjonen er laget med KI (Codex og
 Claude Code) etter våre valg og er ikke dokumentasjon på studentenes læring.
 
@@ -61,11 +61,15 @@ Bruk Node **24.19.0** og npm **11.17.0**. Fra repo-roten:
 cd app
 npm ci
 npx playwright install chromium
+npm run db:migrate:local
 npm run dev
 ```
 
-Åpne adressen Vite viser, normalt `http://127.0.0.1:5173`. Forsiden er den påbegynte
-innloggingssiden. Ingen Cloudflare-innlogging eller miljøhemmeligheter trengs lokalt.
+Åpne adressen Vite viser, normalt `http://127.0.0.1:5173`, og logg inn med en `@hiof.no`-adresse.
+Lokalt sendes ingen e-post: **innloggingskoden skrives i terminalen** der `npm run dev` kjører,
+og i nettleserens utviklerkonsoll (F12, Console) på kodesiden.
+Første `npm run dev` lager `app/.dev.vars` med en tilfeldig lokal hemmelighet (Git-ignorert).
+Ingen Cloudflare-innlogging trengs lokalt.
 Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
 
 | Oppgave | Kommando |
@@ -81,7 +85,7 @@ Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
 | Generer migrasjon fra eget skjema | `npm run db:generate` |
 | Kjør migrasjoner lokalt | `npm run db:migrate:local` |
 
-Skjemaet er foreløpig tomt, så det finnes ingen produktmigrasjoner eller seed.
+Første migrasjon (`app/drizzle/0000_auth.sql`) har innloggingstabellene. Det finnes ingen seed.
 Playwright starter og stopper sin egen preview på port 4173; porten må være ledig.
 På Linux installeres browseravhengighetene med `npx playwright install --with-deps chromium`.
 CI utfører installasjon og hele kontrollrekken. Startertester er ikke bevis på at

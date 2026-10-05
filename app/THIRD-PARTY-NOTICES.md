@@ -25,3 +25,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## circle-flags
+
+De runde flaggene i telefonfeltet kommer fra [circle-flags](https://github.com/HatScripts/circle-flags)
+2.8.3 og kopieres til `public/flags/` av `scripts/copy-flags.mjs`. MIT-lisens, Copyright (c) 2026 HatScripts.

@@ -43,9 +43,9 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Tema | Status | Beslutning eller neste avklaring |
 |---|---|---|
 | Handelstyper | Avklart 29.09 | Salg, lån og gis bort. Én type per annonse (D-01). Lån har valgfri ukepris; tom betyr gratis. Erstatter «salg, gratis lån og betalt leie» fra 19.09. |
-| Innlogging | Avklart 29.09 | Bare e-post, ingen passord. Appen sender engangskode og lenke til e-posten. Kun `@hiof.no`. Samme flyt for ny og eksisterende konto. Løsning: better-auth. Feide er valgt bort (19.09). |
+| Innlogging | Avklart 29.09, endret 05.10 | Bare e-post, ingen passord. Appen sender en sekssifret engangskode til e-posten, ingen lenke (Microsoft Safe Links kan bruke opp lenker). Koden varer 5 minutter og tåler 3 feil forsøk. Maks 5 koder per adresse per time og 1 minutt mellom koder. Økten varer 30 dager og forlenges ved bruk; «Logg ut» sletter den på serveren. Kun `@hiof.no`. Samme flyt for ny og eksisterende konto. Løsning: better-auth. Feide er valgt bort (19.09; krever godkjenning hos Sikt og aktivering hos HiØ, sjekket 05.10). |
 | Tilgang | Avklart 28.09 | Innlogging kreves før annonser kan ses eller søkes i. Ingen offentlig annonseoversikt (D-43 til D-45). |
-| Kontooppsett | Avklart 28.09 og 29.09 | Ny bruker fyller inn fullt navn og telefon én gang. Telefon og e-post deles bare med motparten etter godtatt forespørsel (D-13, D-14). |
+| Kontooppsett | Avklart 28.09 og 29.09, utvidet 05.10 | Ny bruker fyller inn fullt navn, land og telefon én gang. Nummeret må være gyldig for valgt land og lagres i internasjonal form (+47…). Telefon og e-post deles bare med motparten etter godtatt forespørsel (D-13, D-14). |
 | Forespørsel ved salg | Avklart 29.09 | Bare et bud i kroner. Mottakeren godtar, avslår eller foreslår en annen pris. Erstatter D-50 om at pris ikke kan endres. |
 | Forespørsel ved lån | Avklart 29.09 | Bare en periode (fra og til), minst én uke (D-22). Opptatte datoer kan ikke velges. Motforslag gjelder perioden. |
 | Gis bort | Avklart 29.09 | Som salg, men uten bud: forespørsel, eier godtar eller avslår, begge bekrefter overlevering. Ingen retur. |
@@ -94,7 +94,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 
 | ID | Funksjonelt krav |
 |---|---|
-| FK-01 | En HiØ-student skal kunne logge inn eller lage konto med e-post, uten passord, via engangskode eller lenke sendt til en `@hiof.no`-adresse. Første gang fyller brukeren inn fullt navn og telefon. |
+| FK-01 | En HiØ-student skal kunne logge inn eller lage konto med e-post, uten passord, via en engangskode sendt til en `@hiof.no`-adresse. Første gang fyller brukeren inn fullt navn, land og telefon. |
 | FK-02 | En innlogget bruker skal kunne søke i tittel og beskrivelse, filtrere på kategori, handelstype og «Tilgjengelig nå / Alle», åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
 | FK-03 | En innlogget bruker skal kunne legge ut en annonse for salg, lån eller gis bort, med tittel, beskrivelse, kategori, tilstand, 1 til 10 bilder og pris der den gjelder (salgspris, valgfri ukepris ved lån). |
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel på andres annonse: et bud ved salg, en periode på minst én uke ved lån, eller en forespørsel uten vilkår ved gis bort. |
@@ -156,7 +156,7 @@ Har bare én part bekreftet overlevering, regnes den som bekreftet 3 dager sener
 
 | ID | Status | Teknisk krav |
 |---|---|---|
-| TK-01 | Avklart 29.09 | Innlogging med better-auth: engangskode og lenke på e-post, bare `@hiof.no`. Appen skal kontrollere innlogget økt på serveren før beskyttede handlinger og visning av annonser. |
+| TK-01 | Avklart 29.09, endret 05.10 | Innlogging med better-auth: engangskode på e-post (6 sifre, 5 min, 3 forsøk, maks 5 per adresse per time), bare `@hiof.no`, økt i 30 dager. Appen skal kontrollere innlogget økt på serveren før beskyttede handlinger og visning av annonser. |
 | TK-02 | Avklart | Appen skal lagre brukere, annonser, bilder, forespørsler, forslag med historikk, bekreftelser og returrapporter, slik at informasjonen finnes igjen etter utlogging. |
 | TK-03 | Avklart | Bare eieren kan endre eller ta ned egen annonse. Bare parten som har tur, kan godta, avslå eller sende motforslag. Bare partene kan bekrefte overlevering, avbestille, foreslå forlengelse eller rapportere problem. Bare eieren kan bekrefte retur. Hver handling skal kontrollere part, rolle og gyldig status på serveren. |
 | TK-04 | Avklart | Serveren skal validere data før lagring, for eksempel påkrevde felt, 1 til 10 bilder, pris som heltall, bud over null og at en låneperiode er minst én uke og ledig. |
