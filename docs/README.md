@@ -6,7 +6,7 @@ Kart over `docs/`. [README](../README.md) i roten er inngangen til prosjektet, o
 | Mappe | Innhold |
 |---|---|
 | [krav/](krav/kravspesifikasjon.md) | [Kravspesifikasjon](krav/kravspesifikasjon.md) og [akseptansekriterier](krav/akseptansekriterier.md) for appen |
-| [app/](app/teknisk-plan.md) | [Teknisk plan](app/teknisk-plan.md), [teknikk og kodekvalitet](app/teknikk.md), [appoppsett](app/oppsett.md), [CI og deploy](app/ci-og-deploy.md), [dokumentkontroll](app/dokumentkontroll.md) |
+| [app/](app/teknisk-plan.md) | [Teknisk plan](app/teknisk-plan.md), [teknikk og kodekvalitet](app/teknikk.md), [komponenter](app/komponenter.md), [appoppsett](app/oppsett.md), [CI og deploy](app/ci-og-deploy.md), [dokumentkontroll](app/dokumentkontroll.md) |
 | [design/](design/wireframes/README.md) | [Wireframes og skjermspesifikasjon](design/wireframes/README.md) med PNG-er og kildefiler |
 | [prosess/](prosess/samarbeid.md) | [KI-avtale](prosess/ki-avtale.md), [samarbeid og Git](prosess/samarbeid.md), [assistentbruk](prosess/assistentbruk.md), [review-sjekkliste](prosess/review-sjekkliste.md), [Kanban-flyt](prosess/kanban.md), [loggrutine](prosess/loggrutine.md), [arbeidslogg](prosess/arbeidslogg-max-og-emil.md), [timeliste](prosess/timeliste.md) |
 | [emne/](emne/emnekrav.md) | [Emnekrav](emne/emnekrav.md), [kildeindeks](emne/kilder.md), [kildemanifest](emne/kildemanifest.json), [lærerens KI-mal](emne/ki-avtale-mal.md), [læringskart](emne/laering.md) |
