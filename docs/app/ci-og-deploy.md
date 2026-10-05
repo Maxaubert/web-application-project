@@ -7,7 +7,7 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 
 | Del | Status |
 |---|---|
-| CI | Samlet `Repository checks`: dokumenter, whitespace, npm ci, typecheck, lint, Vitest/dekning, lokal D1, bygg og Playwright. Kjører på PR og push mot main. |
+| CI | Samlet `Repository checks`: dokumenter, whitespace, npm ci, typecheck, lint, Vitest/dekning, lokal D1, bygg og Playwright. Kjører på PR og push mot `main` og `develop`. |
 | Node/npm | Node 24.19.0 fra `.node-version`, npm 11.17.0. Samme versjoner lokalt og i CI. |
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig. Ingen automatisk merge. |
 | PR-beskyttelse | **Aktiv på main** (kontrollert 05.10.2026). Repoet er offentlig. PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. |

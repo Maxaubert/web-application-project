@@ -15,8 +15,8 @@ Vanlig Claude-chat og ChatGPT må få relevant innhold uttrykkelig, se
 ## Kanban før arbeid (Max 05.10)
 
 Hver funksjon eller retting legges som issue på Kanban-boardet før den implementeres, og flyttes
-To do → In progress (arbeidet starter) → Review (PR åpnet) → Done (merget). Bare `main` er fast
-branch; ny branch per issue fra main. Kommandoer: [kanban](docs/prosess/kanban.md).
+To do → In progress (arbeidet starter) → Review (PR åpnet) → Done (merget). Ny branch per issue fra
+`develop`, PR til `develop`; `develop` → `main` i egen PR med merge commit. Se [kanban](docs/prosess/kanban.md).
 
 ## Plan før kode (Max 05.10)
 

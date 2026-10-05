@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-05
 
+- `develop` gjenopprettet som integrasjonsbranch: PR-er til `develop`, `develop` → `main` i egen PR
+  med merge commit. CI kjører også for `develop` (Max, #51).
 - Kanban-flyt i CLAUDE.md: hver funksjon eller retting på boardet før arbeid, To do → In progress →
   Review → Done. `develop` slettet; bare `main` er fast branch (Max, #49).
 - Innlogging med engangskode på e-post bygget (#47): bare kode, 6 sifre, 5 min, 3 forsøk,
