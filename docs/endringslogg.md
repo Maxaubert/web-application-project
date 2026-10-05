@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-05
 
+- Komponentprinsipper vedtatt etter kryssjekk mot Fullstækk: del etter ansvar, én liten delt Button
+  med tre varianter, «Legg ut annonse» som ett skjema med tre utskilte deler. Åpne beslutninger
+  lagt på boardet (#61–#66). (Max, #60)
 - `develop` har samme grenbeskyttelse som `main`; direkte push blokkeres. Oppskriften
   `.github/branch-protection.json` rettet (tom `contexts` sammen med `checks` ble avvist av GitHub). (Max, #58)
 - Dependabot lager PR-er mot `develop` (Max).
