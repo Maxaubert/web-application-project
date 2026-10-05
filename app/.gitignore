@@ -65,3 +65,5 @@ coverage
 
 # Wrangler
 .wrangler
+# Flagg kopiert fra circle-flags av scripts/copy-flags.mjs
+public/flags/

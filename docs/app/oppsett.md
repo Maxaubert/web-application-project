@@ -42,7 +42,8 @@ Det er heller ikke skrevet en datatilgangsmodul før modellen og bruken er avkla
 
 Nye avhengigheter, alle med låst versjon: `better-auth` (innlogging), `libphonenumber-js`
 (telefon per land), `zod` (validering på serveren), `tailwindcss` og `@tailwindcss/vite`
-(styling), og bare for tester `better-sqlite3` (SQLite i minnet, KI-kurset leksjon 8a).
+(styling), `circle-flags` (runde flagg i telefonfeltet, kopiert til `public/flags/` av
+`scripts/copy-flags.mjs` og servert fra appen selv), og bare for tester `better-sqlite3` (SQLite i minnet, KI-kurset leksjon 8a).
 `npm run dev`, `preview` og `typecheck` lager `.dev.vars` ved behov
 (`scripts/ensure-dev-vars.mjs`). `npm run check` kjører nå også lokale migrasjoner før bygget.
 npm audit viser fortsatt funn bare i eksisterende verktøykjede (wrangler, miniflare, drizzle-kit),

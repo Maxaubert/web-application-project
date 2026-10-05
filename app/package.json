@@ -8,8 +8,8 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev": "node scripts/ensure-dev-vars.mjs && vite dev --host 127.0.0.1",
-    "build": "vite build",
+    "dev": "node scripts/ensure-dev-vars.mjs && node scripts/copy-flags.mjs && vite dev --host 127.0.0.1",
+    "build": "node scripts/copy-flags.mjs && vite build",
     "preview": "node scripts/ensure-dev-vars.mjs && vite preview --host 127.0.0.1",
     "generate": "wrangler types --include-runtime false",
     "typecheck": "node scripts/ensure-dev-vars.mjs && npm run generate && tsc --noEmit",
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "better-auth": "1.7.7",
+    "circle-flags": "2.8.3",
     "drizzle-orm": "0.45.2",
     "libphonenumber-js": "1.13.14",
     "react": "19.3.0",

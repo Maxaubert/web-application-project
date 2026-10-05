@@ -48,6 +48,3 @@ export function PrimaryButton({ pending, children }: { pending: boolean; childre
     </button>
   );
 }
-
-// Nedtrekkslister regnes som «read-only» i CSS, så de får ikke den låste stilen.
-export const selectClass = baseClass;
