@@ -26,7 +26,7 @@
   "dependencies": {
     "better-auth": "1.7.7",
     "circle-flags": "2.8.3",
-    "drizzle-orm": "0.45.2",
+    "drizzle-orm": "0.45.3",
     "libphonenumber-js": "1.13.14",
     "react": "19.3.0",
     "react-dom": "19.3.0",
