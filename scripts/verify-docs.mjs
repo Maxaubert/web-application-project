@@ -108,7 +108,6 @@ for (const id of ['A0','A1','A2','A3','A4','A5','E1','E2','T01','T02','T03','T04
 }
 const guards = [
   ['AGENTS.md', 'autorisasjon i skrivehandler', 'Tilgangskontroll'],
-  ['AGENTS.md', 'første versjon av minst to tester uten KI', 'Egen testøving'],
   ['AGENTS.md', 'egen arkitekturbegrunnelse', 'Egen vurderingstekst'],
   ['AGENTS.md', 'Ikke dikt bidrag', 'Autentisk dokumentasjon'],
   ['AGENTS.md', "Bare Max' eksplisitte godkjenning", 'Mergegate'],

@@ -38,6 +38,16 @@ Drizzle-konfigurasjon og migrasjonskommandoer er klare; null tabeller gir ingen
 migrasjoner. Ingen eksempelbrukere, annonser, avtaler, auth-tabeller eller seed er laget.
 Det er heller ikke skrevet en datatilgangsmodul før modellen og bruken er avklart.
 
+## Tillegg 05.10.2026: innlogging (#47)
+
+Nye avhengigheter, alle med låst versjon: `better-auth` (innlogging), `libphonenumber-js`
+(telefon per land), `zod` (validering på serveren), `tailwindcss` og `@tailwindcss/vite`
+(styling), og bare for tester `better-sqlite3` (SQLite i minnet, KI-kurset leksjon 8a).
+`npm run dev`, `preview` og `typecheck` lager `.dev.vars` ved behov
+(`scripts/ensure-dev-vars.mjs`). `npm run check` kjører nå også lokale migrasjoner før bygget.
+npm audit viser fortsatt funn bare i eksisterende verktøykjede (wrangler, miniflare, drizzle-kit),
+ingen fra de nye pakkene.
+
 ## Hva kontrollene faktisk beviser
 
 - Tre Vitest-tester prøver eksisterende starter-middleware: sikkerhetsheadere,

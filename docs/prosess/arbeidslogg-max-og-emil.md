@@ -61,3 +61,5 @@ Emils arbeid står under eget navn. KI-verktøy er nevnt der de ble brukt.
 - Opprettet [endringsloggen](../endringslogg.md), som studentassistenten anbefalte på sign-off.
 - Førte inn studentassistentens KI-veiledning fra sign-off i [KI-avtalen](ki-avtale.md).
 - La åpne punkter som issues på Kanban-boardet (#39, #40, #41).
+- Gikk gjennom alle valgene for innloggingen med Claude Code og forsvarte dem: kode i stedet for passord, ingen lenke, grenser for koder, øktlengde, telefon med land, logging og Tailwind. Feide og e-postutsending ble undersøkt (#46).
+- Godkjente planen og hver test før Claude Code bygget innloggingen (#47). Prøvde flyten i nettleseren.

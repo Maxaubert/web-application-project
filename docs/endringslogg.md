@@ -10,6 +10,14 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-05
 
+- Innlogging med engangskode på e-post bygget (#47): bare kode, 6 sifre, 5 min, 3 forsøk,
+  maks 5 koder per adresse per time, økt i 30 dager, kontooppsett med land og telefon, logger med
+  maskert e-post, Tailwind. Valgene forsvart av Max i gjennomgang med Claude Code; koden skrevet
+  av Claude Code. Lokalt skrives koden til terminalen; ekte e-post er #46. (Max)
+- Innloggingslenken i e-posten er tatt ut av kravene (Microsoft Safe Links). Feide er bekreftet
+  valgt bort: krever godkjenning hos Sikt og aktivering hos HiØ. (Max)
+- L8a-raden er fjernet fra KI-avtalen; den var ikke avtalt. Tester skrevet av KI beskrives og
+  godkjennes av Max først. (Max)
 - [Review-sjekkliste](prosess/review-sjekkliste.md) for krav, dokumentasjon, struktur, overkomplisering,
   Fullstækk, sikkerhet, tester og logging, og `/prosjektreview` i Claude Code som kjører den. (Max)
 - Arbeidsregler skjerpet i AGENTS.md: stegvis arbeid med plan først, studentene bestemmer,

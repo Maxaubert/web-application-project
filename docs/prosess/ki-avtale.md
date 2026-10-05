@@ -32,7 +32,6 @@ Den konkrete oppgaven avgjør særgrenser:
 | Oppgave/kontekst | Grense | Kilde |
 |---|---|---|
 | Rapportens arkitekturbegrunnelse | Studentene skriver resonnement og tekst selv, uten KI-generert tekst | U26 s. 230 |
-| L8a integrasjonsøving | Første versjon av minst to tester skrives selv uten KI; deretter tillates KI-utvidelse | U26 s. 201 |
 | L9 retningslinjedokument | Ingen KI-generert tekst i dokumentet | U26 s. 213 |
 | L1 requestforklaring; L2 linjeforklaring/egen feilfinning | Egen første forklaring/feilfinning etter øvingen | U26 s. 26,43–44 |
 | L2b begrunn tre AGENTS-regler og én forkastet regel; menneskelig review | Egen begrunnelse/review, ikke hentet fra dette grunnlaget | U26 s. 56–57 |
@@ -40,8 +39,8 @@ Den konkrete oppgaven avgjør særgrenser:
 | L7 etisk refleksjon | Anbefales skrevet uten KI; dette er svakere formulert enn et absolutt forbud | U26 s. 167 |
 
 Undervisningsøvinger er ikke automatisk obligatoriske innleveringer. Sjekk om de er
-tildelt/publisert og hvilken policy som gjelder. P05 er rapportregelen; to egne tester
-er en L8a-øvingsregel, mens Canvas-minimumet er minst én integrasjonstest og 50 % dekning.
+tildelt/publisert og hvilken policy som gjelder. P05 er rapportregelen. Canvas-minimumet for tester er minst én integrasjonstest og 50 % dekning.
+Tester skrevet av KI beskrives først og godkjennes av Max før de skrives (Max 05.10).
 KI skal ikke skrive en «studentversjon» eller et utkast som omgår egenarbeidskravet.
 
 Assistenten kan finne kilder, forklare begreper og stille nøytrale kontrollspørsmål.
@@ -65,6 +64,11 @@ faktisk bidrag, kontroll, feil og eget læringsbehov. Ikke lag et referat av enh
 Ikke logg hemmeligheter, sensitive promptdata eller andres private opplysninger.
 
 Oppdater når praksisen ikke fungerer. Max og Emil har godtatt avtalen (registrert 30.09.2026).
+
+## Endringer
+
+- 05.10.2026: L8a-raden (to egne tester uten KI) er fjernet. Max: den var ikke avtalt; raden
+  var med i utkastet skrevet med Codex. Kursets L8a-øving er uendret.
 
 ## Veiledning fra sign-off uke 40
 

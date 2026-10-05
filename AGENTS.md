@@ -4,7 +4,7 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Appgrunnlag i `app/` med påbegynt innlogging og enkel prisberegning; markedsplassfunksjonene er ikke bygget. Studentmarked med salg, lån og gis bort
+- Appgrunnlag i `app/` med innlogging med engangskode (#47) og enkel prisberegning; markedsplassfunksjonene er ikke bygget. Studentmarked med salg, lån og gis bort
   (Max 29.09); bud eller låneperiode med motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp.
 - [Kravspesifikasjon](docs/krav/kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/app/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
@@ -86,10 +86,10 @@
   Ikke gjør alt til en obligatorisk sokratisk samtale. Utfør autorisert arbeid.
 - Les øvingens konkrete KI-policy først. Skriv ikke beskyttet vurderingstekst for studentene:
   egen arkitekturbegrunnelse i rapporten (2026 s. 230), bestemte refleksjonsøvinger og
-  retningslinjedokumentet (s. 213). L8a krever første versjon av minst to tester uten KI (s. 201).
+  retningslinjedokumentet (s. 213).
   Dette er kontekstspesifikke regler, ikke et generelt forbud mot KI-generert kode.
 - Tilby begrepsforklaring, kilder, nøytrale spørsmål og øving for slike oppgaver, uten å
-  skrive selve resonnementet eller fasiten. Ikke skriv studentens første testversjoner.
+  skrive selve resonnementet eller fasiten. Beskriv hver test og få Max' godkjenning før den skrives.
 - Ikke hjelp med live-svar under vurdering uten hjelpemidler. Forberedelse er tillatt.
 - Etter vesentlig kodeendring: forklar dataflyt og avveining kort, pek på relevante
   eksamenstemaer og tilby én liten forklarings-/endringsoppgave for hver student.
@@ -129,7 +129,7 @@
 
 - Node 24.19.0 og npm 11.17.0. Fra `app/`: `npm ci`, deretter `npx playwright install chromium`.
 - Typecheck/lint: `npm run typecheck` og `npm run lint` i `app/`.
-- Unit/dekning: `npm run test:coverage`. Startertestene oppfyller ikke T07 eller L8a-egenarbeid.
+- Unit/dekning: `npm run test:coverage`. Testene skal kunne feile; prøv å bryte koden og se at testen blir rød.
 - Build: `npm run build`. Artefakt: `app/dist/`, Git-ignorert.
 - E2E headless: `npm run test:e2e` etter bygg; ved endring i src, runtime eller appkonfigurasjon.
 - Hele appgaten: `npm run check`. CI kjører samme gate og låst installasjon på Linux.

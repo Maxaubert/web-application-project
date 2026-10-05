@@ -25,8 +25,8 @@ Avklart av Max 29.09.2026. Disse erstatter eldre varianter i notatet
 
 | Tema | Beslutning |
 |---|---|
-| Innlogging | Bare e-post, ingen passord. Appen sender engangskode og lenke til e-posten. Kun `@hiof.no`. Samme flyt for ny og eksisterende konto. Løsning: better-auth. |
-| Kontooppsett | Ny bruker fyller inn fullt navn og telefon én gang. Navn kan ikke hentes fra e-postadressen. |
+| Innlogging | Bare e-post, ingen passord. Appen sender en sekssifret engangskode, ingen lenke (endret 05.10). Kun `@hiof.no`. Samme flyt for ny og eksisterende konto. Løsning: better-auth. Regler og grenser står i [kravspesifikasjonen](../../krav/kravspesifikasjon.md). |
+| Kontooppsett | Ny bruker fyller inn fullt navn, land og telefon én gang. Navn kan ikke hentes fra e-postadressen. |
 | Tilgang | Innlogging kreves før annonser kan ses eller søkes i. |
 | Handelstyper | Salg, lån og gis bort. Én type per annonse. Lån har valgfri ukepris (tom betyr gratis). |
 | Forespørsel ved salg | Bare et bud i kroner. Mottakeren godtar, avslår eller foreslår en annen pris, på omgang. |
@@ -108,8 +108,8 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | WF | Skjerm | Mobil / desktop | Rute | Komponenter | Innhold og handlinger | Tilstander |
 |---|---|---|---|---|---|---|
 | 01 | Logg inn | `Main`, `Innlogging-desktop` | `/login` | `EmailForm`, `ErrorMessage` | Felt for HiØ-e-post, «Fortsett». | Feil adresse (`Innlogging-feil-*`). |
-| 01 | Kode | `Innlogging-kode-*` | `/login/code` | `CodeForm` | Kodefelt, «Logg inn», «Send ny kode», «Endre e-post». Lenken i e-posten logger inn direkte. | Feil eller utløpt kode ikke tegnet. |
-| 02 | Fullfør kontoen | `Kontooppsett-*` | `/account-setup` | `AccountSetupForm` | E-post (låst), fullt navn, telefon, «Fullfør». Bare for nye kontoer. | |
+| 01 | Kode | `Innlogging-kode-*` | `/login/code` | `CodeForm` | Kodefelt, «Logg inn», «Send ny kode», «Endre e-post». Koden har 6 sifre (wireframen viser 4). | Feil eller utløpt kode ikke tegnet. |
+| 02 | Fullfør kontoen | `Kontooppsett-*` | `/account-setup` | `AccountSetupForm` | E-post (låst), fullt navn, land, telefon, «Fullfør». Bare for nye kontoer. | |
 | 03 | Annonser og søk | `Sok-*` | `/` | `TopNav`, `SearchField`, `Filters`, `ListingCard`, `ListingList` | Søk i tittel og beskrivelse, filtre kategori, handelstype og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
 | 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fornavn. | Borte (`Annonse-borte-*`). |
 | 04 | Annonse, lån | `Annonse-leie-*` | `/listings/:id` | Som salg, pluss `AvailabilityCalendar` | Som salg, pluss ukepris, «Minst én uke», kalender med opptatte datoer og «Send låneforespørsel». | |

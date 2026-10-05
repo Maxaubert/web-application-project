@@ -12,6 +12,13 @@ Bare lesing, og kursmateriell kopieres aldri hit.
 Vanlig Claude-chat og ChatGPT må få relevant innhold uttrykkelig, se
 [assistentbruk](docs/prosess/assistentbruk.md).
 
+## Plan før kode (Max 05.10)
+
+Før enhver kodeendring: legg frem planen (filer, fremgangsmåte, viktige kodebiter, hvordan det
+testes) og vent på Max' uttrykkelige «go». Et «go» gjelder bare den planen. Hver test beskrives
+med ord og godkjennes før den skrives. Still valgspørsmål med spørsmålsverktøyet
+(AskUserQuestion). Dårlig utformet kode skrives om; Git bevarer historikken.
+
 ## Utfordre valgene (Max 05.10)
 
 Ved hvert valg vi tar, unntatt de helt opplagte: grill brukeren før valget gjennomføres.

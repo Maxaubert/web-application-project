@@ -7,7 +7,7 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 
 ## Innlogging og tilgang (FK-01, TK-01, TK-03, TK-07)
 
-- **AK-01:** Gitt en gyldig `@hiof.no`-adresse, når brukeren skriver inn riktig engangskode eller klikker lenken, så skal appen opprette en gyldig økt. En ny bruker sendes til kontooppsett.
+- **AK-01:** Gitt en gyldig `@hiof.no`-adresse, når brukeren skriver inn riktig engangskode, så skal appen opprette en gyldig økt. En ny bruker sendes til kontooppsett.
 - **AK-30:** Gitt en adresse som ikke slutter på `@hiof.no`, når brukeren prøver å logge inn, så skal appen avvise den uten å sende kode, og vise hva som er feil.
 - **AK-02:** Gitt at en bruker ikke er logget inn, når brukeren prøver å se annonser eller utføre en beskyttet handling, så skal forespørselen avvises uten at data lagres eller vises. Prøves separat for hver handling.
 - **AK-03:** Gitt at en innlogget bruker ikke er part i en forespørsel, når brukeren forsøker å åpne den direkte, så skal forespørselen, forslagene og kontaktinfo ikke vises.
