@@ -17,8 +17,10 @@ før den implementeres, og flyttes gjennom kolonnene etter hvert som arbeidet g�
   PR-en går til `develop` og squash-merges etter Max' godkjenning.
 - Når `develop` er klar, åpnes en egen PR `develop` → `main`. Den merges med **merge commit**,
   ikke squash, ellers glir historikken i `develop` og `main` fra hverandre og gir konflikter.
-- CI kjører på PR-er og push til både `develop` og `main`. Begge har grenbeskyttelse (05.10.2026):
-  PR og grønn `Repository checks` kreves, også for admin; review er frivillig. Direkte push blokkeres.
+- CI kjører på PR-er og push til både `develop` og `main`. `main` har full grenbeskyttelse: PR og grønn
+  `Repository checks` kreves, også for admin; review er frivillig. `develop` har lett beskyttelse
+  (Max 07.10.2026): sletting og omskriving av historikk blokkeres, men GitHub krever ikke PR. Arbeidsregelen
+  over gjelder likevel: alle endringer går via PR.
 
 ## Kommandoer
 
