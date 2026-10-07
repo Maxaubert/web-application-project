@@ -8,6 +8,11 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-07
+
+- Appen på nett: Cloudflare Worker `webapp` med D1 `webapp-db` i skyen, deployet av Max etter KI-kurset
+  leksjon 10 (#70). Innlogging på nett venter på EmailJS (#46).
+
 ## 2026-10-05
 
 - Komponentprinsipper vedtatt etter kryssjekk mot Fullstækk: del etter ansvar, én liten delt Button
