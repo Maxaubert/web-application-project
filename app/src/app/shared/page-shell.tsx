@@ -1,23 +1,35 @@
-// Topplinje og innhold som i wireframes: logo og navn helt til venstre; på mobil ligger
-// skjemaet rett på bakgrunnen, fra nettbrettbredde i et hvitt kort med tynn kant.
+// Topplinje og innhold som i wireframes: logo og navn helt til venstre, eventuell handling til høyre.
+// Smalt oppsett (innlogging): på mobil ligger skjemaet rett på bakgrunnen, fra nettbrettbredde i et
+// hvitt kort med tynn kant. Bredt oppsett (annonser, #65): innholdet bruker hele bredden.
 import type { ReactNode } from "react";
 
 export const APP_NAME = "Studentmarked";
 
-export function PageShell({ children }: { children: ReactNode }) {
+type PageShellProps = {
+  children: ReactNode;
+  wide?: boolean;
+  headerAction?: ReactNode;
+};
+
+export function PageShell({ children, wide = false, headerAction }: PageShellProps) {
   return (
     <>
       <header className="border-b border-hairline bg-surface">
         <div className="flex h-16 items-center gap-3 px-4 sm:h-[4.5rem] sm:px-12">
           <span aria-hidden="true" className="size-9 rounded-md border-2 border-line bg-paper sm:size-10" />
           <span className="text-lg font-bold">{APP_NAME}</span>
+          {headerAction && <div className="ml-auto">{headerAction}</div>}
         </div>
       </header>
-      <main className="px-6 pt-14 pb-16 sm:px-4 sm:pt-28">
-        <div className="mx-auto w-full max-w-sm sm:max-w-[32.5rem] sm:rounded-xl sm:border sm:border-hairline sm:bg-surface sm:px-12 sm:py-12">
-          {children}
-        </div>
-      </main>
+      {wide ? (
+        <main className="px-4 pt-10 pb-24 sm:px-12">{children}</main>
+      ) : (
+        <main className="px-6 pt-14 pb-16 sm:px-4 sm:pt-28">
+          <div className="mx-auto w-full max-w-sm sm:max-w-[32.5rem] sm:rounded-xl sm:border sm:border-hairline sm:bg-surface sm:px-12 sm:py-12">
+            {children}
+          </div>
+        </main>
+      )}
     </>
   );
 }
