@@ -20,15 +20,20 @@ concurrency:
 jobs:
   deploy:
     name: Deploy to Cloudflare
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # Bare en push til main i dette repoet. Uten dette kunne en PR fra en fork med en branch som
+    # heter main utløse deploy av fremmed kode med Cloudflare-tokenet.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     environment: production
     env:
       WRANGLER_SEND_METRICS: false
       CI: true
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -46,6 +51,7 @@ jobs:
       - name: Pin npm
         run: npm install --global npm@11.17.0
 
+      # Tokenet gis bare til de to stegene som trenger det, ikke til npm ci (pakkeskript).
       - name: Install locked dependencies
         working-directory: app
         run: npm ci
@@ -53,7 +59,13 @@ jobs:
       - name: Migrate cloud database
         working-directory: app
         run: npm run db:migrate:remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Build and deploy
         working-directory: app
         run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -77,6 +77,8 @@ Hånddeploy fra egen maskin virker fortsatt, men produksjon skal komme fra `main
 - GitHub-secrets: `CLOUDFLARE_API_TOKEN` (Cloudflare-mal «Edit Cloudflare Workers» pluss D1 Edit, bare
   Max' konto) og `CLOUDFLARE_ACCOUNT_ID`. Tokenet limes aldri inn i chat eller filer.
 - Worker-hemmelighetene (`BETTER_AUTH_SECRET`, `RESEND_API_KEY`) ligger hos Cloudflare og beholdes ved deploy.
+- Sikring: jobben kjører bare for en push til `main` i dette repoet (ikke PR-er fra forker), tokenet gis bare
+  til migrerings- og deploysteget, og GitHub-miljøet `production` tillater bare branchen `main`.
 - Migrasjoner kjøres automatisk mot ekte data. Se derfor alltid SQL-en i PR-en før merge.
 - Tilbakerulling: `npx wrangler rollback` fra `app/` setter forrige versjon i drift; migrasjoner rulles ikke tilbake.
 
