@@ -1,14 +1,30 @@
-// Forsiden. Beskyttet av requireUser; blir annonseoversikten i neste del (FK-02).
-import type { RequestInfo } from "rwsdk/worker";
+// Forsiden: aktive annonser som kort (WF-03). Beskyttet av requireUser. Søk og filtre kommer senere.
 import { LogoutButton } from "@/app/auth/LogoutButton";
+import { ListingCard } from "@/app/listings/ListingCard";
+import { getActiveListings } from "@/app/listings/queries";
 import { PageShell } from "@/app/shared/page-shell";
+import { db } from "@/db";
 
-export function HomePage({ ctx }: RequestInfo) {
+export async function HomePage() {
+  const listings = await getActiveListings(db);
+
   return (
-    <PageShell>
-      <h1 className="text-4xl font-bold tracking-tight text-balance">Du er logget inn</h1>
-      <p className="mt-3 mb-10 text-lg">Hei, {ctx.session.name}. Annonsene kommer her.</p>
-      <LogoutButton />
+    <PageShell wide headerAction={<LogoutButton />}>
+      <h1 className="text-4xl font-bold tracking-tight">Annonser</h1>
+      {listings.length === 0 ? (
+        <p className="mt-6 text-lg">Ingen annonser ennå.</p>
+      ) : (
+        <>
+          <p className="mt-6 text-muted">{listings.length} {listings.length === 1 ? "annonse" : "annonser"}</p>
+          <ul className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {listings.map((listing) => (
+              <li key={listing.id}>
+                <ListingCard listing={listing} />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </PageShell>
   );
 }

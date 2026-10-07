@@ -3,7 +3,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
 
   // Name of your worker
-  "name": "web-application-project",
+  "name": "webapp",
 
   // Entry point for your worker
   "main": "src/worker.tsx",
@@ -11,6 +11,11 @@
   // Compatibility settings
   "compatibility_date": "2026-09-20",
   "compatibility_flags": ["nodejs_compat"],
+
+  // Appen svarer på eget domene (Max 07.10.2026). workers.dev er slått av, så det finnes én adresse.
+  "routes": [{ "pattern": "studentmarkedet.org", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false,
 
   // Assets configuration
   "assets": {
@@ -22,17 +27,19 @@
     "enabled": true
   },
 
-  // Local-only placeholder, replace with an approved real D1 ID before deployment.
+  // Cloudflare D1 i skyen (opprettet 07.10.2026). Lokal utvikling og tester bruker lokal kopi (remote: false).
   "d1_databases": [{
     "binding": "DB",
-    "database_name": "web-application-project-local",
-    "database_id": "00000000-0000-0000-0000-000000000000",
+    "database_name": "webapp-db",
+    "database_id": "f12d8178-e8a1-4277-83b1-6a62db99e1fe",
     "migrations_dir": "drizzle",
     "remote": false
   }],
 
   // Environment variables
+  // Vanlige innstillinger (ikke hemmeligheter). Lokalt overstyres de av .dev.vars.
   "vars": {
-    // Add your environment variables here
+    "LOGIN_CODE_DELIVERY": "resend",
+    "EMAIL_FROM": "Studentmarked <noreply@mail.studentmarkedet.org>"
   }
 }

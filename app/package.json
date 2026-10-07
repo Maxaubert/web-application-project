@@ -21,12 +21,15 @@
     "db:check": "wrangler d1 execute DB --local --command \"SELECT 1 AS ok\"",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "db:seed:local": "wrangler d1 execute DB --local --file scripts/seed-local.sql",
+    "deploy": "npm run build && wrangler deploy",
     "check": "npm run typecheck && npm run lint && npm run test:coverage && npm run db:check && npm run db:migrate:local && npm run build && npm run test:e2e"
   },
   "dependencies": {
     "better-auth": "1.7.7",
     "circle-flags": "2.8.3",
-    "drizzle-orm": "0.45.2",
+    "drizzle-orm": "0.45.3",
     "libphonenumber-js": "1.13.14",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -36,7 +39,7 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.62.5",
-    "@cloudflare/workers-types": "5.20260920.1",
+    "@cloudflare/workers-types": "5.20261002.1",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
     "@tailwindcss/vite": "4.3.3",

@@ -76,6 +76,7 @@
   og mot anerkjent praksis i offisiell dokumentasjon. Oppgi leksjon eller kilde; ved avvik mellom
   kurs og praksis, vis begge og la studentene velge.
 - Følg eksisterende struktur, én tydelig oppgave per fil, og refaktorer ved reelt behov.
+  Komponentregler og delt UI: [komponenter](docs/app/komponenter.md) (del etter ansvar, ikke linjeantall).
   Ingen vilkårlige linjegrenser eller obligatoriske lag for en liten funksjon.
 - For UI: store lesbare tekster, god kontrast, store klikkflater, tastatur og høy zoom.
   Bruk relevante designferdigheter før UI-design.
@@ -111,11 +112,15 @@
 
 ## Git, personvern og samarbeid
 
-- Alle repoendringer på branch, også docs. Ingen push til hovedbranch.
+- Alle repoendringer på branch fra `develop`, også docs. PR til `develop`; `develop` → `main` i egen PR. Ingen direkte push.
 - Opprett aldri PR og merge aldri uten Max' godkjenning. Spør gjerne om det skal gjøres,
   men gjør det aldri automatisk (Max 29.09).
 - Navngi branch `type/issue-slug`, eksempelvis `feat/12-innlogging`; ikke bruk codex/ai-prefiks.
 - Funksjonsendring: issue først, så branch, så PR når Max ber om det.
+- Små PR-er (Max 07.10, faglærer): én oppgave per PR, liten nok til å leses i én økt. Sikt mot under
+  ca. 400 endrede linjer håndskrevet kode og tekst; genererte filer (låsefil, migrasjonssnapshots,
+  flagg) teller ikke. Rundt 1000 linjer er for stort: del opp i flere PR-er i rekkefølge (for eksempel
+  tabeller og migrasjon, så skjema, så søkeside). Må en PR likevel bli stor, begrunn det i beskrivelsen.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
 - Stopp før merge. Bare Max' eksplisitte godkjenning av den identifiserte PR-en gjelder.
 - Ikke opprett skyressurser eller kopier School/OS-arkiver, hemmeligheter og andre studenters data.
@@ -136,7 +141,8 @@
 - Dokumenter fra repo-roten: `node scripts/verify-docs.mjs` og `git diff --check`.
 - Lokal install/start etter merge: `npm ci` og `npm run dev` i app/. Versjon i `app/package.json`.
 - Kjente testfeil som tolereres: ingen. Avhengighetsfunn er dokumentert i [appoppsett](docs/app/oppsett.md).
-- Release/deploy/signering: ikke konfigurert. Ingen publisering eller skyressurser uten fullmakt.
+- Deploy: Cloudflare Worker `webapp` + D1 `webapp-db` på Max' konto, automatisk fra `main` etter grønn CI
+  med skymigrasjon først (`deploy.yml`, [CI og deploy](docs/app/ci-og-deploy.md)). Nye skyressurser eller publisering krever fortsatt fullmakt.
 - Produktkode: legg til meningsfulle Vitest-enhets-/integrasjonstester og Playwright av hovedflyten.
   Minst 50 % dekning kreves til leveransen; ikke skjul manglende produktbevis bak grønn scaffold-CI.
 - main er beskyttet: PR, grønn CI og oppdatert branch kreves; review er frivillig (Max 05.10). Se [CI](docs/app/ci-og-deploy.md).

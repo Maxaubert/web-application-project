@@ -8,8 +8,34 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-07
+
+- Automatisk deploy til studentmarkedet.org fra `main` etter grønn CI, med skymigrasjon før koden
+  (`.github/workflows/deploy.yml`). (Max, #82)
+- Forsiden viser aktive annonser som kort, nyeste først, med «type · pris» som i WF-03. `PageShell` har fått
+  bredt oppsett og «Logg ut» i topplinjen (#65). Emils utkast `app/src/post.tsx` er fjernet; kortet tar over visningen. (Max, #79)
+- Annonsetabellen `listing` med låste kategorier, handelstyper, tilstander og statuser, sjekket både i
+  TypeScript og i databasen, pluss lokale testannonser (`npm run db:seed:local`). (Max, #79)
+- `develop` har nå lett grenbeskyttelse: GitHub krever ikke lenger PR eller grønn CI der, men blokkerer
+  sletting og force-push. `main` er uendret. Arbeidsregelen om PR for alle endringer står. (Max, #75)
+- Appen flyttet til eget domene https://studentmarkedet.org; workers.dev-adressen er slått av (Max).
+- Innloggingskoder sendes på e-post med Resend fra eget domene `studentmarkedet.org` (kjøpt av Max hos
+  Cloudflare). EmailJS med Gmail/GMX ble prøvd og valgt bort. (Max, #46)
+- Appen på nett: Cloudflare Worker `webapp` med D1 `webapp-db` i skyen, deployet av Max etter KI-kurset
+  leksjon 10 (#70). Innlogging på nett venter på EmailJS (#46).
+- Regel om små PR-er i AGENTS.md: én oppgave, sikt mot under ca. 400 håndskrevne linjer; rundt 1000
+  er for stort (faglærer, gjengitt av Max). (Max)
+
 ## 2026-10-05
 
+- Komponentprinsipper vedtatt etter kryssjekk mot Fullstækk: del etter ansvar, én liten delt Button
+  med tre varianter, «Legg ut annonse» som ett skjema med tre utskilte deler. Åpne beslutninger
+  lagt på boardet (#61–#66). (Max, #60)
+- `develop` har samme grenbeskyttelse som `main`; direkte push blokkeres. Oppskriften
+  `.github/branch-protection.json` rettet (tom `contexts` sammen med `checks` ble avvist av GitHub). (Max, #58)
+- Dependabot lager PR-er mot `develop` (Max).
+- `develop` gjenopprettet som integrasjonsbranch: PR-er til `develop`, `develop` → `main` i egen PR
+  med merge commit. CI kjører også for `develop` (Max, #51).
 - Kanban-flyt i CLAUDE.md: hver funksjon eller retting på boardet før arbeid, To do → In progress →
   Review → Done. `develop` slettet; bare `main` er fast branch (Max, #49).
 - Innlogging med engangskode på e-post bygget (#47): bare kode, 6 sifre, 5 min, 3 forsøk,
