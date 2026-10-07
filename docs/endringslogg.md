@@ -12,6 +12,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 - Appen på nett: Cloudflare Worker `webapp` med D1 `webapp-db` i skyen, deployet av Max etter KI-kurset
   leksjon 10 (#70). Innlogging på nett venter på EmailJS (#46).
+- Regel om små PR-er i AGENTS.md: én oppgave, sikt mot under ca. 400 håndskrevne linjer; rundt 1000
+  er for stort (faglærer, gjengitt av Max). (Max)
 
 ## 2026-10-05
 
