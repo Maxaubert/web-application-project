@@ -12,11 +12,11 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig, med PR-er mot `develop`. Ingen automatisk merge. |
 | PR-beskyttelse | **Full på main** (kontrollert 05.10.2026): PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. **Lett på develop** (Max 07.10.2026): bare sletting og force-push blokkeres. Repoet er offentlig. |
 | Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
-| Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://studentmarkedet.org (eget domene; workers.dev er slått av). Deploy for hånd med `npm run deploy`; ingen automatisk deploy fra GitHub. |
+| Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://studentmarkedet.org (eget domene; workers.dev er slått av). Deployes automatisk fra `main` etter grønn CI (`deploy.yml`, #82). |
 
-Workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
-til verifiserte commit-SHA-er og femten minutters tidsgrense. Ingen deploy-nøkler eller
-skrivetoken trengs. Eldre kjøringer av samme PR kanselleres; hovedbranch-kjøringer
+CI-workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
+til verifiserte commit-SHA-er og femten minutters tidsgrense. CI trenger ingen deploy-nøkler eller
+skrivetoken; bare `deploy.yml` bruker Cloudflare-tokenet. Eldre kjøringer av samme PR kanselleres; hovedbranch-kjøringer
 kanselleres ikke på denne måten. Påkrevde sjekker må ikke få path-filtre som gjør
 at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 
@@ -67,6 +67,19 @@ npx wrangler secret put RESEND_API_KEY       # Resend-nøkkel med bare sendetilg
   `LOGIN_CODE_DELIVERY=log`; sett `resend` der for å teste ekte e-post.
 - Kjør alltid `npm run db:migrate:remote` før `npm run deploy` når en PR har ny migrasjon.
 
+### Automatisk deploy fra main (Max 07.10.2026, #82)
+
+`.github/workflows/deploy.yml` starter når CI er ferdig og grønn på `main`, sjekker ut samme commit som
+CI testet, kjører `npm run db:migrate:remote` og så `npm run deploy`. Én deploy av gangen. Den kan også
+startes for hånd under Actions → Deploy → Run workflow (for eksempel for å deploye på nytt).
+Hånddeploy fra egen maskin virker fortsatt, men produksjon skal komme fra `main`.
+
+- GitHub-secrets: `CLOUDFLARE_API_TOKEN` (Cloudflare-mal «Edit Cloudflare Workers» pluss D1 Edit, bare
+  Max' konto) og `CLOUDFLARE_ACCOUNT_ID`. Tokenet limes aldri inn i chat eller filer.
+- Worker-hemmelighetene (`BETTER_AUTH_SECRET`, `RESEND_API_KEY`) ligger hos Cloudflare og beholdes ved deploy.
+- Migrasjoner kjøres automatisk mot ekte data. Se derfor alltid SQL-en i PR-en før merge.
+- Tilbakerulling: `npx wrangler rollback` fra `app/` setter forrige versjon i drift; migrasjoner rulles ikke tilbake.
+
 ## Appkontroller og videre utvidelse
 
 Fra `app/`: `npm ci`, `npx playwright install chromium`, `npm run check`.
@@ -94,14 +107,12 @@ Anbefaling: bruk deploy som hovedleveranse når en fungerende app og hosting er 
 En GitHub Release publiserer versjonsnotater/artefakter; den ruller ikke automatisk ut
 nettsiden. Vi oppretter derfor ikke tomme utgivelser ved hver dokumentendring.
 
-Planlagt flyt: PR → CI og eventuelt isolert preview → menneskelig review → merge →
-CI på den sammenslåtte versjonen → godkjent produksjonsdeploy med helsesjekk.
-Ingen utrulling skal starte bare fordi en mislykket workflow er avsluttet.
+Flyt nå: PR → CI → merge til `develop` → PR `develop` → `main` → CI på `main` → automatisk deploy.
+Ingen utrulling starter når CI har feilet (`deploy.yml` sjekker resultatet).
 
 Før aktivering må gruppen velge plattform (ut fra stack), test-/produksjonsmiljø,
 tilgangsmodell og kostnadsramme. Avklar secrets/OIDC, én utrulling av gangen,
 databasemigrering, backup og rollback. Sjekk abonnementets støtte for miljøgodkjenning.
-Workflow for deploy opprettes først når vi kan bygge og prøve den mot valgt plattform.
 Merk større milepæler eller innlevering med tag/GitHub Release når det har en konkret nytte.
 
 ## Kilder

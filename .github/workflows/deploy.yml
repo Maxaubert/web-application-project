@@ -1,0 +1,59 @@
+name: Deploy
+
+# Produksjon (studentmarkedet.org) deployes når CI er grønn på main (Max 07.10, #82).
+# Kan også startes for hånd under Actions. Skymigrasjonen kjøres før koden, så ny kode
+# aldri møter en gammel tabell.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: production
+    env:
+      WRANGLER_SEND_METRICS: false
+      CI: true
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Samme commit som CI testet, ikke det som tilfeldigvis er nyest på main.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+
+      - name: Pin npm
+        run: npm install --global npm@11.17.0
+
+      - name: Install locked dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Migrate cloud database
+        working-directory: app
+        run: npm run db:migrate:remote
+
+      - name: Build and deploy
+        working-directory: app
+        run: npm run deploy
