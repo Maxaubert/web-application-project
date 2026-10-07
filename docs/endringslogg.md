@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-07
 
+- Annonsetabellen `listing` med låste kategorier, handelstyper, tilstander og statuser, sjekket både i
+  TypeScript og i databasen, pluss lokale testannonser (`npm run db:seed:local`). (Max, #79)
 - `develop` har nå lett grenbeskyttelse: GitHub krever ikke lenger PR eller grønn CI der, men blokkerer
   sletting og force-push. `main` er uendret. Arbeidsregelen om PR for alle endringer står. (Max, #75)
 - Appen flyttet til eget domene https://studentmarkedet.org; workers.dev-adressen er slått av (Max).
