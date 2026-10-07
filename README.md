@@ -95,7 +95,7 @@ avhengighetsfunn](docs/app/oppsett.md). Deploy/release er ikke konfigurert.
 ## Appen på nett
 
 https://webapp.web-application-project.workers.dev (Cloudflare, oppdateres for hånd med `npm run deploy`).
-Innlogging på nett virker først når e-postutsending er satt opp (#46). Se [CI og deploy](docs/app/ci-og-deploy.md).
+Koden sendes på e-post fra `noreply@mail.studentmarkedet.org` (Resend). Se [CI og deploy](docs/app/ci-og-deploy.md).
 
 ## Publisering og rettigheter
 
