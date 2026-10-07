@@ -12,7 +12,7 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig, med PR-er mot `develop`. Ingen automatisk merge. |
 | PR-beskyttelse | **Aktiv på main og develop** (kontrollert 05.10.2026). Repoet er offentlig. PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. |
 | Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
-| Deploy og release | Ingen hosting, hemmeligheter, deploy eller automatisk GitHub-utgivelse konfigurert. |
+| Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://webapp.web-application-project.workers.dev. Deploy for hånd med `npm run deploy`; ingen automatisk deploy fra GitHub. |
 
 Workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
 til verifiserte commit-SHA-er og femten minutters tidsgrense. Ingen deploy-nøkler eller
@@ -45,6 +45,23 @@ gh api repos/Maxaubert/web-application-project/branches/main/protection
 
 JSON-filen er oppskriften; den aktive regelen ligger i GitHub. Bekreft lagrede verdier
 med API-et etter endring. Ikke prøv en direkte push til main med ekte endringer som test.
+
+## Deploy til Cloudflare (07.10.2026)
+
+Satt opp av Max etter KI-kurset leksjon 10, med hans uttrykkelige tillatelse til skyressurser.
+Fra `app/`, innlogget med `npx wrangler login`:
+
+```powershell
+npm run db:migrate:remote   # migrasjoner til D1 i skyen (webapp-db)
+npm run deploy              # bygg og last opp Worker «webapp»
+npx wrangler secret put BETTER_AUTH_SECRET   # bare ved ny hemmelighet; lagres kryptert hos Cloudflare
+```
+
+- `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig). `remote: false`
+  betyr at `npm run dev`, tester og CI alltid bruker lokal kopi.
+- `.dev.vars` lastes ikke opp. I produksjon er `LOGIN_CODE_DELIVERY` ikke satt, så kodesending feiler
+  med vilje til EmailJS er på plass (#46). Innlogging virker derfor ikke på nett ennå.
+- Kjør alltid `npm run db:migrate:remote` før `npm run deploy` når en PR har ny migrasjon.
 
 ## Appkontroller og videre utvidelse
 

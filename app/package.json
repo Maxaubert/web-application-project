@@ -21,6 +21,8 @@
     "db:check": "wrangler d1 execute DB --local --command \"SELECT 1 AS ok\"",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "deploy": "npm run build && wrangler deploy",
     "check": "npm run typecheck && npm run lint && npm run test:coverage && npm run db:check && npm run db:migrate:local && npm run build && npm run test:e2e"
   },
   "dependencies": {
