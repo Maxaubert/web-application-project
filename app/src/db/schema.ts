@@ -1,7 +1,7 @@
 // Databasetabeller. Auth-tabellene følger better-auth sin modell (user, session, account,
 // verification, rateLimit); feltene er hentet fra better-auth 1.7 for vår konfigurasjon.
 import { sql } from "drizzle-orm";
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 const createdAt = () =>
   integer("created_at", { mode: "timestamp_ms" }).notNull().default(sql`(unixepoch() * 1000)`);
@@ -92,3 +92,54 @@ export const loginCodeRequest = sqliteTable(
   },
   (table) => [index("login_code_request_email_hash_idx").on(table.emailHash, table.createdAt)],
 );
+
+// Annonser (WF-03 til WF-05). Kategorilisten er låst og kan utvides (#62). Bilder kommer med #61.
+export const listingCategories = [
+  "books",
+  "electronics",
+  "furniture",
+  "clothing",
+  "sports",
+  "bikes",
+  "household",
+  "other",
+] as const;
+export const listingTypes = ["sale", "loan", "giveaway"] as const;
+export const listingConditions = ["new", "like_new", "used"] as const;
+export const listingStatuses = ["active", "sold", "unpublished"] as const;
+
+export const listing = sqliteTable(
+  "listing",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    ownerId: text("owner_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    type: text("type", { enum: listingTypes }).notNull(),
+    title: text("title").notNull(),
+    description: text("description").notNull(),
+    category: text("category", { enum: listingCategories }).notNull(),
+    condition: text("condition", { enum: listingConditions }).notNull(),
+    // Hele kroner. Salg: pris. Lån: ukepris, tom betyr gratis. Gis bort: tom.
+    price: integer("price"),
+    status: text("status", { enum: listingStatuses }).notNull().default("active"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  // Databasen avviser ukjente verdier også om koden har en feil (samme verdier som listene over).
+  (table) => [
+    index("listing_owner_id_idx").on(table.ownerId),
+    check(
+      "listing_category_check",
+      sql`${table.category} in ('books', 'electronics', 'furniture', 'clothing', 'sports', 'bikes', 'household', 'other')`,
+    ),
+    check("listing_type_check", sql`${table.type} in ('sale', 'loan', 'giveaway')`),
+    check("listing_condition_check", sql`${table.condition} in ('new', 'like_new', 'used')`),
+    check("listing_status_check", sql`${table.status} in ('active', 'sold', 'unpublished')`),
+    check("listing_price_check", sql`${table.price} is null or ${table.price} >= 0`),
+  ],
+);
+
+export type Listing = typeof listing.$inferSelect;
