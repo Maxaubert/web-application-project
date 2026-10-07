@@ -10,7 +10,7 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 | CI | Samlet `Repository checks`: dokumenter, whitespace, npm ci, typecheck, lint, Vitest/dekning, lokal D1, bygg og Playwright. Kjører på PR og push mot `main` og `develop`. |
 | Node/npm | Node 24.19.0 fra `.node-version`, npm 11.17.0. Samme versjoner lokalt og i CI. |
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig, med PR-er mot `develop`. Ingen automatisk merge. |
-| PR-beskyttelse | **Aktiv på main og develop** (kontrollert 05.10.2026). Repoet er offentlig. PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. |
+| PR-beskyttelse | **Full på main** (kontrollert 05.10.2026): PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. **Lett på develop** (Max 07.10.2026): bare sletting og force-push blokkeres. Repoet er offentlig. |
 | Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
 | Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://webapp.web-application-project.workers.dev. Deploy for hånd med `npm run deploy`; ingen automatisk deploy fra GitHub. |
 
@@ -39,11 +39,11 @@ nye regler ikke overskriver senere endringer. Deretter, fra repo-roten:
 
 ```powershell
 gh api --method PUT repos/Maxaubert/web-application-project/branches/main/protection --input .github/branch-protection.json
-gh api --method PUT repos/Maxaubert/web-application-project/branches/develop/protection --input .github/branch-protection.json
+gh api --method PUT repos/Maxaubert/web-application-project/branches/develop/protection --input .github/branch-protection-develop.json
 gh api repos/Maxaubert/web-application-project/branches/main/protection
 ```
 
-JSON-filen er oppskriften; den aktive regelen ligger i GitHub. Bekreft lagrede verdier
+JSON-filene er oppskriften (`branch-protection.json` for main, `branch-protection-develop.json` for develop); den aktive regelen ligger i GitHub. Bekreft lagrede verdier
 med API-et etter endring. Ikke prøv en direkte push til main med ekte endringer som test.
 
 ## Deploy til Cloudflare (07.10.2026)
