@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-07
 
+- Automatisk deploy til studentmarkedet.org fra `main` etter grønn CI, med skymigrasjon før koden
+  (`.github/workflows/deploy.yml`). (Max, #82)
 - Forsiden viser aktive annonser som kort, nyeste først, med «type · pris» som i WF-03. `PageShell` har fått
   bredt oppsett og «Logg ut» i topplinjen (#65). Emils utkast `app/src/post.tsx` er fjernet; kortet tar over visningen. (Max, #79)
 - Annonsetabellen `listing` med låste kategorier, handelstyper, tilstander og statuser, sjekket både i

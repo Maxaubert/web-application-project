@@ -141,8 +141,8 @@
 - Dokumenter fra repo-roten: `node scripts/verify-docs.mjs` og `git diff --check`.
 - Lokal install/start etter merge: `npm ci` og `npm run dev` i app/. Versjon i `app/package.json`.
 - Kjente testfeil som tolereres: ingen. Avhengighetsfunn er dokumentert i [appoppsett](docs/app/oppsett.md).
-- Deploy: Cloudflare Worker `webapp` + D1 `webapp-db` på Max' konto, for hånd med `npm run deploy`
-  ([CI og deploy](docs/app/ci-og-deploy.md)). Nye skyressurser eller publisering krever fortsatt fullmakt.
+- Deploy: Cloudflare Worker `webapp` + D1 `webapp-db` på Max' konto, automatisk fra `main` etter grønn CI
+  med skymigrasjon først (`deploy.yml`, [CI og deploy](docs/app/ci-og-deploy.md)). Nye skyressurser eller publisering krever fortsatt fullmakt.
 - Produktkode: legg til meningsfulle Vitest-enhets-/integrasjonstester og Playwright av hovedflyten.
   Minst 50 % dekning kreves til leveransen; ikke skjul manglende produktbevis bak grønn scaffold-CI.
 - main er beskyttet: PR, grønn CI og oppdatert branch kreves; review er frivillig (Max 05.10). Se [CI](docs/app/ci-og-deploy.md).
