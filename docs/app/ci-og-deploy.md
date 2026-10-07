@@ -12,7 +12,7 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig, med PR-er mot `develop`. Ingen automatisk merge. |
 | PR-beskyttelse | **Aktiv på main og develop** (kontrollert 05.10.2026). Repoet er offentlig. PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. |
 | Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
-| Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://webapp.web-application-project.workers.dev. Deploy for hånd med `npm run deploy`; ingen automatisk deploy fra GitHub. |
+| Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://studentmarkedet.org (eget domene; workers.dev er slått av). Deploy for hånd med `npm run deploy`; ingen automatisk deploy fra GitHub. |
 
 Workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
 til verifiserte commit-SHA-er og femten minutters tidsgrense. Ingen deploy-nøkler eller
