@@ -12,6 +12,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 - `develop` har nå lett grenbeskyttelse: GitHub krever ikke lenger PR eller grønn CI der, men blokkerer
   sletting og force-push. `main` er uendret. Arbeidsregelen om PR for alle endringer står. (Max, #75)
+- Appen flyttet til eget domene https://studentmarkedet.org; workers.dev-adressen er slått av (Max).
 - Innloggingskoder sendes på e-post med Resend fra eget domene `studentmarkedet.org` (kjøpt av Max hos
   Cloudflare). EmailJS med Gmail/GMX ble prøvd og valgt bort. (Max, #46)
 - Appen på nett: Cloudflare Worker `webapp` med D1 `webapp-db` i skyen, deployet av Max etter KI-kurset
