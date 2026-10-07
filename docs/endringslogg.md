@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-07
 
+- Forsiden viser aktive annonser som kort, nyeste først, med «type · pris» som i WF-03. `PageShell` har fått
+  bredt oppsett og «Logg ut» i topplinjen (#65). Emils utkast `app/src/post.tsx` er fjernet; kortet tar over visningen. (Max, #79)
 - Annonsetabellen `listing` med låste kategorier, handelstyper, tilstander og statuser, sjekket både i
   TypeScript og i databasen, pluss lokale testannonser (`npm run db:seed:local`). (Max, #79)
 - `develop` har nå lett grenbeskyttelse: GitHub krever ikke lenger PR eller grønn CI der, men blokkerer

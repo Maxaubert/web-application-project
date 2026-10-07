@@ -42,7 +42,7 @@ og mer å forklare uten at noen trenger det. Kurset kaller det over-engineering 
 | `TextField`, `FieldError` | Etikett, felt og feilmelding koblet med id-er. | Finnes (`form-controls.tsx`). |
 | `TextArea`, `SelectField` | Samme mønster som `TextField`; kurset anbefaler egne input/select-komponenter (RR/08:288-290). | Lages med «Legg ut annonse». |
 | `ErrorSummary` | Feiloppsummering øverst i lange skjemaer, med lenker til feltene. | Lages med «Legg ut annonse». |
-| `PageShell` | Topplinje og sideramme. Trenger et bredt oppsett for søk og detalj. | Finnes, smalt (#65). |
+| `PageShell` | Topplinje og sideramme. Smalt oppsett for skjemaer, `wide` for annonsesider, `headerAction` til høyre i topplinjen. | Finnes (#65 løst 07.10). |
 
 ### Hvorfor én delt `Button`
 
@@ -121,7 +121,8 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 
 - Siden er en tynn serverkomponent som henter data og setter sammen delene.
 - `ListingCard` er egen fil og tar ett annonseobjekt som prop (som PostCard, KI/05:609-612), fordi den
-  brukes i søk, på Min side og i forhåndsvisningen.
+  brukes i søk, på Min side og i forhåndsvisningen. Bygget 07.10 (#79): bilde-plassholder, tittel og
+  «type · pris» fra `format-type-and-price.ts`; norske navn fra `listings/labels.ts`. Lenken kommer med annonsesiden.
 - Detaljsiden er én side med seksjoner som avhenger av handelstype; lån er «som salg, pluss» kalender.
 - Interaktive deler (søkefilter, bildegalleri, kalender) er små klientkomponenter.
 
@@ -150,5 +151,4 @@ skjermene bygges; den lages ikke på forhånd.
 
 ## Åpne beslutninger som stopper byggingen
 
-Bildelagring (#61), kategoriliste (#62), tilstandsverdier (#63), detaljside for «gis bort» (#64) og
-bredt sideoppsett (#65).
+Bildelagring (#61), utvidet kategoriliste (#62), tilstandsverdier (#63) og detaljside for «gis bort» (#64).
