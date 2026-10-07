@@ -12,7 +12,7 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig, med PR-er mot `develop`. Ingen automatisk merge. |
 | PR-beskyttelse | **Aktiv på main og develop** (kontrollert 05.10.2026). Repoet er offentlig. PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. |
 | Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
-| Deploy og release | Ingen hosting, hemmeligheter, deploy eller automatisk GitHub-utgivelse konfigurert. |
+| Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://webapp.web-application-project.workers.dev. Deploy for hånd med `npm run deploy`; ingen automatisk deploy fra GitHub. |
 
 Workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
 til verifiserte commit-SHA-er og femten minutters tidsgrense. Ingen deploy-nøkler eller
@@ -45,6 +45,27 @@ gh api repos/Maxaubert/web-application-project/branches/main/protection
 
 JSON-filen er oppskriften; den aktive regelen ligger i GitHub. Bekreft lagrede verdier
 med API-et etter endring. Ikke prøv en direkte push til main med ekte endringer som test.
+
+## Deploy til Cloudflare (07.10.2026)
+
+Satt opp av Max etter KI-kurset leksjon 10, med hans uttrykkelige tillatelse til skyressurser.
+Fra `app/`, innlogget med `npx wrangler login`:
+
+```powershell
+npm run db:migrate:remote   # migrasjoner til D1 i skyen (webapp-db)
+npm run deploy              # bygg og last opp Worker «webapp»
+npx wrangler secret put BETTER_AUTH_SECRET   # bare ved ny hemmelighet; lagres kryptert hos Cloudflare
+npx wrangler secret put RESEND_API_KEY       # Resend-nøkkel med bare sendetilgang
+```
+
+- `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig). `remote: false`
+  betyr at `npm run dev`, tester og CI alltid bruker lokal kopi.
+- `.dev.vars` lastes ikke opp. I produksjon sender appen koder med **Resend** fra
+  `noreply@mail.studentmarkedet.org` (`LOGIN_CODE_DELIVERY=resend` og `EMAIL_FROM` under `vars` i
+  `wrangler.jsonc`; nøkkelen `RESEND_API_KEY` som hemmelighet). Domenet `studentmarkedet.org` er kjøpt hos
+  Cloudflare; SPF, DKIM og DMARC for `mail.` ligger i Cloudflare DNS. Lokalt overstyrer `.dev.vars` med
+  `LOGIN_CODE_DELIVERY=log`; sett `resend` der for å teste ekte e-post.
+- Kjør alltid `npm run db:migrate:remote` før `npm run deploy` når en PR har ny migrasjon.
 
 ## Appkontroller og videre utvidelse
 

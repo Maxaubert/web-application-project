@@ -8,6 +8,15 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-07
+
+- Innloggingskoder sendes på e-post med Resend fra eget domene `studentmarkedet.org` (kjøpt av Max hos
+  Cloudflare). EmailJS med Gmail/GMX ble prøvd og valgt bort. (Max, #46)
+- Appen på nett: Cloudflare Worker `webapp` med D1 `webapp-db` i skyen, deployet av Max etter KI-kurset
+  leksjon 10 (#70). Innlogging på nett venter på EmailJS (#46).
+- Regel om små PR-er i AGENTS.md: én oppgave, sikt mot under ca. 400 håndskrevne linjer; rundt 1000
+  er for stort (faglærer, gjengitt av Max). (Max)
+
 ## 2026-10-05
 
 - Komponentprinsipper vedtatt etter kryssjekk mot Fullstækk: del etter ansvar, én liten delt Button
