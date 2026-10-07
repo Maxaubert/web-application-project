@@ -40,6 +40,6 @@
   // Vanlige innstillinger (ikke hemmeligheter). Lokalt overstyres de av .dev.vars.
   "vars": {
     "LOGIN_CODE_DELIVERY": "resend",
-    "EMAIL_FROM": "Studentmarked <noreply@mail.studentmarkedet.org>"
+    "EMAIL_FROM": "Studentmarkedet <noreply@mail.studentmarkedet.org>"
   }
 }

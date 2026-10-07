@@ -14,7 +14,7 @@ ikke et ekstra Canvas-krav. Scrum, sprinter og egen timelogg er ikke påkrevd i 
 | Oppgavefordeling og ansvar ved forsinkelse | TBD |
 | Roterende implementering/review og felles eierskap | Forslag: den andre reviewer, bytt fagområde jevnlig |
 | KI-verktøy og grenser | [KI-avtalen](ki-avtale.md), godtatt av begge 30.09 |
-| Tema, minste omfang og kuttliste | Studentmarked (Max 29.09); omfang i [kravspesifikasjonen](../krav/kravspesifikasjon.md) |
+| Tema, minste omfang og kuttliste | Studentmarkedet (Max 29.09, navnet fra 07.10); omfang i [kravspesifikasjonen](../krav/kravspesifikasjon.md) |
 | Uenighet, fravær og manglende bidrag | Forslag: ta det opp tidlig, vis konkret hindring, avtal tiltak, kontakt faglærer ved behov |
 | Gruppeendring og studentassistent | Avklares av studentene; ingen henvendelse sendt av assistenten |
 | Bekreftelse | Max: ikke gitt. Emil: ikke gitt. Dato: TBD |
