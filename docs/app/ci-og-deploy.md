@@ -55,12 +55,16 @@ Fra `app/`, innlogget med `npx wrangler login`:
 npm run db:migrate:remote   # migrasjoner til D1 i skyen (webapp-db)
 npm run deploy              # bygg og last opp Worker «webapp»
 npx wrangler secret put BETTER_AUTH_SECRET   # bare ved ny hemmelighet; lagres kryptert hos Cloudflare
+npx wrangler secret put RESEND_API_KEY       # Resend-nøkkel med bare sendetilgang
 ```
 
 - `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig). `remote: false`
   betyr at `npm run dev`, tester og CI alltid bruker lokal kopi.
-- `.dev.vars` lastes ikke opp. I produksjon er `LOGIN_CODE_DELIVERY` ikke satt, så kodesending feiler
-  med vilje til EmailJS er på plass (#46). Innlogging virker derfor ikke på nett ennå.
+- `.dev.vars` lastes ikke opp. I produksjon sender appen koder med **Resend** fra
+  `noreply@mail.studentmarkedet.org` (`LOGIN_CODE_DELIVERY=resend` og `EMAIL_FROM` under `vars` i
+  `wrangler.jsonc`; nøkkelen `RESEND_API_KEY` som hemmelighet). Domenet `studentmarkedet.org` er kjøpt hos
+  Cloudflare; SPF, DKIM og DMARC for `mail.` ligger i Cloudflare DNS. Lokalt overstyrer `.dev.vars` med
+  `LOGIN_CODE_DELIVERY=log`; sett `resend` der for å teste ekte e-post.
 - Kjør alltid `npm run db:migrate:remote` før `npm run deploy` når en PR har ny migrasjon.
 
 ## Appkontroller og videre utvidelse
