@@ -117,6 +117,10 @@
   men gjør det aldri automatisk (Max 29.09).
 - Navngi branch `type/issue-slug`, eksempelvis `feat/12-innlogging`; ikke bruk codex/ai-prefiks.
 - Funksjonsendring: issue først, så branch, så PR når Max ber om det.
+- Små PR-er (Max 07.10, faglærer): én oppgave per PR, liten nok til å leses i én økt. Sikt mot under
+  ca. 400 endrede linjer håndskrevet kode og tekst; genererte filer (låsefil, migrasjonssnapshots,
+  flagg) teller ikke. Rundt 1000 linjer er for stort: del opp i flere PR-er i rekkefølge (for eksempel
+  tabeller og migrasjon, så skjema, så søkeside). Må en PR likevel bli stor, begrunn det i beskrivelsen.
 - Ikke opprett remote, publiser, deploy eller send meldinger til faglærer uten eksplisitt fullmakt.
 - Stopp før merge. Bare Max' eksplisitte godkjenning av den identifiserte PR-en gjelder.
 - Ikke opprett skyressurser eller kopier School/OS-arkiver, hemmeligheter og andre studenters data.

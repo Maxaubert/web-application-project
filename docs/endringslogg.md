@@ -8,6 +8,11 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-07
+
+- Regel om små PR-er i AGENTS.md: én oppgave, sikt mot under ca. 400 håndskrevne linjer; rundt 1000
+  er for stort (faglærer, gjengitt av Max). (Max)
+
 ## 2026-10-05
 
 - Komponentprinsipper vedtatt etter kryssjekk mot Fullstækk: del etter ansvar, én liten delt Button
