@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-07
 
+- Appnavnet er Studentmarkedet, som domenet: topplinjen, fanetittelen, avsendernavnet og emnet i
+  innloggingseposten. (Max, #88)
 - Automatisk deploy til studentmarkedet.org fra `main` etter grønn CI, med skymigrasjon før koden
   (`.github/workflows/deploy.yml`). (Max, #82)
 - Forsiden viser aktive annonser som kort, nyeste først, med «type · pris» som i WF-03. `PageShell` har fått

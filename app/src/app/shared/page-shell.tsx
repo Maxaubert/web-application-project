@@ -3,7 +3,7 @@
 // hvitt kort med tynn kant. Bredt oppsett (annonser, #65): innholdet bruker hele bredden.
 import type { ReactNode } from "react";
 
-export const APP_NAME = "Studentmarked";
+export const APP_NAME = "Studentmarkedet";
 
 type PageShellProps = {
   children: ReactNode;

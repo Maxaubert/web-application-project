@@ -35,7 +35,7 @@ export function createResendSender({ apiKey, from, fetchFn = fetch }: ResendOpti
       body: JSON.stringify({
         from,
         to: [email],
-        subject: "Innloggingskode til Studentmarked",
+        subject: "Innloggingskode til Studentmarkedet",
         text,
         html: `<p>Koden din er <strong>${code}</strong>. Den gjelder i 5 minutter.</p>` +
           "<p>Har du ikke bedt om den, kan du se bort fra denne e-posten.</p>",
