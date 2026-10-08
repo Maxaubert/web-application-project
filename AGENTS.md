@@ -4,7 +4,7 @@
 
 - ITF31619 Webapplikasjoner 26H ved HiØ. Gruppen er Max og Emil etter brukerens opplysning.
 - Optimaliser for en fungerende egen app og begge studentenes eksamensforståelse.
-- Appgrunnlag i `app/` med innlogging med engangskode (#47) og enkel prisberegning; markedsplassfunksjonene er ikke bygget. Studentmarked med salg, lån og gis bort
+- Appgrunnlag i `app/` med innlogging med engangskode (#47) og enkel prisberegning; markedsplassfunksjonene er ikke bygget. Studentmarkedet med salg, lån og gis bort
   (Max 29.09); bud eller låneperiode med motforslag, chat senere. RedwoodSDK/React/TypeScript og Drizzle/D1 er satt opp.
 - [Kravspesifikasjon](docs/krav/kravspesifikasjon.md) er gjeldende produktkilde; [teknisk plan](docs/app/teknisk-plan.md)
   beskriver gjennomføring. Ikke anta Emil-godkjenning eller finn på uavklarte avtalevilkår.
