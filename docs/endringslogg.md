@@ -15,6 +15,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
   ukjente gir samme borte-visning med 404. Ingen handlingsknapp før bud- og lånesidene finnes. (Max, #91)
 - Nye krav: solgte annonser fjernes etter 30 dager (#92), og klikk på eierens navn viser brukerens andre
   annonser (FK-13, #93). Fullt navn i stedet for fornavn på annonsesiden. (Max)
+- Emils uferdige `app/src/sortedList.tsx` gjorde `develop` rød. Minste retting for å få CI grønn: type på
+  `event`, `Number(...)` på valgt verdi, ubrukt import fjernet og lint for ubrukte variabler og `any` slått av
+  i bare den fila til den er ferdig. Resten er urørt. (Max, #91)
 
 ## 2026-10-07
 
