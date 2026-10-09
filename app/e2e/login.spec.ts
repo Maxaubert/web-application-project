@@ -29,6 +29,12 @@ test("forsiden uten innlogging sender til innloggingen", async ({ page }) => {
   await expect(page).toHaveURL(/\/login$/);
 });
 
+// Godkjent av Max 08.10. Klikk fra kort til annonseside kommer med innlogget tilstand (#94).
+test("annonsesiden uten innlogging sender til innloggingen", async ({ page }) => {
+  await page.goto("/listings/seed-sale");
+  await expect(page).toHaveURL(/\/login$/);
+});
+
 test("ukjente adresser gir HTTP 404", async ({ request }) => {
   const response = await request.get("/finnes-ikke");
   expect(response.status()).toBe(404);

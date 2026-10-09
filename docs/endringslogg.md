@@ -8,6 +8,14 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-08
+
+- Annonsesiden `/listings/:id` (WF-04): kortet på forsiden lenker dit, og siden viser type, tittel, pris,
+  kategori, tilstand, beskrivelse og eierens fulle navn. Solgte annonser vises med «Solgt»-merke; nedtatte og
+  ukjente gir samme borte-visning med 404. Ingen handlingsknapp før bud- og lånesidene finnes. (Max, #91)
+- Nye krav: solgte annonser fjernes etter 30 dager (#92), og klikk på eierens navn viser brukerens andre
+  annonser (FK-13, #93). Fullt navn i stedet for fornavn på annonsesiden. (Max)
+
 ## 2026-10-07
 
 - Appnavnet er Studentmarkedet, som domenet: topplinjen, fanetittelen, avsendernavnet og emnet i

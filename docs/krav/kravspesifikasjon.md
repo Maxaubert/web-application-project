@@ -61,6 +61,8 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Utløp | Avklart 29.09 | En ubesvart forespørsel utløper etter 7 dager. Erstatter D-54. |
 | Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
 | Kategorier og bilder | Delvis avklart | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres sannsynligvis i Cloudflare R2, muligens D1; ikke endelig valgt. |
+| Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den fjernes etter 30 dager (#92). Nedtatte annonser vises ikke for andre. |
+| Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93). Telefon og e-post vises fortsatt først etter aksept. |
 | Historikk | Avklart 28.09 | Alle forslag bevares i historikken. Bare siste forslag kan godtas (D-53). Annonseendringer endrer ikke eksisterende avtaler (D-51). |
 
 **Begreper:** «Salg» overfører eierskap mot betaling utenfor appen. «Lån» gir midlertidig bruk, gratis eller mot ukepris. «Gis bort» overfører eierskap uten betaling.
@@ -106,6 +108,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. |
 | FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk, og kunne redigere profil, ta ned egne annonser og logge ut. |
 | FK-12 | Partene skal få e-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. |
+| FK-13 | En innlogget bruker skal kunne klikke på eierens navn på en annonse og se brukerens andre aktive annonser (Max 08.10). |
 
 ### Informasjon per handelstype
 
