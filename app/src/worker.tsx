@@ -8,6 +8,7 @@ import { AccountSetupPage, CodePage, LoginPage } from "@/app/auth/pages";
 import { requireAnonymous, requireSetupPending, requireUser, type AppSession } from "@/app/auth/guards";
 import { sessionMiddleware } from "@/app/auth/session";
 import { HomePage } from "@/app/home/HomePage";
+import { ListingPage } from "@/app/listings/ListingPage";
 
 export type AppContext = { session: AppSession };
 
@@ -18,6 +19,7 @@ export default defineApp([
   route("/api/auth/*", ({ request }) => getAuth().handler(request)),
   render(Document, [
     route("/", [requireUser, HomePage]),
+    route("/listings/:id", [requireUser, ListingPage]),
     route("/login", [requireAnonymous, LoginPage]),
     route("/login/code", [requireAnonymous, CodePage]),
     route("/account-setup", [requireSetupPending, AccountSetupPage]),

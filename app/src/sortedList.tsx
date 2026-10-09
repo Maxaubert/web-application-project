@@ -1,6 +1,7 @@
 "use client";
+// Uferdig arbeid (Emil 08.10). Ubrukte variabler og any er tillatt i denne fila til den er ferdig.
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { arrayOutputType } from "zod/v3";
 
 interface listProps {
     listItems: string[];
@@ -16,8 +17,8 @@ export default function SortedList({ listItems, headders }: listProps) {
     function listMapCallBack(element: string, index: number, list: string[]) {
         return (<li>{element}</li>)
     }
-    function onComboBoxChange(event) {
-        setSort(event.target.value);
+    function onComboBoxChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        setSort(Number(event.target.value));
     }
 
     return (

@@ -1,9 +1,9 @@
 // Henting av annonser til forsiden, mot SQLite i minnet med appens migrasjoner. Godkjent av Max 07.10.
 import { describe, expect, it } from "vitest";
-import { listing } from "@/db/schema";
+import { listing, user } from "@/db/schema";
 import { createTestDb } from "@/test/test-db";
-import { insertOwner, validListing } from "@/test/test-listings";
-import { getActiveListings } from "./queries";
+import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
+import { getActiveListings, getListingWithOwner } from "./queries";
 
 describe("getActiveListings", () => {
   it("returnerer bare aktive annonser", async () => {
@@ -37,5 +37,29 @@ describe("getActiveListings", () => {
   it("gir en tom liste når det ikke finnes annonser", async () => {
     const db = createTestDb();
     expect(await getActiveListings(db)).toEqual([]);
+  });
+});
+
+describe("getListingWithOwner", () => {
+  it("returnerer annonsen med eierens navn, men aldri telefon eller e-post", async () => {
+    const db = createTestDb();
+    await db.insert(user).values({ id: OWNER_ID, name: "Kari Nordmann", email: "kari@hiof.no", phone: "+4791234567" });
+    await db.insert(listing).values(validListing({ id: "calc", title: "Kalkulator" }));
+
+    const result = await getListingWithOwner(db, "calc");
+
+    expect(result?.listing.title).toBe("Kalkulator");
+    expect(result?.ownerName).toBe("Kari Nordmann");
+    const json = JSON.stringify(result);
+    expect(json).not.toContain("kari@hiof.no");
+    expect(json).not.toContain("+4791234567");
+  });
+
+  it("gir ingenting for en id som ikke finnes", async () => {
+    const db = createTestDb();
+    await insertOwner(db);
+    await db.insert(listing).values(validListing({ id: "calc" }));
+
+    expect(await getListingWithOwner(db, "finnes-ikke")).toBeUndefined();
   });
 });

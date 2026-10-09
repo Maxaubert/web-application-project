@@ -1,6 +1,7 @@
-// Linjen med type og pris på annonsekortet skal følge wireframen WF-03. Godkjent av Max 07.10.
+// Pris og type som tekst skal følge wireframene WF-03 (kortet) og WF-04 (annonsesiden).
+// Godkjent av Max 07.10 (kortet) og 08.10 (formatPrice).
 import { describe, expect, it } from "vitest";
-import { formatTypeAndPrice } from "./format-type-and-price";
+import { formatPrice, formatTypeAndPrice } from "./format-type-and-price";
 
 describe("formatTypeAndPrice", () => {
   it("viser salg med pris", () => {
@@ -27,5 +28,15 @@ describe("formatTypeAndPrice", () => {
 
   it("sier ærlig fra når et salg mangler pris", () => {
     expect(formatTypeAndPrice({ type: "sale", price: null })).toBe("Salg · pris mangler");
+  });
+});
+
+describe("formatPrice", () => {
+  it("viser salgsprisen alene, uten type", () => {
+    expect(formatPrice({ type: "sale", price: 350 })).toBe("350 kr");
+  });
+
+  it("gir ingen pris for gis bort, også om en pris er lagret", () => {
+    expect(formatPrice({ type: "giveaway", price: 100 })).toBeNull();
   });
 });
