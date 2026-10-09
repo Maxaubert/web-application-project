@@ -75,7 +75,7 @@ Alle krever gyldig sesjon og svarer 401 uten.
 | Metode og sti | Brukes av | Svar |
 |---|---|---|
 | `GET /api/listings?q=&category=&type=&available=` | WF-03 | 200 med liste (tittel, type, pris, status, første bilde, ledig fra). 400 ved ugyldige filtre. |
-| `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fornavn og opptatte perioder. 404 hvis den ikke finnes eller er tatt ned. Telefon sendes aldri med. |
+| `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fulle navn og opptatte perioder, også for solgte annonser (Max 08.10). 404 hvis den ikke finnes eller er tatt ned. Telefon og e-post sendes aldri med. |
 | `GET /api/requests?direction=received\|sent` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
 | `GET /api/requests/:id` | WF-08 | 200 bare for de to partene, ellers 404. Kontaktinfo bare når status er `accepted` eller senere. |
 | `GET /api/me/listings`, `GET /api/me/history` | WF-09 | 200 med egne annonser eller fullførte avtaler. |
@@ -100,6 +100,15 @@ endrer ingenting i databasen.
 | `reportIssue` | Begge | Lagrer rapport. Endrer ikke status. Bare avsender og admin kan lese den. |
 | `updateProfile` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
 
+## Avvik fra tegningene (Max 08.10, #91)
+
+- Selgerboksen viser fullt navn i stedet for fornavn, og navnet blir en lenke til selgerens annonser (FK-13, #93).
+- Solgte annonser vises med «Solgt»-merke i stedet for borte-visningen. Borte-visningen gjelder nedtatte og
+  ukjente annonser, med teksten «Den kan være tatt ned, eller lenken er feil.» og uten «Min side» til den siden finnes.
+- Prisen står alene under tittelen; lån skrives «40 kr/uke» som på kortet.
+- Handlingsknappen («Legg inn bud», «Send låneforespørsel») vises ikke før bud- og lånesidene er bygget.
+- Gis bort er ikke tegnet (#64); inntil videre får eierboksen overskriften «Eier», som ved lån.
+
 ## Skjermer
 
 Filnavn viser til [png/](png/) og [kilde/](kilde/). Filnavnene er arbeidsnavn fra lerretet,
@@ -111,7 +120,7 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 01 | Kode | `Innlogging-kode-*` | `/login/code` | `CodeForm` | Kodefelt, «Logg inn», «Send ny kode», «Endre e-post». Koden har 6 sifre (wireframen viser 4). | Feil eller utløpt kode ikke tegnet. |
 | 02 | Fullfør kontoen | `Kontooppsett-*` | `/account-setup` | `AccountSetupForm` | E-post (låst), fullt navn, land, telefon, «Fullfør». Bare for nye kontoer. | |
 | 03 | Annonser og søk | `Sok-*` | `/` | `TopNav`, `SearchField`, `Filters`, `ListingCard`, `ListingList` | Søk i tittel og beskrivelse, filtre kategori, handelstype og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
-| 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fornavn. | Borte (`Annonse-borte-*`). |
+| 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fulle navn. | Solgt: hele siden med «Solgt»-merke. Borte (`Annonse-borte-*`): nedtatt eller ukjent, samme tekst og 404. |
 | 04 | Annonse, lån | `Annonse-leie-*` | `/listings/:id` | Som salg, pluss `AvailabilityCalendar` | Som salg, pluss ukepris, «Minst én uke», kalender med opptatte datoer og «Send låneforespørsel». | |
 | 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `TypePicker`, `ImageUploader`, `ErrorSummary` | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). |
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |

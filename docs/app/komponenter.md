@@ -122,8 +122,11 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Siden er en tynn serverkomponent som henter data og setter sammen delene.
 - `ListingCard` er egen fil og tar ett annonseobjekt som prop (som PostCard, KI/05:609-612), fordi den
   brukes i søk, på Min side og i forhåndsvisningen. Bygget 07.10 (#79): bilde-plassholder, tittel og
-  «type · pris» fra `format-type-and-price.ts`; norske navn fra `listings/labels.ts`. Lenken kommer med annonsesiden.
+  «type · pris» fra `format-type-and-price.ts`; norske navn fra `listings/labels.ts`. Hele kortet lenker til annonsesiden (#91).
 - Detaljsiden er én side med seksjoner som avhenger av handelstype; lån er «som salg, pluss» kalender.
+- Annonsesiden (#91, 08.10): `ListingPage` henter annonsen med `getListingWithOwner` og velger visning;
+  `ListingDetails` viser innholdet og `ListingGone` borte-visningen. `ImagePlaceholder` er delt mellom kortet og
+  siden til bildene kommer (#61). `formatPrice` gir prisen alene, og `formatTypeAndPrice` bygger på den.
 - Interaktive deler (søkefilter, bildegalleri, kalender) er små klientkomponenter.
 
 **Hvorfor:** dette er mønsteret fra leksjon 8 og 19 (en side som koordinerer, deler med ett ansvar)

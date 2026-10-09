@@ -1,4 +1,4 @@
-// Kortet rendres til HTML på serveren, uten nettleser. Godkjent av Max 07.10.
+// Kortet rendres til HTML på serveren, uten nettleser. Godkjent av Max 07.10 og 08.10 (lenken).
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import type { Listing } from "@/db/schema";
@@ -25,5 +25,11 @@ describe("ListingCard", () => {
     expect(html).toMatch(/<h2[^>]*>Telt for to<\/h2>/);
     expect(html).toContain("Lån · 40 kr/uke");
     expect(html).not.toContain("Lett telt");
+  });
+
+  it("lenker hele kortet til annonsesiden", () => {
+    const html = renderToStaticMarkup(<ListingCard listing={tent} />);
+
+    expect(html).toMatch(/<a href="\/listings\/tent"[^>]*>[\s\S]*Telt for to[\s\S]*<\/a>/);
   });
 });
