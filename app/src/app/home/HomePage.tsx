@@ -3,6 +3,7 @@
 // i en kolonne til venstre; på mobil kommer «Filtre»-knappen rett under søket (samme rekkefølge i HTML).
 import type { RequestInfo } from "rwsdk/worker";
 import { LogoutButton } from "@/app/auth/LogoutButton";
+import { availableOptions, matchesFilters } from "@/app/listings/filter-listings";
 import { Filters } from "@/app/listings/Filters";
 import { ListingCard } from "@/app/listings/ListingCard";
 import { getActiveListings, type ListingWithOwner } from "@/app/listings/queries";
@@ -18,7 +19,13 @@ export async function HomePage({ request, response }: RequestInfo) {
   if (!search.success) response.status = 400;
   // Ugyldig adresse: siden vises med tomme felt og «Ugyldig søk».
   const { q, ...filters } = search.success ? search.data : { q: "", ...NO_FILTERS };
-  const listings = search.success ? searchListings(await getActiveListings(db, filters), q) : [];
+  // Søket først, så filtrene: opsjonene som fortsatt gir treff regnes ut fra søketreffene (#122).
+  const hits = search.success ? searchListings(await getActiveListings(db), q) : [];
+  const listings = hits.filter(({ listing }) => matchesFilters(listing, filters));
+  const available = availableOptions(
+    hits.map((h) => h.listing),
+    filters,
+  );
   const active = countActiveFilters(filters);
 
   return (
@@ -28,7 +35,7 @@ export async function HomePage({ request, response }: RequestInfo) {
         <div className="lg:col-start-2">
           <SearchField q={q} />
         </div>
-        <Filters q={q} filters={filters} activeCount={active} count={search.success ? listings.length : null} />
+        <Filters q={q} filters={filters} available={available} activeCount={active} count={listings.length} />
         <div className="lg:col-start-2">
           <Results valid={search.success} searched={q !== "" || active > 0} listings={listings} />
         </div>

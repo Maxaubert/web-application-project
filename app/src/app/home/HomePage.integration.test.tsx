@@ -18,6 +18,8 @@ vi.mock("@/db", () => ({
 }));
 // Utloggingsknappen trengs ikke her, og den drar inn innloggingsoppsettet.
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
+// Klientnavigasjonen finnes bare i nettleseren; siden rendres her uten klikk.
+vi.mock("rwsdk/client", () => ({ navigate: vi.fn() }));
 
 async function renderPage(query: string) {
   const request = new Request(`http://localhost/${query}`);
@@ -79,6 +81,22 @@ describe("HomePage", () => {
     expect(checkbox(html, "loan")).toContain('checked=""');
     expect(checkbox(html, "sale")).not.toContain('checked=""');
     expect(html).toContain("Vis 1 annonse");
+  });
+
+  // Grå opsjoner (#122). Godkjent av Max 10.10. Testdataene er to salgsannonser, brukt, elektronikk.
+  it("opsjoner uten treff er låst, men en avkrysset opsjon uten treff kan fjernes", async () => {
+    const { html } = await renderPage("?type=sale");
+
+    expect(checkbox(html, "loan")).toContain('disabled=""');
+    expect(checkbox(html, "sale")).not.toContain('disabled=""');
+    expect(checkbox(html, "new")).toContain('disabled=""');
+    expect(checkbox(html, "used")).not.toContain('disabled=""');
+    expect(html).toMatch(/<option value="books" disabled="">/);
+    expect(html).not.toMatch(/<option value="electronics" disabled="">/);
+
+    const empty = (await renderPage("?type=giveaway")).html;
+    expect(checkbox(empty, "giveaway")).toContain('checked=""');
+    expect(checkbox(empty, "giveaway")).not.toContain('disabled=""');
   });
 
   // Prisfeltene uten pilknapper (#120). Godkjent av Max 10.10.

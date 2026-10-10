@@ -99,42 +99,56 @@ test("knapper viser pekehånd, og søkefeltet får mørk kant i stedet for blå 
   expect(style.border).toBe("rgb(29, 27, 24)");
 });
 
-// Filtre (#102). Godkjent av Max 10.10. Antallet avhenger av hva som ligger i den lokale databasen,
-// så testene sjekker at tallet endrer seg og hvilke testannonser som vises, ikke et bestemt tall.
+// Filtre (#102, #122). Godkjent av Max 10.10. Antallet avhenger av hva som ligger i den lokale databasen,
+// så testene sjekker hvilke testannonser som vises, ikke et bestemt tall.
 test.describe("filtre", () => {
-  const applyButton = (page: import("@playwright/test").Page) => page.getByRole("button", { name: /^Vis \d+ annonser?$/ });
-
-  test("desktop: avkrysning oppdaterer tallet, og knappen viser bare lån", async ({ page }) => {
-    await page.goto("/");
-    const before = await applyButton(page).textContent();
-
-    await page.getByLabel("Lån").check();
-    await expect(applyButton(page)).not.toHaveText(before ?? "");
-    await applyButton(page).click();
-
-    await expect(page).toHaveURL(/type=loan/);
-    await expect(page.getByText("Hengekøye")).toBeVisible();
-    await expect(page.getByText("Kalkulator Casio fx-991")).toHaveCount(0);
-    await expect(page.getByLabel("Lån")).toBeChecked();
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
   });
 
-  test("mobil: «Filtre» åpner arket, Escape lukker det, og valget gjelder etter «Vis»", async ({ page }) => {
+  test("desktop: avkrysning virker med én gang, fokus blir stående, og Nullstill fjerner valget", async ({ page }) => {
+    await page.getByLabel("Lån").check();
+
+    await expect(page).toHaveURL(/\/\?type=loan$/);
+    await expect(page.getByText("Hengekøye")).toBeVisible();
+    await expect(page.getByText("Kalkulator Casio fx-991")).toHaveCount(0);
+    await expect(page.getByLabel("Lån")).toBeFocused();
+
+    await page.getByRole("link", { name: "Nullstill filtre" }).click();
+
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByLabel("Lån")).not.toBeChecked();
+    await expect(page.getByText("Kalkulator Casio fx-991")).toBeVisible();
+  });
+
+  test("desktop: pris gjelder når man forlater feltet", async ({ page }) => {
+    await page.getByLabel("Til kr").fill("100");
+    await expect(page).toHaveURL(/\/$/);
+
+    await page.getByLabel("Til kr").press("Tab");
+
+    await expect(page).toHaveURL(/maxPrice=100/);
+    await expect(page.getByText("Hengekøye")).toBeVisible();
+    await expect(page.getByText("Kalkulator Casio fx-991")).toHaveCount(0);
+  });
+
+  test("mobil: arket oppdaterer annonsene bak seg, og «Vis»-knappen lukker det", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
     await expect(page.getByLabel("Kategori")).toBeHidden();
 
     await page.getByRole("button", { name: "Filtre" }).click();
     const sheet = page.getByRole("dialog", { name: "Filtre" });
-    await expect(sheet).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(sheet).toBeHidden();
     await expect(page.getByRole("button", { name: "Filtre" })).toBeFocused();
 
     await page.getByRole("button", { name: "Filtre" }).click();
     await sheet.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
-    await applyButton(page).click();
 
     await expect(page).toHaveURL(/category=electronics/);
+    await expect(sheet).toBeVisible();
+    await sheet.getByRole("button", { name: /^Vis \d+ annonser?$/ }).click();
+    await expect(sheet).toBeHidden();
     await expect(page.getByText("Kalkulator Casio fx-991")).toBeVisible();
     await expect(page.getByText("Hengekøye")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Filtre 1 aktive" })).toBeVisible();
