@@ -1,6 +1,6 @@
 "use client";
 // Filtrene på forsiden (WF-03, #102). Desktop: kolonne til venstre. Mobil: «Filtre»-knapp som åpner
-// et ark nedenfra. Feltene hører til søkeskjemaet via form-attributtet, så «Søk» og «Vis annonser»
+// et ark nedenfra. Feltene hører til søkeskjemaet via form-attributtet, så «Søk» og «Vis X annonser»
 // sender søk og filtre sammen som én GET-adresse. Feltene er ukontrollerte: siden lastes på nytt.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { inputClass } from "@/app/shared/form-controls";
@@ -131,7 +131,7 @@ export function Filters({ q, filters, activeCount: active, count: initialCount }
           <button
             type="submit"
             form={SEARCH_FORM_ID}
-            className="h-12 flex-1 rounded-md bg-action lg:flex-none px-6 text-lg font-semibold text-white transition-colors hover:bg-action-hover"
+            className="h-12 flex-1 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors hover:bg-action-hover lg:flex-none"
           >
             {showResultsLabel(count)}
           </button>
