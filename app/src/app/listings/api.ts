@@ -1,16 +1,18 @@
-// REST-endepunktet GET /api/listings?q=&limit= (T03, #98). Samme søk som forsiden, men svarer med
+// REST-endepunktet GET /api/listings?q=&limit= og forsidens filtre (T03, #98, #102). Samme søk som forsiden, men svarer med
 // JSON, så nettleseren kan hente treff uten å laste siden på nytt (live søkeforslag, #104).
 // Kontrakten står i wireframe-README. Vakten requireApiUser står foran i worker.tsx.
 import type { RequestInfo } from "rwsdk/worker";
 import { z } from "zod";
 import { db } from "@/db";
+import { matchesFilters } from "./filter-listings";
 import { getActiveListings, type ListingWithOwner } from "./queries";
-import { searchSchema } from "./search-params";
+import { pricesInOrder, searchFields, searchInput } from "./search-params";
 import { searchListings } from "./search-listings";
 
-const apiSchema = searchSchema.extend({
-  limit: z.coerce.number().int().min(1).max(50).optional(),
-});
+// Samme søk og filtre som forsiden (#102), pluss limit.
+const apiSchema = searchFields
+  .extend({ limit: z.coerce.number().int().min(1).max(50).optional() })
+  .refine(pricesInOrder);
 
 // Bare disse feltene sendes; nye kolonner må legges til her med vilje.
 function toJson({ listing }: ListingWithOwner) {
@@ -19,9 +21,12 @@ function toJson({ listing }: ListingWithOwner) {
 }
 
 export async function getListings({ request }: RequestInfo) {
-  const parsed = apiSchema.safeParse(Object.fromEntries(new URL(request.url).searchParams));
+  const url = new URL(request.url);
+  const parsed = apiSchema.safeParse({ ...searchInput(url), limit: url.searchParams.get("limit") ?? undefined });
   if (!parsed.success) return Response.json({ error: "Ugyldig søk." }, { status: 400 });
-  const { q, limit } = parsed.data;
-  const hits = searchListings(await getActiveListings(db), q).slice(0, limit);
+  const { q, limit, ...filters } = parsed.data;
+  const hits = searchListings(await getActiveListings(db), q)
+    .filter(({ listing }) => matchesFilters(listing, filters))
+    .slice(0, limit);
   return Response.json({ listings: hits.map(toJson) });
 }

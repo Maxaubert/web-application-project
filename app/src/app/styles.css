@@ -34,10 +34,17 @@
     outline: 3px solid var(--color-focus);
     outline-offset: 2px;
   }
-  /* Tailwind v4 gir knapper vanlig peker; alt som kan trykkes skal vise pekehånd (#113). */
+  /* Tailwind v4 gir knapper vanlig peker; alt som kan trykkes skal vise pekehånd (#113). Nettleseren setter
+     egen peker på skjemafelt, så avkrysning og nedtrekksliste arver den ikke fra etiketten (#128). */
   button:not(:disabled),
-  [role="option"] {
+  [role="option"],
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  select:not(:disabled) {
     cursor: pointer;
+  }
+  :is(button, input, select):disabled {
+    cursor: not-allowed;
   }
   a {
     text-underline-offset: 3px;

@@ -7,6 +7,7 @@ export type ListingWithOwner = { listing: Listing; ownerName: string };
 
 // Aktive annonser til forsiden, nyeste først (WF-03). Solgte og nedtatte vises ikke.
 // Eierens navn følger med, så søket kan finne annonser på selgerens navn (#97).
+// Filtrene kjøres etter søket i filter-listings.ts (#122), så de grå opsjonene stemmer med søkeordet.
 export function getActiveListings(db: Db): Promise<ListingWithOwner[]> {
   return db
     .select({ listing, ownerName: user.name })

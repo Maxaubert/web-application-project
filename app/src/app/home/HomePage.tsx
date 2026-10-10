@@ -1,10 +1,13 @@
 // Forsiden: søk og aktive annonser som kort (WF-03). Beskyttet av requireUser.
-// Søket står i adressen (?q=) og valideres før databasen spørres (#97). Filtre kommer i #102.
+// Søk og filtre står i adressen og valideres før databasen spørres (#97, #102). Desktop har filtrene
+// i en kolonne til venstre; på mobil kommer «Filtre»-knappen rett under søket (samme rekkefølge i HTML).
 import type { RequestInfo } from "rwsdk/worker";
 import { LogoutButton } from "@/app/auth/LogoutButton";
+import { availableOptions, matchesFilters } from "@/app/listings/filter-listings";
+import { Filters } from "@/app/listings/Filters";
 import { ListingCard } from "@/app/listings/ListingCard";
 import { getActiveListings, type ListingWithOwner } from "@/app/listings/queries";
-import { parseSearch } from "@/app/listings/search-params";
+import { countActiveFilters, parseSearch, type ListingFilters } from "@/app/listings/search-params";
 import { searchListings } from "@/app/listings/search-listings";
 import { SearchField } from "@/app/listings/SearchField";
 import { SearchNotice } from "@/app/listings/SearchNotice";
@@ -14,24 +17,43 @@ import { db } from "@/db";
 export async function HomePage({ request, response }: RequestInfo) {
   const search = parseSearch(new URL(request.url));
   if (!search.success) response.status = 400;
-  const q = search.success ? search.data.q : "";
-  const listings = search.success ? searchListings(await getActiveListings(db), q) : [];
+  // Ugyldig adresse: siden vises med tomme felt og «Ugyldig søk».
+  const { q, ...filters } = search.success ? search.data : { q: "", ...NO_FILTERS };
+  // Søket først, så filtrene: opsjonene som fortsatt gir treff regnes ut fra søketreffene (#122).
+  const hits = search.success ? searchListings(await getActiveListings(db), q) : [];
+  const listings = hits.filter(({ listing }) => matchesFilters(listing, filters));
+  const available = availableOptions(
+    hits.map((h) => h.listing),
+    filters,
+  );
+  const active = countActiveFilters(filters);
 
   return (
     <PageShell title="Annonser" wide headerAction={<LogoutButton />}>
-      <h1 className="text-4xl font-bold tracking-tight">Annonser</h1>
-      <SearchField q={q} />
-      <Results valid={search.success} q={q} listings={listings} />
+      {/* Siste rad tar ekstra høyde når filterkolonnen er høyest, ellers blir det hull rundt tittel og søk (#124). */}
+      <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-10">
+        {/* «Filtre» og «Annonser» står på samme grunnlinje på desktop (#126). */}
+        <h1 className="text-4xl font-bold tracking-tight lg:col-start-2 lg:self-baseline">Annonser</h1>
+        <div className="lg:col-start-2">
+          <SearchField q={q} />
+        </div>
+        <Filters q={q} filters={filters} available={available} activeCount={active} count={listings.length} />
+        <div className="lg:col-start-2">
+          <Results valid={search.success} searched={q !== "" || active > 0} listings={listings} />
+        </div>
+      </div>
     </PageShell>
   );
 }
 
-type ResultsProps = { valid: boolean; q: string; listings: ListingWithOwner[] };
+const NO_FILTERS: ListingFilters = { type: [], condition: [] };
 
-function Results({ valid, q, listings }: ResultsProps) {
+type ResultsProps = { valid: boolean; searched: boolean; listings: ListingWithOwner[] };
+
+function Results({ valid, searched, listings }: ResultsProps) {
   if (!valid) return <SearchNotice title="Ugyldig søk" />;
   if (listings.length === 0) {
-    return q ? <SearchNotice title="Ingen annonser passer søket" /> : <SearchNotice title="Ingen annonser ennå" showReset={false} />;
+    return searched ? <SearchNotice title="Ingen annonser passer søket" /> : <SearchNotice title="Ingen annonser ennå" showReset={false} />;
   }
   return (
     <>

@@ -10,6 +10,18 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Småfeilrunde etter Max sitt funn: pekehånd også på selve avkrysningsboksen og nedtrekkslisten, «ikke tillatt»
+  på låste felt, og telefonfeltet har samme mørke fokuskant som de andre feltene. Alle sider skannet automatisk
+  for peker, klikkflater og synlig fokus på desktop og mobil; ingen andre funn. (Max, #128)
+- Filtrene virker med én gang uten knapp (klientnavigasjon, fokus blir stående), pris når man forlater feltet.
+  Opsjoner som ikke gir treff er grå. Filtreringen flyttet fra SQL til én ren funksjon på serveren etter søket,
+  så de grå opsjonene alltid stemmer med søkeordet; tallkallet for «Vis X annonser» er fjernet. (Max, #122)
+- Prisfeltene i filtrene er tekstfelt med tallastatur i stedet for `type="number"`: ingen pilknapper og ingen
+  verdiendring ved rulling. (Max, #120)
+- Filtre på forsiden: kategori, handelstype, tilstand og pris fra/til, i kolonne til venstre på desktop og bak en
+  «Filtre»-knapp på mobil. «Vis X annonser» viser antallet mens man velger. Filtrert i SQL, validert med Zod,
+  400 ved ugyldig verdi; `GET /api/listings` godtar de samme filtrene. Valgt etter mockups; sortering skilt ut
+  som #116. (Max, #102)
 - UI-finpuss etter Max sin test og en review-workflow: mørk kant i stedet for blå ramme på tekstfelt, pekehånd
   på knapper, logo lenker til forsiden, egen fanetittel per side, synlig fokus på kort, tydeligere markert
   søkeforslag, lange ord brytes, feil leses opp av skjermleser, og flere små hover- og størrelsesrettinger. (Max, #113)
