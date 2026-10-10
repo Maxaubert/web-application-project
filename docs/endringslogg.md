@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Småfeilrunde etter Max sitt funn: pekehånd også på selve avkrysningsboksen og nedtrekkslisten, «ikke tillatt»
+  på låste felt, og telefonfeltet har samme mørke fokuskant som de andre feltene. Alle sider skannet automatisk
+  for peker, klikkflater og synlig fokus på desktop og mobil; ingen andre funn. (Max, #128)
 - Filtrene virker med én gang uten knapp (klientnavigasjon, fokus blir stående), pris når man forlater feltet.
   Opsjoner som ikke gir treff er grå. Filtreringen flyttet fra SQL til én ren funksjon på serveren etter søket,
   så de grå opsjonene alltid stemmer med søkeordet; tallkallet for «Vis X annonser» er fjernet. (Max, #122)

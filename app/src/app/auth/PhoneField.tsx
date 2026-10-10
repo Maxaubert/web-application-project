@@ -26,9 +26,10 @@ export function PhoneField({ countries, defaultCountry, defaultPhone, countryErr
       <label htmlFor="phone" className="block text-base font-semibold">
         Telefonnummer
       </label>
+      {/* Samme fokus som de andre feltene (#113): mørk kant rundt hele feltet i stedet for blå ramme (#128). */}
       <div
         className={
-          "flex h-12 w-full items-stretch rounded-md border bg-surface focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-focus " +
+          "flex h-12 w-full items-stretch rounded-md border bg-surface has-focus-visible:border-ink has-focus-visible:shadow-[0_0_0_1px_var(--color-ink)] " +
           (error ? "border-2 border-danger" : "border-line")
         }
       >
@@ -44,7 +45,7 @@ export function PhoneField({ countries, defaultCountry, defaultPhone, countryErr
             aria-label="Landskode"
             aria-invalid={countryError ? true : undefined}
             aria-describedby={countryError ? "phone-error" : undefined}
-            className="absolute inset-0 cursor-pointer opacity-0"
+            className="absolute inset-0 cursor-pointer opacity-0 focus-visible:outline-none"
           >
             {countries.map((c) => (
               <option key={c.code} value={c.code}>
