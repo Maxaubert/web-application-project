@@ -4,6 +4,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 import { z } from "zod";
 import { db } from "@/db";
+import { matchesFilters } from "./filter-listings";
 import { getActiveListings, type ListingWithOwner } from "./queries";
 import { pricesInOrder, searchFields, searchInput } from "./search-params";
 import { searchListings } from "./search-listings";
@@ -24,6 +25,8 @@ export async function getListings({ request }: RequestInfo) {
   const parsed = apiSchema.safeParse({ ...searchInput(url), limit: url.searchParams.get("limit") ?? undefined });
   if (!parsed.success) return Response.json({ error: "Ugyldig søk." }, { status: 400 });
   const { q, limit, ...filters } = parsed.data;
-  const hits = searchListings(await getActiveListings(db, filters), q).slice(0, limit);
+  const hits = searchListings(await getActiveListings(db), q)
+    .filter(({ listing }) => matchesFilters(listing, filters))
+    .slice(0, limit);
   return Response.json({ listings: hits.map(toJson) });
 }

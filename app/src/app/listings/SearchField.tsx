@@ -3,6 +3,7 @@
 // GET-skjema: uten JavaScript, ved Enter uten markering og ved «Søk» går det til /?q= som før.
 // Forslagene følger WAI-ARIA-mønsteret for combobox med listbox: piltaster, Enter og Escape.
 import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { navigate } from "rwsdk/client";
 import { inputClass } from "@/app/shared/form-controls";
 import { formatTypeAndPrice } from "./format-type-and-price";
 import { ImagePlaceholder } from "./ImagePlaceholder";
@@ -58,10 +59,11 @@ export function SearchField({ q }: { q: string }) {
       method="get"
       action="/"
       role="search"
-      // Ryddig adresse uten tomme filterfelt (#102). Uten JavaScript sender nettleseren skjemaet som før.
+      // Ryddig adresse uten tomme filterfelt (#102), hentet uten full omlasting (#122). Uten JavaScript
+      // sender nettleseren skjemaet som før.
       onSubmit={(event) => {
         event.preventDefault();
-        window.location.assign(searchPageUrl(new FormData(event.currentTarget)));
+        void navigate(searchPageUrl(new FormData(event.currentTarget)), { info: { scrollToTop: false } });
       }}
       className="mt-6 max-w-3xl"
     >

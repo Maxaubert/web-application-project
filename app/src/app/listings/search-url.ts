@@ -8,14 +8,9 @@ export function searchQuery(entries: Entries) {
   return params.toString();
 }
 
-// Forsiden med søket. Skjemaet bruker denne når JavaScript er på; uten JavaScript sender nettleseren
-// skjemaet selv, med de tomme feltene, og serveren godtar begge.
+// Forsiden med søket. Skjemaet og filtrene bruker denne når JavaScript er på; uten JavaScript sender
+// nettleseren skjemaet selv, med de tomme feltene, og serveren godtar begge.
 export function searchPageUrl(entries: Entries) {
   const query = searchQuery(entries);
   return query ? `/?${query}` : "/";
-}
-
-// Samme søk mot API-et, for tallet på «Vis X annonser».
-export function countUrl(entries: Entries) {
-  return `/api/listings?${searchQuery(entries)}`;
 }

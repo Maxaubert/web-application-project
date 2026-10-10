@@ -1,27 +1,79 @@
 "use client";
 // Filtrene på forsiden (WF-03, #102). Desktop: kolonne til venstre. Mobil: «Filtre»-knapp som åpner
-// et ark nedenfra. Feltene hører til søkeskjemaet via form-attributtet, så «Søk» og «Vis X annonser»
-// sender søk og filtre sammen som én GET-adresse. Feltene er ukontrollerte: siden lastes på nytt.
+// et ark nedenfra. Valgene virker med én gang (Max 10.10, #122): avkrysning og kategori henter siden på nytt
+// med klientnavigasjon, uten full omlasting, og pris når man forlater feltet eller trykker Enter.
+// Opsjoner som ikke gir treff sammen med de andre valgene er grå. Feltene hører fortsatt til søkeskjemaet
+// via form-attributtet, så Enter i et felt og «Søk» sender alt, også uten JavaScript.
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { navigate } from "rwsdk/client";
 import { inputClass } from "@/app/shared/form-controls";
+import type { AvailableOptions } from "./filter-listings";
 import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 import { showResultsLabel } from "./result-count";
 import { PRICE_MAX } from "./search-limits";
 import type { ListingFilters } from "./search-params";
 import { SEARCH_FORM_ID } from "./SearchField";
-import { useResultCount } from "./useResultCount";
+import { searchPageUrl } from "./search-url";
 
-// activeCount og count (treff nå) regnes ut på serveren, så denne filen slipper Zod og databaseskjemaet.
-type FiltersProps = { q: string; filters: ListingFilters; activeCount: number; count: number | null };
+// activeCount og count regnes ut på serveren, så denne filen slipper Zod og databaseskjemaet.
+type FiltersProps = { q: string; filters: ListingFilters; available: AvailableOptions; activeCount: number; count: number };
+
+// Det brukeren har valgt nå. Prisene er tekst mens man skriver.
+type Selection = { category: string; type: string[]; condition: string[]; minPrice: string; maxPrice: string };
+
+const EMPTY: Selection = { category: "", type: [], condition: [], minPrice: "", maxPrice: "" };
+
+function toSelection(f: ListingFilters): Selection {
+  return {
+    category: f.category ?? "",
+    type: f.type,
+    condition: f.condition,
+    minPrice: f.minPrice?.toString() ?? "",
+    maxPrice: f.maxPrice?.toString() ?? "",
+  };
+}
+
+function toEntries(q: string, s: Selection): [string, string][] {
+  return [
+    ["q", q],
+    ["category", s.category],
+    ...s.type.map((v): [string, string] => ["type", v]),
+    ...s.condition.map((v): [string, string] => ["condition", v]),
+    ["minPrice", s.minPrice],
+    ["maxPrice", s.maxPrice],
+  ];
+}
+
+const toggle = (list: string[], value: string) => (list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
 
 // Verdiene hentes fra visningsnavnene; de har samme nøkler som databasens lister.
 const entries = <K extends string>(labels: Record<K, string>) => Object.entries(labels) as [K, string][];
 
-export function Filters({ q, filters, activeCount: active, count: initialCount }: FiltersProps) {
+export function Filters({ q, filters, available, activeCount: active, count }: FiltersProps) {
   const [open, setOpen] = useState(false);
-  const count = useResultCount(SEARCH_FORM_ID, initialCount);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+
+  // Valgene vises med én gang brukeren klikker. Når siden kommer tilbake med nye filtre (også etter
+  // «Nullstill»), settes valgene fra serveren: «juster state når en prop endres» fra React-dokumentasjonen.
+  const applied = toSelection(filters);
+  const appliedUrl = searchPageUrl(toEntries(q, applied));
+  const [selection, setSelection] = useState(applied);
+  const [shownUrl, setShownUrl] = useState(appliedUrl);
+  if (appliedUrl !== shownUrl) {
+    setShownUrl(appliedUrl);
+    setSelection(applied);
+  }
+
+  function apply(next: Selection) {
+    setSelection(next);
+    void navigate(searchPageUrl(toEntries(q, next)), { history: "replace", info: { scrollToTop: false } });
+  }
+
+  // Pris: bare når man forlater feltet, og bare hvis verdien er endret.
+  function applyPrice() {
+    if (selection.minPrice !== applied.minPrice || selection.maxPrice !== applied.maxPrice) apply(selection);
+  }
 
   // Fokus inn i arket når det åpnes, og tilbake til knappen når det lukkes.
   useEffect(() => {
@@ -86,10 +138,17 @@ export function Filters({ q, filters, activeCount: active, count: initialCount }
             <label htmlFor="filter-category" className="mb-2 block font-semibold">
               Kategori
             </label>
-            <select id="filter-category" name="category" form={SEARCH_FORM_ID} defaultValue={filters.category ?? ""} className={inputClass}>
+            <select
+              id="filter-category"
+              name="category"
+              form={SEARCH_FORM_ID}
+              value={selection.category}
+              onChange={(event) => apply({ ...selection, category: event.target.value })}
+              className={inputClass}
+            >
               <option value="">Alle kategorier</option>
               {entries(categoryLabels).map(([value, label]) => (
-                <option key={value} value={value}>
+                <option key={value} value={value} disabled={!available.category.includes(value) && selection.category !== value}>
                   {label}
                 </option>
               ))}
@@ -98,40 +157,76 @@ export function Filters({ q, filters, activeCount: active, count: initialCount }
 
           <CheckboxGroup legend="Handelstype">
             {entries(typeLabels).map(([value, label]) => (
-              <Checkbox key={value} name="type" value={value} checked={filters.type.includes(value)} label={label} />
+              <Checkbox
+                key={value}
+                name="type"
+                value={value}
+                label={label}
+                checked={selection.type.includes(value)}
+                available={available.type.includes(value)}
+                onChange={() => apply({ ...selection, type: toggle(selection.type, value) })}
+              />
             ))}
           </CheckboxGroup>
 
           <fieldset>
             <legend className="mb-2 font-semibold">Pris</legend>
             <div className="flex items-end gap-2">
-              <PriceField id="filter-min-price" name="minPrice" label="Fra kr" value={filters.minPrice} />
+              <PriceField
+                id="filter-min-price"
+                name="minPrice"
+                label="Fra kr"
+                value={selection.minPrice}
+                onChange={(minPrice) => setSelection({ ...selection, minPrice })}
+                onBlur={applyPrice}
+              />
               <span aria-hidden="true" className="pb-3">
                 –
               </span>
-              <PriceField id="filter-max-price" name="maxPrice" label="Til kr" value={filters.maxPrice} />
+              <PriceField
+                id="filter-max-price"
+                name="maxPrice"
+                label="Til kr"
+                value={selection.maxPrice}
+                onChange={(maxPrice) => setSelection({ ...selection, maxPrice })}
+                onBlur={applyPrice}
+              />
             </div>
             <p className="mt-2 text-base text-muted">Ved lån gjelder prisen per uke.</p>
           </fieldset>
 
           <CheckboxGroup legend="Tilstand">
             {entries(conditionLabels).map(([value, label]) => (
-              <Checkbox key={value} name="condition" value={value} checked={filters.condition.includes(value)} label={label} />
+              <Checkbox
+                key={value}
+                name="condition"
+                value={value}
+                label={label}
+                checked={selection.condition.includes(value)}
+                available={available.condition.includes(value)}
+                onChange={() => apply({ ...selection, condition: toggle(selection.condition, value) })}
+              />
             ))}
           </CheckboxGroup>
         </div>
 
-        <div className="flex items-center gap-4 border-t border-hairline bg-surface px-4 py-3 lg:mt-6 lg:flex-col-reverse lg:items-stretch lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0">
+        <div className="flex items-center gap-4 border-t border-hairline bg-surface px-4 py-3 lg:mt-6 lg:border-0 lg:bg-transparent lg:p-0">
+          {/* Vanlig lenke uten JavaScript; med JavaScript nullstilles valgene uten at siden hopper til toppen. */}
           <a
             href={q ? `/?q=${encodeURIComponent(q)}` : "/"}
-            className="inline-flex min-h-11 shrink-0 items-center justify-center underline hover:decoration-2"
+            onClick={(event) => {
+              event.preventDefault();
+              apply(EMPTY);
+            }}
+            className="inline-flex min-h-11 shrink-0 items-center underline hover:decoration-2"
           >
             Nullstill filtre
           </a>
+          {/* Bare på mobil: annonsene er allerede oppdatert bak arket, så knappen lukker det. */}
           <button
-            type="submit"
-            form={SEARCH_FORM_ID}
-            className="h-12 flex-1 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors hover:bg-action-hover lg:flex-none"
+            type="button"
+            onClick={close}
+            className="h-12 flex-1 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors hover:bg-action-hover lg:hidden"
           >
             {showResultsLabel(count)}
           </button>
@@ -150,27 +245,45 @@ function CheckboxGroup({ legend, children }: { legend: string; children: ReactNo
   );
 }
 
-type CheckboxProps = { name: string; value: string; checked: boolean; label: string };
+type CheckboxProps = { name: string; value: string; label: string; checked: boolean; available: boolean; onChange: () => void };
 
-function Checkbox({ name, value, checked, label }: CheckboxProps) {
+// Grå og låst når den ikke gir treff, men en avkrysset opsjon kan alltid fjernes.
+function Checkbox({ name, value, label, checked, available, onChange }: CheckboxProps) {
   return (
-    <label className="flex min-h-11 cursor-pointer items-center gap-3 text-lg">
-      <input type="checkbox" name={name} value={value} form={SEARCH_FORM_ID} defaultChecked={checked} className="size-5 accent-ink" />
+    <label className="flex min-h-11 cursor-pointer items-center gap-3 text-lg has-disabled:cursor-not-allowed has-disabled:text-muted/60">
+      <input
+        type="checkbox"
+        name={name}
+        value={value}
+        form={SEARCH_FORM_ID}
+        checked={checked}
+        disabled={!available && !checked}
+        onChange={onChange}
+        className="size-5 accent-ink"
+      />
       {label}
     </label>
   );
 }
 
-type PriceFieldProps = { id: string; name: string; label: string; value?: number };
+type PriceFieldProps = {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+};
 
-function PriceField({ id, name, label, value }: PriceFieldProps) {
+function PriceField({ id, name, label, value, onChange, onBlur }: PriceFieldProps) {
   return (
     <div className="min-w-0 flex-1">
       <label htmlFor={id} className="mb-1 block text-base text-muted">
         {label}
       </label>
       {/* Tekstfelt med tallastatur i stedet for type="number" (Max 10.10, #120): ingen pilknapper, og
-          rulling over feltet endrer ikke verdien. Anbefalt av GOV.UK. Serveren validerer tallet. */}
+          rulling over feltet endrer ikke verdien. Anbefalt av GOV.UK. Serveren validerer tallet. Enter
+          sender søkeskjemaet, som tar med prisen. */}
       <input
         id={id}
         name={name}
@@ -179,7 +292,9 @@ function PriceField({ id, name, label, value }: PriceFieldProps) {
         autoComplete="off"
         maxLength={String(PRICE_MAX).length}
         form={SEARCH_FORM_ID}
-        defaultValue={value}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
         className={inputClass}
       />
     </div>

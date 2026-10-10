@@ -143,9 +143,11 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Live søkeforslag (#104, 10.10): `SearchField` er nå klientkomponent (combobox etter WAI-ARIA), men rendres
   ferdig på serveren og virker uten JavaScript. `useSuggestions` henter fra `GET /api/listings` 200 ms etter
   siste tastetrykk og avbryter eldre forespørsler; `suggestions.ts` har den rene logikken (når hente, piltaster).
-- Filtrene (#102, 10.10): `Filters` er klientkomponent bare for mobilarket (åpne, lukke, fokus). Feltene hører til
-  søkeskjemaet via HTML-attributtet `form="listing-search"`, så søk og filtre sendes som én GET-adresse uten at
-  komponentene må ligge inni hverandre. `useResultCount` holder «Vis X annonser» oppdatert fra `GET /api/listings`.
+- Filtrene (#102, #122, 10.10): `Filters` er klientkomponent. Valgene er kontrollert state som settes fra serveren
+  når siden kommer tilbake, og hvert valg kaller `navigate` fra `rwsdk/client`: siden hentes på nytt uten full
+  omlasting, og fokus blir stående. Feltene hører til søkeskjemaet via HTML-attributtet `form="listing-search"`, så
+  Enter og «Søk» sender alt, også uten JavaScript. `filter-listings.ts` har den rene logikken: `matchesFilters`
+  for annonselisten og `availableOptions` for de grå opsjonene, begge kjørt på serveren etter søket.
   `search-limits.ts` har grensene klientkoden trenger, så Zod og databaseskjemaet ikke havner i nettleseren.
 - Interaktive deler (bildegalleri, kalender) er små klientkomponenter.
 
