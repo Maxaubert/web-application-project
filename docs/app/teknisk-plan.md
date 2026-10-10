@@ -65,6 +65,17 @@ Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.me
 ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
 Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
 
+## Søk på forsiden (#97, valgt av Max 10.10.2026)
+
+| Valg | Hvorfor |
+|---|---|
+| Vanlig GET-skjema til `/?q=` | Virker uten JavaScript, søket kan deles som lenke, og tilbakeknappen virker. Serverkomponenten leser databasen direkte, så ingen egen API-rute trengs her. REST-endepunktet for T03 kommer i #98. |
+| Zod validerer `q` (trimmet, høyst 100 tegn) | Adressen kan skrives av hvem som helst. Ugyldig søk gir 400 før databasen spørres. |
+| Fuse.js i Workeren | D1 har ikke feiltolerant søk, og `LIKE` skiller på store og små æøå. Fuse rangerer etter treff, med tittelen vektet dobbelt. Terskel 0.2 (omtrent én skrivefeil per fem bokstaver) er prøvd mot eksempler: «kalkulater» og «sykel» treffer, mens «telt» ikke treffer navnet «Test» og «mikroskop» ikke treffer noe. 0.35 ga støy fra navn på korte søkeord. |
+
+Kjent grense: alle aktive annonser hentes før Fuse rangerer dem. Det holder for omtrent tusen annonser
+(KK-02), men ikke for titusener; da må søket flyttes til databasen, for eksempel FTS5.
+
 ## Vurdert alternativ: Feide
 
 **Beslutning oppgitt av Max 19.09.2026:** Feide er ikke riktig løsning for prosjektet

@@ -6,8 +6,14 @@ import type { Db } from "@/db/types";
 export type ListingWithOwner = { listing: Listing; ownerName: string };
 
 // Aktive annonser til forsiden, nyeste først (WF-03). Solgte og nedtatte vises ikke.
-export function getActiveListings(db: Db): Promise<Listing[]> {
-  return db.select().from(listing).where(eq(listing.status, "active")).orderBy(desc(listing.createdAt));
+// Eierens navn følger med, så søket kan finne annonser på selgerens navn (#97).
+export function getActiveListings(db: Db): Promise<ListingWithOwner[]> {
+  return db
+    .select({ listing, ownerName: user.name })
+    .from(listing)
+    .innerJoin(user, eq(listing.ownerId, user.id))
+    .where(eq(listing.status, "active"))
+    .orderBy(desc(listing.createdAt));
 }
 
 // Én annonse med eierens navn til annonsesiden (WF-04), uansett status; siden avgjør hva som vises.
