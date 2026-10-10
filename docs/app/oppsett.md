@@ -64,8 +64,12 @@ ingen fra de nye pakkene.
   reell hovedflytintegrasjon og kursets 50 %-minimum gjenstår når produktkode bygges.
 
 Vitest bruker separat konfigurasjon uten Cloudflare-pluginen for rene enhetstester.
-Runtime-integrasjon dekkes foreløpig av browser/SQL-smoke. Ingen testbakdør er lagt i
-Worker-rutene. Når serverhandlinger og datamodell finnes, velges reelt integrasjonsoppsett.
+Runtime-integrasjon dekkes foreløpig av browser/SQL-smoke. Når serverhandlinger og datamodell
+finnes, velges reelt integrasjonsoppsett.
+
+**Logg inn lokalt:** åpne `http://127.0.0.1:5173/dev/login` under `npm run dev`. Du blir logget inn som
+seed-brukeren og sendt til forsiden (#106). Ruten finnes ikke i produksjonsbygget. Bruk `127.0.0.1`
+hele tiden; en innlogging på `localhost` gjelder ikke der.
 
 ## Avgrensninger og kjente funn
 

@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Lokal innloggingssnarvei `/dev/login` for seed-brukeren, bare under `npm run dev`. Endrer beslutningen fra
+  05.10 om ingen innloggingsbakdør; begrunnelse: rask lokal testing. To låser, og Playwright beviser 404 i
+  produksjonsbygget. (Max, #106)
 - REST-endepunktet `GET /api/listings?q=&limit=` (T03): samme søk som forsiden som JSON med fem felt, 400 ved
   ugyldig søk, 401 uten økt, 403 uten kontooppsett, 405 for andre metoder. Egen API-vakt `requireApiUser`.
   Datakilde for live søkeforslag (#104). (Max, #98)
