@@ -91,6 +91,10 @@ test("knapper viser pekehånd, og søkefeltet får mørk kant i stedet for blå 
   const cursor = (name: string) => page.getByRole("button", { name }).evaluate((el) => getComputedStyle(el).cursor);
   expect(await cursor("Logg ut")).toBe("pointer");
   expect(await cursor("Søk")).toBe("pointer");
+  // Selve avkrysningsboksen og nedtrekkslisten, ikke bare etiketten (#128).
+  const cursorOf = (el: Element) => getComputedStyle(el).cursor;
+  expect(await page.getByLabel("Lån").evaluate(cursorOf)).toBe("pointer");
+  expect(await page.getByLabel("Kategori").evaluate(cursorOf)).toBe("pointer");
 
   const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
   await field.click();
