@@ -17,7 +17,7 @@ describe("getActiveListings", () => {
 
     const result = await getActiveListings(db);
 
-    expect(result.map((l) => l.id)).toEqual(["active"]);
+    expect(result.map((r) => r.listing.id)).toEqual(["active"]);
   });
 
   it("sorterer nyeste først", async () => {
@@ -31,12 +31,25 @@ describe("getActiveListings", () => {
 
     const result = await getActiveListings(db);
 
-    expect(result.map((l) => l.id)).toEqual(["newest", "middle", "oldest"]);
+    expect(result.map((r) => r.listing.id)).toEqual(["newest", "middle", "oldest"]);
   });
 
   it("gir en tom liste når det ikke finnes annonser", async () => {
     const db = createTestDb();
     expect(await getActiveListings(db)).toEqual([]);
+  });
+
+  it("tar med eierens navn, men aldri telefon eller e-post", async () => {
+    const db = createTestDb();
+    await db.insert(user).values({ id: OWNER_ID, name: "Kari Nordmann", email: "kari@hiof.no", phone: "+4791234567" });
+    await db.insert(listing).values(validListing({ id: "calc" }));
+
+    const result = await getActiveListings(db);
+
+    expect(result[0].ownerName).toBe("Kari Nordmann");
+    const json = JSON.stringify(result);
+    expect(json).not.toContain("kari@hiof.no");
+    expect(json).not.toContain("+4791234567");
   });
 });
 

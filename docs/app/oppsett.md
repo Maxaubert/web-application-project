@@ -64,8 +64,18 @@ ingen fra de nye pakkene.
   reell hovedflytintegrasjon og kursets 50 %-minimum gjenstår når produktkode bygges.
 
 Vitest bruker separat konfigurasjon uten Cloudflare-pluginen for rene enhetstester.
-Runtime-integrasjon dekkes foreløpig av browser/SQL-smoke. Ingen testbakdør er lagt i
-Worker-rutene. Når serverhandlinger og datamodell finnes, velges reelt integrasjonsoppsett.
+Runtime-integrasjon dekkes foreløpig av browser/SQL-smoke. Når serverhandlinger og datamodell
+finnes, velges reelt integrasjonsoppsett.
+
+**Innloggede nettlesertester (#94):** `app/e2e/global-setup.ts` legger en testbruker, en økt på én time og
+faste testannonser rett i den lokale D1-databasen før Playwright starter, og signerer øktcookien med
+`BETTER_AUTH_SECRET` fra `.dev.vars` slik better-auth gjør. Appen har ingen testkode; den ser en vanlig økt.
+Tester som skal være innlogget bruker `test.use({ storageState: AUTH_FILE })`. `app/e2e/.auth/` er
+Git-ignorert fordi den inneholder en gyldig lokal økt. Endrer better-auth cookieformatet, blir testene røde.
+
+**Logg inn lokalt:** åpne `http://127.0.0.1:5173/dev/login` under `npm run dev`. Du blir logget inn som
+seed-brukeren og sendt til forsiden (#106). Ruten finnes ikke i produksjonsbygget. Bruk `127.0.0.1`
+hele tiden; en innlogging på `localhost` gjelder ikke der.
 
 ## Avgrensninger og kjente funn
 

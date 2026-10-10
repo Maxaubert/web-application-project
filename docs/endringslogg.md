@@ -8,6 +8,25 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-10
+
+- Live søkeforslag: fra to tegn viser søkefeltet de fem beste treffene mens man skriver, med piltaster, Enter,
+  Escape og «Vis alle treff». Henter fra `GET /api/listings`; testet i ekte nettleser med Playwright. (Max, #104)
+- Innloggede nettlesertester uten appkode: Playwright får en testøkt lagt rett i den lokale databasen og en
+  signert cookie. Første tester: åpne en annonse fra kortet, og søkeskjemaet. (Max, #94)
+- Lokal innloggingssnarvei `/dev/login` for seed-brukeren, bare under `npm run dev`. Endrer beslutningen fra
+  05.10 om ingen innloggingsbakdør; begrunnelse: rask lokal testing. To låser, og Playwright beviser 404 i
+  produksjonsbygget. (Max, #106)
+- REST-endepunktet `GET /api/listings?q=&limit=` (T03): samme søk som forsiden som JSON med fem felt, 400 ved
+  ugyldig søk, 401 uten økt, 403 uten kontooppsett, 405 for andre metoder. Egen API-vakt `requireApiUser`.
+  Datakilde for live søkeforslag (#104). (Max, #98)
+- Søk på forsiden (WF-03): feiltolerant søk i tittel, beskrivelse og selgerens navn med Fuse.js, best treff
+  først. Søket står i adressen (`?q=`), ugyldig søk gir 400, ingen treff gir «Ingen annonser passer søket».
+  FK-02 utvidet med selgerens navn og feiltoleranse. Filtre, «Vis flere» og REST-endepunktet er egne issues
+  (#102, #101, #98). (Max, #97)
+- Emils uferdige `app/src/sortedList.tsx` er slettet: sortering står ikke i kravene, og søket erstatter den.
+  Max og Emil har avtalt at kodekvalitet går foran hvem som skrev koden. (Max, #97)
+
 ## 2026-10-08
 
 - Annonsesiden `/listings/:id` (WF-04): kortet på forsiden lenker dit, og siden viser type, tittel, pris,

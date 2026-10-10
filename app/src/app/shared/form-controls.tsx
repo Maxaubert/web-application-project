@@ -1,11 +1,11 @@
 // Felles skjemadeler: etikett, felt og feilmelding henger sammen via id-er (DK-03, WCAG).
 import type { InputHTMLAttributes, ReactNode } from "react";
 
-const baseClass =
+export const inputClass =
   "block h-12 w-full rounded-md border border-line bg-surface px-4 text-lg text-ink placeholder:text-muted " +
   "aria-[invalid=true]:border-danger aria-[invalid=true]:border-2";
 // Låste felt (som e-posten i kontooppsettet) vises stiplet, som i wireframes.
-const fieldClass = baseClass + " read-only:border-dashed read-only:bg-paper";
+const fieldClass = inputClass + " read-only:border-dashed read-only:bg-paper";
 
 type FieldProps = InputHTMLAttributes<HTMLInputElement> & { id: string; label: string; error?: string };
 
