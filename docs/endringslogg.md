@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Innloggede nettlesertester uten appkode: Playwright får en testøkt lagt rett i den lokale databasen og en
+  signert cookie. Første tester: åpne en annonse fra kortet, og søkeskjemaet. (Max, #94)
 - Lokal innloggingssnarvei `/dev/login` for seed-brukeren, bare under `npm run dev`. Endrer beslutningen fra
   05.10 om ingen innloggingsbakdør; begrunnelse: rask lokal testing. To låser, og Playwright beviser 404 i
   produksjonsbygget. (Max, #106)

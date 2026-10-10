@@ -67,3 +67,6 @@ coverage
 .wrangler
 # Flagg kopiert fra circle-flags av scripts/copy-flags.mjs
 public/flags/
+
+# Lokal testøkt for Playwright (#94); gyldig innlogging, skal aldri committes
+e2e/.auth/
