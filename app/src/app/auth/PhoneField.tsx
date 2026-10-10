@@ -43,6 +43,7 @@ export function PhoneField({ countries, defaultCountry, defaultPhone, countryErr
             onChange={(event) => setCountry(event.target.value)}
             aria-label="Landskode"
             aria-invalid={countryError ? true : undefined}
+            aria-describedby={countryError ? "phone-error" : undefined}
             className="absolute inset-0 cursor-pointer opacity-0"
           >
             {countries.map((c) => (

@@ -60,4 +60,10 @@ describe("HomePage", () => {
     expect(html).toContain("Ingen annonser passer søket");
     expect(html).toMatch(/<a href="\/"[^>]*>Fjern søk<\/a>/);
   });
+
+  it("siden har egen fanetittel", async () => {
+    const { html } = await renderPage("");
+
+    expect(html).toContain("<title>Annonser – Studentmarkedet</title>");
+  });
 });
