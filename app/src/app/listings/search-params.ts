@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const SEARCH_MAX_LENGTH = 100;
 
-const searchSchema = z.object({
+export const searchSchema = z.object({
   q: z.string().trim().max(SEARCH_MAX_LENGTH).default(""),
 });
 

@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- REST-endepunktet `GET /api/listings?q=&limit=` (T03): samme søk som forsiden som JSON med fem felt, 400 ved
+  ugyldig søk, 401 uten økt, 403 uten kontooppsett, 405 for andre metoder. Egen API-vakt `requireApiUser`.
+  Datakilde for live søkeforslag (#104). (Max, #98)
 - Søk på forsiden (WF-03): feiltolerant søk i tittel, beskrivelse og selgerens navn med Fuse.js, best treff
   først. Søket står i adressen (`?q=`), ugyldig søk gir 400, ingen treff gir «Ingen annonser passer søket».
   FK-02 utvidet med selgerens navn og feiltoleranse. Filtre, «Vis flere» og REST-endepunktet er egne issues
