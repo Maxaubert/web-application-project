@@ -113,6 +113,9 @@ endrer ingenting i databasen.
 
 - Søkefeltet heter «Søk i tittel, beskrivelse og selger», fordi søket også finner selgerens navn.
 - Filtrene og «Vis flere» er ikke bygget ennå (#102, #100, #101). Tom visning har derfor «Fjern søk» i stedet for «Fjern filtre».
+- Live søkeforslag (#104) er ikke tegnet: fra to tegn vises en hvit liste under feltet med opptil fem treff
+  (bildeplassholder, tittel, «type · pris») og siste rad «Vis alle treff for «…»». Piltaster, Enter og Escape
+  følger combobox-mønsteret; ingen treff gir ingen liste.
 - Ugyldig søk (over 100 tegn i adressen) gir 400 og meldingen «Ugyldig søk» i samme stiplede boks som tom visning.
 
 ## Skjermer
