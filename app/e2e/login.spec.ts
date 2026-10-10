@@ -1,5 +1,6 @@
 // Nettlesertester for innloggingen, mot produksjonsbygget. Godkjent av Max 05.10.
-// Hele kodeflyten testes i integrasjonstestene. Den lokale snarveien /dev/login (#106) finnes bare
+// Hele kodeflyten testes i integrasjonstestene; innloggede sider testes i listings.spec.ts med en
+// testøkt fra global-setup.ts (#94). Den lokale snarveien /dev/login (#106) finnes bare
 // under utviklingsserveren; testen nederst beviser at den ikke finnes i produksjonsbygget.
 import { expect, test } from "@playwright/test";
 
