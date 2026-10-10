@@ -130,6 +130,9 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Søket (#97, 10.10): `SearchField` er et vanlig GET-skjema uten klientkode. `HomePage` validerer `?q=` med
   `parseSearch`, henter aktive annonser med `getActiveListings` og rangerer dem med `searchListings` (Fuse.js).
   `SearchNotice` er den stiplede boksen for ingen treff og ugyldig søk.
+- Live søkeforslag (#104, 10.10): `SearchField` er nå klientkomponent (combobox etter WAI-ARIA), men rendres
+  ferdig på serveren og virker uten JavaScript. `useSuggestions` henter fra `GET /api/listings` 200 ms etter
+  siste tastetrykk og avbryter eldre forespørsler; `suggestions.ts` har den rene logikken (når hente, piltaster).
 - Interaktive deler (bildegalleri, kalender) er små klientkomponenter.
 
 **Hvorfor:** dette er mønsteret fra leksjon 8 og 19 (en side som koordinerer, deler med ett ansvar)

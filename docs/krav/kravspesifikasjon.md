@@ -62,7 +62,7 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
 | Kategorier og bilder | Delvis avklart | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres sannsynligvis i Cloudflare R2, muligens D1; ikke endelig valgt. |
 | Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den fjernes etter 30 dager (#92). Nedtatte annonser vises ikke for andre. |
-| Søk | Avklart 10.10 | Søket går i tittel, beskrivelse og selgerens navn, uten forskjell på store og små bokstaver (også æøå), og tåler skrivefeil og delord («kalkulater» og «kalk» finner «Kalkulator»). Best treff først; uten søkeord nyeste først. Filtrene kommer i egen oppgave (#102). |
+| Søk | Avklart 10.10 | Søket går i tittel, beskrivelse og selgerens navn, uten forskjell på store og små bokstaver (også æøå), og tåler skrivefeil og delord («kalkulater» og «kalk» finner «Kalkulator»). Best treff først; uten søkeord nyeste først. Filtrene kommer i egen oppgave (#102). Fra to tegn vises de fem beste treffene i en liste under feltet mens man skriver, med bilde, tittel og «type · pris»; klikk åpner annonsen, og siste rad viser alle treff. Ingen treff gir ingen liste (Max 10.10, #104). |
 | Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93). Telefon og e-post vises fortsatt først etter aksept. |
 | Historikk | Avklart 28.09 | Alle forslag bevares i historikken. Bare siste forslag kan godtas (D-53). Annonseendringer endrer ikke eksisterende avtaler (D-51). |
 
@@ -98,7 +98,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | ID | Funksjonelt krav |
 |---|---|
 | FK-01 | En HiØ-student skal kunne logge inn eller lage konto med e-post, uten passord, via en engangskode sendt til en `@hiof.no`-adresse. Første gang fyller brukeren inn fullt navn, land og telefon. |
-| FK-02 | En innlogget bruker skal kunne søke i tittel, beskrivelse og selgerens navn med feiltolerant søk, filtrere på kategori, handelstype og «Tilgjengelig nå / Alle», åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
+| FK-02 | En innlogget bruker skal kunne søke i tittel, beskrivelse og selgerens navn med feiltolerant søk og forslag mens man skriver, filtrere på kategori, handelstype og «Tilgjengelig nå / Alle», åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
 | FK-03 | En innlogget bruker skal kunne legge ut en annonse for salg, lån eller gis bort, med tittel, beskrivelse, kategori, tilstand, 1 til 10 bilder og pris der den gjelder (salgspris, valgfri ukepris ved lån). |
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel på andres annonse: et bud ved salg, en periode på minst én uke ved lån, eller en forespørsel uten vilkår ved gis bort. |
 | FK-05 | Eieren skal kunne godta, avslå eller foreslå en annen pris eller periode. Motforslaget sendes til forespørreren. |

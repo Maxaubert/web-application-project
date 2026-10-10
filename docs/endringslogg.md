@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Live søkeforslag: fra to tegn viser søkefeltet de fem beste treffene mens man skriver, med piltaster, Enter,
+  Escape og «Vis alle treff». Henter fra `GET /api/listings`; testet i ekte nettleser med Playwright. (Max, #104)
 - Innloggede nettlesertester uten appkode: Playwright får en testøkt lagt rett i den lokale databasen og en
   signert cookie. Første tester: åpne en annonse fra kortet, og søkeskjemaet. (Max, #94)
 - Lokal innloggingssnarvei `/dev/login` for seed-brukeren, bare under `npm run dev`. Endrer beslutningen fra
