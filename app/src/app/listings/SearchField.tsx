@@ -6,9 +6,13 @@ import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { inputClass } from "@/app/shared/form-controls";
 import { formatTypeAndPrice } from "./format-type-and-price";
 import { ImagePlaceholder } from "./ImagePlaceholder";
-import { SEARCH_MAX_LENGTH } from "./search-params";
+import { SEARCH_MAX_LENGTH } from "./search-limits";
+import { searchPageUrl } from "./search-url";
 import { moveActive, suggestionsUrl } from "./suggestions";
 import { useSuggestions } from "./useSuggestions";
+
+// Filtrene i sidekolonnen hører til dette skjemaet via form-attributtet, så «Søk» tar dem med (#102).
+export const SEARCH_FORM_ID = "listing-search";
 
 export function SearchField({ q }: { q: string }) {
   const [value, setValue] = useState(q);
@@ -48,7 +52,19 @@ export function SearchField({ q }: { q: string }) {
   }
 
   return (
-    <form ref={formRef} method="get" action="/" role="search" className="mt-6 max-w-3xl">
+    <form
+      ref={formRef}
+      id={SEARCH_FORM_ID}
+      method="get"
+      action="/"
+      role="search"
+      // Ryddig adresse uten tomme filterfelt (#102). Uten JavaScript sender nettleseren skjemaet som før.
+      onSubmit={(event) => {
+        event.preventDefault();
+        window.location.assign(searchPageUrl(new FormData(event.currentTarget)));
+      }}
+      className="mt-6 max-w-3xl"
+    >
       <label htmlFor="q" className="block text-base font-semibold">
         Søk i tittel, beskrivelse og selger
       </label>

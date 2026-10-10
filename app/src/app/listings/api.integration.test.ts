@@ -53,8 +53,21 @@ describe("GET /api/listings", () => {
     expect(body.listings).toHaveLength(2);
   });
 
-  it("gir 400 med feilmelding ved ugyldig søk eller limit", async () => {
-    for (const query of ["?limit=0", "?limit=51", "?limit=abc", "?limit=2.5", `?q=${"a".repeat(101)}`]) {
+  it("godtar forsidens filtre (#102)", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "loan", type: "loan", category: "books" }),
+      validListing({ id: "sale", type: "sale", category: "books" }),
+      validListing({ id: "bike", type: "loan", category: "bikes" }),
+    ]);
+
+    const { body } = await get("?type=loan&category=books");
+
+    expect(body.listings?.map((l) => (l as { id: string }).id)).toEqual(["loan"]);
+  });
+
+  it("gir 400 med feilmelding ved ugyldig søk, filter eller limit", async () => {
+    const invalid = ["?limit=0", "?limit=51", "?limit=abc", "?limit=2.5", `?q=${"a".repeat(101)}`, "?category=bogus", "?minPrice=5&maxPrice=1"];
+    for (const query of invalid) {
       const { status, body } = await get(query);
       expect(status, query).toBe(400);
       expect(body, query).toEqual({ error: "Ugyldig søk." });

@@ -90,9 +90,51 @@ test("knapper viser pekehånd, og søkefeltet får mørk kant i stedet for blå 
   expect(await cursor("Logg ut")).toBe("pointer");
   expect(await cursor("Søk")).toBe("pointer");
 
-  const field = page.getByRole("combobox");
+  const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
   await field.click();
   const style = await field.evaluate((el) => ({ outline: getComputedStyle(el).outlineStyle, border: getComputedStyle(el).borderColor }));
   expect(style.outline).toBe("none");
   expect(style.border).toBe("rgb(29, 27, 24)");
+});
+
+// Filtre (#102). Godkjent av Max 10.10. Antallet avhenger av hva som ligger i den lokale databasen,
+// så testene sjekker at tallet endrer seg og hvilke testannonser som vises, ikke et bestemt tall.
+test.describe("filtre", () => {
+  const applyButton = (page: import("@playwright/test").Page) => page.getByRole("button", { name: /^Vis \d+ annonser?$/ });
+
+  test("desktop: avkrysning oppdaterer tallet, og knappen viser bare lån", async ({ page }) => {
+    await page.goto("/");
+    const before = await applyButton(page).textContent();
+
+    await page.getByLabel("Lån").check();
+    await expect(applyButton(page)).not.toHaveText(before ?? "");
+    await applyButton(page).click();
+
+    await expect(page).toHaveURL(/type=loan/);
+    await expect(page.getByText("Hengekøye")).toBeVisible();
+    await expect(page.getByText("Kalkulator Casio fx-991")).toHaveCount(0);
+    await expect(page.getByLabel("Lån")).toBeChecked();
+  });
+
+  test("mobil: «Filtre» åpner arket, Escape lukker det, og valget gjelder etter «Vis»", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(page.getByLabel("Kategori")).toBeHidden();
+
+    await page.getByRole("button", { name: "Filtre" }).click();
+    const sheet = page.getByRole("dialog", { name: "Filtre" });
+    await expect(sheet).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(sheet).toBeHidden();
+    await expect(page.getByRole("button", { name: "Filtre" })).toBeFocused();
+
+    await page.getByRole("button", { name: "Filtre" }).click();
+    await sheet.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await applyButton(page).click();
+
+    await expect(page).toHaveURL(/category=electronics/);
+    await expect(page.getByText("Kalkulator Casio fx-991")).toBeVisible();
+    await expect(page.getByText("Hengekøye")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Filtre 1 aktive" })).toBeVisible();
+  });
 });

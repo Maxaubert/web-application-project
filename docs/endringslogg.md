@@ -10,6 +10,10 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Filtre på forsiden: kategori, handelstype, tilstand og pris fra/til, i kolonne til venstre på desktop og bak en
+  «Filtre»-knapp på mobil. «Vis X annonser» viser antallet mens man velger. Filtrert i SQL, validert med Zod,
+  400 ved ugyldig verdi; `GET /api/listings` godtar de samme filtrene. Valgt etter mockups; sortering skilt ut
+  som #116. (Max, #102)
 - UI-finpuss etter Max sin test og en review-workflow: mørk kant i stedet for blå ramme på tekstfelt, pekehånd
   på knapper, logo lenker til forsiden, egen fanetittel per side, synlig fokus på kort, tydeligere markert
   søkeforslag, lange ord brytes, feil leses opp av skjermleser, og flere små hover- og størrelsesrettinger. (Max, #113)
