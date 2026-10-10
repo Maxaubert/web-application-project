@@ -169,14 +169,15 @@ function PriceField({ id, name, label, value }: PriceFieldProps) {
       <label htmlFor={id} className="mb-1 block text-base text-muted">
         {label}
       </label>
+      {/* Tekstfelt med tallastatur i stedet for type="number" (Max 10.10, #120): ingen pilknapper, og
+          rulling over feltet endrer ikke verdien. Anbefalt av GOV.UK. Serveren validerer tallet. */}
       <input
         id={id}
         name={name}
-        type="number"
+        type="text"
         inputMode="numeric"
-        min={0}
-        max={PRICE_MAX}
-        step={1}
+        autoComplete="off"
+        maxLength={String(PRICE_MAX).length}
         form={SEARCH_FORM_ID}
         defaultValue={value}
         className={inputClass}
