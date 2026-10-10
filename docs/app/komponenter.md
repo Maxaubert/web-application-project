@@ -127,7 +127,10 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Annonsesiden (#91, 08.10): `ListingPage` henter annonsen med `getListingWithOwner` og velger visning;
   `ListingDetails` viser innholdet og `ListingGone` borte-visningen. `ImagePlaceholder` er delt mellom kortet og
   siden til bildene kommer (#61). `formatPrice` gir prisen alene, og `formatTypeAndPrice` bygger på den.
-- Interaktive deler (søkefilter, bildegalleri, kalender) er små klientkomponenter.
+- Søket (#97, 10.10): `SearchField` er et vanlig GET-skjema uten klientkode. `HomePage` validerer `?q=` med
+  `parseSearch`, henter aktive annonser med `getActiveListings` og rangerer dem med `searchListings` (Fuse.js).
+  `SearchNotice` er den stiplede boksen for ingen treff og ugyldig søk.
+- Interaktive deler (bildegalleri, kalender) er små klientkomponenter.
 
 **Hvorfor:** dette er mønsteret fra leksjon 8 og 19 (en side som koordinerer, deler med ett ansvar)
 og fra KI-kurset: hold så mye som mulig på serveren, og gjør bare de interaktive delene til klient

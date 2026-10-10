@@ -63,7 +63,20 @@ e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `p
 brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
 Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.meta.env.DEV`, satt
 ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
-Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
+Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet. `baseURL` settes ikke: better-auth leser
+adressen fra forespørselen, og Workeren svarer bare på studentmarkedet.org (`workers_dev` er av), så
+adressen er alltid den samme (kontrollert mot `instance.ts` 10.10).
+
+## Søk på forsiden (#97, valgt av Max 10.10.2026)
+
+| Valg | Hvorfor |
+|---|---|
+| Vanlig GET-skjema til `/?q=` | Virker uten JavaScript, søket kan deles som lenke, og tilbakeknappen virker. Serverkomponenten leser databasen direkte, så ingen egen API-rute trengs her. REST-endepunktet for T03 kommer i #98. |
+| Zod validerer `q` (trimmet, høyst 100 tegn) | Adressen kan skrives av hvem som helst. Ugyldig søk gir 400 før databasen spørres. |
+| Fuse.js i Workeren | D1 har ikke feiltolerant søk, og `LIKE` skiller på store og små æøå. Fuse rangerer etter treff, med tittelen vektet dobbelt. Terskel 0.2 (omtrent én skrivefeil per fem bokstaver) er prøvd mot eksempler: «kalkulater» og «sykel» treffer, mens «telt» ikke treffer navnet «Test» og «mikroskop» ikke treffer noe. 0.35 ga støy fra navn på korte søkeord. |
+
+Kjent grense: alle aktive annonser hentes før Fuse rangerer dem. Det holder for omtrent tusen annonser
+(KK-02), men ikke for titusener; da må søket flyttes til databasen, for eksempel FTS5.
 
 ## Vurdert alternativ: Feide
 
