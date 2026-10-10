@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- Prisfeltene i filtrene er tekstfelt med tallastatur i stedet for `type="number"`: ingen pilknapper og ingen
+  verdiendring ved rulling. (Max, #120)
 - Filtre på forsiden: kategori, handelstype, tilstand og pris fra/til, i kolonne til venstre på desktop og bak en
   «Filtre»-knapp på mobil. «Vis X annonser» viser antallet mens man velger. Filtrert i SQL, validert med Zod,
   400 ved ugyldig verdi; `GET /api/listings` godtar de samme filtrene. Valgt etter mockups; sortering skilt ut

@@ -81,6 +81,16 @@ describe("HomePage", () => {
     expect(html).toContain("Vis 1 annonse");
   });
 
+  // Prisfeltene uten pilknapper (#120). Godkjent av Max 10.10.
+  it("prisfeltene er tekstfelt med tallastatur, ikke type=number", async () => {
+    const { html } = await renderPage("?minPrice=10");
+
+    const field = html.match(/<input[^>]*name="minPrice"[^>]*>/)?.[0] ?? "";
+    expect(field).toContain('type="text"');
+    expect(field).toContain('inputMode="numeric"');
+    expect(field).toContain('value="10"');
+  });
+
   it("gir 400 og «Ugyldig søk» for en ukjent filterverdi", async () => {
     const { html, status } = await renderPage("?type=rent");
 
