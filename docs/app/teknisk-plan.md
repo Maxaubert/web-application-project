@@ -63,7 +63,9 @@ e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `p
 brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
 Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.meta.env.DEV`, satt
 ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
-Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
+Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet. `baseURL` settes ikke: better-auth leser
+adressen fra forespørselen, og Workeren svarer bare på studentmarkedet.org (`workers_dev` er av), så
+adressen er alltid den samme (kontrollert mot `instance.ts` 10.10).
 
 ## Søk på forsiden (#97, valgt av Max 10.10.2026)
 
