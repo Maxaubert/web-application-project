@@ -3,6 +3,7 @@ import { defineApp } from "rwsdk/worker";
 
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
+import { devLogin } from "@/app/auth/dev-login";
 import { getAuth } from "@/app/auth/instance";
 import { AccountSetupPage, CodePage, LoginPage } from "@/app/auth/pages";
 import { requireAnonymous, requireApiUser, requireSetupPending, requireUser, type AppSession } from "@/app/auth/guards";
@@ -20,6 +21,9 @@ export default defineApp([
   route("/api/auth/*", ({ request }) => getAuth().handler(request)),
   // REST for søket (T03, #98). Bare GET; andre metoder gir 405 fra RedwoodSDK.
   route("/api/listings", { get: [requireApiUser, getListings] }),
+  // Lokal innloggingssnarvei (#106). Lås nr. 1: Vite setter DEV til false i produksjonsbygget, så
+  // ruten aldri registreres der og koden fjernes.
+  ...(import.meta.env.DEV ? [route("/dev/login", devLogin)] : []),
   render(Document, [
     route("/", [requireUser, HomePage]),
     route("/listings/:id", [requireUser, ListingPage]),

@@ -63,6 +63,10 @@ e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `p
 brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
 Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.meta.env.DEV`, satt
 ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
+Lokal snarvei `/dev/login` (Max 10.10, #106, endrer 05.10-beslutningen om ingen innloggingsbakdør):
+logger inn seed-brukeren `test.testesen@hiof.no` med den ekte kodeflyten, for rask lokal testing. Samme
+to låser: ruten registreres bare når `import.meta.env.DEV` er sann, og handleren gir 404 ellers.
+Playwright beviser 404 i produksjonsbygget. Kodegrensen (5 per time per adresse) gjelder fortsatt.
 Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet. `baseURL` settes ikke: better-auth leser
 adressen fra forespørselen, og Workeren svarer bare på studentmarkedet.org (`workers_dev` er av), så
 adressen er alltid den samme (kontrollert mot `instance.ts` 10.10).
