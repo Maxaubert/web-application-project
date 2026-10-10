@@ -26,6 +26,11 @@ async function renderPage(query: string) {
   return { html: renderToStaticMarkup(page), status: response.status };
 }
 
+// Hele <input>-taggen for én avkrysning, uansett rekkefølgen React skriver attributtene i.
+function checkbox(html: string, value: string) {
+  return html.match(new RegExp(`<input type="checkbox"[^>]*value="${value}"[^>]*>`))?.[0] ?? "";
+}
+
 beforeEach(async () => {
   holder.db = createTestDb();
   await insertOwner(holder.db);
@@ -59,6 +64,35 @@ describe("HomePage", () => {
     expect(status).toBe(200);
     expect(html).toContain("Ingen annonser passer søket");
     expect(html).toMatch(/<a href="\/"[^>]*>Fjern søk<\/a>/);
+  });
+
+  // Filtrene (#102). Godkjent av Max 10.10.
+  it("filtrerer på adressen og viser valgene igjen i filterfeltene og på knappen", async () => {
+    await holder.db.insert(listing).values(validListing({ id: "book", title: "Pensumbok", category: "books", type: "loan" }));
+
+    const { html, status } = await renderPage("?category=books&type=loan");
+
+    expect(status).toBe(200);
+    expect(html).toContain("Pensumbok");
+    expect(html).not.toContain("Kalkulator");
+    expect(html).toMatch(/<option value="books" selected="">Bøker og pensum<\/option>/);
+    expect(checkbox(html, "loan")).toContain('checked=""');
+    expect(checkbox(html, "sale")).not.toContain('checked=""');
+    expect(html).toContain("Vis 1 annonse");
+  });
+
+  it("gir 400 og «Ugyldig søk» for en ukjent filterverdi", async () => {
+    const { html, status } = await renderPage("?type=rent");
+
+    expect(status).toBe(400);
+    expect(html).toContain("Ugyldig søk");
+    expect(html).not.toContain("Kalkulator");
+  });
+
+  it("filter uten treff gir «Ingen annonser passer søket», ikke «ennå»", async () => {
+    const { html } = await renderPage("?category=bikes");
+
+    expect(html).toContain("Ingen annonser passer søket");
   });
 
   it("siden har egen fanetittel", async () => {
