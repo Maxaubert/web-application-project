@@ -30,8 +30,10 @@ test("søkeskjemaet viser treffene og beholder søkeordet", async ({ page }) => 
 
 // Live søkeforslag (#104). Godkjent av Max 10.10.
 test.describe("søkeforslag", () => {
+  // Vent til skriptene er lastet og React har tatt over feltet; ellers kan testen skrive før forslagene virker
+  // (sett én gang i CI etter at filtrene ga mer klientkode, #120).
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "networkidle" });
   });
 
   const field = (page: import("@playwright/test").Page) => page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
