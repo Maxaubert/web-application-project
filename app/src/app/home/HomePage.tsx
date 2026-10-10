@@ -32,7 +32,8 @@ export async function HomePage({ request, response }: RequestInfo) {
     <PageShell title="Annonser" wide headerAction={<LogoutButton />}>
       {/* Siste rad tar ekstra høyde når filterkolonnen er høyest, ellers blir det hull rundt tittel og søk (#124). */}
       <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-10">
-        <h1 className="text-4xl font-bold tracking-tight lg:col-start-2">Annonser</h1>
+        {/* «Filtre» og «Annonser» står på samme grunnlinje på desktop (#126). */}
+        <h1 className="text-4xl font-bold tracking-tight lg:col-start-2 lg:self-baseline">Annonser</h1>
         <div className="lg:col-start-2">
           <SearchField q={q} />
         </div>

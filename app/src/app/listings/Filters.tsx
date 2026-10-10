@@ -86,7 +86,7 @@ export function Filters({ q, filters, available, activeCount: active, count }: F
   }
 
   return (
-    <div className="mt-4 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
+    <div className="mt-4 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:self-baseline">
       <button
         ref={toggleRef}
         type="button"
@@ -133,7 +133,7 @@ export function Filters({ q, filters, available, activeCount: active, count }: F
           </button>
         </div>
 
-        <div className="flex-1 space-y-6 overflow-y-auto overscroll-contain p-4 lg:mt-5 lg:overflow-visible lg:p-0">
+        <div className="flex-1 space-y-6 overflow-y-auto overscroll-contain p-4 lg:mt-6 lg:overflow-visible lg:p-0">
           <div>
             <label htmlFor="filter-category" className="mb-2 block font-semibold">
               Kategori

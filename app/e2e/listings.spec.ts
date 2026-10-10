@@ -154,3 +154,20 @@ test.describe("filtre", () => {
     await expect(page.getByRole("button", { name: "Filtre 1 aktive" })).toBeVisible();
   });
 });
+
+// Justering på desktop (#126). Godkjent av Max 10.10. Grunnlinjen måles med et tomt element på tekstlinjen.
+test("desktop: «Filtre» står på linje med «Annonser», og «Kategori» med søkefeltets etikett", async ({ page }) => {
+  await page.goto("/");
+  const baseline = (selector: string) =>
+    page.locator(selector).evaluate((el) => {
+      const marker = document.createElement("span");
+      marker.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+      el.appendChild(marker);
+      const y = marker.getBoundingClientRect().top;
+      marker.remove();
+      return Math.round(y);
+    });
+
+  expect(await baseline("#filters-heading")).toBe(await baseline("h1"));
+  expect(await baseline("label[for=filter-category]")).toBe(await baseline("label[for=q]"));
+});
