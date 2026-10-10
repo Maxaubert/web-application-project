@@ -112,7 +112,7 @@ verifisering av HiØ-tilknytning.
 | Samtidig godkjenning av overlappende leieavtaler tillater høyst én, både ved direkte aksept og aksept av motforslag | TK-06; AK-14 alene tester bare sekvensiell godkjenning |
 | Avvist tilgang etterlater lagringen uendret | TK-03/TK-07, T04 |
 | Foreslåtte tillegg: foreldet motforslag, tapt svar og ny innsending uten doble handlinger | Gjennomgå reglene før nye kriterier fastsettes |
-| REST-kontrakt med relevant metode, status og feilsvar | T03 |
+| REST-kontrakt med relevant metode, status og feilsvar | T03. `GET /api/listings` (#98): `api.integration.test.ts` (200, feltutvalg, limit, 400) og `guards.test.ts` (401, 403); 405 kontrollert manuelt |
 | Vitest-integrasjon av hovedflyt og minst 50 % dekning, med avklart målegrunnlag | T07 |
 | Playwright av hovedflytene og manuell kontroll av tilgjengelighet | Teamstandard i [GitHub-plan](../arkiv/github-repo-oppsett.md) |
 | Reproduserbare kommandoer og nødvendig konfigurasjon uten hemmeligheter | T08, [README](../../README.md) |

@@ -74,7 +74,7 @@ Alle krever gyldig sesjon og svarer 401 uten.
 
 | Metode og sti | Brukes av | Svar |
 |---|---|---|
-| `GET /api/listings?q=&category=&type=&available=` | WF-03 | 200 med liste (tittel, type, pris, status, første bilde, ledig fra). `q` søker feiltolerant i tittel, beskrivelse og selgerens navn, best treff først (Max 10.10). 400 ved ugyldige filtre eller søk over 100 tegn. Ikke bygget ennå (#98); forsiden leser de samme parameterne selv (#97). |
+| `GET /api/listings?q=&limit=` | WF-03, #104 | Bygget 10.10 (#98, T03). 200 med `{ listings: [{ id, title, type, price, status }] }`, best treff først; `q` søker feiltolerant i tittel, beskrivelse og selgerens navn, `limit` (1–50) begrenser antallet, uten `limit` alle treff. 400 ved søk over 100 tegn eller ugyldig `limit`, 401 uten økt, 403 uten fullført kontooppsett, 405 for andre metoder enn GET. Feil svarer `{ error: "norsk melding" }`. Bare de fem feltene sendes. `category`, `type`, `available`, bilde og «ledig fra» kommer med #102, #100 og #61. |
 | `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fulle navn og opptatte perioder, også for solgte annonser (Max 08.10). 404 hvis den ikke finnes eller er tatt ned. Telefon og e-post sendes aldri med. |
 | `GET /api/requests?direction=received\|sent` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
 | `GET /api/requests/:id` | WF-08 | 200 bare for de to partene, ellers 404. Kontaktinfo bare når status er `accepted` eller senere. |
