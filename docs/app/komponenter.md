@@ -36,6 +36,16 @@ og mer å forklare uten at noen trenger det. Kurset kaller det over-engineering 
 
 ## Delt UI i `app/src/app/shared/`
 
+Faste regler fra finpussen (#113, Max 10.10):
+
+- `PageShell` krever `title`; den gir fanetittelen «Side – Studentmarkedet» (React 19 flytter `<title>` til `<head>`).
+  Logo og navn er en lenke til `/`.
+- Tekstfelt bygges fra `inputClass`, som gir mørk kant ved fokus i stedet for den blå rammen. Knapper og lenker
+  beholder den blå 3 px-rammen ved tastaturfokus (`:focus-visible` i `styles.css`).
+- Alle knapper viser pekehånd (regel i `styles.css`, Tailwind v4 gjør det ikke selv). Hover brukes med
+  `enabled:`, så en deaktivert knapp ikke endrer seg.
+- `FieldError` har `role="alert"`, så feil leses opp. Lange ord brytes med `[overflow-wrap:anywhere]`.
+
 | Komponent | Ansvar | Status |
 |---|---|---|
 | `Button` | Varianter `primary`, `secondary`, `link`; innebygd `type`, ventetilstand, `disabled` og `aria-busy`, 44 px og fokusring. Ingen `size`/`icon`-props. | Planlagt (#66). Erstatter `PrimaryButton` og kopierte klasser. |

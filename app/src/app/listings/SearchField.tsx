@@ -92,7 +92,7 @@ export function SearchField({ q }: { q: string }) {
                 onMouseDown={(event) => event.preventDefault()}
                 onMouseEnter={() => setActive(index)}
                 onClick={() => choose(index)}
-                className="flex min-h-14 cursor-pointer items-center gap-3 px-3 py-2 aria-selected:bg-paper"
+                className="flex min-h-14 items-center gap-3 px-3 py-2 aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
               >
                 <ImagePlaceholder className="size-11 shrink-0 rounded-md" iconClassName="size-5" />
                 <span className="min-w-0">
@@ -108,7 +108,7 @@ export function SearchField({ q }: { q: string }) {
               onMouseDown={(event) => event.preventDefault()}
               onMouseEnter={() => setActive(hits.length)}
               onClick={() => choose(hits.length)}
-              className="flex min-h-12 cursor-pointer items-center justify-between gap-3 border-t border-hairline px-4 font-semibold aria-selected:bg-paper"
+              className="flex min-h-12 items-center justify-between gap-3 border-t border-hairline px-4 font-semibold aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
             >
               <span className="min-w-0 truncate">Vis alle treff for «{term}»</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5 shrink-0 fill-none stroke-ink stroke-2">
@@ -119,7 +119,7 @@ export function SearchField({ q }: { q: string }) {
         </div>
         <button
           type="submit"
-          className="h-12 shrink-0 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors hover:bg-action-hover"
+          className="h-12 shrink-0 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover"
         >
           Søk
         </button>

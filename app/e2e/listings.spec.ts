@@ -82,3 +82,17 @@ test.describe("søkeforslag", () => {
     await expect(page.getByRole("listbox")).toBeHidden();
   });
 });
+
+// Finpuss (#113). Godkjent av Max 10.10.
+test("knapper viser pekehånd, og søkefeltet får mørk kant i stedet for blå ramme", async ({ page }) => {
+  await page.goto("/");
+  const cursor = (name: string) => page.getByRole("button", { name }).evaluate((el) => getComputedStyle(el).cursor);
+  expect(await cursor("Logg ut")).toBe("pointer");
+  expect(await cursor("Søk")).toBe("pointer");
+
+  const field = page.getByRole("combobox");
+  await field.click();
+  const style = await field.evaluate((el) => ({ outline: getComputedStyle(el).outlineStyle, border: getComputedStyle(el).borderColor }));
+  expect(style.outline).toBe("none");
+  expect(style.border).toBe("rgb(29, 27, 24)");
+});

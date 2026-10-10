@@ -34,6 +34,11 @@
     outline: 3px solid var(--color-focus);
     outline-offset: 2px;
   }
+  /* Tailwind v4 gir knapper vanlig peker; alt som kan trykkes skal vise pekehånd (#113). */
+  button:not(:disabled),
+  [role="option"] {
+    cursor: pointer;
+  }
   a {
     text-underline-offset: 3px;
   }

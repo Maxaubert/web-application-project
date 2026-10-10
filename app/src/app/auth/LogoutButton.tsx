@@ -11,7 +11,7 @@ export function LogoutButton() {
       <button
         type="submit"
         disabled={pending}
-        className="h-11 rounded-md border-2 border-action bg-surface px-4 font-semibold hover:bg-paper disabled:cursor-wait disabled:opacity-70"
+        className="h-11 rounded-md border-2 border-ink bg-surface px-4 font-semibold transition-colors enabled:hover:bg-paper disabled:cursor-wait disabled:opacity-70"
       >
         {pending ? "Logger ut …" : "Logg ut"}
       </button>

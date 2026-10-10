@@ -15,7 +15,7 @@ export async function ListingPage({ params, response }: RequestInfo<{ id: string
   if (!visible) response.status = 404;
 
   return (
-    <PageShell wide headerAction={<LogoutButton />}>
+    <PageShell title={visible ? result.listing.title : "Annonsen er borte"} wide headerAction={<LogoutButton />}>
       {visible ? <ListingDetails listing={result.listing} ownerName={result.ownerName} /> : <ListingGone />}
     </PageShell>
   );
