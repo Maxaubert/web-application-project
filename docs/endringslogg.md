@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-10
 
+- UI-finpuss etter Max sin test og en review-workflow: mørk kant i stedet for blå ramme på tekstfelt, pekehånd
+  på knapper, logo lenker til forsiden, egen fanetittel per side, synlig fokus på kort, tydeligere markert
+  søkeforslag, lange ord brytes, feil leses opp av skjermleser, og flere små hover- og størrelsesrettinger. (Max, #113)
 - Live søkeforslag: fra to tegn viser søkefeltet de fem beste treffene mens man skriver, med piltaster, Enter,
   Escape og «Vis alle treff». Henter fra `GET /api/listings`; testet i ekte nettleser med Playwright. (Max, #104)
 - Innloggede nettlesertester uten appkode: Playwright får en testøkt lagt rett i den lokale databasen og en

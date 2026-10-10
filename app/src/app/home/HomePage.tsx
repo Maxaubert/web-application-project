@@ -18,7 +18,7 @@ export async function HomePage({ request, response }: RequestInfo) {
   const listings = search.success ? searchListings(await getActiveListings(db), q) : [];
 
   return (
-    <PageShell wide headerAction={<LogoutButton />}>
+    <PageShell title="Annonser" wide headerAction={<LogoutButton />}>
       <h1 className="text-4xl font-bold tracking-tight">Annonser</h1>
       <SearchField q={q} />
       <Results valid={search.success} q={q} listings={listings} />
@@ -31,7 +31,7 @@ type ResultsProps = { valid: boolean; q: string; listings: ListingWithOwner[] };
 function Results({ valid, q, listings }: ResultsProps) {
   if (!valid) return <SearchNotice title="Ugyldig søk" />;
   if (listings.length === 0) {
-    return q ? <SearchNotice title="Ingen annonser passer søket" /> : <p className="mt-6 text-lg">Ingen annonser ennå.</p>;
+    return q ? <SearchNotice title="Ingen annonser passer søket" /> : <SearchNotice title="Ingen annonser ennå" showReset={false} />;
   }
   return (
     <>

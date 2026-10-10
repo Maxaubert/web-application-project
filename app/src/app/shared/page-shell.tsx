@@ -6,18 +6,24 @@ import type { ReactNode } from "react";
 export const APP_NAME = "Studentmarkedet";
 
 type PageShellProps = {
+  // Fanetittelen; React 19 flytter <title> inn i <head>. Påkrevd, så ingen side glemmer den (#113).
+  title: string;
   children: ReactNode;
   wide?: boolean;
   headerAction?: ReactNode;
 };
 
-export function PageShell({ children, wide = false, headerAction }: PageShellProps) {
+export function PageShell({ title, children, wide = false, headerAction }: PageShellProps) {
   return (
     <>
+      <title>{`${title} – ${APP_NAME}`}</title>
       <header className="border-b border-hairline bg-surface">
         <div className="flex h-16 items-center gap-3 px-4 sm:h-[4.5rem] sm:px-12">
-          <span aria-hidden="true" className="size-9 rounded-md border-2 border-line bg-paper sm:size-10" />
-          <span className="text-lg font-bold">{APP_NAME}</span>
+          {/* Logo og navn går til forsiden, som på de fleste nettsteder (#113). */}
+          <a href="/" className="flex min-h-11 items-center gap-3 rounded-md transition-opacity hover:opacity-80">
+            <span aria-hidden="true" className="size-9 rounded-md border-2 border-line bg-paper sm:size-10" />
+            <span className="text-lg font-bold">{APP_NAME}</span>
+          </a>
           {headerAction && <div className="ml-auto">{headerAction}</div>}
         </div>
       </header>

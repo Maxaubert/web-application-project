@@ -13,7 +13,7 @@ const heading = "text-center text-4xl font-bold tracking-tight text-balance";
 
 export function LoginPage() {
   return (
-    <PageShell>
+    <PageShell title="Logg inn">
       <h1 className={`${heading} mb-10`}>Logg inn</h1>
       <LoginForm />
     </PageShell>
@@ -24,7 +24,7 @@ export function CodePage({ request }: RequestInfo) {
   const email = readPendingEmail(request.headers);
   if (!email) return redirectTo("/login");
   return (
-    <PageShell>
+    <PageShell title="Sjekk e-posten">
       <h1 className={heading}>Sjekk e-posten</h1>
       <p className="mt-3 mb-10 text-center text-lg">
         Kode sendt til
@@ -37,7 +37,7 @@ export function CodePage({ request }: RequestInfo) {
 
 export function AccountSetupPage({ ctx }: RequestInfo) {
   return (
-    <PageShell>
+    <PageShell title="Fullfør kontoen">
       <h1 className="mb-10 text-4xl font-bold tracking-tight text-balance">Fullfør kontoen</h1>
       <AccountSetupForm email={ctx.session.email ?? ""} countries={countryOptions()} />
     </PageShell>
