@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Testannonsene Drill og Telt for to er fjernet fra de lokale testdataene; de passet ikke for siden. (Max, #142)
 - Bilder, første PR: R2-bucket `IMAGES`, tabellen `listing_image` med migrasjon, `createListing` tar imot opptil 10
   bilder (filtype fra innholdet, høyst 5 MB) og rydder bort filene hvis lagringen feiler, og `GET /images/...` bare for
   innloggede. Bilder er valgfrie til skjemaet kan sende dem. Valgt etter grilling: R2, ikke D1. (Max, #138)
