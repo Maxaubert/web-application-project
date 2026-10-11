@@ -283,6 +283,18 @@ test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én k
   expect(wideTitle.x).toBeGreaterThan(wide.x + wide.width);
   expect(wideTitle.y).toBeLessThan(wide.y + wide.height);
 
+  // Parene står side om side allerede på 1280 px, så feltkolonnen ikke blir mye høyere enn forhåndsvisningen (#146).
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/listings/new");
+  const [category, sale] = [await box(page.getByLabel("Kategori")), await box(page.getByRole("radio", { name: "Salg" }))];
+  const [price, used] = [await box(page.getByLabel("Pris (kr)")), await box(page.getByRole("radio", { name: "Brukt" }))];
+  expect(sale.x).toBeGreaterThan(category.x + category.width);
+  expect(used.x).toBeGreaterThan(price.x + price.width);
+  expect(Math.abs(sale.y + sale.height / 2 - (category.y + category.height / 2))).toBeLessThan(20);
+  const lastField = await box(page.getByRole("radio", { name: "Brukt" }));
+  const thumbs = await box(page.getByRole("button", { name: "Legg til", exact: true }));
+  expect(lastField.y + lastField.height).toBeLessThan(thumbs.y + thumbs.height + 80);
+
   // Kortet går helt ned på en høy skjerm, med samme marg nederst som på sidene (48 px).
   await page.setViewportSize({ width: 1600, height: 1400 });
   await page.goto("/listings/new");

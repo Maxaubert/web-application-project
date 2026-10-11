@@ -37,6 +37,13 @@ describe("NewListingPage", () => {
     expect(html).toMatch(/<textarea[^>]*class="[^"]*resize-none/);
   });
 
+  // Ingen prishint (#146). Godkjent av Max 11.10.
+  it("prisfeltet har ingen hint, bare etiketten", () => {
+    expect(html).not.toContain("Hele kroner");
+    expect(html).not.toContain('id="listing-price-hint"');
+    expect(html).not.toMatch(/id="listing-price"[^>]*aria-describedby/);
+  });
+
   it("knappen «Legg ut annonse» i toppen er markert som siden man står på", () => {
     expect(html).toMatch(/<a[^>]*href="\/listings\/new"[^>]*aria-current="page"/);
   });
