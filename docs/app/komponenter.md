@@ -138,7 +138,7 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Annonsesiden (#91, 08.10): `ListingPage` henter annonsen med `getListingWithOwner` og velger visning;
   `ListingDetails` viser innholdet og `ListingGone` borte-visningen. `ListingImage` viser et annonsebilde eller
   `ImagePlaceholder` når annonsen ikke har bilde, og brukes av kortet, søkeforslagene og annonsesiden (#150).
-  `ListingGallery` (klient) viser det store bildet og miniatyrene på annonsesiden; klikk bytter bilde. `formatPrice` gir prisen alene, og `formatTypeAndPrice` bygger på den.
+  `ListingGallery` (klient) viser det store bildet og miniatyrene på annonsesiden; klikk bytter bilde. Kort, forslag og miniatyrraden bruker miniatyrene (640 px, #155), det store bildet originalen. `formatPrice` gir prisen alene, og `formatTypeAndPrice` bygger på den.
 - Søket (#97, 10.10): `SearchField` er et vanlig GET-skjema uten klientkode. `HomePage` validerer `?q=` med
   `parseSearch`, henter aktive annonser med `getActiveListings` og rangerer dem med `searchListings` (Fuse.js).
   `SearchNotice` er den stiplede boksen for ingen treff og ugyldig søk.

@@ -2,7 +2,7 @@
 // av global-setup.ts. Godkjent av Max 10.10.
 import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
-import { AUTH_FILE, TEST_IMAGE_PATH, TEST_LISTING_ID } from "./global-setup";
+import { AUTH_FILE, NO_THUMB_PATH, TEST_IMAGE_PATH, TEST_LISTING_ID, THUMB_IMAGE_PATH } from "./global-setup";
 
 test.use({ storageState: AUTH_FILE });
 
@@ -209,6 +209,11 @@ test.describe("legg ut annonse", () => {
 
     await page.goto(`/?q=${encodeURIComponent(title)}`);
     await expect(page.getByRole("heading", { name: title, level: 2 })).toBeVisible();
+
+    // Miniatyren som ble laget i nettleseren, vises på kortet (#155).
+    const cover = page.getByRole("link", { name: new RegExp(title) }).locator("img");
+    await expect(cover).toHaveAttribute("src", /\/images\/listings\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.thumb\.jpg$/);
+    await expect.poll(() => loaded(cover)).toBe(true);
   });
 
   test("feil viser feilboksen med fokus, og valgene står igjen", async ({ page }) => {
@@ -249,15 +254,39 @@ test.describe("legg ut annonse", () => {
     // 3000 × 2000 HEIC uten filtype, slik Windows ofte sender iPhone-bilder.
     await page.getByLabel("Bilder").setInputFiles({ name: "IMG_0001.HEIC", mimeType: "", buffer: readFileSync("e2e/fixtures/test.heic") });
 
-    const thumb = page.getByRole("button", { name: "Bilde 1", exact: true });
     await expect(page.getByText("Gjør klar …")).toHaveCount(0, { timeout: 20_000 });
-    const size = await thumb.evaluate(async (el) => {
-      const url = getComputedStyle(el).backgroundImage.slice(5, -2);
-      const blob = await (await fetch(url)).blob();
-      const bitmap = await createImageBitmap(blob);
-      return { type: blob.type, width: bitmap.width, height: bitmap.height };
+    // Forsidebildet først i DOM-en, miniatyren i raden under (#155).
+    const sizes = await page.evaluate(async () => {
+      const urls = [...document.querySelectorAll('[style*="blob:"]')].map((el) => getComputedStyle(el).backgroundImage.slice(5, -2));
+      return Promise.all(
+        urls.map(async (url) => {
+          const blob = await (await fetch(url)).blob();
+          const bitmap = await createImageBitmap(blob);
+          return { type: blob.type, width: bitmap.width, height: bitmap.height };
+        }),
+      );
     });
-    expect(size).toEqual({ type: "image/jpeg", width: 2000, height: 1333 });
+    expect(sizes).toEqual([
+      { type: "image/jpeg", width: 2000, height: 1333 },
+      { type: "image/jpeg", width: 640, height: 427 },
+    ]);
+
+    // Publisert: det store bildet er 2000 px, og kortet i søket laster miniatyren på 640 px (#155).
+    const title = `E2E-HEIC ${Date.now()}`;
+    await page.getByLabel("Tittel").fill(title);
+    await page.getByLabel("Beskrivelse").fill("Tatt med iPhone.");
+    await page.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await page.getByLabel("Pris (kr)").fill("100");
+    await page.getByRole("radio", { name: "Brukt" }).check();
+    await page.getByRole("button", { name: "Publiser annonse" }).click();
+
+    await expect(page).toHaveURL(/\/listings\/[^/]+\?publisert=1$/);
+    const big = page.getByRole("img", { name: title });
+    await expect.poll(() => big.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBe(2000);
+
+    await page.goto(`/?q=${encodeURIComponent(title)}`);
+    const cover = page.getByRole("link", { name: new RegExp(title) }).locator("img");
+    await expect.poll(() => cover.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBe(640);
   });
 
   test("filer som ikke er bilder, legges ikke til og står i en rød boks", async ({ page }) => {
@@ -323,6 +352,16 @@ test("innlogget bruker får annonsebildet fra R2, og ukjent bilde gir 404", asyn
 
   const missing = await page.request.get(TEST_IMAGE_PATH.replace("0002.jpg", "0009.jpg"));
   expect(missing.status()).toBe(404);
+
+  // Miniatyren når den finnes, og originalen når den mangler (#155).
+  const thumb = await page.request.get(THUMB_IMAGE_PATH);
+  expect(thumb.status()).toBe(200);
+  expect(thumb.headers()["content-type"]).toBe("image/jpeg");
+  expect((await thumb.body()).length).toBe(readFileSync("e2e/fixtures/test.thumb.jpg").length);
+  const fallback = await page.request.get(NO_THUMB_PATH);
+  expect(fallback.status()).toBe(200);
+  expect((await fallback.body()).length).toBe(readFileSync("e2e/fixtures/test.jpg").length);
+  expect((await page.request.get(THUMB_IMAGE_PATH.replace("0002.thumb.jpg", "0009.thumb.jpg"))).status()).toBe(404);
 });
 
 // Bildene i appen (#150). Godkjent av Max 11.10.
@@ -332,7 +371,7 @@ test("kortet og søkeforslaget viser forsidebildet, og annonser uten bilde har p
   await page.goto("/");
   const card = page.getByRole("link", { name: /Skrivebordslampe/ });
   const cover = card.locator("img");
-  await expect(cover).toHaveAttribute("src", TEST_IMAGE_PATH);
+  await expect(cover).toHaveAttribute("src", THUMB_IMAGE_PATH);
   await cover.scrollIntoViewIfNeeded();
   await expect.poll(() => loaded(cover)).toBe(true);
   await expect(page.getByRole("link", { name: /Kalkulator Casio fx-991/ }).locator("img")).toHaveCount(0);
@@ -340,7 +379,7 @@ test("kortet og søkeforslaget viser forsidebildet, og annonser uten bilde har p
   await page.waitForLoadState("networkidle");
   await page.getByLabel("Søk i tittel, beskrivelse og selger").fill("skrivebord");
   const option = page.getByRole("option", { name: /Skrivebordslampe/ });
-  await expect(option.locator("img")).toHaveAttribute("src", TEST_IMAGE_PATH);
+  await expect(option.locator("img")).toHaveAttribute("src", THUMB_IMAGE_PATH);
 });
 
 test("annonsesiden viser forsidebildet stort, og et klikk på en miniatyr viser den stort", async ({ page }) => {
@@ -349,6 +388,9 @@ test("annonsesiden viser forsidebildet stort, og et klikk på en miniatyr viser 
   await expect(big).toHaveAttribute("src", TEST_IMAGE_PATH);
   await expect.poll(() => loaded(big)).toBe(true);
   await expect(page.getByRole("button", { name: "Vis bilde 1 av 2" })).toHaveAttribute("aria-pressed", "true");
+  // Miniatyrraden bruker miniatyrene, det store bildet originalen (#155).
+  await expect(page.getByRole("button", { name: "Vis bilde 1 av 2" })).toHaveCSS("background-image", new RegExp(`${THUMB_IMAGE_PATH}`));
+  await expect(page.getByRole("button", { name: "Vis bilde 2 av 2" })).toHaveCSS("background-image", new RegExp(`${NO_THUMB_PATH}`));
 
   await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Vis bilde 2 av 2" }).click();

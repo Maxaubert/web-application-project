@@ -30,7 +30,7 @@ beforeEach(async () => {
 
 describe("GET /api/listings", () => {
   // Forsidebildet til søkeforslagene (#150). Godkjent av Max 11.10.
-  it("sender adressen til forsidebildet (posisjon 0) som coverUrl, men ikke de andre bildene", async () => {
+  it("sender adressen til miniatyren av forsidebildet (posisjon 0) som coverUrl, men ikke de andre bildene", async () => {
     await holder.db.insert(listing).values(validListing({ id: "calc", title: "Kalkulator" }));
     await holder.db.insert(listingImage).values([
       { listingId: "calc", key: "listings/calc/b.jpg", position: 1 },
@@ -39,8 +39,8 @@ describe("GET /api/listings", () => {
 
     const { body } = await get("?q=kalk");
 
-    expect(body.listings).toMatchObject([{ id: "calc", coverUrl: "/images/listings/calc/a.jpg" }]);
-    expect(JSON.stringify(body)).not.toContain("b.jpg");
+    expect(body.listings).toMatchObject([{ id: "calc", coverUrl: "/images/listings/calc/a.thumb.jpg" }]);
+    expect(JSON.stringify(body)).not.toContain("calc/b");
   });
 
   it("gir 200 med treffene og bare de seks feltene", async () => {

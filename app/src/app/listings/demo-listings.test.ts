@@ -20,9 +20,11 @@ describe("demoannonsene", () => {
     for (const l of data.listings) {
       expect(owners.has(l.owner), l.slug).toBe(true);
       const dir = `scripts/seed-images/${l.slug}`;
-      const count = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".jpg")).length : 0;
-      expect(count, l.slug).toBeGreaterThanOrEqual(1);
-      expect(count, l.slug).toBeLessThanOrEqual(10);
+      const originals = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".jpg") && !f.endsWith(".thumb.jpg")) : [];
+      expect(originals.length, l.slug).toBeGreaterThanOrEqual(1);
+      expect(originals.length, l.slug).toBeLessThanOrEqual(10);
+      // Hvert bilde har en miniatyr ved siden av (#155).
+      for (const file of originals) expect(existsSync(`${dir}/${file.replace(/\.jpg$/, ".thumb.jpg")}`), `${l.slug}/${file}`).toBe(true);
     }
   });
 });

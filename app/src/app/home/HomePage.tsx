@@ -64,7 +64,7 @@ function Results({ valid, searched, listings }: ResultsProps) {
       <ul className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {listings.map(({ listing, coverKey }) => (
           <li key={listing.id}>
-            <ListingCard listing={listing} cover={coverKey && imageUrl(coverKey)} />
+            <ListingCard listing={listing} cover={coverKey && imageUrl(coverKey, "thumb")} />
           </li>
         ))}
       </ul>

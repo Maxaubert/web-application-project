@@ -15,7 +15,7 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
   const visible = result && result.listing.status !== "unpublished";
 
   if (!visible) response.status = 404;
-  const images = visible ? (await getListingImages(db, params.id)).map(imageUrl) : [];
+  const images = visible ? (await getListingImages(db, params.id)).map((key) => ({ src: imageUrl(key), thumb: imageUrl(key, "thumb") })) : [];
   const published =
     visible && new URL(request.url).searchParams.get("publisert") === "1" && result.listing.ownerId === ctx.session.userId;
 
