@@ -32,9 +32,9 @@ export function PageShell({ title, children, wide = false, fill = false, headerA
         </div>
       </header>
       {fill ? (
-        <main className="flex flex-1 flex-col px-4 pt-10 pb-10 sm:px-12 sm:pb-12">{children}</main>
+        <main className="flex flex-1 flex-col px-4 pt-6 pb-10 sm:px-12 sm:pt-10 sm:pb-12">{children}</main>
       ) : wide ? (
-        <main className="px-4 pt-10 pb-24 sm:px-12">{children}</main>
+        <main className="px-4 pt-6 pb-24 sm:px-12 sm:pt-10">{children}</main>
       ) : (
         <main className="px-6 pt-14 pb-16 sm:px-4 sm:pt-28">
           <div className="mx-auto w-full max-w-sm sm:max-w-[32.5rem] sm:rounded-xl sm:border sm:border-hairline sm:bg-surface sm:px-12 sm:py-12">

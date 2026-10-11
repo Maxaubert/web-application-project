@@ -149,8 +149,10 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   prisfeltet avhenger av den: «Pris (kr)» ved salg, «Pris per uke (kr, valgfri)» ved lån, ingen pris ved gis bort.
 - Tilstand heter «Brukt», som i dataene og filtrene, ikke «Brukt, fullt fungerende».
 - Etter publisering havner man på den nye annonsesiden med «Annonsen er publisert og synlig i søket» (bare for eieren).
-- «Legg ut annonse» står i toppen på forsiden og annonsesidene («Legg ut» på mobil). På smale mobiler under 416 px
-  vises bare logoen, så knappene får plass; navnet står igjen for skjermlesere.
+- «Legg ut annonse» og «Logg ut» står i toppen på forsiden og annonsesidene. På mobil (under 640 px) er de ikonknapper på
+  44 px (pluss og utlogging, #162; mockup godkjent av Max 11.10), og sidetitlene «Annonser» og «Legg ut annonse» er 24 px
+  i stedet for 36 px. Navnene står igjen for skjermlesere. På smale mobiler under 416 px vises bare logoen; navnet står
+  igjen for skjermlesere.
 
 ## Skjermer
 
