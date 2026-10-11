@@ -4,6 +4,7 @@
 import { execSync } from "node:child_process";
 import { createHmac, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { E2E_STATE } from "./state";
 
 export const AUTH_FILE = "e2e/.auth/user.json";
 // Testbilder i den lokale R2-emuleringen, så bildeadressen kan testes mot ekte lagring (#138). De hører til
@@ -48,14 +49,16 @@ export default function globalSetup() {
          ('e2e-image-1', '${TEST_LISTING_ID}', '${TEST_IMAGE_PATH.replace("/images/", "")}', 0),
          ('e2e-image-2', '${TEST_LISTING_ID}', '${SECOND_IMAGE_PATH.replace("/images/", "")}', 1);`,
   );
-  execSync(`npx wrangler d1 execute DB --local --file ${SQL_FILE}`, { stdio: "ignore" });
+  // Testene har egen lagring (#154): tabellene lages her, og testdataene legges i den, ikke i dev-databasen.
+  execSync(`npx wrangler d1 migrations apply DB --local --persist-to ${E2E_STATE}`, { stdio: "ignore" });
+  execSync(`npx wrangler d1 execute DB --local --persist-to ${E2E_STATE} --file ${SQL_FILE}`, { stdio: "ignore" });
   for (const [path, file] of [
     [TEST_IMAGE_PATH, "test.jpg"],
     [THUMB_IMAGE_PATH, "test.thumb.jpg"],
     [SECOND_IMAGE_PATH, "test.jpg"],
   ]) {
     const imageKey = path.replace("/images/", "");
-    execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --file e2e/fixtures/${file} --content-type image/jpeg`, {
+    execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --persist-to ${E2E_STATE} --file e2e/fixtures/${file} --content-type image/jpeg`, {
       stdio: "ignore",
     });
   }

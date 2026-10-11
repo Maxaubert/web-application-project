@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { E2E_STATE } from "./e2e/state";
 
 export default defineConfig({
   testDir: "./e2e",
@@ -17,6 +18,8 @@ export default defineConfig({
     command: "npm run preview -- --host 127.0.0.1 --port 4173 --strictPort",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: false,
+    // Egen lagring for testene (#154).
+    env: { E2E_STATE },
     timeout: 120_000,
   },
 });
