@@ -1,9 +1,9 @@
 // Henting av annonser til forsiden, mot SQLite i minnet med appens migrasjoner. Godkjent av Max 07.10.
 import { describe, expect, it } from "vitest";
-import { listing, user } from "@/db/schema";
+import { listing, listingImage, user } from "@/db/schema";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
-import { getActiveListings, getListingWithOwner } from "./queries";
+import { getActiveListings, getListingImages, getListingWithOwner } from "./queries";
 
 describe("getActiveListings", () => {
   it("returnerer bare aktive annonser", async () => {
@@ -50,6 +50,41 @@ describe("getActiveListings", () => {
     const json = JSON.stringify(result);
     expect(json).not.toContain("kari@hiof.no");
     expect(json).not.toContain("+4791234567");
+  });
+});
+
+// Bilder (#150). Godkjent av Max 11.10.
+describe("bilder", () => {
+  it("getActiveListings gir forsidebildet (posisjon 0), null uten bilder, og én rad per annonse", async () => {
+    const db = createTestDb();
+    await insertOwner(db);
+    await db.insert(listing).values([validListing({ id: "with", createdAt: new Date("2026-10-02") }), validListing({ id: "without", createdAt: new Date("2026-10-01") })]);
+    await db.insert(listingImage).values([
+      { listingId: "with", key: "listings/with/2.jpg", position: 1 },
+      { listingId: "with", key: "listings/with/1.jpg", position: 0 },
+    ]);
+
+    const result = await getActiveListings(db);
+
+    expect(result.map((r) => [r.listing.id, r.coverKey])).toEqual([
+      ["with", "listings/with/1.jpg"],
+      ["without", null],
+    ]);
+  });
+
+  it("getListingImages gir alle bildene i rekkefølge og bare for den annonsen", async () => {
+    const db = createTestDb();
+    await insertOwner(db);
+    await db.insert(listing).values([validListing({ id: "a" }), validListing({ id: "b" })]);
+    await db.insert(listingImage).values([
+      { listingId: "a", key: "listings/a/b.jpg", position: 2 },
+      { listingId: "a", key: "listings/a/z.jpg", position: 0 },
+      { listingId: "b", key: "listings/b/1.jpg", position: 0 },
+      { listingId: "a", key: "listings/a/m.jpg", position: 1 },
+    ]);
+
+    expect(await getListingImages(db, "a")).toEqual(["listings/a/z.jpg", "listings/a/m.jpg", "listings/a/b.jpg"]);
+    expect(await getListingImages(db, "c")).toEqual([]);
   });
 });
 

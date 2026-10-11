@@ -6,7 +6,7 @@ import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { navigate } from "rwsdk/client";
 import { inputClass } from "@/app/shared/form-controls";
 import { formatTypeAndPrice } from "./format-type-and-price";
-import { ImagePlaceholder } from "./ImagePlaceholder";
+import { ListingImage } from "./ListingImage";
 import { SEARCH_MAX_LENGTH } from "./search-limits";
 import { searchPageUrl } from "./search-url";
 import { moveActive, suggestionsUrl } from "./suggestions";
@@ -112,7 +112,7 @@ export function SearchField({ q }: { q: string }) {
                 onClick={() => choose(index)}
                 className="flex min-h-14 items-center gap-3 px-3 py-2 aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
               >
-                <ImagePlaceholder className="size-11 shrink-0 rounded-md" iconClassName="size-5" />
+                <ListingImage src={hit.coverUrl} className="size-11 shrink-0 rounded-md" iconClassName="size-5" />
                 <span className="min-w-0">
                   <span className="block truncate font-semibold">{hit.title}</span>
                   <span className="block text-base text-muted">{formatTypeAndPrice(hit)}</span>

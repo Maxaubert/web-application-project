@@ -74,7 +74,7 @@ Alle krever gyldig sesjon og svarer 401 uten.
 
 | Metode og sti | Brukes av | Svar |
 |---|---|---|
-| `GET /api/listings?q=&limit=` og filtrene | WF-03, #104 | Bygget 10.10 (#98, T03; filtre #102). 200 med `{ listings: [{ id, title, type, price, status }] }`, best treff først; `q` søker feiltolerant i tittel, beskrivelse og selgerens navn, `limit` (1–50) begrenser antallet, uten `limit` alle treff. Godtar også forsidens filtre `category`, `type` og `condition` (kan gjentas), `minPrice` og `maxPrice`. 400 ved søk over 100 tegn, ukjent filterverdi, «fra» over «til» eller ugyldig `limit`, 401 uten økt, 403 uten fullført kontooppsett, 405 for andre metoder enn GET. Feil svarer `{ error: "norsk melding" }`. Bare de fem feltene sendes. `available`, bilde og «ledig fra» kommer med #100 og #61. |
+| `GET /api/listings?q=&limit=` og filtrene | WF-03, #104 | Bygget 10.10 (#98, T03; filtre #102). 200 med `{ listings: [{ id, title, type, price, status, coverUrl }] }`, best treff først; `q` søker feiltolerant i tittel, beskrivelse og selgerens navn, `limit` (1–50) begrenser antallet, uten `limit` alle treff. Godtar også forsidens filtre `category`, `type` og `condition` (kan gjentas), `minPrice` og `maxPrice`. 400 ved søk over 100 tegn, ukjent filterverdi, «fra» over «til» eller ugyldig `limit`, 401 uten økt, 403 uten fullført kontooppsett, 405 for andre metoder enn GET. Feil svarer `{ error: "norsk melding" }`. Bare de seks feltene sendes. `coverUrl` er adressen til forsidebildet (`/images/...`) eller `null` (#150). `available` og «ledig fra» kommer med #100. |
 | `GET /images/listings/:listingId/:file` | WF-03, WF-04, WF-05 | Bygget 11.10 (#138). Bildet fra R2 med riktig innholdstype og `Cache-Control: private, max-age=31536000, immutable`. 401 uten økt, 404 for ukjent bilde eller adresse som ikke har formatet vi lager. |
 | `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fulle navn og opptatte perioder, også for solgte annonser (Max 08.10). 404 hvis den ikke finnes eller er tatt ned. Telefon og e-post sendes aldri med. |
 | `GET /api/requests?direction=received\|sent` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
@@ -122,7 +122,7 @@ endrer ingenting i databasen.
   dem åpne. «Tilgjengelig nå» (#100), sortering (#116) og «Vis flere» (#101)
   er ikke bygget. Tom visning har «Fjern søk» i stedet for «Fjern filtre».
 - Live søkeforslag (#104) er ikke tegnet: fra to tegn vises en hvit liste under feltet med opptil fem treff
-  (bildeplassholder, tittel, «type · pris») og siste rad «Vis alle treff for «…»». Piltaster, Enter og Escape
+  (forsidebilde eller plassholder, tittel, «type · pris») og siste rad «Vis alle treff for «…»». Piltaster, Enter og Escape
   følger combobox-mønsteret; ingen treff gir ingen liste.
 - Ugyldig søk (over 100 tegn i adressen) gir 400 og meldingen «Ugyldig søk» i samme stiplede boks som tom visning.
 

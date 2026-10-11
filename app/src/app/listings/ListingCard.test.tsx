@@ -20,7 +20,7 @@ const tent: Listing = {
 
 describe("ListingCard", () => {
   it("viser tittel som overskrift og type med pris, men ikke beskrivelsen", () => {
-    const html = renderToStaticMarkup(<ListingCard listing={tent} />);
+    const html = renderToStaticMarkup(<ListingCard listing={tent} cover={null} />);
 
     expect(html).toMatch(/<h2[^>]*>Telt for to<\/h2>/);
     expect(html).toContain("Lån · 40 kr/uke");
@@ -28,8 +28,18 @@ describe("ListingCard", () => {
   });
 
   it("lenker hele kortet til annonsesiden", () => {
-    const html = renderToStaticMarkup(<ListingCard listing={tent} />);
+    const html = renderToStaticMarkup(<ListingCard listing={tent} cover={null} />);
 
     expect(html).toMatch(/<a href="\/listings\/tent"[^>]*>[\s\S]*Telt for to[\s\S]*<\/a>/);
+  });
+
+  // Forsidebildet (#150). Godkjent av Max 11.10.
+  it("viser forsidebildet uten egen alt-tekst, og plassholderen når annonsen ikke har bilde", () => {
+    const withImage = renderToStaticMarkup(<ListingCard listing={tent} cover="/images/listings/x/y.jpg" />);
+    expect(withImage).toMatch(/<img src="\/images\/listings\/x\/y.jpg" alt="" loading="lazy"/);
+
+    const without = renderToStaticMarkup(<ListingCard listing={tent} cover={null} />);
+    expect(without).not.toContain("<img");
+    expect(without).toContain('aria-hidden="true"');
   });
 });
