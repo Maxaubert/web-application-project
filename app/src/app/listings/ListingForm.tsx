@@ -44,10 +44,10 @@ export function ListingForm() {
     const data = new FormData(event.currentTarget);
     startTransition(() => action(data));
   }
-  // Feltet beskrives av hintet, feilen og telleren som finnes, i den rekkefølgen de står på skjermen.
+  // Feltet beskrives av telleren eller hintet og av feilen, i den rekkefølgen de står på skjermen.
   const describe = (id: string, key: string, parts: { hint?: boolean; count?: boolean }) => ({
     "aria-invalid": errors[key] ? true : undefined,
-    "aria-describedby": [parts.hint && `${id}-hint`, errors[key] && `${key}-error`, parts.count && `${id}-count`].filter(Boolean).join(" ") || undefined,
+    "aria-describedby": [parts.count && `${id}-count`, parts.hint && `${id}-hint`, errors[key] && `${key}-error`].filter(Boolean).join(" ") || undefined,
   });
 
   return (
@@ -61,7 +61,7 @@ export function ListingForm() {
 
         {/* @container: de små feltene står parvis når feltkolonnen er bred nok. */}
         <div className="@container mt-8 space-y-8 lg:mt-0">
-          <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" hint="Minst 3 tegn." count={{ length: values.title.length, max: 80 }}>
+          <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" count={{ length: values.title.length, max: 80 }}>
             <input
               id="listing-title"
               name="title"
@@ -69,7 +69,7 @@ export function ListingForm() {
               onChange={set("title")}
               maxLength={80}
               className={inputClass}
-              {...describe("listing-title", "title", { hint: true, count: true })}
+              {...describe("listing-title", "title", { count: true })}
             />
           </Field>
 
@@ -78,7 +78,6 @@ export function ListingForm() {
             label="Beskrivelse"
             error={errors.description}
             errorId="description-error"
-            hint="Nevn eventuelle skader."
             count={{ length: values.description.length, max: 2000 }}
           >
             <textarea
@@ -89,7 +88,7 @@ export function ListingForm() {
               onChange={set("description")}
               maxLength={2000}
               className={`${inputClass} h-auto resize-none py-3 leading-relaxed`}
-              {...describe("listing-description", "description", { hint: true, count: true })}
+              {...describe("listing-description", "description", { count: true })}
             />
           </Field>
 
@@ -165,13 +164,18 @@ type FieldProps = {
   children: ReactNode;
 };
 
-// Etikett, hint og feil over feltet, og teller under (Max 11.10, #135). Hint før feil, som hos GOV.UK.
+// Over feltet: etikett, teller («0 av 80 tegn») eller hint, så feilen (Max 11.10, #135). Hint før feil, som hos GOV.UK.
 function Field({ id, label, error, errorId, hint, count, children }: FieldProps) {
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block font-semibold">
         {label}
       </label>
+      {count && (
+        <p id={`${id}-count`} className="text-base text-muted tabular-nums">
+          {count.length} av {count.max} tegn
+        </p>
+      )}
       {hint && (
         <p id={`${id}-hint`} className="text-base text-muted">
           {hint}
@@ -179,11 +183,6 @@ function Field({ id, label, error, errorId, hint, count, children }: FieldProps)
       )}
       <FieldError id={errorId} message={error} />
       {children}
-      {count && (
-        <p id={`${id}-count`} className="text-base text-muted tabular-nums">
-          {count.length} av {count.max} tegn
-        </p>
-      )}
     </div>
   );
 }
