@@ -239,6 +239,13 @@ test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én k
   const card = await box(page.locator("main > div"));
   expect(card.y + card.height).toBeGreaterThan(1400 - 60);
 
+  // Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse».
+  const publish = await box(page.getByRole("button", { name: "Publiser annonse" }));
+  const cancel = await box(page.getByRole("link", { name: "Avbryt" }));
+  expect(card.x + card.width - (publish.x + publish.width)).toBeLessThan(60);
+  expect(card.y + card.height - (publish.y + publish.height)).toBeLessThan(60);
+  expect(cancel.x + cancel.width).toBeLessThanOrEqual(publish.x);
+
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/listings/new");
   const [narrow, narrowTitle] = [await box(preview), await box(title)];

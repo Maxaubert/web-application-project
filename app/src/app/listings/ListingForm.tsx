@@ -47,7 +47,7 @@ export function ListingForm() {
   const invalid = (key: string) => (errors[key] ? { "aria-invalid": true, "aria-describedby": `${key}-error` } : {});
 
   return (
-    <form onSubmit={submit} noValidate className="space-y-8">
+    <form onSubmit={submit} noValidate className="flex flex-1 flex-col space-y-8">
       <ErrorSummary errors={errors} fieldIds={FIELD_IDS} action="publiserer" />
       {/* Fra 1024 px: forhåndsvisningen til venstre, som blir stående mens man ruller, og feltene til høyre (#135). */}
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-12">
@@ -114,20 +114,23 @@ export function ListingForm() {
             <RadioGroup name="condition" legend="Tilstand" idPrefix="listing-condition" options={entries(conditionLabels)} value={values.condition} onChange={set("condition")} error={errors.condition} />
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <button
-              type="submit"
-              disabled={pending}
-              aria-busy={pending}
-              className="h-12 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
-            >
-              {pending ? "Publiserer …" : "Publiser annonse"}
-            </button>
-            <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
-              Avbryt
-            </a>
-          </div>
         </div>
+      </div>
+
+      {/* Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse» (Max 11.10, #135).
+          På mobil under hverandre med «Publiser annonse» øverst. */}
+      <div className="flex flex-col-reverse gap-3 pt-2 sm:mt-auto sm:flex-row sm:justify-end sm:pt-10">
+        <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
+          Avbryt
+        </a>
+        <button
+          type="submit"
+          disabled={pending}
+          aria-busy={pending}
+          className="h-12 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
+        >
+          {pending ? "Publiserer …" : "Publiser annonse"}
+        </button>
       </div>
     </form>
   );
