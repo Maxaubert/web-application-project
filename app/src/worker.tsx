@@ -11,6 +11,7 @@ import { sessionMiddleware } from "@/app/auth/session";
 import { HomePage } from "@/app/home/HomePage";
 import { getListings } from "@/app/listings/api";
 import { ListingPage } from "@/app/listings/ListingPage";
+import { NewListingPage } from "@/app/listings/NewListingPage";
 
 export type AppContext = { session: AppSession };
 
@@ -26,6 +27,8 @@ export default defineApp([
   ...(import.meta.env.DEV ? [route("/dev/login", devLogin)] : []),
   render(Document, [
     route("/", [requireUser, HomePage]),
+    // Før /listings/:id, ellers ville «new» blitt lest som en annonse-ID.
+    route("/listings/new", [requireUser, NewListingPage]),
     route("/listings/:id", [requireUser, ListingPage]),
     route("/login", [requireAnonymous, LoginPage]),
     route("/login/code", [requireAnonymous, CodePage]),

@@ -175,3 +175,48 @@ test("desktop: «Filtre» står på linje med «Annonser», og «Kategori» med 
   expect(await baseline("#filters-heading")).toBe(await baseline("h1"));
   expect(await baseline("label[for=filter-category]")).toBe(await baseline("label[for=q]"));
 });
+
+// Legg ut annonse (FK-03, #133). Godkjent av Max 11.10. Hver kjøring lager en ny annonse i den lokale
+// databasen, så tittelen er unik.
+test.describe("legg ut annonse", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: "Legg ut annonse" }).click();
+    await expect(page).toHaveURL(/\/listings\/new$/);
+    await page.waitForLoadState("networkidle");
+  });
+
+  test("publiserer et lån og havner på annonsen med bekreftelse, og annonsen finnes i søket", async ({ page }) => {
+    const title = `E2E-skjerm ${Date.now()}`;
+    await page.getByLabel("Tittel").fill(title);
+    await page.getByLabel("Beskrivelse").fill("HDMI-kabel følger med.");
+    await page.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await page.getByRole("radio", { name: "Lån" }).check();
+    await page.getByLabel("Pris per uke (kr, valgfri)").fill("100");
+    await page.getByRole("radio", { name: "Brukt" }).check();
+    await expect(page.getByText("100 kr/uke")).toBeVisible();
+
+    await page.getByRole("button", { name: "Publiser annonse" }).click();
+
+    await expect(page).toHaveURL(/\/listings\/[^/]+\?publisert=1$/);
+    await expect(page.getByRole("status")).toHaveText("Annonsen er publisert og synlig i søket.");
+    await expect(page.getByRole("heading", { name: title, level: 1 })).toBeVisible();
+
+    await page.goto(`/?q=${encodeURIComponent(title)}`);
+    await expect(page.getByRole("heading", { name: title, level: 2 })).toBeVisible();
+  });
+
+  test("feil viser feilboksen med fokus, og valgene står igjen", async ({ page }) => {
+    await page.getByLabel("Tittel").fill("ab");
+    await page.getByRole("radio", { name: "Lån" }).check();
+    await page.getByLabel("Pris per uke (kr, valgfri)").fill("100,-");
+
+    await page.getByRole("button", { name: "Publiser annonse" }).click();
+
+    await expect(page.getByRole("heading", { name: "Rett 5 feil før du publiserer" })).toBeVisible();
+    await expect(page.locator("[aria-labelledby=error-summary-title]")).toBeFocused();
+    await expect(page.getByRole("radio", { name: "Lån" })).toBeChecked();
+    await expect(page.getByLabel("Tittel")).toHaveValue("ab");
+    await expect(page).toHaveURL(/\/listings\/new$/);
+  });
+});

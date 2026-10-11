@@ -22,7 +22,9 @@ export function PageShell({ title, children, wide = false, headerAction }: PageS
           {/* Logo og navn går til forsiden, som på de fleste nettsteder (#113). */}
           <a href="/" className="flex min-h-11 items-center gap-3 rounded-md transition-opacity hover:opacity-80">
             <span aria-hidden="true" className="size-9 rounded-md border-2 border-line bg-paper sm:size-10" />
-            <span className="text-lg font-bold">{APP_NAME}</span>
+            {/* På smale mobiler er det ikke plass til navnet ved siden av to knapper; da vises bare logoen,
+                og navnet står igjen for skjermlesere (#133). */}
+            <span className="text-lg font-bold max-[26rem]:sr-only">{APP_NAME}</span>
           </a>
           {headerAction && <div className="ml-auto">{headerAction}</div>}
         </div>
