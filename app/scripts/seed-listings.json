@@ -1,0 +1,352 @@
+{
+  "users": [
+    { "id": "demo-ingrid", "name": "Ingrid Solberg" },
+    { "id": "demo-jonas", "name": "Jonas Berg" },
+    { "id": "demo-amira", "name": "Amira Hassan" },
+    { "id": "demo-mathias", "name": "Mathias Olsen" },
+    { "id": "demo-sofie", "name": "Sofie Lie" },
+    { "id": "demo-it", "name": "Skolens IT-avdeling" }
+  ],
+  "listings": [
+    {
+      "slug": "apple-macbook-pro-13-tommer-2017",
+      "owner": "demo-sofie",
+      "type": "sale",
+      "title": "MacBook Pro 13 tommer (2017)",
+      "description": "Sølvfarget MacBook Pro fra 2017. Små bruksspor og en liten bulk i ett hjørne, ellers fin. Minne, lagring og batteritilstand vet jeg ikke sikkert, så spør gjerne. Prisen er satt med tanke på at det er en Mac.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 3500
+    },
+    {
+      "slug": "apple-ipad-9-generasjon-64-gb",
+      "owner": "demo-amira",
+      "type": "sale",
+      "title": "iPad 9. generasjon, 64 GB",
+      "description": "Svært pent brukt, uten sprekker i skjermen. Svart ramme med hjemknapp og sølvfarget bakside. Batteritilstand og om det er wifi- eller mobilnettutgave er ikke sjekket. Litt rom for pruting.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 1900
+    },
+    {
+      "slug": "arduino-uno-rev3-startpakke",
+      "owner": "demo-jonas",
+      "type": "sale",
+      "title": "Arduino Uno Rev3 startpakke",
+      "description": "Plastboks med Arduino Uno, breadboard, jumperledninger, lysdioder og diverse småkomponenter. Delene er pene, men jeg har ikke telt hver komponent eller testet alt, så ikke regn med en komplett butikkpakke. 250 kr for alt samlet.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 250
+    },
+    {
+      "slug": "blue-yeti-usb-mikrofon",
+      "owner": "demo-sofie",
+      "type": "sale",
+      "title": "Blue Yeti USB-mikrofon",
+      "description": "Sølvfarget Blue Yeti med stativ. Litt støv og en liten bulk i metallgitteret, som jeg mener bare er kosmetisk. Lydkvalitet og USB er ikke dokumentert her.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 700
+    },
+    {
+      "slug": "brother-hl-l2350dw-laserskriver",
+      "owner": "demo-mathias",
+      "type": "sale",
+      "title": "Brother HL-L2350DW laserskriver",
+      "description": "Grå og svart laserskriver med litt støv og lette merker, ingen synlige skader. Tonernivå, sideteller og utskriftskvalitet er ukjent. Toneren følger med som den er, ikke som ny.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 800
+    },
+    {
+      "slug": "calculus-a-complete-course-adams-essex",
+      "owner": "demo-ingrid",
+      "type": "sale",
+      "title": "Calculus: A Complete Course (Adams og Essex)",
+      "description": "Pent brukt pensumbok med fjellmotiv på omslaget. Lett slitte hjørner og noen riper. Sjekk hvilken utgave emnet ditt bruker før du kjøper.",
+      "category": "books",
+      "condition": "used",
+      "price": 450
+    },
+    {
+      "slug": "canon-eos-700d-med-ef-s-18-55-mm",
+      "owner": "demo-amira",
+      "type": "sale",
+      "title": "Canon EOS 700D med EF-S 18–55 mm",
+      "description": "Speilreflekskamera med 18–55 mm kitobjektiv, kameraveske og rem. Litt bruksspor på huset, ellers pent. Lukkertall, batteri og objektivets optiske kvalitet er ikke sjekket. 2200 kr for alt samlet.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 2200
+    },
+    {
+      "slug": "computer-networking-a-top-down-approach-kurose-ross",
+      "owner": "demo-jonas",
+      "type": "sale",
+      "title": "Computer Networking: A Top-Down Approach (Kurose og Ross)",
+      "description": "Godt brukt, med slitte hjørner og fargede sidemarkører som jeg synes er nyttige. Utgaven er ikke sjekket, så se hva emnet ditt krever.",
+      "category": "books",
+      "condition": "used",
+      "price": 350
+    },
+    {
+      "slug": "database-system-concepts-silberschatz-korth-sudarshan",
+      "owner": "demo-mathias",
+      "type": "sale",
+      "title": "Database System Concepts (Silberschatz, Korth og Sudarshan)",
+      "description": "Godt brukt, med slitte hjørner, skraper og bruksspor langs ryggen. Vil rydde plass, derfor lav pris. Utgave og ISBN er ikke sjekket.",
+      "category": "books",
+      "condition": "used",
+      "price": 200
+    },
+    {
+      "slug": "dell-latitude-5490-skole-salg",
+      "owner": "demo-it",
+      "type": "sale",
+      "title": "Dell Latitude 5490, skole-PC",
+      "description": "Bærbar PC fra skolens IT-lager. Godt brukt: slitt tastatur og håndleddsstøtte, riper og inventarmerke. Prisen gjelder denne ene maskinen. Hentes på skolen.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 1200
+    },
+    {
+      "slug": "dell-p2419h-24-tommer-10-skjermer-semesterutlan",
+      "owner": "demo-it",
+      "type": "loan",
+      "title": "Dell P2419H 24 tommer, 10 skjermer til semesterlån",
+      "description": "Ti like Dell P2419H-skjermer fra skolens IT-lager til gratis lån i ett semester. Hver reservasjon gjelder én skjerm. Brukt, med inventarmerker og litt støv. Leveres tilbake til IT-avdelingen når semesteret er over.",
+      "category": "electronics",
+      "condition": "used",
+      "price": null
+    },
+    {
+      "slug": "dell-u2412m-24-tommer-gis-bort-skole",
+      "owner": "demo-it",
+      "type": "giveaway",
+      "title": "Dell U2412M 24 tommer, overskuddsskjerm",
+      "description": "Eldre skjerm fra skolens lager, gis bort for å frigjøre plass. Tykk svart ramme, ripete fot, støv og inventarmerke. Ikke testet. Én skjerm, hentes på skolen.",
+      "category": "electronics",
+      "condition": "used",
+      "price": null
+    },
+    {
+      "slug": "design-patterns-gamma-helm-johnson-vlissides",
+      "owner": "demo-sofie",
+      "type": "sale",
+      "title": "Design Patterns (Gamma, Helm, Johnson og Vlissides)",
+      "description": "Klassikeren, godt brukt: bøyde hjørner, skraper og slitt rygg. Innholdet er like nyttig.",
+      "category": "books",
+      "condition": "used",
+      "price": 250
+    },
+    {
+      "slug": "hp-elitedesk-800-g3-mini",
+      "owner": "demo-it",
+      "type": "sale",
+      "title": "HP EliteDesk 800 G3 Mini",
+      "description": "Liten stasjonær PC fra skolens lager, med riper, støv og inventarmerke. Prosessor, minne, disk og oppstart er ikke dokumentert. Vi vil heller bli kvitt den enn å få mest mulig for den.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 900
+    },
+    {
+      "slug": "ikea-frosta-bjorkekrakk",
+      "owner": "demo-ingrid",
+      "type": "sale",
+      "title": "IKEA FROSTA krakk i bjørk",
+      "description": "Svært slitt krakk med malingsflekker, skraper og en avskalling i setekanten. Jeg har ikke sjekket hvor stødig den er. En symbolsk femtilapp, hent den gjerne fort.",
+      "category": "furniture",
+      "condition": "used",
+      "price": 50
+    },
+    {
+      "slug": "ikea-markus-svart-kontorstol",
+      "owner": "demo-jonas",
+      "type": "sale",
+      "title": "IKEA MARKUS kontorstol, svart",
+      "description": "Høy nettingrygg med hodestøtte og armlener. Setet er slitt og har en liten rift i fremkanten. Hev og senk og hjulene er ikke testet.",
+      "category": "furniture",
+      "condition": "used",
+      "price": 650
+    },
+    {
+      "slug": "informatikk-bokpakke-3-boker-studentutlan",
+      "owner": "demo-amira",
+      "type": "loan",
+      "title": "Informatikkpakke med tre bøker, lån for et semester",
+      "description": "Tre informatikkbøker lånes ut samlet for ett semester: Introduction to Computing Using Python (Perkovic), Computer Science: An Overview (Brookshear og Brylow) og Discrete Mathematics and Its Applications (Rosen). Lett til moderat slitasje, sidemarkører og litt blyant. 50 kr for hele semesteret. En lesepakke til studiestart, ikke en bekreftet pensumliste.",
+      "category": "books",
+      "condition": "used",
+      "price": 3
+    },
+    {
+      "slug": "introduction-to-algorithms-cormen-mfl",
+      "owner": "demo-mathias",
+      "type": "sale",
+      "title": "Introduction to Algorithms (Cormen mfl.)",
+      "description": "Tykk og slitt: bleket omslag, slitte hjørner og teipet rygg. Innholdet er like nyttig, men det kan være en eldre utgave.",
+      "category": "books",
+      "condition": "used",
+      "price": 300
+    },
+    {
+      "slug": "kontorstol-svart-kunstskinn-ekstremt-slitt",
+      "owner": "demo-sofie",
+      "type": "sale",
+      "title": "Kontorstol i svart kunstskinn, svært slitt",
+      "description": "Ærlig talt svært slitt: store hull i sete og rygg der skummet synes, kunstskinnet flasser, og ett armlene er reparert med sølvtape. Jeg synes den fortsatt er brukbar. Ukjent merke.",
+      "category": "furniture",
+      "condition": "used",
+      "price": 150
+    },
+    {
+      "slug": "lenovo-thinkpad-t480-8-laptoper-korttidsutlan-skole",
+      "owner": "demo-it",
+      "type": "loan",
+      "title": "Lenovo ThinkPad T480, 8 laptoper til korttidslån",
+      "description": "Åtte like ThinkPad T480 fra skolens IT-lager til gratis lån i to uker, med mulighet for forlengelse hvis ingen venter. Én laptop med lader per reservasjon. Brukt, med inventarmerker og moderate riper.",
+      "category": "electronics",
+      "condition": "used",
+      "price": null
+    },
+    {
+      "slug": "lenovo-thinkpad-t480",
+      "owner": "demo-ingrid",
+      "type": "sale",
+      "title": "Lenovo ThinkPad T480",
+      "description": "Solid gammel ThinkPad med rød TrackPoint. Slitt håndleddsstøtte, blanke taster, støv og noen riper. Prosessor, minne, disk og batteri er ikke dokumentert.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 1800
+    },
+    {
+      "slug": "lenovo-laptop-15-6-tommer-solv-ukjent-modell",
+      "owner": "demo-mathias",
+      "type": "sale",
+      "title": "Lenovo laptop 15,6 tommer, sølv",
+      "description": "Sølvfarget Lenovo på omtrent 15,6 tommer, med flekker og lette bruksspor. Modell, prosessor, minne og batteri vet jeg ikke. Jeg ga 3000 kr for den og vil helst ha det samme igjen.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 3000
+    },
+    {
+      "slug": "linear-algebra-and-its-applications-lay",
+      "owner": "demo-jonas",
+      "type": "sale",
+      "title": "Linear Algebra and Its Applications (Lay mfl.)",
+      "description": "Godt brukt, med krøllete hjørner, riper og mange fargede sidemarkører, som bare er en fordel. Sidene er lette å lese. Utgaven er ikke sjekket.",
+      "category": "books",
+      "condition": "used",
+      "price": 250
+    },
+    {
+      "slug": "logitech-c920-hd-pro-webkamera",
+      "owner": "demo-amira",
+      "type": "sale",
+      "title": "Logitech C920 HD Pro webkamera",
+      "description": "Svart webkamera med feste og USB-ledning. Litt støv og fingermerker. Funksjon og ledning er ikke dokumentert her.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 350
+    },
+    {
+      "slug": "logitech-k120-kablet-tastatur",
+      "owner": "demo-it",
+      "type": "sale",
+      "title": "Logitech K120 tastatur med ledning",
+      "description": "Fullstort svart tastatur fra en datalab. Mye støv, blanke taster og lang bruk, men ingen synlig knekt tast. Ikke alle taster er testet.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 40
+    },
+    {
+      "slug": "matematikk-for-ingeniorer-pensumbok",
+      "owner": "demo-ingrid",
+      "type": "sale",
+      "title": "Matematikk for ingeniører, pensumbok",
+      "description": "Pent brukt, med lett slitte hjørner og en svak blyantnotis. Sjekk forfatter og utgave mot emnet ditt.",
+      "category": "books",
+      "condition": "used",
+      "price": 350
+    },
+    {
+      "slug": "okonomistyring-1-hoff-bjornenak",
+      "owner": "demo-sofie",
+      "type": "sale",
+      "title": "Økonomistyring 1 (Hoff og Bjørnenak)",
+      "description": "Pent brukt, med lett slitasje på hjørner og omslag. Utgaven er ikke sjekket.",
+      "category": "books",
+      "condition": "used",
+      "price": 400
+    },
+    {
+      "slug": "operating-system-concepts-silberschatz-galvin-gagne",
+      "owner": "demo-mathias",
+      "type": "sale",
+      "title": "Operating System Concepts (Silberschatz, Galvin og Gagne)",
+      "description": "Dinosaurboka, godt bevart med få merker. Utgave og ISBN er ikke sjekket.",
+      "category": "books",
+      "condition": "used",
+      "price": 500
+    },
+    {
+      "slug": "pc-skjerm-24-tommer-svart-ukjent-modell",
+      "owner": "demo-jonas",
+      "type": "sale",
+      "title": "PC-skjerm 24 tommer, svart",
+      "description": "Svart skjerm på omtrent 24 tommer, ukjent merke og modell. Litt tykke rammer, støv og fingermerker, men ingen sprekker. HDMI og VGA bak. Litt rom for pruting.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 450
+    },
+    {
+      "slug": "raspberry-pi-4-model-b-4-gb",
+      "owner": "demo-amira",
+      "type": "sale",
+      "title": "Raspberry Pi 4 Model B, 4 GB",
+      "description": "Pi 4 i gjennomsiktig kabinett med vifte, strømforsyning og microSD-kort. Lett støv, ellers pen. 600 kr for hele settet.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 600
+    },
+    {
+      "slug": "samsung-galaxy-tab-s6-lite-med-s-pen",
+      "owner": "demo-sofie",
+      "type": "sale",
+      "title": "Samsung Galaxy Tab S6 Lite med S Pen",
+      "description": "Grått nettbrett med S Pen. En liten ripe på kabinettet, ingen sprekker i skjermen. Litt rom for pruting.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 1500
+    },
+    {
+      "slug": "sony-wh-1000xm3-svarte-hodetelefoner",
+      "owner": "demo-ingrid",
+      "type": "sale",
+      "title": "Sony WH-1000XM3 hodetelefoner, svarte",
+      "description": "Svarte med kobberdetaljer. Øreputene flasser og bør byttes, men bøylen er hel. Lyd, støydemping og batteri er ikke sjekket.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 600
+    },
+    {
+      "slug": "texas-instruments-ti-84-plus",
+      "owner": "demo-mathias",
+      "type": "sale",
+      "title": "Texas Instruments TI-84 Plus",
+      "description": "Grafkalkulator med beskyttelsesdeksel. Slitte, blanke knapper og en gammel navnelapp. Skjermen virker, men alle funksjoner er ikke testet.",
+      "category": "electronics",
+      "condition": "used",
+      "price": 650
+    },
+    {
+      "slug": "university-physics-with-modern-physics-young-freedman",
+      "owner": "demo-jonas",
+      "type": "sale",
+      "title": "University Physics with Modern Physics (Young og Freedman)",
+      "description": "Nesten som ny og knapt brukt, med rette sider og svært få merker. Utgaven er ikke sjekket.",
+      "category": "books",
+      "condition": "like_new",
+      "price": 700
+    }
+  ]
+}
