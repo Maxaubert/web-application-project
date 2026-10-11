@@ -10,6 +10,10 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Bilder, andre PR: bildefeltet i «Legg ut annonse» etter godkjent mockup. Klikk eller dra inn, miniatyrer med ✕,
+  klikk gjør forsidebilde. HEIC gjøres om og alt skaleres til høyst 2000 px JPEG i nettleseren (`heic-to` 1.5.2,
+  lastes bare ved behov). Minst ett bilde kreves. CSP tillater `blob:` for bilder, workere og lasting av dem, ellers
+  ble forhåndsvisningene og HEIC-omgjøringen blokkert. (Max, #141)
 - Bilder, første PR: R2-bucket `IMAGES`, tabellen `listing_image` med migrasjon, `createListing` tar imot opptil 10
   bilder (filtype fra innholdet, høyst 5 MB) og rydder bort filene hvis lagringen feiler, og `GET /images/...` bare for
   innloggede. Bilder er valgfrie til skjemaet kan sende dem. Valgt etter grilling: R2, ikke D1. (Max, #138)

@@ -1,4 +1,4 @@
-// Regler for annonsebilder (#61, Max 11.10): høyst 10 bilder, høyst 5 MB per bilde, bare JPEG, PNG og WebP.
+// Regler for annonsebilder (#61, Max 11.10): 1–10 bilder, høyst 5 MB per bilde, bare JPEG, PNG og WebP.
 // Filtypen leses fra de første bytene i filen, ikke fra navnet eller nettleserens oppgitte type, så en
 // fil som bare heter «bilde.jpg» avvises. HEIC fra iPhone gjøres om til JPEG i nettleseren før opplasting.
 import { MAX_IMAGES } from "@/db/schema";
@@ -25,6 +25,7 @@ type ImageCheck = { images: CheckedImage[]; error?: undefined } | { images?: und
 // Tomme filfelt (ingen fil valgt) telles ikke. Første feil vinner, så meldingen blir kort.
 export async function checkImages(entries: FormDataEntryValue[]): Promise<ImageCheck> {
   const files = entries.filter((entry): entry is File => entry instanceof File && entry.size > 0);
+  if (files.length === 0) return { error: "Legg til minst ett bilde" };
   if (files.length > MAX_IMAGES) return { error: `Høyst ${MAX_IMAGES} bilder` };
   const images: CheckedImage[] = [];
   for (const file of files) {

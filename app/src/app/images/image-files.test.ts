@@ -18,6 +18,12 @@ describe("sniffImageType", () => {
 });
 
 describe("checkImages", () => {
+  // Minst ett bilde (#141). Godkjent av Max 11.10.
+  it("uten bilder, eller bare tomme filfelt, er det en feil", async () => {
+    expect((await checkImages([])).error).toBe("Legg til minst ett bilde");
+    expect((await checkImages([new File([], "")])).error).toBe("Legg til minst ett bilde");
+  });
+
   it("godtar opptil 10 bilder i samme rekkefølge, og hopper over tomme filfelt", async () => {
     const empty = new File([], "", { type: "application/octet-stream" });
     const result = await checkImages([imageFile("a.jpg"), empty, imageFile("b.png", "png"), "tekst"]);

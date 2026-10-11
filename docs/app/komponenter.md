@@ -111,8 +111,9 @@ over flere komponenter som må koordineres. Kurset bruker ett skjema per entitet
 opprett og rediger (RR/19:353-377). Det gir én kode å teste og forklare.
 
 **Hvorfor skille ut akkurat de tre:** hver av dem treffer deleregelen.
-- `ImageUploader` har eget ansvar og egen state (forhåndsvisninger, fjerning, grensen 1–10) og er
-  klientkode. Inne i skjemaet ville den blandet bildelogikk med feltlogikk; alene kan grensene
+- `ImageField` (bygget 11.10, #141; planlagt som `ImageUploader`) har eget ansvar og egen state
+  (forhåndsvisninger, fjerning, forsidebilde, grensen 1–10) og er klientkode. Tilstanden ligger i
+  `useListingImages`, reglene i `images/pick-images.ts` og behandlingen i `images/prepare-image.ts`. Inne i skjemaet ville den blandet bildelogikk med feltlogikk; alene kan grensene
   testes (separation of concerns, RR/08:30-40).
 - `ErrorSummary` brukes i alle lange skjemaer (gjenbruk på tvers av filer).
 - `ListingCard` brukes i søk, på Min side og i forhåndsvisningen. Én komponent betyr at
