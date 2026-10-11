@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Mobil (#167, del av #147): annonsesiden har 24 px tittel, mindre luft over bildet og miniatyrene på én rad som rulles sidelengs
+  under 640 px. Fra 640 px som før. (Max, #167)
 - Mobil (#164, del av #147): søkefeltet og «Filtre» står på én rad under 640 px, med forstørrelsesglass i feltet. Etiketten og
   «Søk»-knappen skjules visuelt (de finnes for skjermlesere og Enter), og tastaturet får søketast. «Ved lån gjelder prisen per
   uke.» er fjernet fra filterarket (ingen hjelpetekst). Fra 640 px er søkefeltet som før. (Max, #164)
