@@ -63,7 +63,7 @@ statuser, ruter og komponentnavn er på engelsk; teksten brukerne ser, er på no
 |---|---|---|
 | `user` | id, email (unik, `@hiof.no`), name, phone, image, created_at | Utvider better-auth sin brukertabell. `name` og `phone` er tomme til kontooppsett er fullført. |
 | `listing` | id, owner_id, type (`sale`, `loan`, `giveaway`), title, description, category, condition (`new`, `like_new`, `used`), price, status (`active`, `sold`, `unpublished`), created_at | `price` er heltall i kroner. Salg: pris. Lån: ukepris eller tom. Gis bort: tom. |
-| `listing_image` | id, listing_id, file, position | 1–10 per annonse. Første bilde vises i søket. |
+| `listing_image` | id, listing_id, key, position | Bygget 11.10 (#138). 1–10 per annonse; `key` er filens plass i R2 (`listings/<annonse>/<uuid>.<jpg/png/webp>`), `position` 0 er forsidebildet. |
 | `request` | id, listing_id, requester_id, status, owner_confirmed, requester_confirmed, created_at | Status: `waiting_owner`, `waiting_requester`, `accepted`, `declined`, `withdrawn`, `expired`, `cancelled`, `in_use`, `completed`. |
 | `offer` | id, request_id, sender_id, price, start_date, end_date, created_at | Hvert bud, motbud og forlengelse. Siste rad er gjeldende. Eldre rader er historikk. |
 | `issue_report` | id, request_id, sender_id, type, description, created_at | Returproblem (WV-02). Lagres som påstand, avgjør ingenting. |
@@ -75,6 +75,7 @@ Alle krever gyldig sesjon og svarer 401 uten.
 | Metode og sti | Brukes av | Svar |
 |---|---|---|
 | `GET /api/listings?q=&limit=` og filtrene | WF-03, #104 | Bygget 10.10 (#98, T03; filtre #102). 200 med `{ listings: [{ id, title, type, price, status }] }`, best treff først; `q` søker feiltolerant i tittel, beskrivelse og selgerens navn, `limit` (1–50) begrenser antallet, uten `limit` alle treff. Godtar også forsidens filtre `category`, `type` og `condition` (kan gjentas), `minPrice` og `maxPrice`. 400 ved søk over 100 tegn, ukjent filterverdi, «fra» over «til» eller ugyldig `limit`, 401 uten økt, 403 uten fullført kontooppsett, 405 for andre metoder enn GET. Feil svarer `{ error: "norsk melding" }`. Bare de fem feltene sendes. `available`, bilde og «ledig fra» kommer med #100 og #61. |
+| `GET /images/listings/:listingId/:file` | WF-03, WF-04, WF-05 | Bygget 11.10 (#138). Bildet fra R2 med riktig innholdstype og `Cache-Control: private, max-age=31536000, immutable`. 401 uten økt, 404 for ukjent bilde eller adresse som ikke har formatet vi lager. |
 | `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fulle navn og opptatte perioder, også for solgte annonser (Max 08.10). 404 hvis den ikke finnes eller er tatt ned. Telefon og e-post sendes aldri med. |
 | `GET /api/requests?direction=received\|sent` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
 | `GET /api/requests/:id` | WF-08 | 200 bare for de to partene, ellers 404. Kontaktinfo bare når status er `accepted` eller senere. |

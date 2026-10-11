@@ -36,6 +36,14 @@
     "remote": false
   }],
 
+  // Annonsebildene (#61, #138). Lokalt og i testene emulerer wrangler bucketen, så det trengs ingen
+  // skyressurs for å utvikle. Bucketen opprettes av Max før første release med bilder.
+  "r2_buckets": [{
+    "binding": "IMAGES",
+    "bucket_name": "studentmarkedet-images",
+    "remote": false
+  }],
+
   // Environment variables
   // Vanlige innstillinger (ikke hemmeligheter). Lokalt overstyres de av .dev.vars.
   "vars": {

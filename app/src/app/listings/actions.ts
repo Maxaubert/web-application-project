@@ -1,10 +1,14 @@
 "use server";
 // Serverhandlinger for annonser (FK-03, #131). Alt sjekkes her på serveren: økt, fullført konto og
-// gyldige felt. Eieren hentes fra økten, aldri fra skjemaet, så ingen kan legge ut i andres navn.
+// gyldige felt og bilder. Eieren hentes fra økten, aldri fra skjemaet, så ingen kan legge ut i andres navn.
+import { eq } from "drizzle-orm";
 import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
-import { listing } from "@/db/schema";
+import { listing, listingImage } from "@/db/schema";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
+import { imageBucket } from "@/app/images/bucket";
+import { checkImages } from "@/app/images/image-files";
+import { storeImages } from "@/app/images/storage";
 import { log } from "@/app/shared/log";
 import { validateListing, type ListingFormValues } from "./listing-schema";
 
@@ -17,12 +21,26 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
 
   const values = Object.fromEntries(FIELDS.map((key) => [key, String(formData.get(key) ?? "")])) as ListingFormValues;
   const result = validateListing(values);
-  if (!result.success) return { fieldErrors: result.fieldErrors, values };
+  // Bildene sjekkes også når feltene er feil, så brukeren får alle feilene samtidig (#138).
+  const images = await checkImages(formData.getAll("images"));
+  if (!result.success || images.error !== undefined) {
+    const fieldErrors = result.success ? {} : result.fieldErrors;
+    if (images.error !== undefined) fieldErrors.images = images.error;
+    return { fieldErrors, values };
+  }
 
-  const [created] = await db
-    .insert(listing)
-    .values({ ...result.data, ownerId: ctx.session.userId })
-    .returning({ id: listing.id });
-  log.info("listing_created", { userId: ctx.session.userId, listingId: created.id });
-  return redirect(`/listings/${created.id}?publisert=1`);
+  // Bildene lagres først, under en ID vi lager selv. Feiler databasen etterpå, slettes både annonsen
+  // og filene igjen, så det aldri blir liggende bilder uten annonse eller en annonse med halve bildene.
+  const listingId = crypto.randomUUID();
+  const keys = await storeImages(imageBucket, listingId, images.images);
+  try {
+    await db.insert(listing).values({ ...result.data, id: listingId, ownerId: ctx.session.userId });
+    if (keys.length > 0) await db.insert(listingImage).values(keys.map((key, position) => ({ listingId, key, position })));
+  } catch (error) {
+    await db.delete(listing).where(eq(listing.id, listingId));
+    if (keys.length > 0) await imageBucket.delete(keys);
+    throw error;
+  }
+  log.info("listing_created", { userId: ctx.session.userId, listingId, images: keys.length });
+  return redirect(`/listings/${listingId}?publisert=1`);
 }

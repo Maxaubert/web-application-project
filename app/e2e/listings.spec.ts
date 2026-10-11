@@ -1,7 +1,7 @@
 // Nettlesertester som innlogget bruker (#94), mot produksjonsbygget. Økten og testannonsene legges inn
 // av global-setup.ts. Godkjent av Max 10.10.
 import { expect, test } from "@playwright/test";
-import { AUTH_FILE } from "./global-setup";
+import { AUTH_FILE, TEST_IMAGE_PATH } from "./global-setup";
 
 test.use({ storageState: AUTH_FILE });
 
@@ -250,4 +250,15 @@ test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én k
   await page.goto("/listings/new");
   const [narrow, narrowTitle] = [await box(preview), await box(title)];
   expect(narrowTitle.y).toBeGreaterThan(narrow.y + narrow.height);
+});
+
+// Bildeadressen mot den lokale R2-emuleringen (#138). Godkjent av Max 11.10.
+test("innlogget bruker får annonsebildet fra R2, og ukjent bilde gir 404", async ({ page }) => {
+  const response = await page.request.get(TEST_IMAGE_PATH);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toBe("image/jpeg");
+  expect(Buffer.from(await response.body()).toString("hex", 0, 3)).toBe("ffd8ff");
+
+  const missing = await page.request.get(TEST_IMAGE_PATH.replace("0002.jpg", "0003.jpg"));
+  expect(missing.status()).toBe(404);
 });
