@@ -17,6 +17,8 @@ export default defineConfig({
   plugins: [
     cloudflare({
       viteEnvironment: { name: "worker" },
+      // Playwright setter E2E_STATE, så testene får egen database og egen R2 (#154).
+      persistState: process.env.E2E_STATE ? { path: process.env.E2E_STATE } : true,
     }),
     redwood(),
     tailwindcss(),
