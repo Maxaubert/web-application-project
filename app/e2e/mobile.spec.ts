@@ -21,6 +21,35 @@ test.describe("mobil (375 px)", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
 
+  test("søkefeltet og «Filtre» står på én rad, og Enter søker uten synlig knapp", async ({ page }) => {
+    await page.goto("/");
+    const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
+    const filters = page.getByRole("button", { name: "Filtre" });
+
+    const [f, b] = [await field.boundingBox(), await filters.boundingBox()];
+    expect(Math.abs(f!.y - b!.y)).toBeLessThan(2);
+    expect(f!.x + f!.width).toBeLessThanOrEqual(b!.x);
+    // Skjult for øyet, men i tilgjengelighetstreet: skjermleserbokser er 1 × 1 px.
+    expect((await size(page.getByText("Søk i tittel, beskrivelse og selger"))).width).toBeLessThanOrEqual(1);
+    expect((await size(page.getByRole("button", { name: "Søk" }))).width).toBeLessThanOrEqual(1);
+    expect(await field.evaluate((el) => getComputedStyle(el).paddingLeft)).toBe("44px");
+    await expect(field).toHaveAttribute("placeholder", "Søk");
+
+    await field.fill("casio");
+    await field.press("Enter");
+
+    await expect(page).toHaveURL(/\?q=casio$/);
+    await expect(page.getByText("Kalkulator Casio fx-991")).toBeVisible();
+  });
+
+  test("filterarket har ingen hjelpetekst om ukepris", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Filtre" }).click();
+
+    await expect(page.getByRole("dialog", { name: "Filtre" })).toBeVisible();
+    await expect(page.getByText("Ved lån gjelder prisen per uke.")).toHaveCount(0);
+  });
+
   test("«Legg ut annonse» har liten tittel, og ikonene gjør at man fortsatt kommer dit", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("link", { name: "Legg ut annonse" }).click();
@@ -39,5 +68,16 @@ test.describe("desktop (1280 px)", () => {
     expect((await size(page.getByRole("link", { name: "Legg ut annonse" }))).width).toBeGreaterThan(100);
     expect((await size(page.getByRole("button", { name: "Logg ut" }))).width).toBeGreaterThan(70);
     expect(await fontSize(page.getByRole("heading", { name: "Annonser", level: 1 }))).toBe("36px");
+  });
+
+  test("søkefeltet har synlig etikett og «Søk»-knapp, og «Filtre» ligger i kolonnen til venstre", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.getByText("Søk i tittel, beskrivelse og selger")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Søk" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Filtre" })).toBeHidden();
+    const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
+    expect(await field.evaluate((el) => getComputedStyle(el).paddingLeft)).toBe("16px");
+    expect(await field.evaluate((el) => getComputedStyle(el, "::placeholder").color)).toBe("rgba(0, 0, 0, 0)");
   });
 });
