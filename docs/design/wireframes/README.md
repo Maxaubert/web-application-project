@@ -155,6 +155,8 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   44 px (pluss og utlogging, #162; mockup godkjent av Max 11.10), og sidetitlene «Annonser» og «Legg ut annonse» er 24 px
   i stedet for 36 px. Navnene står igjen for skjermlesere. På smale mobiler under 416 px vises bare logoen; navnet står
   igjen for skjermlesere.
+- Annonsesiden på mobil (#167): tittelen er 24 px, det er lite luft over bildet, og miniatyrene ligger på én rad som rulles
+  sidelengs (opptil 10 bilder). Fra 640 px brytes miniatyrene over flere linjer som før.
 
 ## Skjermer
 

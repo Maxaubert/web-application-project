@@ -21,14 +21,14 @@ export function ListingDetails({ listing, ownerName, images }: ListingDetailsPro
       <a href="/" className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
         <span aria-hidden="true">‹</span> Tilbake til annonser
       </a>
-      <div className="mt-6 grid gap-8 lg:grid-cols-[3fr_2fr] lg:gap-12">
+      <div className="mt-2 grid grid-cols-1 gap-6 sm:mt-6 sm:gap-8 lg:grid-cols-[3fr_2fr] lg:gap-12">
         <ListingGallery images={images} title={listing.title} />
         <div>
           <p className="flex flex-wrap gap-2">
             <span className={`${pill} border-ink`}>{typeLabels[listing.type]}</span>
             {listing.status === "sold" && <span className={`${pill} border-ink bg-ink text-paper`}>Solgt</span>}
           </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
           {price && <p className="mt-3 text-2xl font-bold">{price}</p>}
 
           <dl className="mt-8 grid grid-cols-2 gap-4">

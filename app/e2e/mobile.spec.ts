@@ -1,6 +1,6 @@
 // Mobilvisning (#147, #162). Godkjent av Max 11.10 (mockup). Produksjonsbygget i 375 px og i 1280 px.
 import { expect, test } from "@playwright/test";
-import { AUTH_FILE } from "./global-setup";
+import { AUTH_FILE, TEST_LISTING_ID } from "./global-setup";
 
 test.use({ storageState: AUTH_FILE });
 
@@ -57,6 +57,27 @@ test.describe("mobil (375 px)", () => {
     await expect(page).toHaveURL(/\/listings\/new$/);
     expect(await fontSize(page.getByRole("heading", { name: "Legg ut annonse", level: 1 }))).toBe("24px");
   });
+
+  test("annonsesiden har liten tittel, og miniatyrene ligger på én rad som kan rulles", async ({ page }) => {
+    await page.goto(`/listings/${TEST_LISTING_ID}`);
+
+    expect(await fontSize(page.getByRole("heading", { level: 1 }))).toBe("24px");
+    const back = await page.getByRole("link", { name: "Tilbake til annonser" }).boundingBox();
+    const image = await page.getByRole("img").first().boundingBox();
+    expect(image!.y - (back!.y + back!.height)).toBeLessThan(12);
+
+    // Testannonsen har bare to bilder; ti miniatyrer lages ved å kopiere knappene, som i en annonse med flest bilder.
+    const thumbs = page.getByRole("button", { name: /^Vis bilde/ });
+    await thumbs.first().evaluate((el) => {
+      for (let i = 0; i < 8; i++) el.parentElement!.appendChild(el.cloneNode(true));
+    });
+    const tops = await thumbs.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+    expect(tops).toHaveLength(10);
+    expect(new Set(tops).size).toBe(1);
+    const row = thumbs.first().locator("..");
+    expect(await row.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  });
 });
 
 test.describe("desktop (1280 px)", () => {
@@ -79,5 +100,17 @@ test.describe("desktop (1280 px)", () => {
     const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
     expect(await field.evaluate((el) => getComputedStyle(el).paddingLeft)).toBe("16px");
     expect(await field.evaluate((el) => getComputedStyle(el, "::placeholder").color)).toBe("rgba(0, 0, 0, 0)");
+  });
+
+  test("annonsesiden har stor tittel, og miniatyrene brytes over flere linjer", async ({ page }) => {
+    await page.goto(`/listings/${TEST_LISTING_ID}`);
+
+    expect(await fontSize(page.getByRole("heading", { level: 1 }))).toBe("36px");
+    const thumbs = page.getByRole("button", { name: /^Vis bilde/ });
+    await thumbs.first().evaluate((el) => {
+      for (let i = 0; i < 8; i++) el.parentElement!.appendChild(el.cloneNode(true));
+    });
+    const tops = await thumbs.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+    expect(new Set(tops).size).toBeGreaterThan(1);
   });
 });
