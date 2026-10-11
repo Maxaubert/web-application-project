@@ -2,7 +2,6 @@
 // Søk og filtre står i adressen og valideres før databasen spørres (#97, #102). Desktop har filtrene
 // i en kolonne til venstre; på mobil kommer «Filtre»-knappen rett under søket (samme rekkefølge i HTML).
 import type { RequestInfo } from "rwsdk/worker";
-import { LogoutButton } from "@/app/auth/LogoutButton";
 import { availableOptions, matchesFilters } from "@/app/listings/filter-listings";
 import { Filters } from "@/app/listings/Filters";
 import { ListingCard } from "@/app/listings/ListingCard";
@@ -11,6 +10,7 @@ import { countActiveFilters, parseSearch, type ListingFilters } from "@/app/list
 import { searchListings } from "@/app/listings/search-listings";
 import { SearchField } from "@/app/listings/SearchField";
 import { SearchNotice } from "@/app/listings/SearchNotice";
+import { HeaderActions } from "@/app/shared/HeaderActions";
 import { PageShell } from "@/app/shared/page-shell";
 import { db } from "@/db";
 
@@ -29,7 +29,7 @@ export async function HomePage({ request, response }: RequestInfo) {
   const active = countActiveFilters(filters);
 
   return (
-    <PageShell title="Annonser" wide headerAction={<LogoutButton />}>
+    <PageShell title="Annonser" wide headerAction={<HeaderActions />}>
       {/* Siste rad tar ekstra høyde når filterkolonnen er høyest, ellers blir det hull rundt tittel og søk (#124). */}
       <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-10">
         {/* «Filtre» og «Annonser» står på samme grunnlinje på desktop (#126). */}

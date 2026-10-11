@@ -175,3 +175,79 @@ test("desktop: «Filtre» står på linje med «Annonser», og «Kategori» med 
   expect(await baseline("#filters-heading")).toBe(await baseline("h1"));
   expect(await baseline("label[for=filter-category]")).toBe(await baseline("label[for=q]"));
 });
+
+// Legg ut annonse (FK-03, #133). Godkjent av Max 11.10. Hver kjøring lager en ny annonse i den lokale
+// databasen, så tittelen er unik.
+test.describe("legg ut annonse", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: "Legg ut annonse" }).click();
+    await expect(page).toHaveURL(/\/listings\/new$/);
+    await page.waitForLoadState("networkidle");
+  });
+
+  test("publiserer et lån og havner på annonsen med bekreftelse, og annonsen finnes i søket", async ({ page }) => {
+    const title = `E2E-skjerm ${Date.now()}`;
+    await page.getByLabel("Tittel").fill(title);
+    await page.getByLabel("Beskrivelse").fill("HDMI-kabel følger med.");
+    await page.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await page.getByRole("radio", { name: "Lån" }).check();
+    await page.getByLabel("Pris per uke (kr, valgfri)").fill("100");
+    await page.getByRole("radio", { name: "Brukt" }).check();
+    await expect(page.getByText("100 kr/uke")).toBeVisible();
+
+    await page.getByRole("button", { name: "Publiser annonse" }).click();
+
+    await expect(page).toHaveURL(/\/listings\/[^/]+\?publisert=1$/);
+    await expect(page.getByRole("status")).toHaveText("Annonsen er publisert og synlig i søket.");
+    await expect(page.getByRole("heading", { name: title, level: 1 })).toBeVisible();
+
+    await page.goto(`/?q=${encodeURIComponent(title)}`);
+    await expect(page.getByRole("heading", { name: title, level: 2 })).toBeVisible();
+  });
+
+  test("feil viser feilboksen med fokus, og valgene står igjen", async ({ page }) => {
+    await page.getByLabel("Tittel").fill("ab");
+    await page.getByRole("radio", { name: "Lån" }).check();
+    await page.getByLabel("Pris per uke (kr, valgfri)").fill("100,-");
+
+    await page.getByRole("button", { name: "Publiser annonse" }).click();
+
+    await expect(page.getByRole("heading", { name: "Rett 5 feil før du publiserer" })).toBeVisible();
+    await expect(page.locator("[aria-labelledby=error-summary-title]")).toBeFocused();
+    await expect(page.getByRole("radio", { name: "Lån" })).toBeChecked();
+    await expect(page.getByLabel("Tittel")).toHaveValue("ab");
+    await expect(page).toHaveURL(/\/listings\/new$/);
+  });
+});
+
+// Bredden på «Legg ut annonse» (#135). Godkjent av Max 11.10.
+test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én kolonne på mobil", async ({ page }) => {
+  const box = async (locator: import("@playwright/test").Locator) => (await locator.boundingBox())!;
+  const preview = page.getByRole("button", { name: "Legg til bilder" });
+  const title = page.getByLabel("Tittel");
+
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.goto("/listings/new");
+  const [wide, wideTitle] = [await box(preview), await box(title)];
+  expect(wideTitle.x).toBeGreaterThan(wide.x + wide.width);
+  expect(wideTitle.y).toBeLessThan(wide.y + wide.height);
+
+  // Kortet går helt ned på en høy skjerm, med samme marg nederst som på sidene (48 px).
+  await page.setViewportSize({ width: 1600, height: 1400 });
+  await page.goto("/listings/new");
+  const card = await box(page.locator("main > div"));
+  expect(card.y + card.height).toBeGreaterThan(1400 - 60);
+
+  // Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse».
+  const publish = await box(page.getByRole("button", { name: "Publiser annonse" }));
+  const cancel = await box(page.getByRole("link", { name: "Avbryt" }));
+  expect(card.x + card.width - (publish.x + publish.width)).toBeLessThan(60);
+  expect(card.y + card.height - (publish.y + publish.height)).toBeLessThan(60);
+  expect(cancel.x + cancel.width).toBeLessThanOrEqual(publish.x);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/listings/new");
+  const [narrow, narrowTitle] = [await box(preview), await box(title)];
+  expect(narrowTitle.y).toBeGreaterThan(narrow.y + narrow.height);
+});
