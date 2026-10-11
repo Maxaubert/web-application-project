@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- «Legg ut annonse» (FK-03) uten bilder: skjermbildet `/listings/new` etter mockup 13 (valgt blant tolv helsidemockups),
+  med mini-forhåndsvisning som følger med, låst bildeflate til #61, feilboks med fokus og bekreftelse på den nye
+  annonsesiden. «Legg ut annonse» i toppen. (Max, #133)
 - Serverhandlingen for «Legg ut annonse» (FK-03): Zod-validering med norske feilmeldinger, alle feil samtidig,
   pris etter handelstype og eier fra økten. Høyeste pris satt til 100 000 kr, også i prisfilteret. Skjermbildet
   kommer i neste PR, bilder i #61. (Max, #131)

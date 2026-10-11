@@ -19,9 +19,11 @@ vi.mock("@/db", () => ({
 // Utloggingsknappen trengs ikke her, og den drar inn innloggingsoppsettet.
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
 
-async function renderPage(id: string) {
+async function renderPage(id: string, query = "", userId = "someone-else") {
+  const request = new Request(`http://localhost/listings/${id}${query}`);
   const response = { status: 200 } as RequestInfo["response"];
-  const page = await ListingPage({ params: { id }, response } as RequestInfo<{ id: string }>);
+  const ctx = { session: { userId } } as RequestInfo["ctx"];
+  const page = await ListingPage({ params: { id }, request, response, ctx } as RequestInfo<{ id: string }>);
   return { html: renderToStaticMarkup(page), status: response.status };
 }
 
@@ -67,5 +69,23 @@ describe("ListingPage", () => {
     expect(hidden.html).toContain("Annonsen er ikke lenger tilgjengelig");
     expect(hidden.html).not.toContain("Skjult vare");
     expect(hidden.html).toBe(unknown.html);
+  });
+});
+
+// Bekreftelsen etter publisering (#133). Godkjent av Max 11.10.
+describe("ListingPage etter publisering", () => {
+  beforeEach(async () => {
+    await holder.db.insert(listing).values(validListing({ id: "calc", title: "Kalkulator" }));
+  });
+
+  it("eieren ser «Annonsen er publisert» med ?publisert=1", async () => {
+    const { html } = await renderPage("calc", "?publisert=1", OWNER_ID);
+
+    expect(html).toContain("Annonsen er publisert og synlig i søket.");
+  });
+
+  it("andre ser ikke bekreftelsen, og eieren ser den ikke uten ?publisert=1", async () => {
+    expect((await renderPage("calc", "?publisert=1", "someone-else")).html).not.toContain("Annonsen er publisert");
+    expect((await renderPage("calc", "", OWNER_ID)).html).not.toContain("Annonsen er publisert");
   });
 });
