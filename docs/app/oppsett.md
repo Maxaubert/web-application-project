@@ -79,6 +79,8 @@ faste testannonser rett i den lokale D1-databasen før Playwright starter, og si
 Tester som skal være innlogget bruker `test.use({ storageState: AUTH_FILE })`. `app/e2e/.auth/` er
 Git-ignorert fordi den inneholder en gyldig lokal økt. Endrer better-auth cookieformatet, blir testene røde.
 
+**Egen lagring for nettlesertestene (#154):** Playwright starter forhåndsvisningen med `E2E_STATE` (`.wrangler/e2e-state`, definert i `app/e2e/state.ts`), som `vite.config.mts` gir til Cloudflare-pluginen som `persistState`. `global-setup.ts` lager tabellene og legger testdataene og testbildene i samme mappe (`--persist-to`). Testene rører derfor aldri databasen og R2 som `npm run dev` bruker. Mappen er Git-ignorert (`.wrangler/`) og kan slettes når som helst; neste kjøring lager den på nytt.
+
 **Logg inn lokalt:** åpne `http://127.0.0.1:5173/dev/login` under `npm run dev`. Du blir logget inn som
 seed-brukeren og sendt til forsiden (#106). Ruten finnes ikke i produksjonsbygget. Bruk `127.0.0.1`
 hele tiden; en innlogging på `localhost` gjelder ikke der.

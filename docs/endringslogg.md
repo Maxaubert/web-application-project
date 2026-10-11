@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Nettlesertestene har egen lagring (#154): Playwright bruker `.wrangler/e2e-state` for D1 og R2, så testannonsene (`e2e-user`, E2E-HEIC …) ikke lenger havner i databasen til `npm run dev`. (Max, #154)
 - Raskere forside (#155): hvert bilde får en miniatyr på 640 px, laget i nettleseren ved opplasting, som kort, søkeforslag
   og miniatyrraden bruker. Målt i produksjonsbygget med 34 annonser: bildedata 5136 → 1080 KB, dekodingstid 453 → 25 ms,
   dekodede piksler 147 → 24 MB. Miniatyren ligger i R2 ved siden av originalen (`.thumb.jpg`, ingen ny tabell), og
