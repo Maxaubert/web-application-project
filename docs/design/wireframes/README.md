@@ -129,8 +129,11 @@ endrer ingenting i databasen.
 
 Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
 
-- Ett sentrert hvitt kort i stedet for skjema og forhåndsvisning side om side. Øverst en mini-forhåndsvisning av
-  annonsesiden (bilde over hele bredden, så type, tittel, pris, kategori og tilstand) som følger med mens man skriver.
+- Innholdet ligger rett på bakgrunnen over hele bredden, uten kort rundt (Max 11.10). Mini-forhåndsvisning av annonsesiden (bilde, så type, tittel, pris, kategori og
+  tilstand) som følger med mens man skriver. Fra 1024 px står den til venstre og blir stående mens man ruller, med
+  feltene til høyre; Kategori og Handelstype, og Pris og Tilstand, står parvis når feltkolonnen er bred nok. Under
+  1024 px står forhåndsvisningen over feltene (Max 11.10, #135; én kolonne over hele bredden ble prøvd og forkastet:
+  bildet ble for stort).
 - Bilder legges til ved å klikke på bildeflaten i forhåndsvisningen, ikke i et eget felt. Uten stiplede linjer eller
   ferdige tomme bildebokser (Max). Flaten er låst med en forklarende linje til opplasting kommer (#61).
 - Rekkefølge: Tittel, Beskrivelse, Kategori, Handelstype, Pris, Tilstand. Handelstype står rett før Pris, fordi

@@ -49,73 +49,85 @@ export function ListingForm() {
   return (
     <form onSubmit={submit} noValidate className="space-y-8">
       <ErrorSummary errors={errors} fieldIds={FIELD_IDS} action="publiserer" />
-      <ListingPreview values={values} />
-
-      <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" hint="3–80 tegn.">
-        <input id="listing-title" name="title" value={values.title} onChange={set("title")} maxLength={80} className={inputClass} {...invalid("title")} />
-      </Field>
-
-      <Field id="listing-description" label="Beskrivelse" error={errors.description} errorId="description-error" hint="Nevn eventuelle skader.">
-        <textarea
-          id="listing-description"
-          name="description"
-          rows={5}
-          value={values.description}
-          onChange={set("description")}
-          maxLength={2000}
-          className={`${inputClass} h-auto py-3 leading-relaxed`}
-          {...invalid("description")}
-        />
-      </Field>
-
-      <Field id="listing-category" label="Kategori" error={errors.category} errorId="category-error">
-        <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...invalid("category")}>
-          <option value="">Velg kategori</option>
-          {entries(categoryLabels).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </Field>
-
-      <RadioGroup name="type" legend="Handelstype" idPrefix="listing-type" options={entries(typeLabels)} value={values.type} onChange={set("type")} error={errors.type} />
-
-      {values.type === "giveaway" ? (
-        <div>
-          <p className="mb-2 font-semibold">Pris</p>
-          <p className="rounded-md bg-hairline/40 px-4 py-3 text-muted">Gis bort er alltid gratis.</p>
+      {/* Fra 1024 px: forhåndsvisningen til venstre, som blir stående mens man ruller, og feltene til høyre (#135). */}
+      <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-12">
+        <div className="lg:sticky lg:top-6">
+          <ListingPreview values={values} />
         </div>
-      ) : (
-        <Field id="listing-price" label={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].label} error={errors.price} errorId="price-error" hint={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].hint}>
-          <input
-            id="listing-price"
-            name="price"
-            type="text"
-            inputMode="numeric"
-            autoComplete="off"
-            value={values.price}
-            onChange={set("price")}
-            className={`${inputClass} sm:max-w-72`}
-            {...invalid("price")}
-          />
-        </Field>
-      )}
 
-      <RadioGroup name="condition" legend="Tilstand" idPrefix="listing-condition" options={entries(conditionLabels)} value={values.condition} onChange={set("condition")} error={errors.condition} />
+        {/* @container: de små feltene står parvis når feltkolonnen er bred nok. */}
+        <div className="@container mt-8 space-y-8 lg:mt-0">
+          <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" hint="3–80 tegn.">
+            <input id="listing-title" name="title" value={values.title} onChange={set("title")} maxLength={80} className={inputClass} {...invalid("title")} />
+          </Field>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <button
-          type="submit"
-          disabled={pending}
-          aria-busy={pending}
-          className="h-12 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
-        >
-          {pending ? "Publiserer …" : "Publiser annonse"}
-        </button>
-        <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
-          Avbryt
-        </a>
+          <Field id="listing-description" label="Beskrivelse" error={errors.description} errorId="description-error" hint="Nevn eventuelle skader.">
+            <textarea
+              id="listing-description"
+              name="description"
+              rows={5}
+              value={values.description}
+              onChange={set("description")}
+              maxLength={2000}
+              className={`${inputClass} h-auto py-3 leading-relaxed`}
+              {...invalid("description")}
+            />
+          </Field>
+
+          <div className="grid gap-8 @3xl:grid-cols-2">
+            <Field id="listing-category" label="Kategori" error={errors.category} errorId="category-error">
+              <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...invalid("category")}>
+                <option value="">Velg kategori</option>
+                {entries(categoryLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <RadioGroup name="type" legend="Handelstype" idPrefix="listing-type" options={entries(typeLabels)} value={values.type} onChange={set("type")} error={errors.type} />
+          </div>
+
+          <div className="grid gap-8 @3xl:grid-cols-2">
+            {values.type === "giveaway" ? (
+              <div>
+                <p className="mb-2 font-semibold">Pris</p>
+                <p className="rounded-md bg-hairline/40 px-4 py-3 text-muted">Gis bort er alltid gratis.</p>
+              </div>
+            ) : (
+              <Field id="listing-price" label={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].label} error={errors.price} errorId="price-error" hint={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].hint}>
+                <input
+                  id="listing-price"
+                  name="price"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  value={values.price}
+                  onChange={set("price")}
+                  className={`${inputClass} sm:max-w-72`}
+                  {...invalid("price")}
+                />
+              </Field>
+            )}
+
+            <RadioGroup name="condition" legend="Tilstand" idPrefix="listing-condition" options={entries(conditionLabels)} value={values.condition} onChange={set("condition")} error={errors.condition} />
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="submit"
+              disabled={pending}
+              aria-busy={pending}
+              className="h-12 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
+            >
+              {pending ? "Publiserer …" : "Publiser annonse"}
+            </button>
+            <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
+              Avbryt
+            </a>
+          </div>
+        </div>
       </div>
     </form>
   );
