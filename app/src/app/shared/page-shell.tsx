@@ -10,12 +10,14 @@ type PageShellProps = {
   title: string;
   children: ReactNode;
   wide?: boolean;
+  // Bredt oppsett der innholdet fyller resten av skjermhøyden, for et kort som skal gå helt ned (#135).
+  fill?: boolean;
   headerAction?: ReactNode;
 };
 
-export function PageShell({ title, children, wide = false, headerAction }: PageShellProps) {
+export function PageShell({ title, children, wide = false, fill = false, headerAction }: PageShellProps) {
   return (
-    <>
+    <div className={fill ? "flex min-h-dvh flex-col" : undefined}>
       <title>{`${title} – ${APP_NAME}`}</title>
       <header className="border-b border-hairline bg-surface">
         <div className="flex h-16 items-center gap-3 px-4 sm:h-[4.5rem] sm:px-12">
@@ -29,7 +31,9 @@ export function PageShell({ title, children, wide = false, headerAction }: PageS
           {headerAction && <div className="ml-auto">{headerAction}</div>}
         </div>
       </header>
-      {wide ? (
+      {fill ? (
+        <main className="flex flex-1 flex-col px-4 pt-10 pb-10 sm:px-12 sm:pb-12">{children}</main>
+      ) : wide ? (
         <main className="px-4 pt-10 pb-24 sm:px-12">{children}</main>
       ) : (
         <main className="px-6 pt-14 pb-16 sm:px-4 sm:pt-28">
@@ -38,6 +42,6 @@ export function PageShell({ title, children, wide = false, headerAction }: PageS
           </div>
         </main>
       )}
-    </>
+    </div>
   );
 }

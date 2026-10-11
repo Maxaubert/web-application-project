@@ -222,7 +222,7 @@ test.describe("legg ut annonse", () => {
 });
 
 // Bredden på «Legg ut annonse» (#135). Godkjent av Max 11.10.
-test("legg ut annonse: to kolonner på bred skjerm, én kolonne på mobil", async ({ page }) => {
+test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én kolonne på mobil", async ({ page }) => {
   const box = async (locator: import("@playwright/test").Locator) => (await locator.boundingBox())!;
   const preview = page.getByRole("button", { name: "Legg til bilder" });
   const title = page.getByLabel("Tittel");
@@ -232,6 +232,12 @@ test("legg ut annonse: to kolonner på bred skjerm, én kolonne på mobil", asyn
   const [wide, wideTitle] = [await box(preview), await box(title)];
   expect(wideTitle.x).toBeGreaterThan(wide.x + wide.width);
   expect(wideTitle.y).toBeLessThan(wide.y + wide.height);
+
+  // Kortet går helt ned på en høy skjerm, med samme marg nederst som på sidene (48 px).
+  await page.setViewportSize({ width: 1600, height: 1400 });
+  await page.goto("/listings/new");
+  const card = await box(page.locator("main > div"));
+  expect(card.y + card.height).toBeGreaterThan(1400 - 60);
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/listings/new");

@@ -149,7 +149,8 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
   Enter og «Søk» sender alt, også uten JavaScript. `filter-listings.ts` har den rene logikken: `matchesFilters`
   for annonselisten og `availableOptions` for de grå opsjonene, begge kjørt på serveren etter søket.
   `search-limits.ts` har grensene klientkoden trenger, så Zod og databaseskjemaet ikke havner i nettleseren.
-- Legg ut annonse (#131, #133, 11.10): `NewListingPage` (server) tegner kortet; `ListingForm` er klientkomponent med
+- Legg ut annonse (#131, #133, #135, 11.10): `NewListingPage` (server) tegner kortet, som fyller skjermhøyden med
+  `PageShell fill`; `ListingForm` er klientkomponent med
   kontrollerte felt, så `ListingPreview` følger med mens man skriver. Skjemaet sendes med `onSubmit` og
   `startTransition` i stedet for `action={action}`, fordi React 19 ellers tilbakestiller skjemaet etter handlingen og
   radioknappene hoppet tilbake. `ErrorSummary` (delt) viser alle feil i feltrekkefølge og får fokus. `HeaderActions`

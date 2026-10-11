@@ -129,7 +129,7 @@ endrer ingenting i databasen.
 
 Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
 
-- Innholdet ligger rett på bakgrunnen over hele bredden, uten kort rundt (Max 11.10). Mini-forhåndsvisning av annonsesiden (bilde, så type, tittel, pris, kategori og
+- Et hvitt kort over hele bredden som går helt ned til bunnen av skjermen (Max 11.10; uten kort ble prøvd og forkastet). Mini-forhåndsvisning av annonsesiden (bilde, så type, tittel, pris, kategori og
   tilstand) som følger med mens man skriver. Fra 1024 px står den til venstre og blir stående mens man ruller, med
   feltene til høyre; Kategori og Handelstype, og Pris og Tilstand, står parvis når feltkolonnen er bred nok. Under
   1024 px står forhåndsvisningen over feltene (Max 11.10, #135; én kolonne over hele bredden ble prøvd og forkastet:

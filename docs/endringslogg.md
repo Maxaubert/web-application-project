@@ -10,7 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
-- «Legg ut annonse» fyller siden uten kort rundt innholdet: to kolonner fra 1024 px med forhåndsvisningen til venstre og feltene til høyre,
+- «Legg ut annonse» fyller siden: kortet går over hele bredden og helt ned, to kolonner fra 1024 px med forhåndsvisningen til venstre og feltene til høyre,
   små felt parvis. Én kolonne over hele bredden ble prøvd side om side og forkastet. (Max, #135)
 - «Legg ut annonse» (FK-03) uten bilder: skjermbildet `/listings/new` etter mockup 13 (valgt blant tolv helsidemockups),
   med mini-forhåndsvisning som følger med, låst bildeflate til #61, feilboks med fokus og bekreftelse på den nye
