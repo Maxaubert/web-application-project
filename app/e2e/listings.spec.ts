@@ -199,9 +199,9 @@ test.describe("legg ut annonse", () => {
     await page.getByRole("radio", { name: "Brukt" }).check();
     await expect(page.getByText("100 kr/uke")).toBeVisible();
     await page.getByLabel("Bilder").setInputFiles(FIXTURE_IMAGE);
-    await expect(page.getByRole("button", { name: "Publiser annonse" })).toBeEnabled();
+    await expect(page.getByRole("button", { name: "Publiser", exact: true })).toBeEnabled();
 
-    await page.getByRole("button", { name: "Publiser annonse" }).click();
+    await page.getByRole("button", { name: "Publiser", exact: true }).click();
 
     await expect(page).toHaveURL(/\/listings\/[^/]+\?publisert=1$/);
     await expect(page.getByRole("status")).toHaveText("Annonsen er publisert og synlig i søket.");
@@ -221,7 +221,7 @@ test.describe("legg ut annonse", () => {
     await page.getByRole("radio", { name: "Lån" }).check();
     await page.getByLabel("Pris per uke (kr, valgfri)").fill("100,-");
 
-    await page.getByRole("button", { name: "Publiser annonse" }).click();
+    await page.getByRole("button", { name: "Publiser", exact: true }).click();
 
     await expect(page.getByRole("heading", { name: "Rett 6 feil før du publiserer" })).toBeVisible();
     await expect(page.locator("#images-error")).toHaveText("Legg til minst ett bilde");
@@ -278,7 +278,7 @@ test.describe("legg ut annonse", () => {
     await page.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
     await page.getByLabel("Pris (kr)").fill("100");
     await page.getByRole("radio", { name: "Brukt" }).check();
-    await page.getByRole("button", { name: "Publiser annonse" }).click();
+    await page.getByRole("button", { name: "Publiser", exact: true }).click();
 
     await expect(page).toHaveURL(/\/listings\/[^/]+\?publisert=1$/);
     const big = page.getByRole("img", { name: title });
@@ -331,7 +331,7 @@ test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én k
   expect(card.y + card.height).toBeGreaterThan(1400 - 60);
 
   // Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse».
-  const publish = await box(page.getByRole("button", { name: "Publiser annonse" }));
+  const publish = await box(page.getByRole("button", { name: "Publiser", exact: true }));
   const cancel = await box(page.getByRole("link", { name: "Avbryt" }));
   expect(card.x + card.width - (publish.x + publish.width)).toBeLessThan(60);
   expect(card.y + card.height - (publish.y + publish.height)).toBeLessThan(60);

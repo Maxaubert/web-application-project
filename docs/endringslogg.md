@@ -8,6 +8,11 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-12
+
+- «Legg ut annonse» (#171): ny knapp «Forhåndsvis» (mobil og desktop) som viser den ekte annonsesiden med det som er skrevet, i en dialog
+  der man kan gå tilbake med «Avbryt» eller publisere. Knappen «Publiser annonse» heter nå «Publiser». (Max, #171)
+
 ## 2026-10-11
 
 - Mobil (#167, del av #147): annonsesiden har 24 px tittel, mindre luft over bildet og miniatyrene på én rad som rulles sidelengs

@@ -1,5 +1,6 @@
 // Skjermbildet «Legg ut annonse» (#133). Godkjent av Max 11.10.
 import { renderToStaticMarkup } from "react-dom/server";
+import type { RequestInfo } from "rwsdk/worker";
 import { describe, expect, it, vi } from "vitest";
 import { NewListingPage } from "./NewListingPage";
 
@@ -8,7 +9,8 @@ vi.mock("./actions", () => ({ createListing: vi.fn() }));
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
 
 describe("NewListingPage", () => {
-  const html = renderToStaticMarkup(<NewListingPage />);
+  const ctx = { session: { name: "Max Aubert" } } as unknown as RequestInfo["ctx"];
+  const html = renderToStaticMarkup(<NewListingPage ctx={ctx} />);
 
   it("har fanetittel, overskrift og alle feltene med etikett, i godkjent rekkefølge", () => {
     expect(html).toContain("<title>Legg ut annonse – Studentmarkedet</title>");
