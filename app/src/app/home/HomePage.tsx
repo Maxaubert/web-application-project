@@ -4,6 +4,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 import { availableOptions, matchesFilters } from "@/app/listings/filter-listings";
 import { Filters } from "@/app/listings/Filters";
+import { imageUrl } from "@/app/images/image-url";
 import { ListingCard } from "@/app/listings/ListingCard";
 import { getActiveListings, type ListingWithOwner } from "@/app/listings/queries";
 import { countActiveFilters, parseSearch, type ListingFilters } from "@/app/listings/search-params";
@@ -61,9 +62,9 @@ function Results({ valid, searched, listings }: ResultsProps) {
         {listings.length} {listings.length === 1 ? "annonse" : "annonser"}
       </p>
       <ul className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {listings.map(({ listing }) => (
+        {listings.map(({ listing, coverKey }) => (
           <li key={listing.id}>
-            <ListingCard listing={listing} />
+            <ListingCard listing={listing} cover={coverKey && imageUrl(coverKey)} />
           </li>
         ))}
       </ul>

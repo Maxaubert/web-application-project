@@ -54,6 +54,8 @@ Fra `app/`, innlogget med `npx wrangler login`:
 ```powershell
 npm run db:migrate:remote   # migrasjoner til D1 i skyen (webapp-db)
 npx wrangler r2 bucket create studentmarkedet-images   # én gang, før første release med bilder (#138)
+node scripts/seed.mjs --remote           # demoannonsene live (#152), bare etter Max' ja
+node scripts/seed.mjs --remote --remove  # fjerner demoannonsene live igjen
 npm run deploy              # bygg og last opp Worker «webapp»
 npx wrangler secret put BETTER_AUTH_SECRET   # bare ved ny hemmelighet; lagres kryptert hos Cloudflare
 npx wrangler secret put RESEND_API_KEY       # Resend-nøkkel med bare sendetilgang

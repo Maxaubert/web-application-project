@@ -85,10 +85,13 @@ Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
 | Prøv lokal D1 | `npm run db:check` |
 | Generer migrasjon fra eget skjema | `npm run db:generate` |
 | Kjør migrasjoner lokalt | `npm run db:migrate:local` |
-| Legg inn testannonser lokalt (aldri i skyen) | `npm run db:seed:local` |
+| Legg inn testbrukeren og demoannonsene lokalt (tar ca. 3–4 min) | `npm run db:seed:local` |
 
 Migrasjonene ligger i `app/drizzle/`: `0000_auth.sql` har innloggingstabellene, `0001_listing.sql` annonsetabellen.
-Testdataene (`app/scripts/seed-local.sql`) er en testbruker og seks annonser, én per tilfelle kortet må vise.
+Testdataene er testbrukeren for `/dev/login` (`app/scripts/seed-local.sql`) og 34 demoannonser med bilder
+(`app/scripts/seed-listings.json` og `app/scripts/seed-images/`), lagt inn av `scripts/seed.mjs` (#152). Demobrukerne har
+`@studentmarkedet.invalid`-adresser og kan ikke logge inn. Skriptet rører bare det demobrukerne eier;
+`node scripts/seed.mjs --remove` fjerner alt igjen.
 Playwright starter og stopper sin egen preview på port 4173; porten må være ledig.
 På Linux installeres browseravhengighetene med `npx playwright install --with-deps chromium`.
 CI utfører installasjon og hele kontrollrekken. Startertester er ikke bevis på at

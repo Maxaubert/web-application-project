@@ -7,20 +7,22 @@ import { PageShell } from "@/app/shared/page-shell";
 import { db } from "@/db";
 import { ListingDetails } from "./ListingDetails";
 import { ListingGone } from "./ListingGone";
-import { getListingWithOwner } from "./queries";
+import { imageUrl } from "@/app/images/image-url";
+import { getListingImages, getListingWithOwner } from "./queries";
 
 export async function ListingPage({ params, request, response, ctx }: RequestInfo<{ id: string }>) {
   const result = await getListingWithOwner(db, params.id);
   const visible = result && result.listing.status !== "unpublished";
 
   if (!visible) response.status = 404;
+  const images = visible ? (await getListingImages(db, params.id)).map(imageUrl) : [];
   const published =
     visible && new URL(request.url).searchParams.get("publisert") === "1" && result.listing.ownerId === ctx.session.userId;
 
   return (
     <PageShell title={visible ? result.listing.title : "Annonsen er borte"} wide headerAction={<HeaderActions />}>
       {published && <PublishedNotice />}
-      {visible ? <ListingDetails listing={result.listing} ownerName={result.ownerName} /> : <ListingGone />}
+      {visible ? <ListingDetails listing={result.listing} ownerName={result.ownerName} images={images} /> : <ListingGone />}
     </PageShell>
   );
 }

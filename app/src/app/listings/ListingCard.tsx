@@ -2,14 +2,15 @@
 // Serverkomponent: bare visning, ingen tilstand. Hele kortet er en lenke til annonsesiden (WF-04).
 import type { Listing } from "@/db/schema";
 import { formatTypeAndPrice } from "./format-type-and-price";
-import { ImagePlaceholder } from "./ImagePlaceholder";
+import { ListingImage } from "./ListingImage";
 
-export function ListingCard({ listing }: { listing: Listing }) {
+// cover: adressen til forsidebildet, eller null for plassholderen (#150).
+export function ListingCard({ listing, cover }: { listing: Listing; cover: string | null }) {
   return (
     <article className="overflow-hidden rounded-xl border border-hairline bg-surface transition-colors hover:border-line">
       {/* Fokusrammen tegnes innenfor kortet, ellers klipper overflow-hidden den bort (#113). */}
       <a href={`/listings/${listing.id}`} className="block rounded-xl focus-visible:-outline-offset-4">
-        <ImagePlaceholder className="aspect-[4/3]" />
+        <ListingImage src={cover} className="aspect-[4/3] w-full" />
         <div className="px-4 py-3">
           <h2 className="line-clamp-2 text-lg font-bold [overflow-wrap:anywhere]">{listing.title}</h2>
           <p className="mt-1 font-semibold">{formatTypeAndPrice(listing)}</p>

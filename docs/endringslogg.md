@@ -10,6 +10,13 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Demoannonser: 34 testannonser med 132 bilder fra Max (skalert til 1200 px JPEG, 19 MB), skrevet fra bildenotatene
+  uten oppdiktede spesifikasjoner. Fem demostudenter og Skolens IT-avdeling, med `@studentmarkedet.invalid`, så ingen
+  kan logge inn som dem. `scripts/seed.mjs` legger dem inn lokalt eller live (`--remote`) og fjerner dem (`--remove`).
+  De fire gamle testannonsene er erstattet. (Max, #152)
+- Bilder, tredje PR: forsidebildet vises på kortene og i søkeforslagene, og annonsesiden har stort bilde med
+  miniatyrer (klikk bytter), etter godkjent mockup. Plassholder bare uten bilder. `GET /api/listings` sender
+  `coverUrl`. Testannonsene har UUID-er og får bilder fra `scripts/seed-images/`. (Max, #150)
 - «Legg ut annonse»: feltparene står side om side allerede fra 1280 px, så feltkolonnen blir omtrent like høy som
   forhåndsvisningen, og prishintene («Hele kroner.», «Tomt betyr gratis lån.») er fjernet. Mobiltilpasning samlet i #147. (Max, #146)
 - Bilder, andre PR: bildefeltet i «Legg ut annonse» etter godkjent mockup. Klikk eller dra inn, miniatyrer med ✕,
