@@ -1,7 +1,7 @@
 // Regler for annonsebilder (#138). Godkjent av Max 11.10.
 import { describe, expect, it } from "vitest";
 import { imageBytes, imageFile } from "@/test/test-bucket";
-import { checkImages, MAX_IMAGE_BYTES, sniffImageType } from "./image-files";
+import { checkImages, checkThumbs, MAX_IMAGE_BYTES, MAX_THUMB_BYTES, sniffImageType, THUMB_ERROR } from "./image-files";
 
 describe("sniffImageType", () => {
   it("kjenner igjen JPEG, PNG og WebP fra innholdet", () => {
@@ -50,5 +50,27 @@ describe("checkImages", () => {
     const fake = new File([new TextEncoder().encode("MZ program")], "bilde.jpg", { type: "image/jpeg" });
 
     expect((await checkImages([fake])).error).toBe("«bilde.jpg» er ikke et bilde (JPEG, PNG eller WebP)");
+  });
+});
+
+// Miniatyrene (#155). Godkjent av Max 11.10.
+describe("checkThumbs", () => {
+  it("ingen miniatyrer er lov, og tomme filfelt telles ikke", async () => {
+    expect(await checkThumbs([], 3)).toEqual({ thumbs: [] });
+    expect(await checkThumbs([new File([], "")], 3)).toEqual({ thumbs: [] });
+  });
+
+  it("godtar like mange JPEG-miniatyrer som bilder, i samme rekkefølge", async () => {
+    const result = await checkThumbs([imageFile("a.thumb.jpg"), imageFile("b.thumb.jpg")], 2);
+    expect(result.thumbs?.map((f) => f.name)).toEqual(["a.thumb.jpg", "b.thumb.jpg"]);
+  });
+
+  it("noen få miniatyrer, for store eller ikke-JPEG gir feil", async () => {
+    expect((await checkThumbs([imageFile("a.jpg")], 2)).error).toBe(THUMB_ERROR);
+    expect((await checkThumbs([imageFile("a.jpg"), imageFile("b.jpg")], 1)).error).toBe(THUMB_ERROR);
+    expect((await checkThumbs([imageFile("a.png", "png")], 1)).error).toBe(THUMB_ERROR);
+    const header = 12;
+    expect((await checkThumbs([imageFile("stor.jpg", "jpg", MAX_THUMB_BYTES - header + 1)], 1)).error).toBe(THUMB_ERROR);
+    expect((await checkThumbs([imageFile("ok.jpg", "jpg", MAX_THUMB_BYTES - header)], 1)).thumbs).toHaveLength(1);
   });
 });

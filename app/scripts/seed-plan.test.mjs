@@ -1,6 +1,7 @@
 // Demoannonsene (#152): SQL og R2-nøkler fra seed-listings.json. Godkjent av Max 11.10.
 import { describe, expect, it } from "vitest";
-import { DEMO_EMAIL_DOMAIN, removePlan, seedPlan, stableId } from "./seed-plan.mjs";
+import { thumbKey as appThumbKey } from "../src/app/images/image-url";
+import { DEMO_EMAIL_DOMAIN, removePlan, seedPlan, stableId, thumbKey } from "./seed-plan.mjs";
 
 const data = {
   users: [
@@ -48,6 +49,39 @@ describe("seedPlan", () => {
   it("tar høyst 10 bilder per annonse", () => {
     const many = Array.from({ length: 12 }, (_, i) => `${String(i + 1).padStart(2, "0")}.jpg`);
     expect(seedPlan(data, { lampe: many }).objects).toHaveLength(10);
+  });
+});
+
+// Miniatyrer (#155). Godkjent av Max 11.10.
+describe("miniatyrer", () => {
+  const withThumbs = { lampe: ["02.jpg", "01.jpg", "02.thumb.jpg", "01.thumb.jpg"], skjerm: [] };
+
+  it("laster opp miniatyren ved siden av hvert bilde, men bare originalene får rad i databasen", () => {
+    const { sql, objects } = seedPlan(data, withThumbs);
+
+    expect(objects.map((o) => o.file)).toEqual(["lampe/01.jpg", "lampe/01.thumb.jpg", "lampe/02.jpg", "lampe/02.thumb.jpg"]);
+    expect(objects[1].key).toBe(thumbKey(objects[0].key));
+    expect(sql.match(/INSERT INTO listing_image/g)).toHaveLength(2);
+    expect(sql).not.toContain(".thumb.jpg");
+  });
+
+  it("et bilde uten miniatyrfil får ingen miniatyr, og en miniatyrfil alene blir ikke et bilde", () => {
+    expect(seedPlan(data, { lampe: ["01.jpg", "02.jpg", "02.thumb.jpg"], skjerm: [] }).objects.map((o) => o.file)).toEqual([
+      "lampe/01.jpg",
+      "lampe/02.jpg",
+      "lampe/02.thumb.jpg",
+    ]);
+    expect(seedPlan(data, { lampe: ["01.thumb.jpg"], skjerm: [] }).objects).toEqual([]);
+  });
+
+  it("bruker samme miniatyrnøkkel som appen", () => {
+    for (const key of ["listings/a/b.jpg", "listings/a/b.png", "listings/jpg.png/b.webp"]) expect(thumbKey(key)).toBe(appThumbKey(key));
+  });
+
+  it("--remove tar med miniatyrene", () => {
+    const { keys } = removePlan(data, withThumbs);
+    expect(keys).toHaveLength(4);
+    expect(keys.filter((key) => key.endsWith(".thumb.jpg"))).toHaveLength(2);
   });
 });
 

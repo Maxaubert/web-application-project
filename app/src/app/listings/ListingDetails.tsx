@@ -2,11 +2,11 @@
 // Serverkomponent, bare visning. Handlingsknappen kommer med bud- og lånesidene.
 import type { Listing } from "@/db/schema";
 import { formatPrice } from "./format-type-and-price";
-import { ListingGallery } from "./ListingGallery";
+import { ListingGallery, type GalleryImage } from "./ListingGallery";
 import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 
-// images: adressene til bildene, forsidebildet først (#150).
-type ListingDetailsProps = { listing: Listing; ownerName: string; images: string[] };
+// images: adressene til bildene og miniatyrene deres, forsidebildet først (#150, #155).
+type ListingDetailsProps = { listing: Listing; ownerName: string; images: GalleryImage[] };
 
 // Overskriften i eierboksen, som i wireframene: «Selger» ved salg, «Eier» ved lån. Gis bort er ikke tegnet (#64).
 const ownerHeadings: Record<Listing["type"], string> = { sale: "Selger", loan: "Eier", giveaway: "Eier" };

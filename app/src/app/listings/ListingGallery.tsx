@@ -4,9 +4,12 @@
 import { useState } from "react";
 import { ListingImage } from "./ListingImage";
 
-export function ListingGallery({ images, title }: { images: string[]; title: string }) {
+// src er det store bildet, thumb miniatyren i raden under (#155).
+export type GalleryImage = { src: string; thumb: string };
+
+export function ListingGallery({ images, title }: { images: GalleryImage[]; title: string }) {
   const [selected, setSelected] = useState(0);
-  const shown = images[selected] ?? null;
+  const shown = images[selected]?.src ?? null;
 
   return (
     <div>
@@ -18,7 +21,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
       />
       {images.length > 1 && (
         <div className="mt-3 flex flex-wrap gap-2.5">
-          {images.map((src, index) => (
+          {images.map(({ src, thumb }, index) => (
             <button
               key={src}
               type="button"
@@ -26,7 +29,7 @@ export function ListingGallery({ images, title }: { images: string[]; title: str
               aria-label={`Vis bilde ${index + 1} av ${images.length}`}
               aria-pressed={index === selected}
               className="size-16 overflow-hidden rounded-lg bg-hairline/60 bg-cover bg-center aria-pressed:shadow-[inset_0_0_0_3px_var(--color-paper),inset_0_0_0_5px_var(--color-ink)] sm:size-[86px]"
-              style={{ backgroundImage: `url(${src})` }}
+              style={{ backgroundImage: `url(${thumb})` }}
             />
           ))}
         </div>

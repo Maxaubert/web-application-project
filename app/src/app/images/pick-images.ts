@@ -5,6 +5,8 @@ import { MAX_IMAGES } from "@/db/schema";
 
 export const MAX_SOURCE_BYTES = 25 * 1024 * 1024;
 export const MAX_SIDE = 2000;
+// Miniatyrene til kort og søkeforslag (#155): 640 px er skarpt også på skjermer med høy oppløsning.
+export const THUMB_SIDE = 640;
 
 export type Rejected = { name: string; reason: string };
 

@@ -11,6 +11,9 @@ export const AUTH_FILE = "e2e/.auth/user.json";
 export const TEST_LISTING_ID = "e2e00000-0000-4000-8000-000000000001";
 export const TEST_IMAGE_PATH = `/images/listings/${TEST_LISTING_ID}/e2e00000-0000-4000-8000-000000000002.jpg`;
 const SECOND_IMAGE_PATH = `/images/listings/${TEST_LISTING_ID}/e2e00000-0000-4000-8000-000000000003.jpg`;
+// Bare det første bildet har miniatyr i R2 (#155). Det andre har ingen, så testene også dekker at originalen sendes i stedet.
+export const THUMB_IMAGE_PATH = TEST_IMAGE_PATH.replace(/\.jpg$/, ".thumb.jpg");
+export const NO_THUMB_PATH = SECOND_IMAGE_PATH.replace(/\.jpg$/, ".thumb.jpg");
 const SQL_FILE = "e2e/.auth/setup.sql";
 const SESSION_MS = 60 * 60 * 1000;
 
@@ -46,9 +49,13 @@ export default function globalSetup() {
          ('e2e-image-2', '${TEST_LISTING_ID}', '${SECOND_IMAGE_PATH.replace("/images/", "")}', 1);`,
   );
   execSync(`npx wrangler d1 execute DB --local --file ${SQL_FILE}`, { stdio: "ignore" });
-  for (const path of [TEST_IMAGE_PATH, SECOND_IMAGE_PATH]) {
+  for (const [path, file] of [
+    [TEST_IMAGE_PATH, "test.jpg"],
+    [THUMB_IMAGE_PATH, "test.thumb.jpg"],
+    [SECOND_IMAGE_PATH, "test.jpg"],
+  ]) {
     const imageKey = path.replace("/images/", "");
-    execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --file e2e/fixtures/test.jpg --content-type image/jpeg`, {
+    execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --file e2e/fixtures/${file} --content-type image/jpeg`, {
       stdio: "ignore",
     });
   }

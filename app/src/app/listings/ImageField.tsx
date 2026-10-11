@@ -80,7 +80,7 @@ export function ImageField({ values, images, error }: Props) {
               aria-label={`Bilde ${index + 1}`}
               aria-pressed={index === 0}
               className="size-full rounded-lg bg-hairline/60 bg-cover bg-center aria-pressed:shadow-[inset_0_0_0_3px_var(--color-surface),inset_0_0_0_5px_var(--color-ink)]"
-              style={{ backgroundImage: `url(${image.url})` }}
+              style={{ backgroundImage: `url(${image.thumbUrl ?? image.url})` }}
             />
             {!image.file && <span className={`${busyOverlay} text-sm`}>Gjør klar …</span>}
             <button
