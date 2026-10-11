@@ -65,13 +65,22 @@ export function SearchField({ q }: { q: string }) {
         event.preventDefault();
         void navigate(searchPageUrl(new FormData(event.currentTarget)), { info: { scrollToTop: false } });
       }}
-      className="mt-6 max-w-3xl"
+      className="mt-4 max-w-3xl sm:mt-6"
     >
-      <label htmlFor="q" className="block text-base font-semibold">
+      {/* På mobil er etiketten bare for skjermlesere og søkeknappen bare for Enter og tastaturet (#164). */}
+      <label htmlFor="q" className="block text-base font-semibold max-sm:sr-only">
         Søk i tittel, beskrivelse og selger
       </label>
-      <div className="mt-2 flex gap-3">
+      <div className="flex gap-3 sm:mt-2">
         <div className="relative min-w-0 flex-1">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-3 size-6 -translate-y-1/2 fill-none stroke-ink stroke-2 sm:hidden"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+          </svg>
           <input
             id="q"
             name="q"
@@ -79,6 +88,8 @@ export function SearchField({ q }: { q: string }) {
             value={value}
             maxLength={SEARCH_MAX_LENGTH}
             autoComplete="off"
+            enterKeyHint="search"
+            placeholder="Søk"
             role="combobox"
             aria-autocomplete="list"
             aria-expanded={showList}
@@ -91,7 +102,7 @@ export function SearchField({ q }: { q: string }) {
             }}
             onKeyDown={onKeyDown}
             onBlur={close}
-            className={inputClass}
+            className={`${inputClass} pl-11 sm:pl-4 sm:placeholder:text-transparent`}
           />
           <ul
             id={listId}
@@ -137,7 +148,7 @@ export function SearchField({ q }: { q: string }) {
         </div>
         <button
           type="submit"
-          className="h-12 shrink-0 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover"
+          className="h-12 shrink-0 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover max-sm:sr-only"
         >
           Søk
         </button>
