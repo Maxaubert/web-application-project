@@ -220,3 +220,34 @@ test.describe("legg ut annonse", () => {
     await expect(page).toHaveURL(/\/listings\/new$/);
   });
 });
+
+// Bredden på «Legg ut annonse» (#135). Godkjent av Max 11.10.
+test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én kolonne på mobil", async ({ page }) => {
+  const box = async (locator: import("@playwright/test").Locator) => (await locator.boundingBox())!;
+  const preview = page.getByRole("button", { name: "Legg til bilder" });
+  const title = page.getByLabel("Tittel");
+
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.goto("/listings/new");
+  const [wide, wideTitle] = [await box(preview), await box(title)];
+  expect(wideTitle.x).toBeGreaterThan(wide.x + wide.width);
+  expect(wideTitle.y).toBeLessThan(wide.y + wide.height);
+
+  // Kortet går helt ned på en høy skjerm, med samme marg nederst som på sidene (48 px).
+  await page.setViewportSize({ width: 1600, height: 1400 });
+  await page.goto("/listings/new");
+  const card = await box(page.locator("main > div"));
+  expect(card.y + card.height).toBeGreaterThan(1400 - 60);
+
+  // Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse».
+  const publish = await box(page.getByRole("button", { name: "Publiser annonse" }));
+  const cancel = await box(page.getByRole("link", { name: "Avbryt" }));
+  expect(card.x + card.width - (publish.x + publish.width)).toBeLessThan(60);
+  expect(card.y + card.height - (publish.y + publish.height)).toBeLessThan(60);
+  expect(cancel.x + cancel.width).toBeLessThanOrEqual(publish.x);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/listings/new");
+  const [narrow, narrowTitle] = [await box(preview), await box(title)];
+  expect(narrowTitle.y).toBeGreaterThan(narrow.y + narrow.height);
+});

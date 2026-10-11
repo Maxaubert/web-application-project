@@ -44,67 +44,103 @@ export function ListingForm() {
     const data = new FormData(event.currentTarget);
     startTransition(() => action(data));
   }
-  const invalid = (key: string) => (errors[key] ? { "aria-invalid": true, "aria-describedby": `${key}-error` } : {});
+  // Feltet beskrives av telleren eller hintet og av feilen, i den rekkefølgen de står på skjermen.
+  const describe = (id: string, key: string, parts: { hint?: boolean; count?: boolean }) => ({
+    "aria-invalid": errors[key] ? true : undefined,
+    "aria-describedby": [parts.count && `${id}-count`, parts.hint && `${id}-hint`, errors[key] && `${key}-error`].filter(Boolean).join(" ") || undefined,
+  });
 
   return (
-    <form onSubmit={submit} noValidate className="space-y-8">
+    <form onSubmit={submit} noValidate className="flex flex-1 flex-col space-y-8">
       <ErrorSummary errors={errors} fieldIds={FIELD_IDS} action="publiserer" />
-      <ListingPreview values={values} />
-
-      <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" hint="3–80 tegn.">
-        <input id="listing-title" name="title" value={values.title} onChange={set("title")} maxLength={80} className={inputClass} {...invalid("title")} />
-      </Field>
-
-      <Field id="listing-description" label="Beskrivelse" error={errors.description} errorId="description-error" hint="Nevn eventuelle skader.">
-        <textarea
-          id="listing-description"
-          name="description"
-          rows={5}
-          value={values.description}
-          onChange={set("description")}
-          maxLength={2000}
-          className={`${inputClass} h-auto py-3 leading-relaxed`}
-          {...invalid("description")}
-        />
-      </Field>
-
-      <Field id="listing-category" label="Kategori" error={errors.category} errorId="category-error">
-        <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...invalid("category")}>
-          <option value="">Velg kategori</option>
-          {entries(categoryLabels).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </Field>
-
-      <RadioGroup name="type" legend="Handelstype" idPrefix="listing-type" options={entries(typeLabels)} value={values.type} onChange={set("type")} error={errors.type} />
-
-      {values.type === "giveaway" ? (
-        <div>
-          <p className="mb-2 font-semibold">Pris</p>
-          <p className="rounded-md bg-hairline/40 px-4 py-3 text-muted">Gis bort er alltid gratis.</p>
+      {/* Fra 1024 px: forhåndsvisningen til venstre, som blir stående mens man ruller, og feltene til høyre (#135). */}
+      <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-12">
+        <div className="lg:sticky lg:top-6">
+          <ListingPreview values={values} />
         </div>
-      ) : (
-        <Field id="listing-price" label={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].label} error={errors.price} errorId="price-error" hint={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].hint}>
-          <input
-            id="listing-price"
-            name="price"
-            type="text"
-            inputMode="numeric"
-            autoComplete="off"
-            value={values.price}
-            onChange={set("price")}
-            className={`${inputClass} sm:max-w-72`}
-            {...invalid("price")}
-          />
-        </Field>
-      )}
 
-      <RadioGroup name="condition" legend="Tilstand" idPrefix="listing-condition" options={entries(conditionLabels)} value={values.condition} onChange={set("condition")} error={errors.condition} />
+        {/* @container: de små feltene står parvis når feltkolonnen er bred nok. */}
+        <div className="@container mt-8 space-y-8 lg:mt-0">
+          <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" count={{ length: values.title.length, max: 80 }}>
+            <input
+              id="listing-title"
+              name="title"
+              value={values.title}
+              onChange={set("title")}
+              maxLength={80}
+              className={inputClass}
+              {...describe("listing-title", "title", { count: true })}
+            />
+          </Field>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
+          <Field
+            id="listing-description"
+            label="Beskrivelse"
+            error={errors.description}
+            errorId="description-error"
+            count={{ length: values.description.length, max: 2000 }}
+          >
+            <textarea
+              id="listing-description"
+              name="description"
+              rows={5}
+              value={values.description}
+              onChange={set("description")}
+              maxLength={2000}
+              className={`${inputClass} h-auto resize-none py-3 leading-relaxed`}
+              {...describe("listing-description", "description", { count: true })}
+            />
+          </Field>
+
+          <div className="grid gap-8 @3xl:grid-cols-2">
+            <Field id="listing-category" label="Kategori" error={errors.category} errorId="category-error">
+              <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...describe("listing-category", "category", {})}>
+                <option value="">Velg kategori</option>
+                {entries(categoryLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <RadioGroup name="type" legend="Handelstype" idPrefix="listing-type" options={entries(typeLabels)} value={values.type} onChange={set("type")} error={errors.type} />
+          </div>
+
+          <div className="grid gap-8 @3xl:grid-cols-2">
+            {values.type === "giveaway" ? (
+              <div>
+                <p className="mb-2 font-semibold">Pris</p>
+                <p className="rounded-md bg-hairline/40 px-4 py-3 text-muted">Gis bort er alltid gratis.</p>
+              </div>
+            ) : (
+              <Field id="listing-price" label={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].label} error={errors.price} errorId="price-error" hint={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].hint}>
+                <input
+                  id="listing-price"
+                  name="price"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  value={values.price}
+                  onChange={set("price")}
+                  className={`${inputClass} sm:max-w-72`}
+                  {...describe("listing-price", "price", { hint: true })}
+                />
+              </Field>
+            )}
+
+            <RadioGroup name="condition" legend="Tilstand" idPrefix="listing-condition" options={entries(conditionLabels)} value={values.condition} onChange={set("condition")} error={errors.condition} />
+          </div>
+
+        </div>
+      </div>
+
+      {/* Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse» (Max 11.10, #135).
+          På mobil under hverandre med «Publiser annonse» øverst. */}
+      <div className="flex flex-col-reverse gap-3 pt-2 sm:mt-auto sm:flex-row sm:justify-end sm:pt-10">
+        <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
+          Avbryt
+        </a>
         <button
           type="submit"
           disabled={pending}
@@ -113,26 +149,40 @@ export function ListingForm() {
         >
           {pending ? "Publiserer …" : "Publiser annonse"}
         </button>
-        <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
-          Avbryt
-        </a>
       </div>
     </form>
   );
 }
 
-type FieldProps = { id: string; label: string; error?: string; errorId: string; hint?: string; children: ReactNode };
+type FieldProps = {
+  id: string;
+  label: string;
+  error?: string;
+  errorId: string;
+  hint?: string;
+  count?: { length: number; max: number };
+  children: ReactNode;
+};
 
-// Etikett, feilen over feltet (som i WF-05) og hint under.
-function Field({ id, label, error, errorId, hint, children }: FieldProps) {
+// Over feltet: etikett, teller («0 av 80 tegn») eller hint, så feilen (Max 11.10, #135). Hint før feil, som hos GOV.UK.
+function Field({ id, label, error, errorId, hint, count, children }: FieldProps) {
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block font-semibold">
         {label}
       </label>
+      {count && (
+        <p id={`${id}-count`} className="text-base text-muted tabular-nums">
+          {count.length} av {count.max} tegn
+        </p>
+      )}
+      {hint && (
+        <p id={`${id}-hint`} className="text-base text-muted">
+          {hint}
+        </p>
+      )}
       <FieldError id={errorId} message={error} />
       {children}
-      {hint && <p className="text-base text-muted">{hint}</p>}
     </div>
   );
 }
