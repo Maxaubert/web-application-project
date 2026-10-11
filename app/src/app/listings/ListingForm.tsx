@@ -44,7 +44,11 @@ export function ListingForm() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // Bildene sendes ferdig behandlet og i rekkefølge, med forsidebildet først (#141).
-    for (const image of images.images) if (image.file) data.append("images", image.file);
+    for (const image of images.images) {
+      if (!image.file || !image.thumb) continue;
+      data.append("images", image.file);
+      data.append("thumbs", image.thumb);
+    }
     startTransition(() => action(data));
   }
   // Feltet beskrives av telleren og av feilen, i den rekkefølgen de står på skjermen.

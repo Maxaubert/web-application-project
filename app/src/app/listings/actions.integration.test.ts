@@ -3,6 +3,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { listing, listingImage, user } from "@/db/schema";
 import type { Db } from "@/db/types";
+import { THUMB_ERROR } from "@/app/images/image-files";
+import { thumbKey } from "@/app/images/image-url";
 import { createTestBucket, imageFile, type TestBucket } from "@/test/test-bucket";
 import { createTestDb } from "@/test/test-db";
 import { createListing } from "./actions";
@@ -24,10 +26,11 @@ vi.mock("@/app/images/bucket", () => ({
 }));
 
 // Et gyldig skjema har minst ett bilde (#141).
-function formData(fields: Record<string, string>, images: File[] = [imageFile("bilde.jpg")]) {
+function formData(fields: Record<string, string>, images: File[] = [imageFile("bilde.jpg")], thumbs: File[] = []) {
   const data = new FormData();
   for (const [key, value] of Object.entries(fields)) data.append(key, value);
   for (const image of images) data.append("images", image);
+  for (const thumb of thumbs) data.append("thumbs", thumb);
   return data;
 }
 
@@ -124,6 +127,24 @@ describe("createListing", () => {
     expect(await holder.db.select().from(listing)).toHaveLength(0);
   });
 
+  // Miniatyrer (#155). Godkjent av Max 11.10.
+  it("lagrer miniatyrene ved siden av bildene, og databasen har bare originalene", async () => {
+    await createListing({}, formData(VALID, [imageFile("a.jpg"), imageFile("b.jpg")], [imageFile("a.thumb.jpg"), imageFile("b.thumb.jpg")]));
+
+    const rows = await holder.db.select().from(listingImage).orderBy(listingImage.position);
+    expect(rows).toHaveLength(2);
+    expect(rows.every((r) => !r.key.includes(".thumb."))).toBe(true);
+    expect([...holder.bucket.objects.keys()].sort()).toEqual(rows.flatMap((r) => [r.key, thumbKey(r.key)]).sort());
+  });
+
+  it("miniatyrer som ikke stemmer med bildene gir feil, og ingenting lagres", async () => {
+    const result = await createListing({}, formData(VALID, [imageFile("a.jpg"), imageFile("b.jpg")], [imageFile("a.thumb.jpg")]));
+
+    expect(result).toMatchObject({ fieldErrors: { images: THUMB_ERROR } });
+    expect(await holder.db.select().from(listing)).toHaveLength(0);
+    expect(holder.bucket.objects.size).toBe(0);
+  });
+
   it("feiler databasen etter at bildene er lagret, slettes både annonsen og bildene", async () => {
     const insert = holder.db.insert.bind(holder.db);
     holder.db.insert = ((table: unknown) => {
@@ -131,7 +152,7 @@ describe("createListing", () => {
       return insert(table as never);
     }) as typeof holder.db.insert;
 
-    await expect(createListing({}, formData(VALID, [imageFile("a.jpg")]))).rejects.toThrow("databasen feilet");
+    await expect(createListing({}, formData(VALID, [imageFile("a.jpg")], [imageFile("a.thumb.jpg")]))).rejects.toThrow("databasen feilet");
 
     expect(await holder.db.select().from(listing)).toHaveLength(0);
     expect(holder.bucket.objects.size).toBe(0);

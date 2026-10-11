@@ -15,10 +15,10 @@ const apiSchema = searchFields
   .extend({ limit: z.coerce.number().int().min(1).max(50).optional() })
   .refine(pricesInOrder);
 
-// Bare disse feltene sendes; nye kolonner må legges til her med vilje. coverUrl til søkeforslagene (#150).
+// Bare disse feltene sendes; nye kolonner må legges til her med vilje. coverUrl er miniatyren av forsidebildet, til søkeforslagene (#150, #155).
 function toJson({ listing, coverKey }: ListingWithOwner) {
   const { id, title, type, price, status } = listing;
-  return { id, title, type, price, status, coverUrl: coverKey && imageUrl(coverKey) };
+  return { id, title, type, price, status, coverUrl: coverKey && imageUrl(coverKey, "thumb") };
 }
 
 export async function getListings({ request }: RequestInfo) {

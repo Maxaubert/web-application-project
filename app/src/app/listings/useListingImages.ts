@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { moveToFront, pickImages, type Rejected } from "@/app/images/pick-images";
 import { prepareImage } from "@/app/images/prepare-image";
 
-export type PickedImage = { id: string; url: string; file?: File };
+// file og thumb er ferdig behandlet; url og thumbUrl viser dem. Før det vises bare originalen.
+export type PickedImage = { id: string; url: string; thumbUrl?: string; file?: File; thumb?: File };
 
 export function useListingImages() {
   const [images, setImages] = useState<PickedImage[]>([]);
@@ -27,7 +28,10 @@ export function useListingImages() {
     setImages((current) => [...current, ...added.map(({ id, url }) => ({ id, url }))]);
     for (const { id, source } of added) {
       prepareImage(source).then(
-        (file) => setImages((current) => current.map((image) => (image.id === id ? { id, url: objectUrl(file), file } : image))),
+        ({ file, thumb }) =>
+          setImages((current) =>
+            current.map((image) => (image.id === id ? { id, url: objectUrl(file), thumbUrl: objectUrl(thumb), file, thumb } : image)),
+          ),
         () => {
           setImages((current) => current.filter((image) => image.id !== id));
           setRejected((current) => [...current, { name: source.name, reason: "kunne ikke leses som bilde" }]);

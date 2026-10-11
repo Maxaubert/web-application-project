@@ -14,6 +14,11 @@ export function stableId(text) {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
 }
 
+// Miniatyren ligger ved siden av originalen (#155). Samme regel som thumbKey i src/app/images/image-url.ts;
+// seed-plan.test.mjs sjekker at de to gir likt.
+export const thumbKey = (key) => key.replace(/\.(jpg|png|webp)$/, ".thumb.jpg");
+const THUMB_SUFFIX = ".thumb.jpg";
+
 const quote = (value) => (value === null ? "NULL" : typeof value === "number" ? String(value) : `'${String(value).replaceAll("'", "''")}'`);
 
 // Sletter bare det demobrukerne eier. Bilderadene slettes først, så det ikke avhenger av at
@@ -28,6 +33,7 @@ function deleteStatements(users) {
 }
 
 // images: bildefilene per annonse (slug → filnavn). Sorteres, så «01.jpg» blir forsidebildet. Høyst 10.
+// «01.thumb.jpg» er miniatyren til «01.jpg»: den lastes opp ved siden av, men får ingen rad i databasen.
 export function seedPlan(data, images) {
   const statements = deleteStatements(data.users);
   const objects = [];
@@ -41,11 +47,14 @@ export function seedPlan(data, images) {
     statements.push(
       `INSERT INTO listing (id, owner_id, type, title, description, category, condition, price, status) VALUES (${[id, l.owner, l.type, l.title, l.description, l.category, l.condition, l.price, "active"].map(quote).join(", ")});`,
     );
-    const files = [...(images[l.slug] ?? [])].sort().slice(0, 10);
+    const all = images[l.slug] ?? [];
+    const files = all.filter((file) => !file.endsWith(THUMB_SUFFIX)).sort().slice(0, 10);
     files.forEach((file, position) => {
       const key = `listings/${id}/${stableId(`image:${l.slug}/${file}`)}.jpg`;
       statements.push(`INSERT INTO listing_image (id, listing_id, key, position) VALUES (${[stableId(key), id, key, position].map(quote).join(", ")});`);
       objects.push({ key, file: `${l.slug}/${file}` });
+      const thumbFile = file.replace(/\.jpg$/, THUMB_SUFFIX);
+      if (all.includes(thumbFile)) objects.push({ key: thumbKey(key), file: `${l.slug}/${thumbFile}` });
     });
   }
   return { sql: statements.join("\n"), objects };

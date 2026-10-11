@@ -4,6 +4,8 @@
 import { MAX_IMAGES } from "@/db/schema";
 
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+// Miniatyrene (#155) er 640 px JPEG, vanligvis rundt 50 KB.
+export const MAX_THUMB_BYTES = 512 * 1024;
 
 export type ImageType = "jpg" | "png" | "webp";
 
@@ -35,4 +37,21 @@ export async function checkImages(entries: FormDataEntryValue[]): Promise<ImageC
     images.push({ file, type });
   }
   return { images };
+}
+
+type ThumbCheck = { thumbs: File[]; error?: undefined } | { thumbs?: undefined; error: string };
+
+export const THUMB_ERROR = "Miniatyrene stemmer ikke med bildene. Last siden på nytt og prøv igjen.";
+
+// Miniatyrene (#155) følger bildene i samme rekkefølge. Ingen miniatyrer er lov (bildene vises da i full størrelse),
+// men noen få er det ikke: da stemmer ikke rekkefølgen. Miniatyrene må være JPEG og små.
+export async function checkThumbs(entries: FormDataEntryValue[], imageCount: number): Promise<ThumbCheck> {
+  const files = entries.filter((entry): entry is File => entry instanceof File && entry.size > 0);
+  if (files.length === 0) return { thumbs: [] };
+  if (files.length !== imageCount) return { error: THUMB_ERROR };
+  for (const file of files) {
+    if (file.size > MAX_THUMB_BYTES) return { error: THUMB_ERROR };
+    if (sniffImageType(new Uint8Array(await file.slice(0, 12).arrayBuffer())) !== "jpg") return { error: THUMB_ERROR };
+  }
+  return { thumbs: files };
 }

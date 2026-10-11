@@ -89,7 +89,7 @@ Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
 
 Migrasjonene ligger i `app/drizzle/`: `0000_auth.sql` har innloggingstabellene, `0001_listing.sql` annonsetabellen.
 Testdataene er testbrukeren for `/dev/login` (`app/scripts/seed-local.sql`) og 34 demoannonser med bilder
-(`app/scripts/seed-listings.json` og `app/scripts/seed-images/`), lagt inn av `scripts/seed.mjs` (#152). Demobrukerne har
+(`app/scripts/seed-listings.json` og `app/scripts/seed-images/`, med `NN.thumb.jpg` som miniatyr til `NN.jpg`), lagt inn av `scripts/seed.mjs` (#152, #155). Demobrukerne har
 `@studentmarkedet.invalid`-adresser og kan ikke logge inn. Skriptet rører bare det demobrukerne eier;
 `node scripts/seed.mjs --remove` fjerner alt igjen.
 Playwright starter og stopper sin egen preview på port 4173; porten må være ledig.

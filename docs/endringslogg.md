@@ -10,6 +10,10 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Raskere forside (#155): hvert bilde får en miniatyr på 640 px, laget i nettleseren ved opplasting, som kort, søkeforslag
+  og miniatyrraden bruker. Målt i produksjonsbygget med 34 annonser: bildedata 5136 → 1080 KB, dekodingstid 453 → 25 ms,
+  dekodede piksler 147 → 24 MB. Miniatyren ligger i R2 ved siden av originalen (`.thumb.jpg`, ingen ny tabell), og
+  finnes den ikke, sendes originalen. Demobildene fikk miniatyrer. (Max, #155)
 - Demoannonser: 34 testannonser med 132 bilder fra Max (skalert til 1200 px JPEG, 19 MB), skrevet fra bildenotatene
   uten oppdiktede spesifikasjoner. Fem demostudenter og Skolens IT-avdeling, med `@studentmarkedet.invalid`, så ingen
   kan logge inn som dem. `scripts/seed.mjs` legger dem inn lokalt eller live (`--remote`) og fjerner dem (`--remove`).
