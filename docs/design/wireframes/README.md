@@ -157,6 +157,9 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   igjen for skjermlesere.
 - Annonsesiden på mobil (#167): tittelen er 24 px, det er lite luft over bildet, og miniatyrene ligger på én rad som rulles
   sidelengs (opptil 10 bilder). Fra 640 px brytes miniatyrene over flere linjer som før.
+- «Legg ut annonse» på mobil (#169): under 640 px er forhåndsvisningskortet skjult, og miniatyrraden med «Legg til» viser
+  og legger til bildene, så «Tittel» står nær toppen. Feilen om manglende bilde lenker til «Legg til», som får rød kant.
+  Fra 640 px er forhåndsvisningen som før.
 
 ## Skjermer
 

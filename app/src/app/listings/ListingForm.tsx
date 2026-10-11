@@ -15,7 +15,7 @@ const EMPTY: ListingFormValues = { title: "", description: "", category: "", typ
 
 // Feltet hver feil lenker til fra feilboksen. Radioknappene lenker til første valg.
 const FIELD_IDS: Record<string, string> = {
-  images: "listing-images",
+  images: "listing-images-add",
   title: "listing-title",
   description: "listing-description",
   category: "listing-category",

@@ -1,7 +1,8 @@
 "use client";
 // Bildene i «Legg ut annonse» (#141, mockup godkjent av Max 11.10). Klikk på bildeflaten eller «Legg til» åpner
 // filvelgeren, og på desktop kan bilder dras inn. Miniatyrer bare for bilder som er lagt til; klikk på en gjør
-// den til forsidebilde. Ingen forklaringstekst, bare feil (Max 11.10).
+// den til forsidebilde. Ingen forklaringstekst, bare feil (Max 11.10). Under 640 px er forhåndsvisningen skjult
+// (#169), så «Tittel» kommer høyt opp; da er det miniatyrraden med «Legg til» som viser og legger til bildene.
 import { useRef, useState, type DragEvent } from "react";
 import { MAX_IMAGES } from "@/db/schema";
 import { FieldError } from "@/app/shared/form-controls";
@@ -41,7 +42,6 @@ export function ImageField({ values, images, error }: Props) {
   ) : (
     <button
       type="button"
-      id="listing-images"
       onClick={open}
       {...drop}
       aria-describedby={error ? "images-error" : undefined}
@@ -58,7 +58,9 @@ export function ImageField({ values, images, error }: Props) {
 
   return (
     <div>
-      <ListingPreview values={values} photo={photo} invalid={Boolean(error)} />
+      <div className="max-sm:hidden">
+        <ListingPreview values={values} photo={photo} invalid={Boolean(error)} />
+      </div>
       <input
         ref={input}
         type="file"
@@ -98,7 +100,8 @@ export function ImageField({ values, images, error }: Props) {
             type="button"
             id="listing-images-add"
             onClick={open}
-            className="inline-flex size-[72px] flex-col items-center justify-center rounded-lg border-2 border-ink bg-surface text-sm leading-tight font-semibold transition-colors hover:bg-paper sm:size-[86px]"
+            aria-describedby={error ? "images-error" : undefined}
+            className={`inline-flex size-[72px] flex-col items-center justify-center rounded-lg border-2 ${error ? "border-danger" : "border-ink"} bg-surface text-sm leading-tight font-semibold transition-colors hover:bg-paper sm:size-[86px]`}
           >
             <span aria-hidden="true" className="text-3xl leading-none font-normal">
               +

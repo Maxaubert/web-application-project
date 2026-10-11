@@ -339,7 +339,9 @@ test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én k
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/listings/new");
-  const [narrow, narrowTitle] = [await box(preview), await box(title)];
+  // Under 640 px er forhåndsvisningen skjult (#169); miniatyrraden med «Legg til» står over feltene.
+  await expect(preview).toBeHidden();
+  const [narrow, narrowTitle] = [await box(page.getByRole("button", { name: "Legg til", exact: true })), await box(title)];
   expect(narrowTitle.y).toBeGreaterThan(narrow.y + narrow.height);
 });
 
