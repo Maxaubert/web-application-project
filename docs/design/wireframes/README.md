@@ -135,6 +135,8 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   1024 px står forhåndsvisningen over feltene (Max 11.10, #135; én kolonne over hele bredden ble prøvd og forkastet:
   bildet ble for stort). Knappene står nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse»;
   på mobil under hverandre med «Publiser annonse» øverst.
+- Hint står over feltet (for eksempel «Nevn eventuelle skader.»), og tittel og beskrivelse har en teller under
+  («0 av 80 tegn», «0 av 2000 tegn»). Beskrivelsesfeltet har fast størrelse og kan ikke dras større (Max 11.10, #135).
 - Bilder legges til ved å klikke på bildeflaten i forhåndsvisningen, ikke i et eget felt. Uten stiplede linjer eller
   ferdige tomme bildebokser (Max). Flaten er låst med en forklarende linje til opplasting kommer (#61).
 - Rekkefølge: Tittel, Beskrivelse, Kategori, Handelstype, Pris, Tilstand. Handelstype står rett før Pris, fordi

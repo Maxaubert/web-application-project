@@ -44,7 +44,11 @@ export function ListingForm() {
     const data = new FormData(event.currentTarget);
     startTransition(() => action(data));
   }
-  const invalid = (key: string) => (errors[key] ? { "aria-invalid": true, "aria-describedby": `${key}-error` } : {});
+  // Feltet beskrives av hintet, feilen og telleren som finnes, i den rekkefølgen de står på skjermen.
+  const describe = (id: string, key: string, parts: { hint?: boolean; count?: boolean }) => ({
+    "aria-invalid": errors[key] ? true : undefined,
+    "aria-describedby": [parts.hint && `${id}-hint`, errors[key] && `${key}-error`, parts.count && `${id}-count`].filter(Boolean).join(" ") || undefined,
+  });
 
   return (
     <form onSubmit={submit} noValidate className="flex flex-1 flex-col space-y-8">
@@ -57,11 +61,26 @@ export function ListingForm() {
 
         {/* @container: de små feltene står parvis når feltkolonnen er bred nok. */}
         <div className="@container mt-8 space-y-8 lg:mt-0">
-          <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" hint="3–80 tegn.">
-            <input id="listing-title" name="title" value={values.title} onChange={set("title")} maxLength={80} className={inputClass} {...invalid("title")} />
+          <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" hint="Minst 3 tegn." count={{ length: values.title.length, max: 80 }}>
+            <input
+              id="listing-title"
+              name="title"
+              value={values.title}
+              onChange={set("title")}
+              maxLength={80}
+              className={inputClass}
+              {...describe("listing-title", "title", { hint: true, count: true })}
+            />
           </Field>
 
-          <Field id="listing-description" label="Beskrivelse" error={errors.description} errorId="description-error" hint="Nevn eventuelle skader.">
+          <Field
+            id="listing-description"
+            label="Beskrivelse"
+            error={errors.description}
+            errorId="description-error"
+            hint="Nevn eventuelle skader."
+            count={{ length: values.description.length, max: 2000 }}
+          >
             <textarea
               id="listing-description"
               name="description"
@@ -69,14 +88,14 @@ export function ListingForm() {
               value={values.description}
               onChange={set("description")}
               maxLength={2000}
-              className={`${inputClass} h-auto py-3 leading-relaxed`}
-              {...invalid("description")}
+              className={`${inputClass} h-auto resize-none py-3 leading-relaxed`}
+              {...describe("listing-description", "description", { hint: true, count: true })}
             />
           </Field>
 
           <div className="grid gap-8 @3xl:grid-cols-2">
             <Field id="listing-category" label="Kategori" error={errors.category} errorId="category-error">
-              <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...invalid("category")}>
+              <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...describe("listing-category", "category", {})}>
                 <option value="">Velg kategori</option>
                 {entries(categoryLabels).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -106,7 +125,7 @@ export function ListingForm() {
                   value={values.price}
                   onChange={set("price")}
                   className={`${inputClass} sm:max-w-72`}
-                  {...invalid("price")}
+                  {...describe("listing-price", "price", { hint: true })}
                 />
               </Field>
             )}
@@ -136,18 +155,35 @@ export function ListingForm() {
   );
 }
 
-type FieldProps = { id: string; label: string; error?: string; errorId: string; hint?: string; children: ReactNode };
+type FieldProps = {
+  id: string;
+  label: string;
+  error?: string;
+  errorId: string;
+  hint?: string;
+  count?: { length: number; max: number };
+  children: ReactNode;
+};
 
-// Etikett, feilen over feltet (som i WF-05) og hint under.
-function Field({ id, label, error, errorId, hint, children }: FieldProps) {
+// Etikett, hint og feil over feltet, og teller under (Max 11.10, #135). Hint før feil, som hos GOV.UK.
+function Field({ id, label, error, errorId, hint, count, children }: FieldProps) {
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block font-semibold">
         {label}
       </label>
+      {hint && (
+        <p id={`${id}-hint`} className="text-base text-muted">
+          {hint}
+        </p>
+      )}
       <FieldError id={errorId} message={error} />
       {children}
-      {hint && <p className="text-base text-muted">{hint}</p>}
+      {count && (
+        <p id={`${id}-count`} className="text-base text-muted tabular-nums">
+          {count.length} av {count.max} tegn
+        </p>
+      )}
     </div>
   );
 }

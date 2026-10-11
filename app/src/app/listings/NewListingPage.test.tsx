@@ -24,6 +24,20 @@ describe("NewListingPage", () => {
     expect(html).toContain("Pris (kr)");
   });
 
+  // Hint over feltet og teller under (#135). Godkjent av Max 11.10.
+  it("tittel og beskrivelse har hint over feltet, teller under, og beskrivelsen kan ikke dras større", () => {
+    for (const [id, max] of [["listing-title", 80], ["listing-description", 2000]] as const) {
+      const hint = html.indexOf(`id="${id}-hint"`);
+      const field = html.indexOf(`id="${id}"`);
+      const count = html.indexOf(`id="${id}-count"`);
+      expect(hint).toBeGreaterThan(-1);
+      expect(hint).toBeLessThan(field);
+      expect(field).toBeLessThan(count);
+      expect(html).toContain(`0 av ${max} tegn`);
+    }
+    expect(html).toMatch(/<textarea[^>]*class="[^"]*resize-none/);
+  });
+
   it("knappen «Legg ut annonse» i toppen er markert som siden man står på", () => {
     expect(html).toMatch(/<a[^>]*href="\/listings\/new"[^>]*aria-current="page"/);
   });
