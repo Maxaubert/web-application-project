@@ -21,6 +21,15 @@ describe("starter response headers", () => {
     expect(headers.get("Permissions-Policy")).toBe("geolocation=(), microphone=(), camera=()");
   });
 
+  // Bildefeltet (#141). Godkjent av Max 11.10.
+  it("allows blob: only for images, workers and their loading, so image previews and HEIC conversion work", () => {
+    const csp = headersFor(false).get("Content-Security-Policy")!;
+    expect(csp).toContain("img-src 'self' blob:;");
+    expect(csp).toContain("worker-src 'self' blob:;");
+    expect(csp).toContain("connect-src 'self' blob:;");
+    expect(csp).toMatch(/^default-src 'self';/);
+  });
+
   it("does not force HTTPS on the local development server", () => {
     expect(headersFor(true).has("Strict-Transport-Security")).toBe(false);
   });

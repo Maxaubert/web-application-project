@@ -38,6 +38,12 @@ Drizzle-konfigurasjon og migrasjonskommandoer er klare; null tabeller gir ingen
 migrasjoner. Ingen eksempelbrukere, annonser, avtaler, auth-tabeller eller seed er laget.
 Det er heller ikke skrevet en datatilgangsmodul før modellen og bruken er avklart.
 
+## Tillegg 11.10.2026: bildefeltet (#141)
+
+Ny avhengighet med låst versjon: `heic-to` 1.5.2 (HEIC fra iPhone til bilde i nettleseren, libheif som WebAssembly,
+LGPL-3.0). Lastes bare når noen velger et HEIC-bilde (egen fil på 3 MB i bygget). 1.6.x ble ikke valgt: seks
+versjoner på én time 01.10, for ferskt.
+
 ## Tillegg 05.10.2026: innlogging (#47)
 
 Nye avhengigheter, alle med låst versjon: `better-auth` (innlogging), `libphonenumber-js`

@@ -1,9 +1,12 @@
 // Nettlesertester som innlogget bruker (#94), mot produksjonsbygget. Økten og testannonsene legges inn
 // av global-setup.ts. Godkjent av Max 10.10.
+import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { AUTH_FILE, TEST_IMAGE_PATH } from "./global-setup";
 
 test.use({ storageState: AUTH_FILE });
+
+const FIXTURE_IMAGE = "e2e/fixtures/test.jpg";
 
 test("innlogget bruker ser annonsene og kan åpne en annonse fra kortet", async ({ page }) => {
   await page.goto("/");
@@ -195,6 +198,8 @@ test.describe("legg ut annonse", () => {
     await page.getByLabel("Pris per uke (kr, valgfri)").fill("100");
     await page.getByRole("radio", { name: "Brukt" }).check();
     await expect(page.getByText("100 kr/uke")).toBeVisible();
+    await page.getByLabel("Bilder").setInputFiles(FIXTURE_IMAGE);
+    await expect(page.getByRole("button", { name: "Publiser annonse" })).toBeEnabled();
 
     await page.getByRole("button", { name: "Publiser annonse" }).click();
 
@@ -213,11 +218,56 @@ test.describe("legg ut annonse", () => {
 
     await page.getByRole("button", { name: "Publiser annonse" }).click();
 
-    await expect(page.getByRole("heading", { name: "Rett 5 feil før du publiserer" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Rett 6 feil før du publiserer" })).toBeVisible();
+    await expect(page.locator("#images-error")).toHaveText("Legg til minst ett bilde");
     await expect(page.locator("[aria-labelledby=error-summary-title]")).toBeFocused();
     await expect(page.getByRole("radio", { name: "Lån" })).toBeChecked();
     await expect(page.getByLabel("Tittel")).toHaveValue("ab");
     await expect(page).toHaveURL(/\/listings\/new$/);
+  });
+
+  // Bildefeltet (#141). Godkjent av Max 11.10.
+  test("bilder blir miniatyrer, et klikk gjør et bilde til forsidebilde, og ✕ fjerner det", async ({ page }) => {
+    const [first, second] = [page.getByRole("button", { name: "Bilde 1", exact: true }), page.getByRole("button", { name: "Bilde 2", exact: true })];
+    await page.getByLabel("Bilder").setInputFiles([FIXTURE_IMAGE, FIXTURE_IMAGE]);
+
+    await expect(page.getByText("Forsidebilde")).toBeVisible();
+    await expect(page.getByText("Gjør klar …")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Legg til bilder" })).toHaveCount(0);
+    await expect(first).toHaveAttribute("aria-pressed", "true");
+    const secondUrl = await second.evaluate((el) => getComputedStyle(el).backgroundImage);
+
+    await second.click();
+    expect(await first.evaluate((el) => getComputedStyle(el).backgroundImage)).toBe(secondUrl);
+
+    await page.getByRole("button", { name: "Fjern bilde 2" }).click();
+    await page.getByRole("button", { name: "Fjern bilde 1" }).click();
+    await expect(page.getByRole("button", { name: "Legg til bilder" })).toBeVisible();
+  });
+
+  test("HEIC fra iPhone gjøres om til JPEG og skaleres ned til høyst 2000 px", async ({ page }) => {
+    // 3000 × 2000 HEIC uten filtype, slik Windows ofte sender iPhone-bilder.
+    await page.getByLabel("Bilder").setInputFiles({ name: "IMG_0001.HEIC", mimeType: "", buffer: readFileSync("e2e/fixtures/test.heic") });
+
+    const thumb = page.getByRole("button", { name: "Bilde 1", exact: true });
+    await expect(page.getByText("Gjør klar …")).toHaveCount(0, { timeout: 20_000 });
+    const size = await thumb.evaluate(async (el) => {
+      const url = getComputedStyle(el).backgroundImage.slice(5, -2);
+      const blob = await (await fetch(url)).blob();
+      const bitmap = await createImageBitmap(blob);
+      return { type: blob.type, width: bitmap.width, height: bitmap.height };
+    });
+    expect(size).toEqual({ type: "image/jpeg", width: 2000, height: 1333 });
+  });
+
+  test("filer som ikke er bilder, legges ikke til og står i en rød boks", async ({ page }) => {
+    await page.getByLabel("Bilder").setInputFiles([
+      { name: "test.jpg", mimeType: "image/jpeg", buffer: readFileSync(FIXTURE_IMAGE) },
+      { name: "ferie.mov", mimeType: "video/quicktime", buffer: Buffer.from("ikke et bilde") },
+    ]);
+
+    await expect(page.getByRole("alert")).toHaveText("1 fil ble ikke lagt til:ferie.mov: bare bilder (JPEG, PNG, WebP eller HEIC)");
+    await expect(page.getByRole("button", { name: /^Bilde \d$/ })).toHaveCount(1);
   });
 });
 
