@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Bilder, første PR: R2-bucket `IMAGES`, tabellen `listing_image` med migrasjon, `createListing` tar imot opptil 10
+  bilder (filtype fra innholdet, høyst 5 MB) og rydder bort filene hvis lagringen feiler, og `GET /images/...` bare for
+  innloggede. Bilder er valgfrie til skjemaet kan sende dem. Valgt etter grilling: R2, ikke D1. (Max, #138)
 - «Legg ut annonse» fyller siden: kortet går over hele bredden og helt ned, to kolonner fra 1024 px med forhåndsvisningen til venstre og feltene til høyre,
   små felt parvis. Én kolonne over hele bredden ble prøvd side om side og forkastet. (Max, #135)
 - «Legg ut annonse» (FK-03) uten bilder: skjermbildet `/listings/new` etter mockup 13 (valgt blant tolv helsidemockups),

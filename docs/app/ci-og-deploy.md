@@ -53,12 +53,15 @@ Fra `app/`, innlogget med `npx wrangler login`:
 
 ```powershell
 npm run db:migrate:remote   # migrasjoner til D1 i skyen (webapp-db)
+npx wrangler r2 bucket create studentmarkedet-images   # én gang, før første release med bilder (#138)
 npm run deploy              # bygg og last opp Worker «webapp»
 npx wrangler secret put BETTER_AUTH_SECRET   # bare ved ny hemmelighet; lagres kryptert hos Cloudflare
 npx wrangler secret put RESEND_API_KEY       # Resend-nøkkel med bare sendetilgang
 ```
 
-- `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig). `remote: false`
+- `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig), og binding `IMAGES` → R2
+  `studentmarkedet-images` for annonsebildene (#138). Bucketen må finnes før deploy, ellers feiler den; lokalt emulerer
+  wrangler den. `remote: false`
   betyr at `npm run dev`, tester og CI alltid bruker lokal kopi.
 - `.dev.vars` lastes ikke opp. I produksjon sender appen koder med **Resend** fra
   `noreply@mail.studentmarkedet.org` (`LOGIN_CODE_DELIVERY=resend` og `EMAIL_FROM` under `vars` i

@@ -6,6 +6,8 @@ import { createHmac, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 export const AUTH_FILE = "e2e/.auth/user.json";
+// Et testbilde i den lokale R2-emuleringen, så bildeadressen kan testes mot ekte lagring (#138).
+export const TEST_IMAGE_PATH = "/images/listings/e2e00000-0000-4000-8000-000000000001/e2e00000-0000-4000-8000-000000000002.jpg";
 const SQL_FILE = "e2e/.auth/setup.sql";
 const SESSION_MS = 60 * 60 * 1000;
 
@@ -35,6 +37,10 @@ export default function globalSetup() {
          ('e2e-hammock', 'e2e-user', 'loan', 'Hengekøye', 'Til turen.', 'sports', 'used', 30, 'active');`,
   );
   execSync(`npx wrangler d1 execute DB --local --file ${SQL_FILE}`, { stdio: "ignore" });
+  const imageKey = TEST_IMAGE_PATH.replace("/images/", "");
+  execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --file e2e/fixtures/test.jpg --content-type image/jpeg`, {
+    stdio: "ignore",
+  });
 
   // Samme format som better-call: token.base64(HMAC-SHA256(hemmelighet, token)), URL-kodet.
   const signature = createHmac("sha256", localSecret()).update(token).digest("base64");
