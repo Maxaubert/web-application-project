@@ -2,17 +2,18 @@
 // Serverkomponent, bare visning. Handlingsknappen kommer med bud- og lånesidene.
 import type { Listing } from "@/db/schema";
 import { formatPrice } from "./format-type-and-price";
-import { ImagePlaceholder } from "./ImagePlaceholder";
+import { ListingGallery } from "./ListingGallery";
 import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 
-type ListingDetailsProps = { listing: Listing; ownerName: string };
+// images: adressene til bildene, forsidebildet først (#150).
+type ListingDetailsProps = { listing: Listing; ownerName: string; images: string[] };
 
 // Overskriften i eierboksen, som i wireframene: «Selger» ved salg, «Eier» ved lån. Gis bort er ikke tegnet (#64).
 const ownerHeadings: Record<Listing["type"], string> = { sale: "Selger", loan: "Eier", giveaway: "Eier" };
 
 const pill = "inline-block rounded-full border-2 px-3 py-0.5 text-sm font-semibold";
 
-export function ListingDetails({ listing, ownerName }: ListingDetailsProps) {
+export function ListingDetails({ listing, ownerName, images }: ListingDetailsProps) {
   const price = formatPrice(listing);
 
   return (
@@ -21,7 +22,7 @@ export function ListingDetails({ listing, ownerName }: ListingDetailsProps) {
         <span aria-hidden="true">‹</span> Tilbake til annonser
       </a>
       <div className="mt-6 grid gap-8 lg:grid-cols-[3fr_2fr] lg:gap-12">
-        <ImagePlaceholder className="aspect-[4/3] rounded-xl" />
+        <ListingGallery images={images} title={listing.title} />
         <div>
           <p className="flex flex-wrap gap-2">
             <span className={`${pill} border-ink`}>{typeLabels[listing.type]}</span>

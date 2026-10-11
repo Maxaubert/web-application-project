@@ -6,8 +6,11 @@ import { createHmac, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 export const AUTH_FILE = "e2e/.auth/user.json";
-// Et testbilde i den lokale R2-emuleringen, så bildeadressen kan testes mot ekte lagring (#138).
-export const TEST_IMAGE_PATH = "/images/listings/e2e00000-0000-4000-8000-000000000001/e2e00000-0000-4000-8000-000000000002.jpg";
+// Testbilder i den lokale R2-emuleringen, så bildeadressen kan testes mot ekte lagring (#138). De hører til
+// testannonsen «Skrivebordslampe», som viser bildene på kortet og annonsesiden (#150).
+export const TEST_LISTING_ID = "e2e00000-0000-4000-8000-000000000001";
+export const TEST_IMAGE_PATH = `/images/listings/${TEST_LISTING_ID}/e2e00000-0000-4000-8000-000000000002.jpg`;
+const SECOND_IMAGE_PATH = `/images/listings/${TEST_LISTING_ID}/e2e00000-0000-4000-8000-000000000003.jpg`;
 const SQL_FILE = "e2e/.auth/setup.sql";
 const SESSION_MS = 60 * 60 * 1000;
 
@@ -34,13 +37,21 @@ export default function globalSetup() {
      INSERT OR REPLACE INTO listing (id, owner_id, type, title, description, category, condition, price, status)
        VALUES
          ('e2e-calc', 'e2e-user', 'sale', 'Kalkulator Casio fx-991', 'Lite brukt.', 'electronics', 'like_new', 250, 'active'),
-         ('e2e-hammock', 'e2e-user', 'loan', 'Hengekøye', 'Til turen.', 'sports', 'used', 30, 'active');`,
+         ('e2e-hammock', 'e2e-user', 'loan', 'Hengekøye', 'Til turen.', 'sports', 'used', 30, 'active'),
+         ('${TEST_LISTING_ID}', 'e2e-user', 'sale', 'Skrivebordslampe', 'Med LED-pære.', 'furniture', 'used', 120, 'active');
+     DELETE FROM listing_image WHERE listing_id = '${TEST_LISTING_ID}';
+     INSERT INTO listing_image (id, listing_id, key, position)
+       VALUES
+         ('e2e-image-1', '${TEST_LISTING_ID}', '${TEST_IMAGE_PATH.replace("/images/", "")}', 0),
+         ('e2e-image-2', '${TEST_LISTING_ID}', '${SECOND_IMAGE_PATH.replace("/images/", "")}', 1);`,
   );
   execSync(`npx wrangler d1 execute DB --local --file ${SQL_FILE}`, { stdio: "ignore" });
-  const imageKey = TEST_IMAGE_PATH.replace("/images/", "");
-  execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --file e2e/fixtures/test.jpg --content-type image/jpeg`, {
-    stdio: "ignore",
-  });
+  for (const path of [TEST_IMAGE_PATH, SECOND_IMAGE_PATH]) {
+    const imageKey = path.replace("/images/", "");
+    execSync(`npx wrangler r2 object put studentmarkedet-images/${imageKey} --local --file e2e/fixtures/test.jpg --content-type image/jpeg`, {
+      stdio: "ignore",
+    });
+  }
 
   // Samme format som better-call: token.base64(HMAC-SHA256(hemmelighet, token)), URL-kodet.
   const signature = createHmac("sha256", localSecret()).update(token).digest("base64");

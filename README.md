@@ -88,7 +88,9 @@ Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
 | Legg inn testannonser lokalt (aldri i skyen) | `npm run db:seed:local` |
 
 Migrasjonene ligger i `app/drizzle/`: `0000_auth.sql` har innloggingstabellene, `0001_listing.sql` annonsetabellen.
-Testdataene (`app/scripts/seed-local.sql`) er en testbruker og seks annonser, én per tilfelle kortet må vise.
+Testdataene (`app/scripts/seed-local.sql`) er en testbruker og fire annonser: salg, gis bort, solgt og tatt ned.
+Bilder i `app/scripts/seed-images/` (`matematikk.jpg`, `matematikk-2.jpg`, `kontorstol.jpg` …) legges på annonsene
+av `scripts/seed-images.mjs`; uten mappen får de plassholderen.
 Playwright starter og stopper sin egen preview på port 4173; porten må være ledig.
 På Linux installeres browseravhengighetene med `npx playwright install --with-deps chromium`.
 CI utfører installasjon og hele kontrollrekken. Startertester er ikke bevis på at

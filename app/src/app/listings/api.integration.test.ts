@@ -2,7 +2,7 @@
 // minnet med appens migrasjoner i stedet for D1. Vakten testes i guards.test.ts. Godkjent av Max 10.10.
 import type { RequestInfo } from "rwsdk/worker";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { listing, user } from "@/db/schema";
+import { listing, listingImage, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { OWNER_ID, validListing } from "@/test/test-listings";
@@ -29,7 +29,21 @@ beforeEach(async () => {
 });
 
 describe("GET /api/listings", () => {
-  it("gir 200 med treffene og bare de fem feltene", async () => {
+  // Forsidebildet til søkeforslagene (#150). Godkjent av Max 11.10.
+  it("sender adressen til forsidebildet (posisjon 0) som coverUrl, men ikke de andre bildene", async () => {
+    await holder.db.insert(listing).values(validListing({ id: "calc", title: "Kalkulator" }));
+    await holder.db.insert(listingImage).values([
+      { listingId: "calc", key: "listings/calc/b.jpg", position: 1 },
+      { listingId: "calc", key: "listings/calc/a.jpg", position: 0 },
+    ]);
+
+    const { body } = await get("?q=kalk");
+
+    expect(body.listings).toMatchObject([{ id: "calc", coverUrl: "/images/listings/calc/a.jpg" }]);
+    expect(JSON.stringify(body)).not.toContain("b.jpg");
+  });
+
+  it("gir 200 med treffene og bare de seks feltene", async () => {
     await holder.db.insert(listing).values([
       validListing({ id: "calc", title: "Kalkulator", description: "Hemmelig notat." }),
       validListing({ id: "tent", title: "Telt for to" }),
@@ -38,7 +52,7 @@ describe("GET /api/listings", () => {
     const { status, body } = await get("?q=kalk");
 
     expect(status).toBe(200);
-    expect(body.listings).toEqual([{ id: "calc", title: "Kalkulator", type: "sale", price: 250, status: "active" }]);
+    expect(body.listings).toEqual([{ id: "calc", title: "Kalkulator", type: "sale", price: 250, status: "active", coverUrl: null }]);
     const json = JSON.stringify(body);
     for (const secret of [OWNER_ID, "Hemmelig notat.", "kari@hiof.no"]) {
       expect(json).not.toContain(secret);

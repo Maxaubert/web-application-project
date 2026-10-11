@@ -2,7 +2,7 @@
 // av global-setup.ts. Godkjent av Max 10.10.
 import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
-import { AUTH_FILE, TEST_IMAGE_PATH } from "./global-setup";
+import { AUTH_FILE, TEST_IMAGE_PATH, TEST_LISTING_ID } from "./global-setup";
 
 test.use({ storageState: AUTH_FILE });
 
@@ -321,6 +321,45 @@ test("innlogget bruker får annonsebildet fra R2, og ukjent bilde gir 404", asyn
   expect(response.headers()["content-type"]).toBe("image/jpeg");
   expect(Buffer.from(await response.body()).toString("hex", 0, 3)).toBe("ffd8ff");
 
-  const missing = await page.request.get(TEST_IMAGE_PATH.replace("0002.jpg", "0003.jpg"));
+  const missing = await page.request.get(TEST_IMAGE_PATH.replace("0002.jpg", "0009.jpg"));
   expect(missing.status()).toBe(404);
+});
+
+// Bildene i appen (#150). Godkjent av Max 11.10.
+const loaded = (img: import("@playwright/test").Locator) => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0);
+
+test("kortet og søkeforslaget viser forsidebildet, og annonser uten bilde har plassholderen", async ({ page }) => {
+  await page.goto("/");
+  const card = page.getByRole("link", { name: /Skrivebordslampe/ });
+  const cover = card.locator("img");
+  await expect(cover).toHaveAttribute("src", TEST_IMAGE_PATH);
+  await cover.scrollIntoViewIfNeeded();
+  await expect.poll(() => loaded(cover)).toBe(true);
+  await expect(page.getByRole("link", { name: /Kalkulator Casio fx-991/ }).locator("img")).toHaveCount(0);
+
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Søk i tittel, beskrivelse og selger").fill("skrivebord");
+  const option = page.getByRole("option", { name: /Skrivebordslampe/ });
+  await expect(option.locator("img")).toHaveAttribute("src", TEST_IMAGE_PATH);
+});
+
+test("annonsesiden viser forsidebildet stort, og et klikk på en miniatyr viser den stort", async ({ page }) => {
+  await page.goto(`/listings/${TEST_LISTING_ID}`);
+  const big = page.getByRole("img", { name: /^Skrivebordslampe/ });
+  await expect(big).toHaveAttribute("src", TEST_IMAGE_PATH);
+  await expect.poll(() => loaded(big)).toBe(true);
+  await expect(page.getByRole("button", { name: "Vis bilde 1 av 2" })).toHaveAttribute("aria-pressed", "true");
+
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Vis bilde 2 av 2" }).click();
+
+  await expect(big).toHaveAttribute("src", TEST_IMAGE_PATH.replace("0002.jpg", "0003.jpg"));
+  await expect(big).toHaveAccessibleName("Skrivebordslampe, bilde 2 av 2");
+  await expect(page.getByRole("button", { name: "Vis bilde 2 av 2" })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("annonse uten bilder viser plassholderen og ingen miniatyrer", async ({ page }) => {
+  await page.goto("/listings/e2e-calc");
+  await expect(page.locator("main img")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^Vis bilde/ })).toHaveCount(0);
 });

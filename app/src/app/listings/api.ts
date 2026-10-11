@@ -4,6 +4,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 import { z } from "zod";
 import { db } from "@/db";
+import { imageUrl } from "@/app/images/image-url";
 import { matchesFilters } from "./filter-listings";
 import { getActiveListings, type ListingWithOwner } from "./queries";
 import { pricesInOrder, searchFields, searchInput } from "./search-params";
@@ -14,10 +15,10 @@ const apiSchema = searchFields
   .extend({ limit: z.coerce.number().int().min(1).max(50).optional() })
   .refine(pricesInOrder);
 
-// Bare disse feltene sendes; nye kolonner må legges til her med vilje.
-function toJson({ listing }: ListingWithOwner) {
+// Bare disse feltene sendes; nye kolonner må legges til her med vilje. coverUrl til søkeforslagene (#150).
+function toJson({ listing, coverKey }: ListingWithOwner) {
   const { id, title, type, price, status } = listing;
-  return { id, title, type, price, status };
+  return { id, title, type, price, status, coverUrl: coverKey && imageUrl(coverKey) };
 }
 
 export async function getListings({ request }: RequestInfo) {

@@ -19,7 +19,7 @@ function row(id: string, title: string, description: string, ownerName: string):
     createdAt: new Date("2026-10-10"),
     updatedAt: new Date("2026-10-10"),
   };
-  return { listing, ownerName };
+  return { listing, ownerName, coverKey: null };
 }
 
 const rows = [

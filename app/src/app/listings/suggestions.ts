@@ -7,7 +7,7 @@ export const SUGGESTION_LIMIT = 5;
 export const DEBOUNCE_MS = 200;
 
 // Feltene API-et sender for hver annonse (GET /api/listings, #98) som forslagene bruker.
-export type Suggestion = Pick<Listing, "id" | "title" | "type" | "price">;
+export type Suggestion = Pick<Listing, "id" | "title" | "type" | "price"> & { coverUrl: string | null };
 
 // Adressen forslagene hentes fra, eller null når søkeordet er for kort til å hente.
 export function suggestionsUrl(q: string): string | null {

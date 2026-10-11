@@ -10,6 +10,9 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Bilder, tredje PR: forsidebildet vises på kortene og i søkeforslagene, og annonsesiden har stort bilde med
+  miniatyrer (klikk bytter), etter godkjent mockup. Plassholder bare uten bilder. `GET /api/listings` sender
+  `coverUrl`. Testannonsene har UUID-er og får bilder fra `scripts/seed-images/`. (Max, #150)
 - «Legg ut annonse»: feltparene står side om side allerede fra 1280 px, så feltkolonnen blir omtrent like høy som
   forhåndsvisningen, og prishintene («Hele kroner.», «Tomt betyr gratis lån.») er fjernet. Mobiltilpasning samlet i #147. (Max, #146)
 - Bilder, andre PR: bildefeltet i «Legg ut annonse» etter godkjent mockup. Klikk eller dra inn, miniatyrer med ✕,
