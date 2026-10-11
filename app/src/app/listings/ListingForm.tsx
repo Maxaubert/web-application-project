@@ -9,13 +9,14 @@ import { createListing } from "./actions";
 import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 import type { ListingFormValues } from "./listing-schema";
 import { ImageField } from "./ImageField";
+import { ListingPreviewDialog } from "./ListingPreviewDialog";
 import { useListingImages } from "./useListingImages";
 
 const EMPTY: ListingFormValues = { title: "", description: "", category: "", type: "sale", condition: "", price: "" };
 
 // Feltet hver feil lenker til fra feilboksen. Radioknappene lenker til første valg.
 const FIELD_IDS: Record<string, string> = {
-  images: "listing-images",
+  images: "listing-images-add",
   title: "listing-title",
   description: "listing-description",
   category: "listing-category",
@@ -29,10 +30,11 @@ const PRICE_LABELS = { sale: "Pris (kr)", loan: "Pris per uke (kr, valgfri)" };
 
 const entries = <K extends string>(labels: Record<K, string>) => Object.entries(labels) as [K, string][];
 
-export function ListingForm() {
+export function ListingForm({ ownerName }: { ownerName: string }) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(createListing, {});
   const errors = asFormState(result).fieldErrors ?? {};
   const [values, setValues] = useState(EMPTY);
+  const [previewing, setPreviewing] = useState(false);
   const images = useListingImages();
 
   const set = (key: keyof ListingFormValues) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -42,6 +44,7 @@ export function ListingForm() {
   // handlingen, og da hoppet radioknappene tilbake til standardvalget mens resten sto igjen.
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setPreviewing(false);
     const data = new FormData(event.currentTarget);
     // Bildene sendes ferdig behandlet og i rekkefølge, med forsidebildet først (#141).
     for (const image of images.images) {
@@ -51,6 +54,7 @@ export function ListingForm() {
     }
     startTransition(() => action(data));
   }
+  const publishLabel = pending ? "Publiserer …" : images.busy ? "Gjør klar bilder …" : "Publiser";
   // Feltet beskrives av telleren og av feilen, i den rekkefølgen de står på skjermen.
   const describe = (id: string, key: string, parts: { count?: boolean }) => ({
     "aria-invalid": errors[key] ? true : undefined,
@@ -144,19 +148,35 @@ export function ListingForm() {
         </div>
       </div>
 
-      {/* Knappene nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse» (Max 11.10, #135).
-          På mobil under hverandre med «Publiser annonse» øverst. */}
+      <ListingPreviewDialog
+        open={previewing}
+        onClose={() => setPreviewing(false)}
+        values={values}
+        images={images.images.map((image) => ({ src: image.url, thumb: image.thumbUrl ?? image.url }))}
+        ownerName={ownerName}
+        busy={pending || images.busy}
+        publishLabel={publishLabel}
+      />
+      {/* Knappene nederst til høyre i kortet: «Avbryt», «Forhåndsvis» og «Publiser» (Max 11.10, #135; #171).
+          På mobil under hverandre med «Publiser» øverst. */}
       <div className="flex flex-col-reverse gap-3 pt-2 sm:mt-auto sm:flex-row sm:justify-end sm:pt-10">
         <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
           Avbryt
         </a>
+        <button
+          type="button"
+          onClick={() => setPreviewing(true)}
+          className="h-12 rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper"
+        >
+          Forhåndsvis
+        </button>
         <button
           type="submit"
           disabled={pending || images.busy}
           aria-busy={pending || images.busy}
           className="h-12 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
         >
-          {pending ? "Publiserer …" : images.busy ? "Gjør klar bilder …" : "Publiser annonse"}
+          {publishLabel}
         </button>
       </div>
     </form>

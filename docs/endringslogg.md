@@ -8,8 +8,17 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-12
+
+- «Legg ut annonse» (#171): ny knapp «Forhåndsvis» (mobil og desktop) som viser den ekte annonsesiden med det som er skrevet, i en dialog
+  der man kan gå tilbake med «Avbryt» eller publisere. Knappen «Publiser annonse» heter nå «Publiser». (Max, #171)
+
 ## 2026-10-11
 
+- Mobil (#167, del av #147): annonsesiden har 24 px tittel, mindre luft over bildet og miniatyrene på én rad som rulles sidelengs
+  under 640 px. Fra 640 px som før. (Max, #167)
+- Mobil (#169, del av #147): «Legg ut annonse» har ingen forhåndsvisning under 640 px, så «Tittel» står nær toppen; bildene legges til
+  i miniatyrraden, og feilen om manglende bilde peker på «Legg til». Fra 640 px som før. (Max, #169)
 - Mobil (#164, del av #147): søkefeltet og «Filtre» står på én rad under 640 px, med forstørrelsesglass i feltet. Etiketten og
   «Søk»-knappen skjules visuelt (de finnes for skjermlesere og Enter), og tastaturet får søketast. «Ved lån gjelder prisen per
   uke.» er fjernet fra filterarket (ingen hjelpetekst). Fra 640 px er søkefeltet som før. (Max, #164)

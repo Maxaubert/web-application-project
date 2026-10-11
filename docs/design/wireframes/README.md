@@ -136,8 +136,10 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   tilstand) som følger med mens man skriver. Fra 1024 px står den til venstre og blir stående mens man ruller, med
   feltene til høyre; Kategori og Handelstype, og Pris og Tilstand, står parvis når feltkolonnen er bred nok. Under
   1024 px står forhåndsvisningen over feltene (Max 11.10, #135; én kolonne over hele bredden ble prøvd og forkastet:
-  bildet ble for stort). Knappene står nederst til høyre i kortet, «Avbryt» til venstre for «Publiser annonse»;
-  på mobil under hverandre med «Publiser annonse» øverst.
+  bildet ble for stort). Knappene står nederst til høyre i kortet, «Avbryt», «Forhåndsvis» og «Publiser» (#171);
+  på mobil under hverandre med «Publiser» øverst. «Forhåndsvis» åpner selve annonsesiden med det som er skrevet, selgeren
+  og bildene i en dialog over skjemaet (mockup godkjent av Max 12.10). Dialogen har bare «Avbryt», som går tilbake til
+  skjemaet med alt beholdt, og «Publiser». Gjelder mobil og desktop; kortet ved siden av skjemaet på desktop beholdes.
 - Tittel og beskrivelse har bare en teller over feltet («0 av 80 tegn», «0 av 2000 tegn»), ingen hint. Prisen har heller
   ikke hint (Max 11.10, #146). Beskrivelsesfeltet har fast størrelse og kan ikke dras større (Max 11.10, #135).
 - Kategori og Handelstype, og Pris og Tilstand, står side om side fra 1280 px: radioknappene får sin naturlige bredde og
@@ -155,6 +157,11 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   44 px (pluss og utlogging, #162; mockup godkjent av Max 11.10), og sidetitlene «Annonser» og «Legg ut annonse» er 24 px
   i stedet for 36 px. Navnene står igjen for skjermlesere. På smale mobiler under 416 px vises bare logoen; navnet står
   igjen for skjermlesere.
+- Annonsesiden på mobil (#167): tittelen er 24 px, det er lite luft over bildet, og miniatyrene ligger på én rad som rulles
+  sidelengs (opptil 10 bilder). Fra 640 px brytes miniatyrene over flere linjer som før.
+- «Legg ut annonse» på mobil (#169): under 640 px er forhåndsvisningskortet skjult, og miniatyrraden med «Legg til» viser
+  og legger til bildene, så «Tittel» står nær toppen. Feilen om manglende bilde lenker til «Legg til», som får rød kant.
+  Fra 640 px er forhåndsvisningen som før.
 
 ## Skjermer
 
