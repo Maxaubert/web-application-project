@@ -8,12 +8,14 @@ import { FieldError, inputClass } from "@/app/shared/form-controls";
 import { createListing } from "./actions";
 import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 import type { ListingFormValues } from "./listing-schema";
-import { ListingPreview } from "./ListingPreview";
+import { ImageField } from "./ImageField";
+import { useListingImages } from "./useListingImages";
 
 const EMPTY: ListingFormValues = { title: "", description: "", category: "", type: "sale", condition: "", price: "" };
 
 // Feltet hver feil lenker til fra feilboksen. Radioknappene lenker til første valg.
 const FIELD_IDS: Record<string, string> = {
+  images: "listing-images",
   title: "listing-title",
   description: "listing-description",
   category: "listing-category",
@@ -33,6 +35,7 @@ export function ListingForm() {
   const [result, action, pending] = useActionState<ActionResult, FormData>(createListing, {});
   const errors = asFormState(result).fieldErrors ?? {};
   const [values, setValues] = useState(EMPTY);
+  const images = useListingImages();
 
   const set = (key: keyof ListingFormValues) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setValues({ ...values, [key]: event.target.value });
@@ -42,6 +45,8 @@ export function ListingForm() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    // Bildene sendes ferdig behandlet og i rekkefølge, med forsidebildet først (#141).
+    for (const image of images.images) if (image.file) data.append("images", image.file);
     startTransition(() => action(data));
   }
   // Feltet beskrives av telleren eller hintet og av feilen, i den rekkefølgen de står på skjermen.
@@ -56,7 +61,7 @@ export function ListingForm() {
       {/* Fra 1024 px: forhåndsvisningen til venstre, som blir stående mens man ruller, og feltene til høyre (#135). */}
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-12">
         <div className="lg:sticky lg:top-6">
-          <ListingPreview values={values} />
+          <ImageField values={values} images={images} error={errors.images} />
         </div>
 
         {/* @container: de små feltene står parvis når feltkolonnen er bred nok. */}
@@ -143,11 +148,11 @@ export function ListingForm() {
         </a>
         <button
           type="submit"
-          disabled={pending}
-          aria-busy={pending}
+          disabled={pending || images.busy}
+          aria-busy={pending || images.busy}
           className="h-12 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
         >
-          {pending ? "Publiserer …" : "Publiser annonse"}
+          {pending ? "Publiserer …" : images.busy ? "Gjør klar bilder …" : "Publiser annonse"}
         </button>
       </div>
     </form>

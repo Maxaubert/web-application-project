@@ -5,7 +5,8 @@ import type { ListingFormValues } from "./listing-schema";
 import { ListingPreview } from "./ListingPreview";
 
 const EMPTY: ListingFormValues = { title: "", description: "", category: "", type: "sale", condition: "", price: "" };
-const render = (values: Partial<ListingFormValues>) => renderToStaticMarkup(<ListingPreview values={{ ...EMPTY, ...values }} />);
+const render = (values: Partial<ListingFormValues>, invalid = false) =>
+  renderToStaticMarkup(<ListingPreview values={{ ...EMPTY, ...values }} photo={<div id="photo" />} invalid={invalid} />);
 
 describe("ListingPreview", () => {
   it("viser det som er skrevet, med samme pristekst som annonsesiden", () => {
@@ -22,11 +23,14 @@ describe("ListingPreview", () => {
     expect(render({ type: "loan" })).toContain("Gratis");
   });
 
-  it("gis bort viser ingen pris, og bildeknappen er låst med forklaring", () => {
-    const html = render({ type: "giveaway", price: "500" });
+  it("gis bort viser ingen pris", () => {
+    expect(render({ type: "giveaway", price: "500" })).not.toContain("500");
+  });
 
-    expect(html).not.toContain("500");
-    expect(html).toMatch(/<button[^>]*disabled=""[^>]*aria-describedby="images-soon"/);
-    expect(html).toContain("Bildeopplasting kommer snart.");
+  // Bildeflaten fra ImageField og rød kant uten bilde (#141). Godkjent av Max 11.10.
+  it("viser bildeflaten øverst i kortet, og får rød kant når bildet mangler", () => {
+    expect(render({})).toMatch(/^<div class="[^"]*border-hairline[^"]*"><div id="photo"><\/div>/);
+    expect(render({}, true)).toMatch(/^<div class="[^"]*border-2 border-danger/);
+    expect(render({}, true)).not.toMatch(/^<div class="[^"]*border-hairline/);
   });
 });

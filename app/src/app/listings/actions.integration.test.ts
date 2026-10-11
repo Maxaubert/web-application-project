@@ -23,7 +23,8 @@ vi.mock("@/app/images/bucket", () => ({
   },
 }));
 
-function formData(fields: Record<string, string>, images: File[] = []) {
+// Et gyldig skjema har minst ett bilde (#141).
+function formData(fields: Record<string, string>, images: File[] = [imageFile("bilde.jpg")]) {
   const data = new FormData();
   for (const [key, value] of Object.entries(fields)) data.append(key, value);
   for (const image of images) data.append("images", image);
@@ -115,6 +116,12 @@ describe("createListing", () => {
     expect(await holder.db.select().from(listing)).toHaveLength(0);
     expect(await holder.db.select().from(listingImage)).toHaveLength(0);
     expect(holder.bucket.objects.size).toBe(0);
+  });
+
+  // Minst ett bilde (#141). Godkjent av Max 11.10.
+  it("uten bilder gir «Legg til minst ett bilde», og ingenting lagres", async () => {
+    expect(await createListing({}, formData(VALID, []))).toMatchObject({ fieldErrors: { images: "Legg til minst ett bilde" } });
+    expect(await holder.db.select().from(listing)).toHaveLength(0);
   });
 
   it("feiler databasen etter at bildene er lagret, slettes både annonsen og bildene", async () => {
