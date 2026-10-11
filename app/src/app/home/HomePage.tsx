@@ -32,14 +32,15 @@ export async function HomePage({ request, response }: RequestInfo) {
   return (
     <PageShell title="Annonser" wide headerAction={<HeaderActions />}>
       {/* Siste rad tar ekstra høyde når filterkolonnen er høyest, ellers blir det hull rundt tittel og søk (#124). */}
-      <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-10">
+      {/* På mobil står søkefeltet og «Filtre» på én rad (#164). */}
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 lg:grid-cols-[15rem_minmax(0,1fr)] lg:grid-rows-[auto_auto_1fr] lg:gap-x-10">
         {/* «Filtre» og «Annonser» står på samme grunnlinje på desktop (#126). */}
-        <h1 className="text-4xl font-bold tracking-tight lg:col-start-2 lg:self-baseline">Annonser</h1>
-        <div className="lg:col-start-2">
+        <h1 className="col-span-2 text-2xl font-bold tracking-tight sm:text-4xl lg:col-span-1 lg:col-start-2 lg:self-baseline">Annonser</h1>
+        <div className="min-w-0 lg:col-start-2">
           <SearchField q={q} />
         </div>
         <Filters q={q} filters={filters} available={available} activeCount={active} count={listings.length} />
-        <div className="lg:col-start-2">
+        <div className="col-span-2 lg:col-span-1 lg:col-start-2">
           <Results valid={search.success} searched={q !== "" || active > 0} listings={listings} />
         </div>
       </div>

@@ -9,7 +9,7 @@ export function NewListingPage() {
   return (
     <PageShell title="Legg ut annonse" fill headerAction={<HeaderActions current="new-listing" />}>
       <div className="flex flex-1 flex-col sm:rounded-xl sm:border sm:border-hairline sm:bg-surface sm:px-12 sm:py-10">
-        <h1 className="mb-8 text-4xl font-bold tracking-tight">Legg ut annonse</h1>
+        <h1 className="mb-6 text-2xl font-bold tracking-tight sm:mb-8 sm:text-4xl">Legg ut annonse</h1>
         <ListingForm />
       </div>
     </PageShell>

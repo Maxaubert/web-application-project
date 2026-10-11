@@ -86,14 +86,14 @@ export function Filters({ q, filters, available, activeCount: active, count }: F
   }
 
   return (
-    <div className="mt-4 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:self-baseline">
+    <div className="mt-4 self-end lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:self-baseline">
       <button
         ref={toggleRef}
         type="button"
         aria-expanded={open}
         aria-controls="filters"
         onClick={() => setOpen(true)}
-        className="inline-flex h-12 items-center gap-2 rounded-md border-2 border-ink bg-surface px-5 text-lg font-semibold transition-colors hover:bg-paper lg:hidden"
+        className="inline-flex h-12 items-center gap-2 rounded-md border-2 border-ink bg-surface px-3 text-lg font-semibold transition-colors hover:bg-paper sm:px-5 lg:hidden"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5 fill-none stroke-ink stroke-2">
           <path d="M4 6h16M7 12h10M10 18h4" strokeLinecap="round" />
@@ -192,7 +192,6 @@ export function Filters({ q, filters, available, activeCount: active, count }: F
                 onBlur={applyPrice}
               />
             </div>
-            <p className="mt-2 text-base text-muted">Ved lån gjelder prisen per uke.</p>
           </fieldset>
 
           <CheckboxGroup legend="Tilstand">

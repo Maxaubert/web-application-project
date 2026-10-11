@@ -10,6 +10,11 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- Mobil (#164, del av #147): søkefeltet og «Filtre» står på én rad under 640 px, med forstørrelsesglass i feltet. Etiketten og
+  «Søk»-knappen skjules visuelt (de finnes for skjermlesere og Enter), og tastaturet får søketast. «Ved lån gjelder prisen per
+  uke.» er fjernet fra filterarket (ingen hjelpetekst). Fra 640 px er søkefeltet som før. (Max, #164)
+- Mobil (#162, del av #147): «Legg ut annonse» og «Logg ut» er ikonknapper på 44 px under 640 px, og sidetitlene på forsiden og
+  «Legg ut annonse» er 24 px i stedet for 36 px, med mindre luft over tittelen. Fra 640 px er alt som før. (Max, #162)
 - Nettlesertestene har egen lagring (#154): Playwright bruker `.wrangler/e2e-state` for D1 og R2, så testannonsene (`e2e-user`, E2E-HEIC …) ikke lenger havner i databasen til `npm run dev`. (Max, #154)
 - Raskere forside (#155): hvert bilde får en miniatyr på 640 px, laget i nettleseren ved opplasting, som kort, søkeforslag
   og miniatyrraden bruker. Målt i produksjonsbygget med 34 annonser: bildedata 5136 → 1080 KB, dekodingstid 453 → 25 ms,
