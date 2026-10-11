@@ -24,10 +24,8 @@ const FIELD_IDS: Record<string, string> = {
   condition: "listing-condition-new",
 };
 
-const PRICE_TEXT = {
-  sale: { label: "Pris (kr)", hint: "Hele kroner." },
-  loan: { label: "Pris per uke (kr, valgfri)", hint: "Tomt betyr gratis lån." },
-};
+// Ingen hint under etiketten (Max 11.10, #146): etiketten sier det som trengs, og feilen forklarer resten.
+const PRICE_LABELS = { sale: "Pris (kr)", loan: "Pris per uke (kr, valgfri)" };
 
 const entries = <K extends string>(labels: Record<K, string>) => Object.entries(labels) as [K, string][];
 
@@ -49,10 +47,10 @@ export function ListingForm() {
     for (const image of images.images) if (image.file) data.append("images", image.file);
     startTransition(() => action(data));
   }
-  // Feltet beskrives av telleren eller hintet og av feilen, i den rekkefølgen de står på skjermen.
-  const describe = (id: string, key: string, parts: { hint?: boolean; count?: boolean }) => ({
+  // Feltet beskrives av telleren og av feilen, i den rekkefølgen de står på skjermen.
+  const describe = (id: string, key: string, parts: { count?: boolean }) => ({
     "aria-invalid": errors[key] ? true : undefined,
-    "aria-describedby": [parts.count && `${id}-count`, parts.hint && `${id}-hint`, errors[key] && `${key}-error`].filter(Boolean).join(" ") || undefined,
+    "aria-describedby": [parts.count && `${id}-count`, errors[key] && `${key}-error`].filter(Boolean).join(" ") || undefined,
   });
 
   return (
@@ -64,7 +62,9 @@ export function ListingForm() {
           <ImageField values={values} images={images} error={errors.images} />
         </div>
 
-        {/* @container: de små feltene står parvis når feltkolonnen er bred nok. */}
+        {/* @container: de små feltene står parvis når feltkolonnen er bred nok. Radioknappene får sin naturlige
+            bredde og feltet ved siden av resten, så parene får plass allerede fra 1280 px og feltkolonnen ikke
+            blir høyere enn forhåndsvisningen (Max 11.10, #146). */}
         <div className="@container mt-8 space-y-8 lg:mt-0">
           <Field id="listing-title" label="Tittel" error={errors.title} errorId="title-error" count={{ length: values.title.length, max: 80 }}>
             <input
@@ -97,7 +97,7 @@ export function ListingForm() {
             />
           </Field>
 
-          <div className="grid gap-8 @3xl:grid-cols-2">
+          <div className="grid gap-8 @lg:grid-cols-[minmax(0,1fr)_auto]">
             <Field id="listing-category" label="Kategori" error={errors.category} errorId="category-error">
               <select id="listing-category" name="category" value={values.category} onChange={set("category")} className={inputClass} {...describe("listing-category", "category", {})}>
                 <option value="">Velg kategori</option>
@@ -112,14 +112,14 @@ export function ListingForm() {
             <RadioGroup name="type" legend="Handelstype" idPrefix="listing-type" options={entries(typeLabels)} value={values.type} onChange={set("type")} error={errors.type} />
           </div>
 
-          <div className="grid gap-8 @3xl:grid-cols-2">
+          <div className="grid gap-8 @lg:grid-cols-[minmax(0,1fr)_auto]">
             {values.type === "giveaway" ? (
               <div>
                 <p className="mb-2 font-semibold">Pris</p>
                 <p className="rounded-md bg-hairline/40 px-4 py-3 text-muted">Gis bort er alltid gratis.</p>
               </div>
             ) : (
-              <Field id="listing-price" label={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].label} error={errors.price} errorId="price-error" hint={PRICE_TEXT[values.type === "loan" ? "loan" : "sale"].hint}>
+              <Field id="listing-price" label={PRICE_LABELS[values.type === "loan" ? "loan" : "sale"]} error={errors.price} errorId="price-error">
                 <input
                   id="listing-price"
                   name="price"
@@ -129,7 +129,7 @@ export function ListingForm() {
                   value={values.price}
                   onChange={set("price")}
                   className={`${inputClass} sm:max-w-72`}
-                  {...describe("listing-price", "price", { hint: true })}
+                  {...describe("listing-price", "price", {})}
                 />
               </Field>
             )}
@@ -164,13 +164,12 @@ type FieldProps = {
   label: string;
   error?: string;
   errorId: string;
-  hint?: string;
   count?: { length: number; max: number };
   children: ReactNode;
 };
 
-// Over feltet: etikett, teller («0 av 80 tegn») eller hint, så feilen (Max 11.10, #135). Hint før feil, som hos GOV.UK.
-function Field({ id, label, error, errorId, hint, count, children }: FieldProps) {
+// Over feltet: etikett, teller («0 av 80 tegn»), så feilen (Max 11.10, #135).
+function Field({ id, label, error, errorId, count, children }: FieldProps) {
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block font-semibold">
@@ -179,11 +178,6 @@ function Field({ id, label, error, errorId, hint, count, children }: FieldProps)
       {count && (
         <p id={`${id}-count`} className="text-base text-muted tabular-nums">
           {count.length} av {count.max} tegn
-        </p>
-      )}
-      {hint && (
-        <p id={`${id}-hint`} className="text-base text-muted">
-          {hint}
         </p>
       )}
       <FieldError id={errorId} message={error} />

@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-11
 
+- «Legg ut annonse»: feltparene står side om side allerede fra 1280 px, så feltkolonnen blir omtrent like høy som
+  forhåndsvisningen, og prishintene («Hele kroner.», «Tomt betyr gratis lån.») er fjernet. Mobiltilpasning samlet i #147. (Max, #146)
 - Bilder, andre PR: bildefeltet i «Legg ut annonse» etter godkjent mockup. Klikk eller dra inn, miniatyrer med ✕,
   klikk gjør forsidebilde. HEIC gjøres om og alt skaleres til høyst 2000 px JPEG i nettleseren (`heic-to` 1.5.2,
   lastes bare ved behov). Minst ett bilde kreves. CSP tillater `blob:` for bilder, workere og lasting av dem, ellers
