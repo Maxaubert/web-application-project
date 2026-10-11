@@ -88,7 +88,7 @@ endrer ingenting i databasen.
 | Action | Hvem | Regler |
 |---|---|---|
 | `completeAccount` | Ny bruker | Navn og telefon påkrevd og gyldige. |
-| `createListing`, `updateListing` | Innlogget bruker / eier | Påkrevde felt, 1–10 bilder, pris heltall ≥ 0. Bare eier kan redigere. |
+| `createListing`, `updateListing` | Innlogget bruker / eier | `createListing` bygget 11.10 (#131): tittel 3–80 tegn, beskrivelse påkrevd (høyst 2000), kjent kategori, handelstype og tilstand. Pris: salg påkrevd heltall 0–100 000, lån valgfri (tom = gratis), gis bort alltid tom. Eier fra økten, aldri fra skjemaet; uten økt til `/login`, uten kontooppsett til `/account-setup`; ved suksess til `/listings/:id?publisert=1`. Bilder (1–10) kommer med #61. Bare eier kan redigere (`updateListing`, ikke bygget). |
 | `unpublishListing` | Eier | Tar annonsen ut av søket. Endrer ikke eksisterende avtaler. |
 | `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. |
 | `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |

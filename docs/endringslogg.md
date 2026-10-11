@@ -8,6 +8,12 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-11
+
+- Serverhandlingen for «Legg ut annonse» (FK-03): Zod-validering med norske feilmeldinger, alle feil samtidig,
+  pris etter handelstype og eier fra økten. Høyeste pris satt til 100 000 kr, også i prisfilteret. Skjermbildet
+  kommer i neste PR, bilder i #61. (Max, #131)
+
 ## 2026-10-10
 
 - Småfeilrunde etter Max sitt funn: pekehånd også på selve avkrysningsboksen og nedtrekkslisten, «ikke tillatt»

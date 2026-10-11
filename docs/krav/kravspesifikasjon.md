@@ -59,6 +59,7 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Varsler | Avklart 28.09 | E-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. Status vises også i appen (D-65 til D-67). Påminnelser om forsinket retur er med; kanal og hyppighet er åpent (D-86). |
 | Returproblemer | Avklart 28.09 og 29.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Bare den som skrev og admin kan lese den; admin kontakter partene ved behov. Admin-dashboard er utenfor MVP (D-89), så hvordan admin leser rapportene, er åpent. |
 | Utløp | Avklart 29.09 | En ubesvart forespørsel utløper etter 7 dager. Erstatter D-54. |
+| Pris og tekst i annonser | Avklart 11.10 | Tittel 3–80 tegn, beskrivelse påkrevd og høyst 2000 tegn. Salgspris er påkrevd, hele kroner fra 0 til 100 000; ukepris ved lån er valgfri, og tom betyr gratis; gis bort har aldri pris. Samme øvre grense gjelder prisfilteret (Max 11.10, #131). |
 | Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
 | Kategorier og bilder | Delvis avklart | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres sannsynligvis i Cloudflare R2, muligens D1; ikke endelig valgt. |
 | Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den fjernes etter 30 dager (#92). Nedtatte annonser vises ikke for andre. |
