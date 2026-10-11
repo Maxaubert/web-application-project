@@ -20,6 +20,12 @@ skrivetoken; bare `deploy.yml` bruker Cloudflare-tokenet. Eldre kjøringer av sa
 kanselleres ikke på denne måten. Påkrevde sjekker må ikke få path-filtre som gjør
 at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 
+Ved en rød kjøring laster CI opp artefakten `test-reports` (Playwright-spor, rapport og dekning, 7 dagers
+oppbevaring). Last den ned med `gh run download <id> -n test-reports` og les `error-context.md` og `trace.zip` i
+den feilede testens mappe. Slik ble en tilfeldig rød kjøring forklart 12.10.2026 (#174): Playwright handlet før
+siden var hydrert, så nettleseren sendte søkeskjemaet vanlig i stedet for via klientkoden. Tester som skriver,
+klikker i klientkomponenter eller endrer DOM-en bruker derfor `goto(..., { waitUntil: "networkidle" })`.
+
 ## PR-beskyttelsen på main
 
 [Ferdig beskyttelseskonfigurasjon](../../.github/branch-protection.json) krever:

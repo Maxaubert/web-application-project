@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-12
 
+- E2E (#174): en tilfeldig rød CI-kjøring ble forklart fra det opplastede sporet: testen handlet før hydreringen. Mobiltestene som
+  skriver, klikker eller endrer DOM-en venter nå på networkidle. Beskrevet i CI-dokumentet. (Max, #174)
 - «Legg ut annonse» (#171): ny knapp «Forhåndsvis» (mobil og desktop) som viser den ekte annonsesiden med det som er skrevet, i en dialog
   der man kan gå tilbake med «Avbryt» eller publisere. Knappen «Publiser annonse» heter nå «Publiser». (Max, #171)
 
