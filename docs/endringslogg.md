@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-12
 
+- Docs (#182): Max godkjente anslagene i timelisten for 30.09–11.10 (33,50 timer); oppsummeringen er 54,50 timer. (Max, #182)
 - Annonsesiden (#156): piler, teller, piltaster og sveip for å bla i bildene. Bildene ligger i en stripe som følger fingeren og glir
   (scroll snap), uten blink ved bytte. Pilene er grå og vises bare ved hover, trykk og tastaturbruk. Mockup godkjent av Max 12.10. (Max, #156)
 - Docs (#176): arbeidsloggen og timelisten er ført fra 30.09 til 12.10 (timene er anslag som venter på Max' godkjenning), og wireframene har
