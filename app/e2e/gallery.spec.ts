@@ -171,8 +171,9 @@ test.describe("mobil (375 px)", () => {
   test.use({ viewport: { width: 375, height: 812 }, hasTouch: true });
 
   // Ekte berøringsbevegelse gjennom nettleserens inndata (CDP): fingeren flyttes i små steg, og nettleseren ruller og låser
-  // selv. Negativ dx er fingeren mot venstre (neste bilde).
-  async function swipe(page: Page, dx: number, dy = 0) {
+  // selv. Negativ dx er fingeren mot venstre (neste bilde). hold: ms fingeren hviler før den løftes; uten hvile har et
+  // raskt sveip fart, og et raskt kort sveip skal gå videre til neste bilde, som i en kamerarull.
+  async function swipe(page: Page, dx: number, dy = 0, hold = 0) {
     const box = (await bigImage(page).boundingBox())!;
     const cdp = await page.context().newCDPSession(page);
     const touch = (type: "touchStart" | "touchMove" | "touchEnd", x: number, y: number) =>
@@ -183,6 +184,7 @@ test.describe("mobil (375 px)", () => {
       await touch("touchMove", x0 + (dx * i) / 10, y0 + (dy * i) / 10);
       await page.waitForTimeout(16);
     }
+    if (hold) await page.waitForTimeout(hold);
     await touch("touchEnd", 0, 0);
   }
 
@@ -218,11 +220,12 @@ test.describe("mobil (375 px)", () => {
     await expect(page.getByRole("button", { name: "Vis bilde 1 av 2" })).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("et sveip som ikke er langt nok, går tilbake til bildet, og rulling opp og ned bytter ikke bilde", async ({ page }) => {
+  test("et kort sveip uten fart går tilbake til bildet, og rulling opp og ned bytter ikke bilde", async ({ page }) => {
     await page.goto(`/listings/${TEST_LISTING_ID}`, { waitUntil: "networkidle" });
     const track = strip(page);
 
-    await swipe(page, -40);
+    // Fingeren hviler før den løftes, så sveipet har ingen fart og stripen går til nærmeste bilde, som er det første.
+    await swipe(page, -40, 0, 200);
     await expect(page.getByRole("img", { name: "Skrivebordslampe, bilde 1 av 2" })).toBeVisible();
     await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBe(0);
 
