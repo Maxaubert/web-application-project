@@ -10,6 +10,8 @@ export const AUTH_FILE = "e2e/.auth/user.json";
 // Testbilder i den lokale R2-emuleringen, så bildeadressen kan testes mot ekte lagring (#138). De hører til
 // testannonsen «Skrivebordslampe», som viser bildene på kortet og annonsesiden (#150).
 export const TEST_LISTING_ID = "e2e00000-0000-4000-8000-000000000001";
+// Annonse med seks bilderader uten filer i R2, så miniatyrraden på mobil må rulles (#156).
+export const TEST_GALLERY_ID = "e2e00000-0000-4000-8000-000000000010";
 export const TEST_IMAGE_PATH = `/images/listings/${TEST_LISTING_ID}/e2e00000-0000-4000-8000-000000000002.jpg`;
 const SECOND_IMAGE_PATH = `/images/listings/${TEST_LISTING_ID}/e2e00000-0000-4000-8000-000000000003.jpg`;
 // Bare det første bildet har miniatyr i R2 (#155). Det andre har ingen, så testene også dekker at originalen sendes i stedet.
@@ -42,8 +44,12 @@ export default function globalSetup() {
        VALUES
          ('e2e-calc', 'e2e-user', 'sale', 'Kalkulator Casio fx-991', 'Lite brukt.', 'electronics', 'like_new', 250, 'active'),
          ('e2e-hammock', 'e2e-user', 'loan', 'Hengekøye', 'Til turen.', 'sports', 'used', 30, 'active'),
-         ('${TEST_LISTING_ID}', 'e2e-user', 'sale', 'Skrivebordslampe', 'Med LED-pære.', 'furniture', 'used', 120, 'active');
-     DELETE FROM listing_image WHERE listing_id = '${TEST_LISTING_ID}';
+         ('${TEST_LISTING_ID}', 'e2e-user', 'sale', 'Skrivebordslampe', 'Med LED-pære.', 'furniture', 'used', 120, 'active'),
+         ('${TEST_GALLERY_ID}', 'e2e-user', 'sale', 'Galleritest', 'Seks bilder.', 'furniture', 'used', 10, 'active');
+     DELETE FROM listing_image WHERE listing_id IN ('${TEST_LISTING_ID}', '${TEST_GALLERY_ID}');
+     INSERT INTO listing_image (id, listing_id, key, position)
+       VALUES
+${[1, 2, 3, 4, 5, 6].map((n) => `         ('e2e-gallery-${n}', '${TEST_GALLERY_ID}', 'listings/${TEST_GALLERY_ID}/e2e00000-0000-4000-8000-0000000001${n}0.jpg', ${n - 1})`).join(",\n")};
      INSERT INTO listing_image (id, listing_id, key, position)
        VALUES
          ('e2e-image-1', '${TEST_LISTING_ID}', '${TEST_IMAGE_PATH.replace("/images/", "")}', 0),

@@ -22,7 +22,7 @@ test.describe("mobil (375 px)", () => {
   });
 
   test("søkefeltet og «Filtre» står på én rad, og Enter søker uten synlig knapp", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "networkidle" });
     const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
     const filters = page.getByRole("button", { name: "Filtre" });
 
@@ -43,7 +43,7 @@ test.describe("mobil (375 px)", () => {
   });
 
   test("filterarket har ingen hjelpetekst om ukepris", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "Filtre" }).click();
 
     await expect(page.getByRole("dialog", { name: "Filtre" })).toBeVisible();
@@ -59,7 +59,7 @@ test.describe("mobil (375 px)", () => {
   });
 
   test("annonsesiden har liten tittel, og miniatyrene ligger på én rad som kan rulles", async ({ page }) => {
-    await page.goto(`/listings/${TEST_LISTING_ID}`);
+    await page.goto(`/listings/${TEST_LISTING_ID}`, { waitUntil: "networkidle" });
 
     expect(await fontSize(page.getByRole("heading", { level: 1 }))).toBe("24px");
     const back = await page.getByRole("link", { name: "Tilbake til annonser" }).boundingBox();
@@ -103,7 +103,7 @@ test.describe("desktop (1280 px)", () => {
   });
 
   test("annonsesiden har stor tittel, og miniatyrene brytes over flere linjer", async ({ page }) => {
-    await page.goto(`/listings/${TEST_LISTING_ID}`);
+    await page.goto(`/listings/${TEST_LISTING_ID}`, { waitUntil: "networkidle" });
 
     expect(await fontSize(page.getByRole("heading", { level: 1 }))).toBe("36px");
     const thumbs = page.getByRole("button", { name: /^Vis bilde/ });
