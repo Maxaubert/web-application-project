@@ -10,6 +10,8 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-12
 
+- Docs (#176): arbeidsloggen og timelisten er ført fra 30.09 til 12.10 (timene er anslag som venter på Max' godkjenning), og wireframene har
+  skjermbilder av den bygde Forhåndsvis-dialogen, mobil og desktop. (Max, #176)
 - E2E (#174): en tilfeldig rød CI-kjøring ble forklart fra det opplastede sporet: testen handlet før hydreringen. Mobiltestene som
   skriver, klikker eller endrer DOM-en venter nå på networkidle. Beskrevet i CI-dokumentet. (Max, #174)
 - «Legg ut annonse» (#171): ny knapp «Forhåndsvis» (mobil og desktop) som viser den ekte annonsesiden med det som er skrevet, i en dialog

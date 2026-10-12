@@ -8,7 +8,8 @@ skjermene. Det er ikke implementert kode. Beslutningene nedenfor er også ført 
 - **Redigerbart lerret:** <https://claude.ai/artifact/CnhymdWdfZZRhE5t6VTtE7>
   (privat, må deles fra Share-menyen før andre kan åpne det). Lerretet åpner i
   «Gjennomgang», en lysbildevisning av hovedflyten med bryter for mobil og desktop.
-- **Bilder:** [png/](png/) har én PNG per skjerm, mobil (390 px) og desktop (1280–1440 px).
+- **Bilder:** [png/](png/) har én PNG per skjerm, mobil (390 px) og desktop (1280–1440 px). Unntak: `Legg-ut-forhandsvis-*` er
+  skjermbilder av den bygde dialogen 12.10.2026 (#171), ikke fra lerretet.
 - **Kildefiler:** [kilde/](kilde/) er en kopi av lerretet (`.dc.html` per skjerm og
   `canvas.json`) per 29.09.2026. Lerretet er fasiten hvis de to spriker.
 - **Sign-off:** [rapporten](../../leveranser/sign-off/rapport.pdf) viser et utvalg av skjermene.
@@ -162,6 +163,9 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
 - «Legg ut annonse» på mobil (#169): under 640 px er forhåndsvisningskortet skjult, og miniatyrraden med «Legg til» viser
   og legger til bildene, så «Tittel» står nær toppen. Feilen om manglende bilde lenker til «Legg til», som får rød kant.
   Fra 640 px er forhåndsvisningen som før.
+- **«Forhåndsvis» (#171, bygget 12.10):** dialogen over skjemaet viser selve annonsesiden med det som er skrevet.
+  Skjermbilder av det som er bygget: ![Forhåndsvis, mobil](png/Legg-ut-forhandsvis-mobil.png)
+  ![Forhåndsvis, desktop](png/Legg-ut-forhandsvis-desktop.png)
 
 ## Skjermer
 
@@ -176,7 +180,7 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 03 | Annonser og søk | `Sok-*` | `/` | `TopNav`, `SearchField`, `Filters`, `ListingCard`, `ListingList` | Søk i tittel og beskrivelse, filtre kategori, handelstype, tilstand, pris og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
 | 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fulle navn. | Solgt: hele siden med «Solgt»-merke. Borte (`Annonse-borte-*`): nedtatt eller ukjent, samme tekst og 404. |
 | 04 | Annonse, lån | `Annonse-leie-*` | `/listings/:id` | Som salg, pluss `AvailabilityCalendar` | Som salg, pluss ukepris, «Minst én uke», kalender med opptatte datoer og «Send låneforespørsel». | |
-| 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `ListingPreview`, `ImageField`, `ErrorSummary` (bygget 11.10, #133, #141; avvik over) | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). |
+| 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `ListingPreview`, `ImageField`, `ErrorSummary` (bygget 11.10, #133, #141; avvik over) | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). Forhåndsvis: dialog med den ekte annonsesiden og «Avbryt»/«Publiser» (`Legg-ut-forhandsvis-*`, #171). |
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
 | 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
 | 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` | `MyPageTabs`, `ReceivedSentToggle`, `RequestRow` | Mottatt og Sendt. Rad med vare, type, motpart, bud eller periode, status og «Din tur». | Tom liste (`Foresporsler-tom-*`). |
