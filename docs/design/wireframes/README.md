@@ -160,6 +160,14 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   igjen for skjermlesere.
 - Annonsesiden på mobil (#167): tittelen er 24 px, det er lite luft over bildet, og miniatyrene ligger på én rad som rulles
   sidelengs (opptil 10 bilder). Fra 640 px brytes miniatyrene over flere linjer som før.
+- Bla i bildene på annonsesiden (#156, mockup godkjent av Max 12.10): med flere enn ett bilde har det store bildet to
+  runde, grå piler (44 px, lav ugjennomsiktighet) og en teller «2 / 4». De vises bare når musen er over bildet, ved trykk på
+  bildet (de skjules igjen etter ca. 3 sekunder), og ved tastaturbruk; fokusringen vises bare for tastaturfokus, ikke etter
+  museklikk. Venstre og høyre piltast bytter bilde på hele siden (ikke mens man skriver, og ikke med Alt, Ctrl, Meta eller
+  Shift). Bildene ligger side om side i en stripe som låses på hvert bilde (CSS scroll snap), så på mobil følger de fingeren og
+  glir som i kamerarullen, og pilene, tastene og miniatyrene ruller stripen med glid (Max 12.10). Pilene og tastene gjør rundtur:
+  etter siste bilde kommer første, og rundturen hopper rett til andre enden. Miniatyren følger med og rulles inn i synlig område i
+  raden på mobil. Neste bilde er allerede lastet, så det ikke blinker. Samme galleri brukes i forhåndsvisningen i «Legg ut annonse».
 - «Legg ut annonse» på mobil (#169): under 640 px er forhåndsvisningskortet skjult, og miniatyrraden med «Legg til» viser
   og legger til bildene, så «Tittel» står nær toppen. Feilen om manglende bilde lenker til «Legg til», som får rød kant.
   Fra 640 px er forhåndsvisningen som før.
