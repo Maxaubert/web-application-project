@@ -143,3 +143,28 @@ export const listing = sqliteTable(
 );
 
 export type Listing = typeof listing.$inferSelect;
+
+// Annonsebildene (#61, #138). Selve filene ligger i R2 under key; tabellen holder rekkefølgen, og
+// position 0 er forsidebildet. Slettes annonsen, slettes radene (filene ryddes av koden som sletter).
+export const MAX_IMAGES = 10;
+
+export const listingImage = sqliteTable(
+  "listing_image",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    listingId: text("listing_id")
+      .notNull()
+      .references(() => listing.id, { onDelete: "cascade" }),
+    key: text("key").notNull().unique(),
+    position: integer("position").notNull(),
+    createdAt: createdAt(),
+  },
+  (table) => [
+    index("listing_image_listing_id_idx").on(table.listingId),
+    check("listing_image_position_check", sql`${table.position} >= 0 and ${table.position} < 10`),
+  ],
+);
+
+export type ListingImage = typeof listingImage.$inferSelect;

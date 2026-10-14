@@ -17,7 +17,7 @@ describe("getDevCode", () => {
 // Utsending via Resend med en falsk fetch som registrerer kallet. Godkjent av Max 07.10.
 describe("createResendSender", () => {
   const apiKey = "re_testnokkel_som_ikke_er_ekte";
-  const from = "Studentmarked <noreply@mail.studentmarkedet.org>";
+  const from = "Studentmarkedet <noreply@mail.studentmarkedet.org>";
 
   it("sender koden til Resend med nøkkel, avsender og mottaker", async () => {
     const calls: { url: string; init: RequestInit }[] = [];

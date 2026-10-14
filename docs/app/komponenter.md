@@ -36,6 +36,16 @@ og mer å forklare uten at noen trenger det. Kurset kaller det over-engineering 
 
 ## Delt UI i `app/src/app/shared/`
 
+Faste regler fra finpussen (#113, Max 10.10):
+
+- `PageShell` krever `title`; den gir fanetittelen «Side – Studentmarkedet» (React 19 flytter `<title>` til `<head>`).
+  Logo og navn er en lenke til `/`.
+- Tekstfelt bygges fra `inputClass`, som gir mørk kant ved fokus i stedet for den blå rammen. Knapper og lenker
+  beholder den blå 3 px-rammen ved tastaturfokus (`:focus-visible` i `styles.css`).
+- Alle knapper viser pekehånd (regel i `styles.css`, Tailwind v4 gjør det ikke selv). Hover brukes med
+  `enabled:`, så en deaktivert knapp ikke endrer seg.
+- `FieldError` har `role="alert"`, så feil leses opp. Lange ord brytes med `[overflow-wrap:anywhere]`.
+
 | Komponent | Ansvar | Status |
 |---|---|---|
 | `Button` | Varianter `primary`, `secondary`, `link`; innebygd `type`, ventetilstand, `disabled` og `aria-busy`, 44 px og fokusring. Ingen `size`/`icon`-props. | Planlagt (#66). Erstatter `PrimaryButton` og kopierte klasser. |
@@ -101,8 +111,9 @@ over flere komponenter som må koordineres. Kurset bruker ett skjema per entitet
 opprett og rediger (RR/19:353-377). Det gir én kode å teste og forklare.
 
 **Hvorfor skille ut akkurat de tre:** hver av dem treffer deleregelen.
-- `ImageUploader` har eget ansvar og egen state (forhåndsvisninger, fjerning, grensen 1–10) og er
-  klientkode. Inne i skjemaet ville den blandet bildelogikk med feltlogikk; alene kan grensene
+- `ImageField` (bygget 11.10, #141; planlagt som `ImageUploader`) har eget ansvar og egen state
+  (forhåndsvisninger, fjerning, forsidebilde, grensen 1–10) og er klientkode. Tilstanden ligger i
+  `useListingImages`, reglene i `images/pick-images.ts` og behandlingen i `images/prepare-image.ts`. Inne i skjemaet ville den blandet bildelogikk med feltlogikk; alene kan grensene
   testes (separation of concerns, RR/08:30-40).
 - `ErrorSummary` brukes i alle lange skjemaer (gjenbruk på tvers av filer).
 - `ListingCard` brukes i søk, på Min side og i forhåndsvisningen. Én komponent betyr at
@@ -122,9 +133,31 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Siden er en tynn serverkomponent som henter data og setter sammen delene.
 - `ListingCard` er egen fil og tar ett annonseobjekt som prop (som PostCard, KI/05:609-612), fordi den
   brukes i søk, på Min side og i forhåndsvisningen. Bygget 07.10 (#79): bilde-plassholder, tittel og
-  «type · pris» fra `format-type-and-price.ts`; norske navn fra `listings/labels.ts`. Lenken kommer med annonsesiden.
+  «type · pris» fra `format-type-and-price.ts`; norske navn fra `listings/labels.ts`. Hele kortet lenker til annonsesiden (#91).
 - Detaljsiden er én side med seksjoner som avhenger av handelstype; lån er «som salg, pluss» kalender.
-- Interaktive deler (søkefilter, bildegalleri, kalender) er små klientkomponenter.
+- Annonsesiden (#91, 08.10): `ListingPage` henter annonsen med `getListingWithOwner` og velger visning;
+  `ListingDetails` viser innholdet og `ListingGone` borte-visningen. `ListingImage` viser et annonsebilde eller
+  `ImagePlaceholder` når annonsen ikke har bilde, og brukes av kortet, søkeforslagene og annonsesiden (#150).
+  `ListingGallery` (klient) viser det store bildet og miniatyrene på annonsesiden; klikk bytter bilde. Kort, forslag og miniatyrraden bruker miniatyrene (640 px, #155), det store bildet originalen. `formatPrice` gir prisen alene, og `formatTypeAndPrice` bygger på den.
+- Søket (#97, 10.10): `SearchField` er et vanlig GET-skjema uten klientkode. `HomePage` validerer `?q=` med
+  `parseSearch`, henter aktive annonser med `getActiveListings` og rangerer dem med `searchListings` (Fuse.js).
+  `SearchNotice` er den stiplede boksen for ingen treff og ugyldig søk.
+- Live søkeforslag (#104, 10.10): `SearchField` er nå klientkomponent (combobox etter WAI-ARIA), men rendres
+  ferdig på serveren og virker uten JavaScript. `useSuggestions` henter fra `GET /api/listings` 200 ms etter
+  siste tastetrykk og avbryter eldre forespørsler; `suggestions.ts` har den rene logikken (når hente, piltaster).
+- Filtrene (#102, #122, 10.10): `Filters` er klientkomponent. Valgene er kontrollert state som settes fra serveren
+  når siden kommer tilbake, og hvert valg kaller `navigate` fra `rwsdk/client`: siden hentes på nytt uten full
+  omlasting, og fokus blir stående. Feltene hører til søkeskjemaet via HTML-attributtet `form="listing-search"`, så
+  Enter og «Søk» sender alt, også uten JavaScript. `filter-listings.ts` har den rene logikken: `matchesFilters`
+  for annonselisten og `availableOptions` for de grå opsjonene, begge kjørt på serveren etter søket.
+  `search-limits.ts` har grensene klientkoden trenger, så Zod og databaseskjemaet ikke havner i nettleseren.
+- Legg ut annonse (#131, #133, #135, 11.10): `NewListingPage` (server) tegner kortet, som fyller skjermhøyden med
+  `PageShell fill`; `ListingForm` er klientkomponent med
+  kontrollerte felt, så `ListingPreview` følger med mens man skriver. Skjemaet sendes med `onSubmit` og
+  `startTransition` i stedet for `action={action}`, fordi React 19 ellers tilbakestiller skjemaet etter handlingen og
+  radioknappene hoppet tilbake. `ErrorSummary` (delt) viser alle feil i feltrekkefølge og får fokus. `HeaderActions`
+  (delt) er «Legg ut annonse» og «Logg ut» i toppen. Serverhandlingen `createListing` validerer alt på nytt.
+- Interaktive deler (bildegalleri, kalender) er små klientkomponenter.
 
 **Hvorfor:** dette er mønsteret fra leksjon 8 og 19 (en side som koordinerer, deler med ett ansvar)
 og fra KI-kurset: hold så mye som mulig på serveren, og gjør bare de interaktive delene til klient

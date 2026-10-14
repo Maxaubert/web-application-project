@@ -63,7 +63,24 @@ e-post er #46. Konsollvisningen er en bevisst lokal bakdør (Max 05.10): bare `p
 brukes når `LOGIN_CODE_DELIVERY=log` i `.dev.vars`, husker koden. I produksjon husker ingenting den.
 Lås nummer to: `getDevCode` gir bare koden under utviklingsserveren (`import.meta.env.DEV`, satt
 ved bygging), så et produksjonsbygg aldri sender den til nettleseren, uansett innstilling.
-Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet og `baseURL` settes.
+Lokal snarvei `/dev/login` (Max 10.10, #106, endrer 05.10-beslutningen om ingen innloggingsbakdør):
+logger inn seed-brukeren `test.testesen@hiof.no` med den ekte kodeflyten, for rask lokal testing. Samme
+to låser: ruten registreres bare når `import.meta.env.DEV` er sann, og handleren gir 404 ellers.
+Playwright beviser 404 i produksjonsbygget. Kodegrensen (5 per time per adresse) gjelder fortsatt.
+Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet. `baseURL` settes ikke: better-auth leser
+adressen fra forespørselen, og Workeren svarer bare på studentmarkedet.org (`workers_dev` er av), så
+adressen er alltid den samme (kontrollert mot `instance.ts` 10.10).
+
+## Søk på forsiden (#97, valgt av Max 10.10.2026)
+
+| Valg | Hvorfor |
+|---|---|
+| Vanlig GET-skjema til `/?q=` | Virker uten JavaScript, søket kan deles som lenke, og tilbakeknappen virker. Serverkomponenten leser databasen direkte, så ingen egen API-rute trengs her. REST-endepunktet for T03 kommer i #98. |
+| Zod validerer `q` (trimmet, høyst 100 tegn) | Adressen kan skrives av hvem som helst. Ugyldig søk gir 400 før databasen spørres. |
+| Fuse.js i Workeren | D1 har ikke feiltolerant søk, og `LIKE` skiller på store og små æøå. Fuse rangerer etter treff, med tittelen vektet dobbelt. Terskel 0.2 (omtrent én skrivefeil per fem bokstaver) er prøvd mot eksempler: «kalkulater» og «sykel» treffer, mens «telt» ikke treffer navnet «Test» og «mikroskop» ikke treffer noe. 0.35 ga støy fra navn på korte søkeord. |
+
+Kjent grense: alle aktive annonser hentes før Fuse rangerer dem. Det holder for omtrent tusen annonser
+(KK-02), men ikke for titusener; da må søket flyttes til databasen, for eksempel FTS5.
 
 ## Vurdert alternativ: Feide
 
@@ -99,7 +116,7 @@ verifisering av HiØ-tilknytning.
 | Samtidig godkjenning av overlappende leieavtaler tillater høyst én, både ved direkte aksept og aksept av motforslag | TK-06; AK-14 alene tester bare sekvensiell godkjenning |
 | Avvist tilgang etterlater lagringen uendret | TK-03/TK-07, T04 |
 | Foreslåtte tillegg: foreldet motforslag, tapt svar og ny innsending uten doble handlinger | Gjennomgå reglene før nye kriterier fastsettes |
-| REST-kontrakt med relevant metode, status og feilsvar | T03 |
+| REST-kontrakt med relevant metode, status og feilsvar | T03. `GET /api/listings` (#98): `api.integration.test.ts` (200, feltutvalg, limit, 400) og `guards.test.ts` (401, 403); 405 kontrollert manuelt |
 | Vitest-integrasjon av hovedflyt og minst 50 % dekning, med avklart målegrunnlag | T07 |
 | Playwright av hovedflytene og manuell kontroll av tilgjengelighet | Teamstandard i [GitHub-plan](../arkiv/github-repo-oppsett.md) |
 | Reproduserbare kommandoer og nødvendig konfigurasjon uten hemmeligheter | T08, [README](../../README.md) |

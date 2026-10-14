@@ -59,8 +59,12 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Varsler | Avklart 28.09 | E-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. Status vises også i appen (D-65 til D-67). Påminnelser om forsinket retur er med; kanal og hyppighet er åpent (D-86). |
 | Returproblemer | Avklart 28.09 og 29.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Bare den som skrev og admin kan lese den; admin kontakter partene ved behov. Admin-dashboard er utenfor MVP (D-89), så hvordan admin leser rapportene, er åpent. |
 | Utløp | Avklart 29.09 | En ubesvart forespørsel utløper etter 7 dager. Erstatter D-54. |
+| Pris og tekst i annonser | Avklart 11.10 | Tittel 3–80 tegn, beskrivelse påkrevd og høyst 2000 tegn. Salgspris er påkrevd, hele kroner fra 0 til 100 000; ukepris ved lån er valgfri, og tom betyr gratis; gis bort har aldri pris. Samme øvre grense gjelder prisfilteret (Max 11.10, #131). |
 | Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
-| Kategorier og bilder | Delvis avklart | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres sannsynligvis i Cloudflare R2, muligens D1; ikke endelig valgt. |
+| Kategorier og bilder | Avklart 11.10 | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres i Cloudflare R2 (Max 11.10, #61; KI-kurset L14). 1–10 bilder per annonse, JPEG, PNG eller WebP, høyst 5 MB per bilde; filtypen leses fra innholdet. I nettleseren gjøres HEIC fra iPhone om, og alle bilder skaleres til høyst 2000 px og lagres som JPEG før opplasting, noe som også fjerner EXIF-data som GPS-posisjon; originalen kan være opptil 25 MB (#141). Hvert bilde får også en miniatyr på 640 px (JPEG, ca. 50 KB) som kort og søkeforslag viser, så forsiden ikke laster og dekoder store bilder (#155). Første bilde er forsidebilde. Bildene vises bare for innloggede. |
+| Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den fjernes etter 30 dager (#92). Nedtatte annonser vises ikke for andre. |
+| Søk | Avklart 10.10 | Søket går i tittel, beskrivelse og selgerens navn, uten forskjell på store og små bokstaver (også æøå), og tåler skrivefeil og delord («kalkulater» og «kalk» finner «Kalkulator»). Best treff først; uten søkeord nyeste først. Filtre (Max 10.10, #102): kategori, handelstype og tilstand (flere valg), pris fra/til (lånepris per uke, tom pris regnes som 0 kr). Valgene virker med én gang, og opsjoner som ikke gir treff sammen med de andre valgene er grå (Max 10.10, #122). Sortering kommer i egen oppgave (#116). Fra to tegn vises de fem beste treffene i en liste under feltet mens man skriver, med bilde, tittel og «type · pris»; klikk åpner annonsen, og siste rad viser alle treff. Ingen treff gir ingen liste (Max 10.10, #104). |
+| Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93). Telefon og e-post vises fortsatt først etter aksept. |
 | Historikk | Avklart 28.09 | Alle forslag bevares i historikken. Bare siste forslag kan godtas (D-53). Annonseendringer endrer ikke eksisterende avtaler (D-51). |
 
 **Begreper:** «Salg» overfører eierskap mot betaling utenfor appen. «Lån» gir midlertidig bruk, gratis eller mot ukepris. «Gis bort» overfører eierskap uten betaling.
@@ -95,7 +99,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | ID | Funksjonelt krav |
 |---|---|
 | FK-01 | En HiØ-student skal kunne logge inn eller lage konto med e-post, uten passord, via en engangskode sendt til en `@hiof.no`-adresse. Første gang fyller brukeren inn fullt navn, land og telefon. |
-| FK-02 | En innlogget bruker skal kunne søke i tittel og beskrivelse, filtrere på kategori, handelstype og «Tilgjengelig nå / Alle», åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
+| FK-02 | En innlogget bruker skal kunne søke i tittel, beskrivelse og selgerens navn med feiltolerant søk og forslag mens man skriver, filtrere på kategori, handelstype, tilstand, pris og «Tilgjengelig nå / Alle», åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
 | FK-03 | En innlogget bruker skal kunne legge ut en annonse for salg, lån eller gis bort, med tittel, beskrivelse, kategori, tilstand, 1 til 10 bilder og pris der den gjelder (salgspris, valgfri ukepris ved lån). |
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel på andres annonse: et bud ved salg, en periode på minst én uke ved lån, eller en forespørsel uten vilkår ved gis bort. |
 | FK-05 | Eieren skal kunne godta, avslå eller foreslå en annen pris eller periode. Motforslaget sendes til forespørreren. |
@@ -106,6 +110,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. |
 | FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk, og kunne redigere profil, ta ned egne annonser og logge ut. |
 | FK-12 | Partene skal få e-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. |
+| FK-13 | En innlogget bruker skal kunne klikke på eierens navn på en annonse og se brukerens andre aktive annonser (Max 08.10). |
 
 ### Informasjon per handelstype
 

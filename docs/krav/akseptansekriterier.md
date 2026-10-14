@@ -17,6 +17,7 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 
 - **AK-04:** Gitt at det finnes en tilgjengelig annonse med et bestemt ord i tittel eller beskrivelse, når brukeren søker etter ordet, så skal annonsen vises i søkeresultatet.
 - **AK-05:** Gitt at et søk ikke finner noen annonser, når resultatet vises, så skal brukeren få en tydelig melding om at ingen annonser ble funnet.
+- **AK-41:** Gitt at brukeren velger kategori, handelstype, tilstand eller pris fra/til, så skal bare annonser som passer alle valgene vises med én gang, og valgene skal stå igjen i filtrene. Opsjoner som ikke ville gitt treff, skal være grå og ikke kunne velges (Max 10.10, #102, #122).
 - **AK-06:** Gitt at en bruker åpner en annonse fra søkeresultatet, så skal brukeren se beskrivelse, handelstype, pris eller gratisstatus, tilstand og, ved lån, opptatte datoer.
 
 ## Legge ut annonse (FK-03, TK-02, TK-04, KK-05)

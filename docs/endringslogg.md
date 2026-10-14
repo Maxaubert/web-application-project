@@ -8,8 +8,109 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-12
+
+- Docs (#182): Max godkjente anslagene i timelisten for 30.09–11.10 (33,50 timer); oppsummeringen er 54,50 timer. (Max, #182)
+- Annonsesiden (#156): piler, teller, piltaster og sveip for å bla i bildene. Bildene ligger i en stripe som følger fingeren og glir
+  (scroll snap), uten blink ved bytte. Pilene er grå og vises bare ved hover, trykk og tastaturbruk. Mockup godkjent av Max 12.10. (Max, #156)
+- Docs (#176): arbeidsloggen og timelisten er ført fra 30.09 til 12.10 (timene er anslag som venter på Max' godkjenning), og wireframene har
+  skjermbilder av den bygde Forhåndsvis-dialogen, mobil og desktop. (Max, #176)
+- E2E (#174): en tilfeldig rød CI-kjøring ble forklart fra det opplastede sporet: testen handlet før hydreringen. Mobiltestene som
+  skriver, klikker eller endrer DOM-en venter nå på networkidle. Beskrevet i CI-dokumentet. (Max, #174)
+- «Legg ut annonse» (#171): ny knapp «Forhåndsvis» (mobil og desktop) som viser den ekte annonsesiden med det som er skrevet, i en dialog
+  der man kan gå tilbake med «Avbryt» eller publisere. Knappen «Publiser annonse» heter nå «Publiser». (Max, #171)
+
+## 2026-10-11
+
+- Mobil (#167, del av #147): annonsesiden har 24 px tittel, mindre luft over bildet og miniatyrene på én rad som rulles sidelengs
+  under 640 px. Fra 640 px som før. (Max, #167)
+- Mobil (#169, del av #147): «Legg ut annonse» har ingen forhåndsvisning under 640 px, så «Tittel» står nær toppen; bildene legges til
+  i miniatyrraden, og feilen om manglende bilde peker på «Legg til». Fra 640 px som før. (Max, #169)
+- Mobil (#164, del av #147): søkefeltet og «Filtre» står på én rad under 640 px, med forstørrelsesglass i feltet. Etiketten og
+  «Søk»-knappen skjules visuelt (de finnes for skjermlesere og Enter), og tastaturet får søketast. «Ved lån gjelder prisen per
+  uke.» er fjernet fra filterarket (ingen hjelpetekst). Fra 640 px er søkefeltet som før. (Max, #164)
+- Mobil (#162, del av #147): «Legg ut annonse» og «Logg ut» er ikonknapper på 44 px under 640 px, og sidetitlene på forsiden og
+  «Legg ut annonse» er 24 px i stedet for 36 px, med mindre luft over tittelen. Fra 640 px er alt som før. (Max, #162)
+- Nettlesertestene har egen lagring (#154): Playwright bruker `.wrangler/e2e-state` for D1 og R2, så testannonsene (`e2e-user`, E2E-HEIC …) ikke lenger havner i databasen til `npm run dev`. (Max, #154)
+- Raskere forside (#155): hvert bilde får en miniatyr på 640 px, laget i nettleseren ved opplasting, som kort, søkeforslag
+  og miniatyrraden bruker. Målt i produksjonsbygget med 34 annonser: bildedata 5136 → 1080 KB, dekodingstid 453 → 25 ms,
+  dekodede piksler 147 → 24 MB. Miniatyren ligger i R2 ved siden av originalen (`.thumb.jpg`, ingen ny tabell), og
+  finnes den ikke, sendes originalen. Demobildene fikk miniatyrer. (Max, #155)
+- Demoannonser: 34 testannonser med 132 bilder fra Max (skalert til 1200 px JPEG, 19 MB), skrevet fra bildenotatene
+  uten oppdiktede spesifikasjoner. Fem demostudenter og Skolens IT-avdeling, med `@studentmarkedet.invalid`, så ingen
+  kan logge inn som dem. `scripts/seed.mjs` legger dem inn lokalt eller live (`--remote`) og fjerner dem (`--remove`).
+  De fire gamle testannonsene er erstattet. (Max, #152)
+- Bilder, tredje PR: forsidebildet vises på kortene og i søkeforslagene, og annonsesiden har stort bilde med
+  miniatyrer (klikk bytter), etter godkjent mockup. Plassholder bare uten bilder. `GET /api/listings` sender
+  `coverUrl`. Testannonsene har UUID-er og får bilder fra `scripts/seed-images/`. (Max, #150)
+- «Legg ut annonse»: feltparene står side om side allerede fra 1280 px, så feltkolonnen blir omtrent like høy som
+  forhåndsvisningen, og prishintene («Hele kroner.», «Tomt betyr gratis lån.») er fjernet. Mobiltilpasning samlet i #147. (Max, #146)
+- Bilder, andre PR: bildefeltet i «Legg ut annonse» etter godkjent mockup. Klikk eller dra inn, miniatyrer med ✕,
+  klikk gjør forsidebilde. HEIC gjøres om og alt skaleres til høyst 2000 px JPEG i nettleseren (`heic-to` 1.5.2,
+  lastes bare ved behov). Minst ett bilde kreves. CSP tillater `blob:` for bilder, workere og lasting av dem, ellers
+  ble forhåndsvisningene og HEIC-omgjøringen blokkert. (Max, #141)
+- Testannonsene Drill og Telt for to er fjernet fra de lokale testdataene; de passet ikke for siden. (Max, #142)
+- Bilder, første PR: R2-bucket `IMAGES`, tabellen `listing_image` med migrasjon, `createListing` tar imot opptil 10
+  bilder (filtype fra innholdet, høyst 5 MB) og rydder bort filene hvis lagringen feiler, og `GET /images/...` bare for
+  innloggede. Bilder er valgfrie til skjemaet kan sende dem. Valgt etter grilling: R2, ikke D1. (Max, #138)
+- «Legg ut annonse» fyller siden: kortet går over hele bredden og helt ned, to kolonner fra 1024 px med forhåndsvisningen til venstre og feltene til høyre,
+  små felt parvis. Én kolonne over hele bredden ble prøvd side om side og forkastet. (Max, #135)
+- «Legg ut annonse» (FK-03) uten bilder: skjermbildet `/listings/new` etter mockup 13 (valgt blant tolv helsidemockups),
+  med mini-forhåndsvisning som følger med, låst bildeflate til #61, feilboks med fokus og bekreftelse på den nye
+  annonsesiden. «Legg ut annonse» i toppen. (Max, #133)
+- Serverhandlingen for «Legg ut annonse» (FK-03): Zod-validering med norske feilmeldinger, alle feil samtidig,
+  pris etter handelstype og eier fra økten. Høyeste pris satt til 100 000 kr, også i prisfilteret. Skjermbildet
+  kommer i neste PR, bilder i #61. (Max, #131)
+
+## 2026-10-10
+
+- Småfeilrunde etter Max sitt funn: pekehånd også på selve avkrysningsboksen og nedtrekkslisten, «ikke tillatt»
+  på låste felt, og telefonfeltet har samme mørke fokuskant som de andre feltene. Alle sider skannet automatisk
+  for peker, klikkflater og synlig fokus på desktop og mobil; ingen andre funn. (Max, #128)
+- Filtrene virker med én gang uten knapp (klientnavigasjon, fokus blir stående), pris når man forlater feltet.
+  Opsjoner som ikke gir treff er grå. Filtreringen flyttet fra SQL til én ren funksjon på serveren etter søket,
+  så de grå opsjonene alltid stemmer med søkeordet; tallkallet for «Vis X annonser» er fjernet. (Max, #122)
+- Prisfeltene i filtrene er tekstfelt med tallastatur i stedet for `type="number"`: ingen pilknapper og ingen
+  verdiendring ved rulling. (Max, #120)
+- Filtre på forsiden: kategori, handelstype, tilstand og pris fra/til, i kolonne til venstre på desktop og bak en
+  «Filtre»-knapp på mobil. «Vis X annonser» viser antallet mens man velger. Filtrert i SQL, validert med Zod,
+  400 ved ugyldig verdi; `GET /api/listings` godtar de samme filtrene. Valgt etter mockups; sortering skilt ut
+  som #116. (Max, #102)
+- UI-finpuss etter Max sin test og en review-workflow: mørk kant i stedet for blå ramme på tekstfelt, pekehånd
+  på knapper, logo lenker til forsiden, egen fanetittel per side, synlig fokus på kort, tydeligere markert
+  søkeforslag, lange ord brytes, feil leses opp av skjermleser, og flere små hover- og størrelsesrettinger. (Max, #113)
+- Live søkeforslag: fra to tegn viser søkefeltet de fem beste treffene mens man skriver, med piltaster, Enter,
+  Escape og «Vis alle treff». Henter fra `GET /api/listings`; testet i ekte nettleser med Playwright. (Max, #104)
+- Innloggede nettlesertester uten appkode: Playwright får en testøkt lagt rett i den lokale databasen og en
+  signert cookie. Første tester: åpne en annonse fra kortet, og søkeskjemaet. (Max, #94)
+- Lokal innloggingssnarvei `/dev/login` for seed-brukeren, bare under `npm run dev`. Endrer beslutningen fra
+  05.10 om ingen innloggingsbakdør; begrunnelse: rask lokal testing. To låser, og Playwright beviser 404 i
+  produksjonsbygget. (Max, #106)
+- REST-endepunktet `GET /api/listings?q=&limit=` (T03): samme søk som forsiden som JSON med fem felt, 400 ved
+  ugyldig søk, 401 uten økt, 403 uten kontooppsett, 405 for andre metoder. Egen API-vakt `requireApiUser`.
+  Datakilde for live søkeforslag (#104). (Max, #98)
+- Søk på forsiden (WF-03): feiltolerant søk i tittel, beskrivelse og selgerens navn med Fuse.js, best treff
+  først. Søket står i adressen (`?q=`), ugyldig søk gir 400, ingen treff gir «Ingen annonser passer søket».
+  FK-02 utvidet med selgerens navn og feiltoleranse. Filtre, «Vis flere» og REST-endepunktet er egne issues
+  (#102, #101, #98). (Max, #97)
+- Emils uferdige `app/src/sortedList.tsx` er slettet: sortering står ikke i kravene, og søket erstatter den.
+  Max og Emil har avtalt at kodekvalitet går foran hvem som skrev koden. (Max, #97)
+
+## 2026-10-08
+
+- Annonsesiden `/listings/:id` (WF-04): kortet på forsiden lenker dit, og siden viser type, tittel, pris,
+  kategori, tilstand, beskrivelse og eierens fulle navn. Solgte annonser vises med «Solgt»-merke; nedtatte og
+  ukjente gir samme borte-visning med 404. Ingen handlingsknapp før bud- og lånesidene finnes. (Max, #91)
+- Nye krav: solgte annonser fjernes etter 30 dager (#92), og klikk på eierens navn viser brukerens andre
+  annonser (FK-13, #93). Fullt navn i stedet for fornavn på annonsesiden. (Max)
+- Emils uferdige `app/src/sortedList.tsx` gjorde `develop` rød. Minste retting for å få CI grønn: type på
+  `event`, `Number(...)` på valgt verdi, ubrukt import fjernet og lint for ubrukte variabler og `any` slått av
+  i bare den fila til den er ferdig. Resten er urørt. (Max, #91)
+
 ## 2026-10-07
 
+- Appnavnet er Studentmarkedet, som domenet: topplinjen, fanetittelen, avsendernavnet og emnet i
+  innloggingseposten. (Max, #88)
 - Automatisk deploy til studentmarkedet.org fra `main` etter grønn CI, med skymigrasjon før koden
   (`.github/workflows/deploy.yml`). (Max, #82)
 - Forsiden viser aktive annonser som kort, nyeste først, med «type · pris» som i WF-03. `PageShell` har fått

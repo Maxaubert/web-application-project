@@ -38,6 +38,12 @@ Drizzle-konfigurasjon og migrasjonskommandoer er klare; null tabeller gir ingen
 migrasjoner. Ingen eksempelbrukere, annonser, avtaler, auth-tabeller eller seed er laget.
 Det er heller ikke skrevet en datatilgangsmodul før modellen og bruken er avklart.
 
+## Tillegg 11.10.2026: bildefeltet (#141)
+
+Ny avhengighet med låst versjon: `heic-to` 1.5.2 (HEIC fra iPhone til bilde i nettleseren, libheif som WebAssembly,
+LGPL-3.0). Lastes bare når noen velger et HEIC-bilde (egen fil på 3 MB i bygget). 1.6.x ble ikke valgt: seks
+versjoner på én time 01.10, for ferskt.
+
 ## Tillegg 05.10.2026: innlogging (#47)
 
 Nye avhengigheter, alle med låst versjon: `better-auth` (innlogging), `libphonenumber-js`
@@ -64,8 +70,20 @@ ingen fra de nye pakkene.
   reell hovedflytintegrasjon og kursets 50 %-minimum gjenstår når produktkode bygges.
 
 Vitest bruker separat konfigurasjon uten Cloudflare-pluginen for rene enhetstester.
-Runtime-integrasjon dekkes foreløpig av browser/SQL-smoke. Ingen testbakdør er lagt i
-Worker-rutene. Når serverhandlinger og datamodell finnes, velges reelt integrasjonsoppsett.
+Runtime-integrasjon dekkes foreløpig av browser/SQL-smoke. Når serverhandlinger og datamodell
+finnes, velges reelt integrasjonsoppsett.
+
+**Innloggede nettlesertester (#94):** `app/e2e/global-setup.ts` legger en testbruker, en økt på én time og
+faste testannonser rett i den lokale D1-databasen før Playwright starter, og signerer øktcookien med
+`BETTER_AUTH_SECRET` fra `.dev.vars` slik better-auth gjør. Appen har ingen testkode; den ser en vanlig økt.
+Tester som skal være innlogget bruker `test.use({ storageState: AUTH_FILE })`. `app/e2e/.auth/` er
+Git-ignorert fordi den inneholder en gyldig lokal økt. Endrer better-auth cookieformatet, blir testene røde.
+
+**Egen lagring for nettlesertestene (#154):** Playwright starter forhåndsvisningen med `E2E_STATE` (`.wrangler/e2e-state`, definert i `app/e2e/state.ts`), som `vite.config.mts` gir til Cloudflare-pluginen som `persistState`. `global-setup.ts` lager tabellene og legger testdataene og testbildene i samme mappe (`--persist-to`). Testene rører derfor aldri databasen og R2 som `npm run dev` bruker. Mappen er Git-ignorert (`.wrangler/`) og kan slettes når som helst; neste kjøring lager den på nytt.
+
+**Logg inn lokalt:** åpne `http://127.0.0.1:5173/dev/login` under `npm run dev`. Du blir logget inn som
+seed-brukeren og sendt til forsiden (#106). Ruten finnes ikke i produksjonsbygget. Bruk `127.0.0.1`
+hele tiden; en innlogging på `localhost` gjelder ikke der.
 
 ## Avgrensninger og kjente funn
 

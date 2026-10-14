@@ -1,0 +1,62 @@
+// Innholdet på annonsesiden (WF-04): bilde til venstre, fakta til høyre; under hverandre på mobil.
+// Serverkomponent, bare visning. Handlingsknappen kommer med bud- og lånesidene.
+import type { ReactNode } from "react";
+import type { Listing } from "@/db/schema";
+import { formatPrice } from "./format-type-and-price";
+import { ListingGallery, type GalleryImage } from "./ListingGallery";
+import { categoryLabels, conditionLabels, typeLabels } from "./labels";
+
+// images: adressene til bildene og miniatyrene deres, forsidebildet først (#150, #155).
+// backLink: lenken øverst; forhåndsvisningen i «Legg ut annonse» har ingen (#171).
+type ListingDetailsProps = { listing: Listing; ownerName: string; images: GalleryImage[]; backLink?: ReactNode };
+
+// Overskriften i eierboksen, som i wireframene: «Selger» ved salg, «Eier» ved lån. Gis bort er ikke tegnet (#64).
+const ownerHeadings: Record<Listing["type"], string> = { sale: "Selger", loan: "Eier", giveaway: "Eier" };
+
+const pill = "inline-block rounded-full border-2 px-3 py-0.5 text-sm font-semibold";
+
+export function ListingDetails({ listing, ownerName, images, backLink }: ListingDetailsProps) {
+  const price = formatPrice(listing);
+
+  return (
+    <>
+      {backLink === undefined ? (
+        <a href="/" className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
+          <span aria-hidden="true">‹</span> Tilbake til annonser
+        </a>
+      ) : (
+        backLink
+      )}
+      <div className="mt-2 grid grid-cols-1 gap-6 sm:mt-6 sm:gap-8 lg:grid-cols-[3fr_2fr] lg:gap-12">
+        <ListingGallery images={images} title={listing.title} />
+        <div>
+          <p className="flex flex-wrap gap-2">
+            <span className={`${pill} border-ink`}>{typeLabels[listing.type]}</span>
+            {listing.status === "sold" && <span className={`${pill} border-ink bg-ink text-paper`}>Solgt</span>}
+          </p>
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
+          {price && <p className="mt-3 text-2xl font-bold">{price}</p>}
+
+          <dl className="mt-8 grid grid-cols-2 gap-4">
+            <div>
+              <dt className="text-sm text-muted">Kategori</dt>
+              <dd className="text-lg font-semibold">{categoryLabels[listing.category]}</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-muted">Tilstand</dt>
+              <dd className="text-lg font-semibold">{conditionLabels[listing.condition]}</dd>
+            </div>
+          </dl>
+
+          <h2 className="mt-8 text-xl font-bold">Beskrivelse</h2>
+          <p className="mt-2 text-lg whitespace-pre-line [overflow-wrap:anywhere]">{listing.description}</p>
+
+          <section className="mt-8 rounded-xl border-2 border-hairline bg-surface px-5 py-4">
+            <h2 className="font-bold">{ownerHeadings[listing.type]}</h2>
+            <p className="mt-1 text-lg [overflow-wrap:anywhere]">{ownerName}</p>
+          </section>
+        </div>
+      </div>
+    </>
+  );
+}

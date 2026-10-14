@@ -30,6 +30,14 @@ export function requireUser({ ctx }: GuardInput) {
   if (ctx.session.needsSetup) return redirectTo("/account-setup");
 }
 
+// For API-ruter (#98): JSON med statuskode i stedet for videresending, siden en fetch fra
+// nettleseren ikke skal havne på innloggingssiden. 401 er ukjent bruker, 403 er kjent bruker
+// som ikke har lov ennå.
+export function requireApiUser({ ctx }: GuardInput) {
+  if (!ctx.session.isAuthenticated) return Response.json({ error: "Du må logge inn." }, { status: 401 });
+  if (ctx.session.needsSetup) return Response.json({ error: "Fullfør kontooppsettet først." }, { status: 403 });
+}
+
 // For kontooppsettet: innlogget, men oppsettet er ikke gjort.
 export function requireSetupPending({ ctx }: GuardInput) {
   if (!ctx.session.isAuthenticated) return redirectTo("/login");

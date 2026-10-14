@@ -24,8 +24,10 @@ export const setCommonHeaders =
     );
 
     // Defines trusted sources for content loading and script execution:
+    // blob: for img-src, worker-src and connect-src (#141): previews of chosen images are blob URLs, and heic-to converts
+    // iPhone photos in a worker it starts and loads from a blob. All are created by our own (nonce-checked) scripts.
     response.headers.set(
       "Content-Security-Policy",
-      `default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-ancestors 'self'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none';`,
+      `default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob:; frame-ancestors 'self'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none';`,
     );
   };

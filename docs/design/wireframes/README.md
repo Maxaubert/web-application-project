@@ -8,7 +8,8 @@ skjermene. Det er ikke implementert kode. Beslutningene nedenfor er også ført 
 - **Redigerbart lerret:** <https://claude.ai/artifact/CnhymdWdfZZRhE5t6VTtE7>
   (privat, må deles fra Share-menyen før andre kan åpne det). Lerretet åpner i
   «Gjennomgang», en lysbildevisning av hovedflyten med bryter for mobil og desktop.
-- **Bilder:** [png/](png/) har én PNG per skjerm, mobil (390 px) og desktop (1280–1440 px).
+- **Bilder:** [png/](png/) har én PNG per skjerm, mobil (390 px) og desktop (1280–1440 px). Unntak: `Legg-ut-forhandsvis-*` er
+  skjermbilder av den bygde dialogen 12.10.2026 (#171), ikke fra lerretet.
 - **Kildefiler:** [kilde/](kilde/) er en kopi av lerretet (`.dc.html` per skjerm og
   `canvas.json`) per 29.09.2026. Lerretet er fasiten hvis de to spriker.
 - **Sign-off:** [rapporten](../../leveranser/sign-off/rapport.pdf) viser et utvalg av skjermene.
@@ -63,7 +64,7 @@ statuser, ruter og komponentnavn er på engelsk; teksten brukerne ser, er på no
 |---|---|---|
 | `user` | id, email (unik, `@hiof.no`), name, phone, image, created_at | Utvider better-auth sin brukertabell. `name` og `phone` er tomme til kontooppsett er fullført. |
 | `listing` | id, owner_id, type (`sale`, `loan`, `giveaway`), title, description, category, condition (`new`, `like_new`, `used`), price, status (`active`, `sold`, `unpublished`), created_at | `price` er heltall i kroner. Salg: pris. Lån: ukepris eller tom. Gis bort: tom. |
-| `listing_image` | id, listing_id, file, position | 1–10 per annonse. Første bilde vises i søket. |
+| `listing_image` | id, listing_id, key, position | Bygget 11.10 (#138). 1–10 per annonse; `key` er filens plass i R2 (`listings/<annonse>/<uuid>.<jpg/png/webp>`), `position` 0 er forsidebildet. |
 | `request` | id, listing_id, requester_id, status, owner_confirmed, requester_confirmed, created_at | Status: `waiting_owner`, `waiting_requester`, `accepted`, `declined`, `withdrawn`, `expired`, `cancelled`, `in_use`, `completed`. |
 | `offer` | id, request_id, sender_id, price, start_date, end_date, created_at | Hvert bud, motbud og forlengelse. Siste rad er gjeldende. Eldre rader er historikk. |
 | `issue_report` | id, request_id, sender_id, type, description, created_at | Returproblem (WV-02). Lagres som påstand, avgjør ingenting. |
@@ -74,8 +75,9 @@ Alle krever gyldig sesjon og svarer 401 uten.
 
 | Metode og sti | Brukes av | Svar |
 |---|---|---|
-| `GET /api/listings?q=&category=&type=&available=` | WF-03 | 200 med liste (tittel, type, pris, status, første bilde, ledig fra). 400 ved ugyldige filtre. |
-| `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fornavn og opptatte perioder. 404 hvis den ikke finnes eller er tatt ned. Telefon sendes aldri med. |
+| `GET /api/listings?q=&limit=` og filtrene | WF-03, #104 | Bygget 10.10 (#98, T03; filtre #102). 200 med `{ listings: [{ id, title, type, price, status, coverUrl }] }`, best treff først; `q` søker feiltolerant i tittel, beskrivelse og selgerens navn, `limit` (1–50) begrenser antallet, uten `limit` alle treff. Godtar også forsidens filtre `category`, `type` og `condition` (kan gjentas), `minPrice` og `maxPrice`. 400 ved søk over 100 tegn, ukjent filterverdi, «fra» over «til» eller ugyldig `limit`, 401 uten økt, 403 uten fullført kontooppsett, 405 for andre metoder enn GET. Feil svarer `{ error: "norsk melding" }`. Bare de seks feltene sendes. `coverUrl` er adressen til miniatyren av forsidebildet (`/images/...thumb.jpg`) eller `null` (#150, #155). `available` og «ledig fra» kommer med #100. |
+| `GET /images/listings/:listingId/:file` | WF-03, WF-04, WF-05 | Bygget 11.10 (#138). Bildet fra R2 med riktig innholdstype og `Cache-Control: private, max-age=31536000, immutable`. `<uuid>.thumb.jpg` er miniatyren av `<uuid>.<jpg/png/webp>` (#155); finnes den ikke, sendes originalen. 401 uten økt, 404 for ukjent bilde eller adresse som ikke har formatet vi lager. |
+| `GET /api/listings/:id` | WF-04 | 200 med annonse, bilder, eierens fulle navn og opptatte perioder, også for solgte annonser (Max 08.10). 404 hvis den ikke finnes eller er tatt ned. Telefon og e-post sendes aldri med. |
 | `GET /api/requests?direction=received\|sent` | WF-07 | 200 med brukerens egne forespørsler og siste forslag. |
 | `GET /api/requests/:id` | WF-08 | 200 bare for de to partene, ellers 404. Kontaktinfo bare når status er `accepted` eller senere. |
 | `GET /api/me/listings`, `GET /api/me/history` | WF-09 | 200 med egne annonser eller fullførte avtaler. |
@@ -88,7 +90,7 @@ endrer ingenting i databasen.
 | Action | Hvem | Regler |
 |---|---|---|
 | `completeAccount` | Ny bruker | Navn og telefon påkrevd og gyldige. |
-| `createListing`, `updateListing` | Innlogget bruker / eier | Påkrevde felt, 1–10 bilder, pris heltall ≥ 0. Bare eier kan redigere. |
+| `createListing`, `updateListing` | Innlogget bruker / eier | `createListing` bygget 11.10 (#131): tittel 3–80 tegn, beskrivelse påkrevd (høyst 2000), kjent kategori, handelstype og tilstand. Pris: salg påkrevd heltall 0–100 000, lån valgfri (tom = gratis), gis bort alltid tom. Eier fra økten, aldri fra skjemaet; uten økt til `/login`, uten kontooppsett til `/account-setup`; ved suksess til `/listings/:id?publisert=1`. Bilder (1–10) kommer med #61. Bare eier kan redigere (`updateListing`, ikke bygget). |
 | `unpublishListing` | Eier | Tar annonsen ut av søket. Endrer ikke eksisterende avtaler. |
 | `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. |
 | `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |
@@ -100,6 +102,79 @@ endrer ingenting i databasen.
 | `reportIssue` | Begge | Lagrer rapport. Endrer ikke status. Bare avsender og admin kan lese den. |
 | `updateProfile` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
 
+## Avvik fra tegningene (Max 08.10, #91)
+
+- Selgerboksen viser fullt navn i stedet for fornavn, og navnet blir en lenke til selgerens annonser (FK-13, #93).
+- Solgte annonser vises med «Solgt»-merke i stedet for borte-visningen. Borte-visningen gjelder nedtatte og
+  ukjente annonser, med teksten «Den kan være tatt ned, eller lenken er feil.» og uten «Min side» til den siden finnes.
+- Prisen står alene under tittelen; lån skrives «40 kr/uke» som på kortet.
+- Handlingsknappen («Legg inn bud», «Send låneforespørsel») vises ikke før bud- og lånesidene er bygget.
+- Gis bort er ikke tegnet (#64); inntil videre får eierboksen overskriften «Eier», som ved lån.
+
+## Avvik fra tegningene (Max 10.10, #97)
+
+- Søkefeltet heter «Søk i tittel, beskrivelse og selger», fordi søket også finner selgerens navn.
+- Filtrene (#102, Max 10.10, avklart med mockup): Kategori (liste), Handelstype og Tilstand (avkrysning, flere valg) og
+  Pris fra/til kr. Tilstand og pris er nye. Prisglideren fra mockupen er valgt bort; tallfeltene holder (Max 10.10).
+  Valgene virker med én gang uten knapp (#122): avkrysning og kategori straks, pris når man forlater feltet eller
+  trykker Enter. Opsjoner som ikke gir treff sammen med de andre valgene er grå og låst, uten tall; en avkrysset
+  opsjon kan alltid fjernes. «Nullstill filtre» fjerner filtrene men beholder søket. På mobil ligger filtrene bak
+  en «Filtre»-knapp med antall aktive filtre, i et ark nedenfra; «Vis X annonser» lukker arket. Wireframen viser
+  dem åpne. Under 640 px står søkefeltet og «Filtre» på én rad (#164, mockup godkjent av Max 11.10): forstørrelsesglass
+  i feltet, etiketten og «Søk»-knappen er bare for skjermlesere og Enter, og tastaturet får søketast. Filterarket har
+  ingen hjelpetekst om ukepris (Max 11.10). «Tilgjengelig nå» (#100), sortering (#116) og «Vis flere» (#101)
+  er ikke bygget. Tom visning har «Fjern søk» i stedet for «Fjern filtre».
+- Live søkeforslag (#104) er ikke tegnet: fra to tegn vises en hvit liste under feltet med opptil fem treff
+  (forsidebilde eller plassholder, tittel, «type · pris») og siste rad «Vis alle treff for «…»». Piltaster, Enter og Escape
+  følger combobox-mønsteret; ingen treff gir ingen liste.
+- Ugyldig søk (over 100 tegn i adressen) gir 400 og meldingen «Ugyldig søk» i samme stiplede boks som tom visning.
+
+## Avvik fra tegningene (Max 11.10, #133)
+
+Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
+
+- Et hvitt kort over hele bredden som går helt ned til bunnen av skjermen (Max 11.10; uten kort ble prøvd og forkastet). Mini-forhåndsvisning av annonsesiden (bilde, så type, tittel, pris, kategori og
+  tilstand) som følger med mens man skriver. Fra 1024 px står den til venstre og blir stående mens man ruller, med
+  feltene til høyre; Kategori og Handelstype, og Pris og Tilstand, står parvis når feltkolonnen er bred nok. Under
+  1024 px står forhåndsvisningen over feltene (Max 11.10, #135; én kolonne over hele bredden ble prøvd og forkastet:
+  bildet ble for stort). Knappene står nederst til høyre i kortet, «Avbryt», «Forhåndsvis» og «Publiser» (#171);
+  på mobil under hverandre med «Publiser» øverst. «Forhåndsvis» åpner selve annonsesiden med det som er skrevet, selgeren
+  og bildene i en dialog over skjemaet (mockup godkjent av Max 12.10). Dialogen har bare «Avbryt», som går tilbake til
+  skjemaet med alt beholdt, og «Publiser». Gjelder mobil og desktop; kortet ved siden av skjemaet på desktop beholdes.
+- Tittel og beskrivelse har bare en teller over feltet («0 av 80 tegn», «0 av 2000 tegn»), ingen hint. Prisen har heller
+  ikke hint (Max 11.10, #146). Beskrivelsesfeltet har fast størrelse og kan ikke dras større (Max 11.10, #135).
+- Kategori og Handelstype, og Pris og Tilstand, står side om side fra 1280 px: radioknappene får sin naturlige bredde og
+  feltet ved siden av resten. Da blir feltkolonnen omtrent like høy som forhåndsvisningen, så ikke bare høyre side ruller
+  (Max 11.10, #146).
+- Bilder legges til ved å klikke på bildeflaten i forhåndsvisningen eller på «Legg til»-firkanten under, eller ved å dra
+  dem inn på desktop (Max 11.10, #141). Uten stiplede linjer eller ferdige tomme bildebokser. Miniatyrer bare for bilder
+  som er lagt til, hver med ✕; klikk på en gjør den til forsidebilde. Ingen forklaringstekst, bare feil: filer som ikke
+  kan brukes, står i en rød boks under bildene, og mangler bilde, får forhåndsvisningen rød kant («Legg til minst ett bilde»).
+- Rekkefølge: Tittel, Beskrivelse, Kategori, Handelstype, Pris, Tilstand. Handelstype står rett før Pris, fordi
+  prisfeltet avhenger av den: «Pris (kr)» ved salg, «Pris per uke (kr, valgfri)» ved lån, ingen pris ved gis bort.
+- Tilstand heter «Brukt», som i dataene og filtrene, ikke «Brukt, fullt fungerende».
+- Etter publisering havner man på den nye annonsesiden med «Annonsen er publisert og synlig i søket» (bare for eieren).
+- «Legg ut annonse» og «Logg ut» står i toppen på forsiden og annonsesidene. På mobil (under 640 px) er de ikonknapper på
+  44 px (pluss og utlogging, #162; mockup godkjent av Max 11.10), og sidetitlene «Annonser» og «Legg ut annonse» er 24 px
+  i stedet for 36 px. Navnene står igjen for skjermlesere. På smale mobiler under 416 px vises bare logoen; navnet står
+  igjen for skjermlesere.
+- Annonsesiden på mobil (#167): tittelen er 24 px, det er lite luft over bildet, og miniatyrene ligger på én rad som rulles
+  sidelengs (opptil 10 bilder). Fra 640 px brytes miniatyrene over flere linjer som før.
+- Bla i bildene på annonsesiden (#156, mockup godkjent av Max 12.10): med flere enn ett bilde har det store bildet to
+  runde, grå piler (44 px, lav ugjennomsiktighet) og en teller «2 / 4». De vises bare når musen er over bildet, ved trykk på
+  bildet (de skjules igjen etter ca. 3 sekunder), og ved tastaturbruk; fokusringen vises bare for tastaturfokus, ikke etter
+  museklikk. Venstre og høyre piltast bytter bilde på hele siden (ikke mens man skriver, og ikke med Alt, Ctrl, Meta eller
+  Shift). Bildene ligger side om side i en stripe som låses på hvert bilde (CSS scroll snap), så på mobil følger de fingeren og
+  glir som i kamerarullen, og pilene, tastene og miniatyrene ruller stripen med glid (Max 12.10). Pilene og tastene gjør rundtur:
+  etter siste bilde kommer første, og rundturen hopper rett til andre enden. Miniatyren følger med og rulles inn i synlig område i
+  raden på mobil. Neste bilde er allerede lastet, så det ikke blinker. Samme galleri brukes i forhåndsvisningen i «Legg ut annonse».
+- «Legg ut annonse» på mobil (#169): under 640 px er forhåndsvisningskortet skjult, og miniatyrraden med «Legg til» viser
+  og legger til bildene, så «Tittel» står nær toppen. Feilen om manglende bilde lenker til «Legg til», som får rød kant.
+  Fra 640 px er forhåndsvisningen som før.
+- **«Forhåndsvis» (#171, bygget 12.10):** dialogen over skjemaet viser selve annonsesiden med det som er skrevet.
+  Skjermbilder av det som er bygget: ![Forhåndsvis, mobil](png/Legg-ut-forhandsvis-mobil.png)
+  ![Forhåndsvis, desktop](png/Legg-ut-forhandsvis-desktop.png)
+
 ## Skjermer
 
 Filnavn viser til [png/](png/) og [kilde/](kilde/). Filnavnene er arbeidsnavn fra lerretet,
@@ -110,10 +185,10 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 01 | Logg inn | `Main`, `Innlogging-desktop` | `/login` | `EmailForm`, `ErrorMessage` | Felt for HiØ-e-post, «Fortsett». | Feil adresse (`Innlogging-feil-*`). |
 | 01 | Kode | `Innlogging-kode-*` | `/login/code` | `CodeForm` | Kodefelt, «Logg inn», «Send ny kode», «Endre e-post». Koden har 6 sifre (wireframen viser 4). | Feil eller utløpt kode ikke tegnet. |
 | 02 | Fullfør kontoen | `Kontooppsett-*` | `/account-setup` | `AccountSetupForm` | E-post (låst), fullt navn, land, telefon, «Fullfør». Bare for nye kontoer. | |
-| 03 | Annonser og søk | `Sok-*` | `/` | `TopNav`, `SearchField`, `Filters`, `ListingCard`, `ListingList` | Søk i tittel og beskrivelse, filtre kategori, handelstype og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
-| 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fornavn. | Borte (`Annonse-borte-*`). |
+| 03 | Annonser og søk | `Sok-*` | `/` | `TopNav`, `SearchField`, `Filters`, `ListingCard`, `ListingList` | Søk i tittel og beskrivelse, filtre kategori, handelstype, tilstand, pris og «Tilgjengelig nå / Alle». Kort med bilde, tittel, type og pris, tilgjengelighet. | Laster, ingen treff, feil (`Sok-laster-*`, `Sok-tomt-*`, `Sok-feil-*`). |
+| 04 | Annonse, salg | `Annonse-mobil`, `Annonse-desktop` | `/listings/:id` | `ImageGallery`, `ListingInfo`, `OwnerCard`, `ActionButton` | Galleri, type, tittel, pris, «Legg inn bud», kategori, tilstand, beskrivelse, selgerens fulle navn. | Solgt: hele siden med «Solgt»-merke. Borte (`Annonse-borte-*`): nedtatt eller ukjent, samme tekst og 404. |
 | 04 | Annonse, lån | `Annonse-leie-*` | `/listings/:id` | Som salg, pluss `AvailabilityCalendar` | Som salg, pluss ukepris, «Minst én uke», kalender med opptatte datoer og «Send låneforespørsel». | |
-| 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `TypePicker`, `ImageUploader`, `ErrorSummary` | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). |
+| 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `ListingPreview`, `ImageField`, `ErrorSummary` (bygget 11.10, #133, #141; avvik over) | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). Forhåndsvis: dialog med den ekte annonsesiden og «Avbryt»/«Publiser» (`Legg-ut-forhandsvis-*`, #171). |
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
 | 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
 | 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` | `MyPageTabs`, `ReceivedSentToggle`, `RequestRow` | Mottatt og Sendt. Rad med vare, type, motpart, bud eller periode, status og «Din tur». | Tom liste (`Foresporsler-tom-*`). |

@@ -20,6 +20,12 @@ skrivetoken; bare `deploy.yml` bruker Cloudflare-tokenet. Eldre kjøringer av sa
 kanselleres ikke på denne måten. Påkrevde sjekker må ikke få path-filtre som gjør
 at de uteblir. Returkode ved feil skal stoppe jobben, ikke ignoreres.
 
+Ved en rød kjøring laster CI opp artefakten `test-reports` (Playwright-spor, rapport og dekning, 7 dagers
+oppbevaring). Last den ned med `gh run download <id> -n test-reports` og les `error-context.md` og `trace.zip` i
+den feilede testens mappe. Slik ble en tilfeldig rød kjøring forklart 12.10.2026 (#174): Playwright handlet før
+siden var hydrert, så nettleseren sendte søkeskjemaet vanlig i stedet for via klientkoden. Tester som skriver,
+klikker i klientkomponenter eller endrer DOM-en bruker derfor `goto(..., { waitUntil: "networkidle" })`.
+
 ## PR-beskyttelsen på main
 
 [Ferdig beskyttelseskonfigurasjon](../../.github/branch-protection.json) krever:
@@ -53,12 +59,17 @@ Fra `app/`, innlogget med `npx wrangler login`:
 
 ```powershell
 npm run db:migrate:remote   # migrasjoner til D1 i skyen (webapp-db)
+npx wrangler r2 bucket create studentmarkedet-images   # én gang, før første release med bilder (#138)
+node scripts/seed.mjs --remote           # demoannonsene live (#152), bare etter Max' ja
+node scripts/seed.mjs --remote --remove  # fjerner demoannonsene live igjen
 npm run deploy              # bygg og last opp Worker «webapp»
 npx wrangler secret put BETTER_AUTH_SECRET   # bare ved ny hemmelighet; lagres kryptert hos Cloudflare
 npx wrangler secret put RESEND_API_KEY       # Resend-nøkkel med bare sendetilgang
 ```
 
-- `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig). `remote: false`
+- `wrangler.jsonc`: Worker `webapp`, binding `DB` → D1 `webapp-db` (ID er ikke hemmelig), og binding `IMAGES` → R2
+  `studentmarkedet-images` for annonsebildene (#138). Bucketen må finnes før deploy, ellers feiler den; lokalt emulerer
+  wrangler den. `remote: false`
   betyr at `npm run dev`, tester og CI alltid bruker lokal kopi.
 - `.dev.vars` lastes ikke opp. I produksjon sender appen koder med **Resend** fra
   `noreply@mail.studentmarkedet.org` (`LOGIN_CODE_DELIVERY=resend` og `EMAIL_FROM` under `vars` i

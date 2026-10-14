@@ -1,7 +1,7 @@
 "use client";
 // Steg 2: koden fra e-posten. «Send ny kode» og «Endre e-post» som i wireframes.
 import { useActionState, useEffect } from "react";
-import { FieldError, PrimaryButton, TextField } from "@/app/shared/form-controls";
+import { FieldError, inputClass, PrimaryButton, TextField } from "@/app/shared/form-controls";
 import { resendCode, verifyCode } from "./actions";
 import { CODE_LENGTH } from "./constants";
 import { asFormState, type ActionResult, type FormState } from "./form-state";
@@ -35,7 +35,7 @@ export function CodeForm({ devCode }: { devCode?: string }) {
           pattern="[0-9]*"
           maxLength={CODE_LENGTH + 2}
           required
-          className="block h-14 w-full rounded-md border border-line bg-surface px-4 text-center text-2xl tracking-[0.4em] tabular-nums text-ink aria-[invalid=true]:border-2 aria-[invalid=true]:border-danger"
+          className={`${inputClass} h-14 text-center text-2xl tracking-[0.4em] tabular-nums`}
           error={state.fieldErrors?.code}
         />
         <PrimaryButton pending={pending}>{pending ? "Logger inn …" : "Logg inn"}</PrimaryButton>
@@ -46,19 +46,19 @@ export function CodeForm({ devCode }: { devCode?: string }) {
           <button
             type="submit"
             disabled={resending}
-            className="min-h-11 text-base underline hover:text-action-hover disabled:cursor-wait disabled:opacity-70"
+            className="min-h-11 text-base underline enabled:hover:decoration-2 disabled:cursor-wait disabled:opacity-70"
           >
             {resending ? "Sender …" : "Send ny kode"}
           </button>
         </form>
-        <a href="/login" className="inline-flex min-h-11 items-center text-base underline hover:text-action-hover">
+        <a href="/login" className="inline-flex min-h-11 items-center text-base underline hover:decoration-2">
           Endre e-post
         </a>
       </div>
       <div role="status" aria-live="polite">
         {resend.sent && <p className="text-base">En ny kode er sendt.</p>}
-        <FieldError id="resend-error" message={resend.error} />
       </div>
+      <FieldError id="resend-error" message={resend.error} />
     </div>
   );
 }
