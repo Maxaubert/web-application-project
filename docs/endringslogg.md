@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-16
+
+- Forespørsler, del 1 av 6 (#184): tabellene `request` og `offer` (én forespørsel per interessert student, ett bud, motbud eller forlengelse per `offer`-rad), Zod-validering av bud og perioder etter handelstype, og en tilstandsmaskin for hvem som kan flytte en forespørsel. Perioden «minst én uke» regnes som minst 7 dager med både fra- og til-dato medregnet. Kjøpsflyten er delt i #184 til #189. (Max, #184)
+
 ## 2026-10-12
 
 - Docs (#182): Max godkjente anslagene i timelisten for 30.09–11.10 (33,50 timer); oppsummeringen er 54,50 timer. (Max, #182)
