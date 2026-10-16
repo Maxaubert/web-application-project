@@ -168,3 +168,81 @@ export const listingImage = sqliteTable(
 );
 
 export type ListingImage = typeof listingImage.$inferSelect;
+
+// Forespørsler (FK-04 til FK-08, #184). En request er hele avtalen mellom eieren og én interessert
+// student; hvert bud, motbud og hver forlengelse er en egen offer-rad, så historikken bevares (D-53).
+// Statusene og hvem som kan flytte dem, står i requests/request-status.ts.
+export const requestStatuses = [
+  "waiting_owner",
+  "waiting_requester",
+  "accepted",
+  "declined",
+  "withdrawn",
+  "expired",
+  "cancelled",
+  "in_use",
+  "completed",
+] as const;
+
+export const request = sqliteTable(
+  "request",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    listingId: text("listing_id")
+      .notNull()
+      .references(() => listing.id, { onDelete: "cascade" }),
+    requesterId: text("requester_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    status: text("status", { enum: requestStatuses }).notNull().default("waiting_owner"),
+    ownerConfirmed: integer("owner_confirmed", { mode: "boolean" }).notNull().default(false),
+    requesterConfirmed: integer("requester_confirmed", { mode: "boolean" }).notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (table) => [
+    index("request_listing_id_status_idx").on(table.listingId, table.status),
+    index("request_requester_id_idx").on(table.requesterId),
+    check(
+      "request_status_check",
+      sql`${table.status} in ('waiting_owner', 'waiting_requester', 'accepted', 'declined', 'withdrawn', 'expired', 'cancelled', 'in_use', 'completed')`,
+    ),
+  ],
+);
+
+export type Request = typeof request.$inferSelect;
+
+// Ett forslag i en forespørsel. Salg: price. Lån: startDate og endDate (YYYY-MM-DD, begge dagene
+// teller). Gis bort: ingen av delene. Den nyeste raden er gjeldende; eldre rader er historikk.
+export const offer = sqliteTable(
+  "offer",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    requestId: text("request_id")
+      .notNull()
+      .references(() => request.id, { onDelete: "cascade" }),
+    senderId: text("sender_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    price: integer("price"),
+    startDate: text("start_date"),
+    endDate: text("end_date"),
+    createdAt: createdAt(),
+  },
+  (table) => [
+    index("offer_request_id_idx").on(table.requestId, table.createdAt),
+    check("offer_price_check", sql`${table.price} is null or ${table.price} >= 0`),
+    check(
+      "offer_dates_format_check",
+      sql`(${table.startDate} is null or ${table.startDate} glob '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]') and (${table.endDate} is null or ${table.endDate} glob '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]')`,
+    ),
+    check("offer_dates_pair_check", sql`(${table.startDate} is null) = (${table.endDate} is null)`),
+    check("offer_dates_order_check", sql`${table.startDate} is null or ${table.endDate} >= ${table.startDate}`),
+  ],
+);
+
+export type Offer = typeof offer.$inferSelect;
