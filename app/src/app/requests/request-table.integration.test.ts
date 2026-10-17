@@ -27,9 +27,31 @@ describe("request-tabellen", () => {
   it("setter waiting_owner selv når en rad settes inn uten status", async () => {
     // Drizzle fyller ut standardverdien i koden, så denne går rett på SQL for å prøve selve tabellen.
     const { db, listingId } = await setup();
-    await db.run(sql`insert into request (id, listing_id, requester_id) values ('raw-1', ${listingId}, ${REQUESTER_ID})`);
+    await db.insert(user).values({ id: "requester-2", name: "Per Hansen", email: "per@hiof.no" });
+    await db.run(sql`insert into request (id, listing_id, requester_id) values ('raw-1', ${listingId}, 'requester-2')`);
     const [row] = await db.select().from(request).where(eq(request.id, "raw-1"));
     expect(row.status).toBe("waiting_owner");
+  });
+
+  it("avviser en andre pågående forespørsel fra samme student på samme annonse", async () => {
+    const { db, listingId } = await setup();
+    for (const status of ["waiting_owner", "waiting_requester", "accepted", "in_use"] as const) {
+      await db.update(request).set({ status }).where(eq(request.listingId, listingId));
+      await expect(db.insert(request).values({ listingId, requesterId: REQUESTER_ID })).rejects.toThrow("UNIQUE");
+    }
+    expect(await db.select().from(request)).toHaveLength(1);
+  });
+
+  it("tillater en ny forespørsel når den forrige er avsluttet, og samme student på en annen annonse", async () => {
+    const { db, listingId } = await setup();
+    for (const status of ["declined", "withdrawn", "expired", "cancelled", "completed"] as const) {
+      await db.update(request).set({ status }).where(eq(request.listingId, listingId));
+      await db.insert(request).values({ listingId, requesterId: REQUESTER_ID, status: "waiting_owner" });
+      await db.delete(request).where(eq(request.status, "waiting_owner"));
+    }
+    const [other] = await db.insert(listing).values(validListing()).returning();
+    await db.insert(request).values({ listingId: other.id, requesterId: REQUESTER_ID });
+    expect(await db.select().from(request)).toHaveLength(2);
   });
 
   it("avviser en ukjent status", async () => {

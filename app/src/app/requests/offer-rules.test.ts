@@ -17,9 +17,13 @@ describe("bud på salg", () => {
     });
   });
 
-  it("godtar 0 og 100 000 kr", () => {
-    expect(validateOffer("sale", { price: "0" }).success).toBe(true);
+  it("godtar 1 og 100 000 kr", () => {
+    expect(validateOffer("sale", { price: "1" }).success).toBe(true);
     expect(validateOffer("sale", { price: "100000" }).success).toBe(true);
+  });
+
+  it("avviser 0 kr, siden bud skal være over null (README: bud > 0)", () => {
+    expect(errorsFor("sale", { price: "0" }).price).toBe("Bud må være minst 1 kr");
   });
 
   it("avviser tomt, negativt, desimal og for høyt bud", () => {

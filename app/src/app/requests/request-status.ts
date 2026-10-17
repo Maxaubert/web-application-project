@@ -14,7 +14,11 @@ export type RequestAction =
   | "expire"
   | "confirm_return";
 
-type Transitions = Partial<Record<RequestStatus, Partial<Record<Actor, RequestStatus>>>>;
+// Pågående forespørsler. De avsluttede (declined, withdrawn, expired, cancelled, completed) hindrer ikke et nytt bud.
+// Samme liste står i den delvis unike indeksen på request-tabellen.
+export const activeStatuses: RequestStatus[] = ["waiting_owner", "waiting_requester", "accepted", "in_use"];
+
+type Transitions =Partial<Record<RequestStatus, Partial<Record<Actor, RequestStatus>>>>;
 
 // Den som har tur, svarer på siste forslag: eieren i waiting_owner, forespørreren i waiting_requester.
 const transitions: Record<RequestAction, Transitions> = {

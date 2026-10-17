@@ -8,14 +8,21 @@ import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 
 // images: adressene til bildene og miniatyrene deres, forsidebildet først (#150, #155).
 // backLink: lenken øverst; forhåndsvisningen i «Legg ut annonse» har ingen (#171).
-type ListingDetailsProps = { listing: Listing; ownerName: string; images: GalleryImage[]; backLink?: ReactNode };
+// bidAction: knappen under prisen (#185). Forhåndsvisningen i «Legg ut annonse» har ingen.
+type ListingDetailsProps = {
+  listing: Listing;
+  ownerName: string;
+  images: GalleryImage[];
+  backLink?: ReactNode;
+  bidAction?: ReactNode;
+};
 
 // Overskriften i eierboksen, som i wireframene: «Selger» ved salg, «Eier» ved lån. Gis bort er ikke tegnet (#64).
 const ownerHeadings: Record<Listing["type"], string> = { sale: "Selger", loan: "Eier", giveaway: "Eier" };
 
 const pill = "inline-block rounded-full border-2 px-3 py-0.5 text-sm font-semibold";
 
-export function ListingDetails({ listing, ownerName, images, backLink }: ListingDetailsProps) {
+export function ListingDetails({ listing, ownerName, images, backLink, bidAction }: ListingDetailsProps) {
   const price = formatPrice(listing);
 
   return (
@@ -36,6 +43,7 @@ export function ListingDetails({ listing, ownerName, images, backLink }: Listing
           </p>
           <h1 className="mt-3 text-2xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
           {price && <p className="mt-3 text-2xl font-bold">{price}</p>}
+          {bidAction && <div className="mt-6">{bidAction}</div>}
 
           <dl className="mt-8 grid grid-cols-2 gap-4">
             <div>

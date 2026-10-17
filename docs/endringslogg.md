@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-17
+
+- Forespørsler, del 2 av 6 (#185): bud på salgsannonser. Siden `/listings/:id/bid`, serverhandlingen `sendBid` og reglene i `placeBid`. Knappen på annonsesiden har fire tilstander (Legg inn bud, Ditt bud med Endre bud, grået ut på egen og solgt annonse). Bud er fra 1 til 100 000 kr (README sa bud > 0; regelen fra #184 tillot 0 og er rettet). Et nytt bud erstatter det gamle så lenge selgeren ikke har svart, og det gamle blir historikk. En delvis unik indeks sørger for høyst én pågående forespørsel per student per annonse. (Max, #185)
+
 ## 2026-10-16
 
 - Forespørsler, del 1 av 6 (#184): tabellene `request` og `offer` (én forespørsel per interessert student, ett bud, motbud eller forlengelse per `offer`-rad), Zod-validering av bud og perioder etter handelstype, og en tilstandsmaskin for hvem som kan flytte en forespørsel. Perioden «minst én uke» regnes som minst 7 dager med både fra- og til-dato medregnet. Kjøpsflyten er delt i #184 til #189. (Max, #184)
