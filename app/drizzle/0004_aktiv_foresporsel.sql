@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `request_one_active_per_student_idx` ON `request` (`listing_id`,`requester_id`) WHERE "request"."status" in ('waiting_owner', 'waiting_requester', 'accepted', 'in_use');

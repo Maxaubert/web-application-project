@@ -92,7 +92,7 @@ endrer ingenting i databasen.
 | `completeAccount` | Ny bruker | Navn og telefon påkrevd og gyldige. |
 | `createListing`, `updateListing` | Innlogget bruker / eier | `createListing` bygget 11.10 (#131): tittel 3–80 tegn, beskrivelse påkrevd (høyst 2000), kjent kategori, handelstype og tilstand. Pris: salg påkrevd heltall 0–100 000, lån valgfri (tom = gratis), gis bort alltid tom. Eier fra økten, aldri fra skjemaet; uten økt til `/login`, uten kontooppsett til `/account-setup`; ved suksess til `/listings/:id?publisert=1`. Bilder (1–10) kommer med #61. Bare eier kan redigere (`updateListing`, ikke bygget). |
 | `unpublishListing` | Eier | Tar annonsen ut av søket. Endrer ikke eksisterende avtaler. |
-| `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. |
+| `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. Salg er bygget 17.10 (#185) som `sendBid` (serverhandlingen) og `placeBid` (reglene): bud fra 1 til 100 000 kr, én pågående forespørsel per student per annonse (delvis unik indeks), og et nytt bud mens selgeren ikke har svart legger en ny `offer`-rad på samme forespørsel. Lån og gis bort kommer med #186. |
 | `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |
 | `withdrawRequest` | Forespørrer | Bare mens den venter. |
 | `cancelAgreement` | Begge | Bare før overlevering er bekreftet av begge. |
@@ -108,7 +108,7 @@ endrer ingenting i databasen.
 - Solgte annonser vises med «Solgt»-merke i stedet for borte-visningen. Borte-visningen gjelder nedtatte og
   ukjente annonser, med teksten «Den kan være tatt ned, eller lenken er feil.» og uten «Min side» til den siden finnes.
 - Prisen står alene under tittelen; lån skrives «40 kr/uke» som på kortet.
-- Handlingsknappen («Legg inn bud», «Send låneforespørsel») vises ikke før bud- og lånesidene er bygget.
+- Handlingsknappen på annonsesiden står under kategori og tilstand og har fire tilstander for salg (#185, Max 17.10): «Legg inn bud» for andres annonser; «Ditt bud: 220 kr» med «Endre bud» når man har et ventende bud; grået ut «Legg inn bud» på egen og solgt annonse. Lån og gis bort har ingen knapp før #186. «Send låneforespørsel» vises ikke før lånesiden er bygget.
 - Gis bort er ikke tegnet (#64); inntil videre får eierboksen overskriften «Eier», som ved lån.
 
 ## Avvik fra tegningene (Max 10.10, #97)
@@ -192,7 +192,7 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
 | 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
 | 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` | `MyPageTabs`, `ReceivedSentToggle`, `RequestRow` | Mottatt og Sendt. Rad med vare, type, motpart, bud eller periode, status og «Din tur». | Tom liste (`Foresporsler-tom-*`). |
-| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. | |
+| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. Bygget 17.10 (#192) som ren visning for begge parter uten knapper; tilbakelenken går til annonsen til Min side finnes (#193). Knappene kommer under budkortet, også på desktop (Max 17.10), med #187. Andre enn de to partene får 404 som for en ukjent annonse. | |
 | 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/requests/:id` | `CounterOfferForm` | Felt «Din pris (kr)», «Send motbud», «Avbryt». | |
 | 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/requests/:id` | `ContactCard`, `HandoverConfirmation` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
 | 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `History` | Begge bekreftelser med tidspunkt, pris, historikk. | |

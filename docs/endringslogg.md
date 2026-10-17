@@ -8,8 +8,18 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-17
+
+- Forespørsler, del 3 (#192): forespørselssiden `/requests/:id`, bare visning for eieren og den som la inn forespørselen: status i et banner (mørkt når det er din tur), siste bud, og historikk med nyeste først. Andre enn de to partene får 404 med samme tekst som en ukjent annonse, og siden leser aldri telefon eller e-post. «Ditt bud» på annonsesiden er nå en lenke hit. Handlingsknappene kommer under budkortet med #187; Min side som inngang for selgeren kommer med #193. (Max, #192)
+- Forespørsler, del 2 av 6 (#185): bud på salgsannonser. Siden `/listings/:id/bid`, serverhandlingen `sendBid` og reglene i `placeBid`. Knappen på annonsesiden har fire tilstander (Legg inn bud, Ditt bud med Endre bud, grået ut på egen og solgt annonse). Bud er fra 1 til 100 000 kr (README sa bud > 0; regelen fra #184 tillot 0 og er rettet). Et nytt bud erstatter det gamle så lenge selgeren ikke har svart, og det gamle blir historikk. En delvis unik indeks sørger for høyst én pågående forespørsel per student per annonse. (Max, #185)
+
+## 2026-10-16
+
+- Forespørsler, del 1 av 6 (#184): tabellene `request` og `offer` (én forespørsel per interessert student, ett bud, motbud eller forlengelse per `offer`-rad), Zod-validering av bud og perioder etter handelstype, og en tilstandsmaskin for hvem som kan flytte en forespørsel. Perioden «minst én uke» regnes som minst 7 dager med både fra- og til-dato medregnet. Kjøpsflyten er delt i #184 til #189. (Max, #184)
+
 ## 2026-10-12
 
+- Docs (#182): Max godkjente anslagene i timelisten for 30.09–11.10 (33,50 timer); oppsummeringen er 54,50 timer. (Max, #182)
 - Annonsesiden (#156): piler, teller, piltaster og sveip for å bla i bildene. Bildene ligger i en stripe som følger fingeren og glir
   (scroll snap), uten blink ved bytte. Pilene er grå og vises bare ved hover, trykk og tastaturbruk. Mockup godkjent av Max 12.10. (Max, #156)
 - Docs (#176): arbeidsloggen og timelisten er ført fra 30.09 til 12.10 (timene er anslag som venter på Max' godkjenning), og wireframene har

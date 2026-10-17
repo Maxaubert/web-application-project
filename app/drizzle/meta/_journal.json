@@ -22,6 +22,20 @@
       "when": 1791681712646,
       "tag": "0002_listing_image",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1792112913045,
+      "tag": "0003_foresporsel",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792200662018,
+      "tag": "0004_aktiv_foresporsel",
+      "breakpoints": true
     }
   ]
 }

@@ -9,6 +9,9 @@ import { ListingDetails } from "./ListingDetails";
 import { ListingGone } from "./ListingGone";
 import { imageUrl } from "@/app/images/image-url";
 import { getListingImages, getListingWithOwner } from "./queries";
+import { bidState } from "@/app/requests/bid-state";
+import { BidAction } from "@/app/requests/BidAction";
+import { getActiveRequest } from "@/app/requests/queries";
 
 export async function ListingPage({ params, request, response, ctx }: RequestInfo<{ id: string }>) {
   const result = await getListingWithOwner(db, params.id);
@@ -19,10 +22,23 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
   const published =
     visible && new URL(request.url).searchParams.get("publisert") === "1" && result.listing.ownerId === ctx.session.userId;
 
+  // Budknappen (#185). Bare for synlige annonser; ukjente og nedtatte har ingen.
+  const userId = ctx.session.userId ?? "";
+  const bid = visible ? bidState(result.listing, userId, await getActiveRequest(db, params.id, userId)) : ({ kind: "none" } as const);
+
   return (
     <PageShell title={visible ? result.listing.title : "Annonsen er borte"} wide headerAction={<HeaderActions />}>
       {published && <PublishedNotice />}
-      {visible ? <ListingDetails listing={result.listing} ownerName={result.ownerName} images={images} /> : <ListingGone />}
+      {visible ? (
+        <ListingDetails
+          listing={result.listing}
+          ownerName={result.ownerName}
+          images={images}
+          bidAction={<BidAction listingId={params.id} state={bid} />}
+        />
+      ) : (
+        <ListingGone />
+      )}
     </PageShell>
   );
 }
