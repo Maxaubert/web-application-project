@@ -1,7 +1,7 @@
 // Tekstene på forespørselssiden: banneret per status og rolle, etiketten over budet og linjene i historikken.
 import { describe, expect, it } from "vitest";
 import { requestStatuses } from "@/db/schema";
-import { bannerFor, formatWhen, historyLine, offerLabel } from "./request-view";
+import { bannerFor, chipFor, formatWhen, historyLine, offerLabel } from "./request-view";
 
 const names = { ownerName: "Ola Nordmann", requesterName: "Kari Hansen" };
 
@@ -29,6 +29,35 @@ describe("bannerFor", () => {
     for (const status of requestStatuses.filter((s) => !s.startsWith("waiting"))) {
       for (const role of ["owner", "requester"] as const) {
         expect(bannerFor(status, role, names)).toEqual({ text: expected[status as keyof typeof expected], yourTurn: false });
+      }
+    }
+  });
+});
+
+describe("chipFor", () => {
+  it("når budet venter på selgeren: «Din tur» for selgeren, «Selgers tur» for kjøperen", () => {
+    expect(chipFor("waiting_owner", "owner")).toEqual({ text: "Din tur", yourTurn: true });
+    expect(chipFor("waiting_owner", "requester")).toEqual({ text: "Selgers tur", yourTurn: false });
+  });
+
+  it("etter et motforslag: «Din tur» for kjøperen, «Kjøpers tur» for selgeren", () => {
+    expect(chipFor("waiting_requester", "requester")).toEqual({ text: "Din tur", yourTurn: true });
+    expect(chipFor("waiting_requester", "owner")).toEqual({ text: "Kjøpers tur", yourTurn: false });
+  });
+
+  it("de avsluttede og pågående statusene viser statusen, og ingen har tur", () => {
+    const expected = {
+      accepted: "Avtalt",
+      declined: "Avslått",
+      withdrawn: "Trukket tilbake",
+      expired: "Utløpt",
+      cancelled: "Avbestilt",
+      in_use: "I bruk",
+      completed: "Fullført",
+    };
+    for (const status of requestStatuses.filter((s) => !s.startsWith("waiting"))) {
+      for (const role of ["owner", "requester"] as const) {
+        expect(chipFor(status, role)).toEqual({ text: expected[status as keyof typeof expected], yourTurn: false });
       }
     }
   });

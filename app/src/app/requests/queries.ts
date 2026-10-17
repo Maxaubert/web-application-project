@@ -1,7 +1,7 @@
 // Databasespørringer for forespørsler. Tar databasen som argument, så testene kan bruke SQLite i minnet.
 import { and, asc, desc, eq, inArray, or, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/sqlite-core";
-import { listing, offer, request, user, type Listing, type Offer, type Request } from "@/db/schema";
+import { listing, listingImage, offer, request, user, type Listing, type Offer, type Request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { activeStatuses, type RequestStatus } from "./request-status";
 
@@ -23,6 +23,59 @@ export async function getActiveRequest(db: Db, listingId: string, requesterId: s
 }
 
 export type RequestRole = "owner" | "requester";
+
+// Én rad i listen på Min side (#193): forespørselen sett fra den innloggede.
+// otherName: den andre parten (kjøperen for eieren, selgeren for kjøperen). price og changedAt kommer fra siste bud.
+export type MyRequest = {
+  id: string;
+  status: RequestStatus;
+  role: RequestRole;
+  listing: Listing;
+  coverKey: string | null;
+  otherName: string;
+  price: number | null;
+  changedAt: Date;
+};
+
+// Alle forespørslene der brukeren er eier av annonsen eller har lagt inn forespørselen, med siste bud og forsidebilde.
+// To spørringer i stedet for én per rad: først forespørslene, så budene til dem. Siste bud er det med høyest rowid
+// (created_at har bare hele sekunder). Rekkefølgen avgjøres av siden, ikke her.
+export async function getRequestsForUser(db: Db, userId: string): Promise<MyRequest[]> {
+  const owner = alias(user, "owner");
+  const requester = alias(user, "requester");
+  const rows = await db
+    .select({ request, listing, ownerName: owner.name, requesterName: requester.name, coverKey: listingImage.key })
+    .from(request)
+    .innerJoin(listing, eq(request.listingId, listing.id))
+    .innerJoin(owner, eq(listing.ownerId, owner.id))
+    .innerJoin(requester, eq(request.requesterId, requester.id))
+    .leftJoin(listingImage, and(eq(listingImage.listingId, listing.id), eq(listingImage.position, 0)))
+    .where(or(eq(request.requesterId, userId), eq(listing.ownerId, userId)));
+
+  const offers = await db
+    .select()
+    .from(offer)
+    .where(inArray(offer.requestId, rows.map((row) => row.request.id)))
+    .orderBy(asc(sql`${offer}.rowid`));
+  // Senere bud overskriver tidligere, så mappet ender med det siste per forespørsel.
+  const latest = new Map<string, Offer>(offers.map((o) => [o.requestId, o]));
+
+  return rows.map((row) => {
+    const role: RequestRole = row.listing.ownerId === userId ? "owner" : "requester";
+    const last = latest.get(row.request.id);
+    return {
+      id: row.request.id,
+      status: row.request.status,
+      role,
+      listing: row.listing,
+      coverKey: row.coverKey,
+      otherName: role === "owner" ? row.requesterName : row.ownerName,
+      price: last?.price ?? null,
+      changedAt: last?.createdAt ?? row.request.createdAt,
+    };
+  });
+}
+
 export type RequestDetails = {
   request: Request;
   listing: Listing;

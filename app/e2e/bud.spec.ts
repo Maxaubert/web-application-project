@@ -33,8 +33,33 @@ test("legge inn et bud og endre det", async ({ page }) => {
   await expect(page.getByText("Venter på svar fra E2E Selger")).toBeVisible();
   await expect(page.getByText("Du bød 230 kr")).toBeVisible();
   await expect(page.getByText("Du bød 220 kr")).toBeVisible();
-  await page.getByRole("link", { name: "Tilbake til annonsen" }).click();
+  // Annonsekortet øverst går til annonsen (#193).
+  await page.getByRole("main").getByRole("link", { name: "Budtest" }).click();
   await expect(page).toHaveURL(/\/listings\/e2e-bid$/);
+});
+
+// Min side (#193): kjøperen finner forespørselen under Sendt og kommer tilbake til den. Mockup godkjent av Max 17.10.
+// Bygger på budet fra testen over (samme fil kjører i rekkefølge, og global-setup rydder budene før hver kjøring).
+test("Min side viser forespørselen under Sendt og åpner den", async ({ page }) => {
+  await page.goto("/listings/e2e-bid", { waitUntil: "networkidle" });
+  await page.getByRole("link", { name: "Ditt bud: 230 kr" }).click();
+  await expect(page).toHaveURL(/\/requests\/[\w-]+$/);
+
+  await page.getByRole("banner").getByRole("link", { name: "Min side" }).click();
+  await expect(page).toHaveURL(/\/me$/);
+  await expect(page.getByRole("heading", { name: "Min side", level: 1 })).toBeVisible();
+  await expect(page.getByText("E2E Testesen")).toBeVisible();
+  await expect(page.getByText("Du har ikke mottatt noen forespørsler")).toBeVisible();
+
+  await page.getByRole("link", { name: "Sendt (1)" }).click();
+  await expect(page).toHaveURL(/\/me\?show=sent$/);
+  await expect(page.getByText("Selgers tur")).toBeVisible();
+  await expect(page.getByText("Til E2E Selger · 230 kr")).toBeVisible();
+
+  await page.getByRole("link", { name: "Budtest" }).click();
+  await expect(page).toHaveURL(/\/requests\/[\w-]+$/);
+  await page.getByRole("main").getByRole("link", { name: "Min side" }).click();
+  await expect(page).toHaveURL(/\/me\?show=sent$/);
 });
 
 test("et ugyldig bud viser feilen under feltet og lagrer ikke noe", async ({ page }) => {

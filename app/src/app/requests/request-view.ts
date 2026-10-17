@@ -34,6 +34,19 @@ export function bannerFor(status: RequestStatus, role: RequestRole, { ownerName,
   return { text: finished[status] ?? status, yourTurn: false };
 }
 
+// Chipen på raden i Min side (#193): hvis tur det er mens forespørselen venter, ellers statusen. Mørk når det er din tur.
+export type Chip = { text: string; yourTurn: boolean };
+
+export function chipFor(status: RequestStatus, role: RequestRole): Chip {
+  if (status === "waiting_owner") {
+    return role === "owner" ? { text: "Din tur", yourTurn: true } : { text: "Selgers tur", yourTurn: false };
+  }
+  if (status === "waiting_requester") {
+    return role === "owner" ? { text: "Kjøpers tur", yourTurn: false } : { text: "Din tur", yourTurn: true };
+  }
+  return { text: finished[status] ?? status, yourTurn: false };
+}
+
 // Etiketten over budkortet: «Bud» fra forespørreren, «Motbud» fra eieren, og «Ditt …» når det er ditt eget.
 export function offerLabel(offer: Pick<Offer, "senderId">, viewerId: string, requesterId: string): string {
   const base = offer.senderId === requesterId ? "bud" : "motbud";
