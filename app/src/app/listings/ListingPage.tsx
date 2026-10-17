@@ -22,7 +22,7 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
   const published =
     visible && new URL(request.url).searchParams.get("publisert") === "1" && result.listing.ownerId === ctx.session.userId;
 
-  // Knappen under prisen (#185). Bare for synlige annonser; ukjente og nedtatte har ingen.
+  // Budknappen (#185). Bare for synlige annonser; ukjente og nedtatte har ingen.
   const userId = ctx.session.userId ?? "";
   const bid = visible ? bidState(result.listing, userId, await getActiveRequest(db, params.id, userId)) : ({ kind: "none" } as const);
 

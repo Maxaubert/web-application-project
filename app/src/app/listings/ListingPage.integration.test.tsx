@@ -72,7 +72,7 @@ describe("ListingPage", () => {
   });
 });
 
-// Knappen under prisen (#185): A til D i mockupen. Godkjent av Max 17.10.
+// Budknappen (#185): A til D i mockupen, plassert under kategori og tilstand (Max 17.10). Godkjent av Max 17.10.
 describe("ListingPage, budknappen", () => {
   beforeEach(async () => {
     await holder.db.insert(user).values({ id: "kari", name: "Kari Hansen", email: "kari-h@hiof.no" });
@@ -85,6 +85,14 @@ describe("ListingPage, budknappen", () => {
     expect(html).toContain('href="/listings/calc/bid"');
     expect(html).toContain("Legg inn bud");
     expect(html).not.toContain("disabled");
+  });
+
+  it("knappen står under kategori og tilstand, og over beskrivelsen", async () => {
+    const { html } = await renderPage("calc", "", "kari");
+
+    const button = html.indexOf("Legg inn bud");
+    expect(html.indexOf("Tilstand")).toBeLessThan(button);
+    expect(button).toBeLessThan(html.indexOf("Beskrivelse"));
   });
 
   it("B: et ventende bud vises som «Ditt bud: 220 kr» med «Endre bud»", async () => {

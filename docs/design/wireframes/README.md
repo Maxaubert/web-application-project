@@ -108,7 +108,7 @@ endrer ingenting i databasen.
 - Solgte annonser vises med «Solgt»-merke i stedet for borte-visningen. Borte-visningen gjelder nedtatte og
   ukjente annonser, med teksten «Den kan være tatt ned, eller lenken er feil.» og uten «Min side» til den siden finnes.
 - Prisen står alene under tittelen; lån skrives «40 kr/uke» som på kortet.
-- Handlingsknappen på annonsesiden har fire tilstander for salg (#185, Max 17.10): «Legg inn bud» for andres annonser; «Ditt bud: 220 kr» med «Endre bud» når man har et ventende bud; grået ut «Legg inn bud» på egen og solgt annonse. Lån og gis bort har ingen knapp før #186. «Send låneforespørsel» vises ikke før lånesiden er bygget.
+- Handlingsknappen på annonsesiden står under kategori og tilstand og har fire tilstander for salg (#185, Max 17.10): «Legg inn bud» for andres annonser; «Ditt bud: 220 kr» med «Endre bud» når man har et ventende bud; grået ut «Legg inn bud» på egen og solgt annonse. Lån og gis bort har ingen knapp før #186. «Send låneforespørsel» vises ikke før lånesiden er bygget.
 - Gis bort er ikke tegnet (#64); inntil videre får eierboksen overskriften «Eier», som ved lån.
 
 ## Avvik fra tegningene (Max 10.10, #97)

@@ -1,4 +1,4 @@
-// Hva annonsesiden viser under prisen (A til D i mockupen, #185). Én verdi i stedet for flere if-er i komponenten.
+// Hva annonsesiden viser som knapp (A til D i mockupen, #185). Én verdi i stedet for flere if-er i komponenten.
 import type { Listing } from "@/db/schema";
 import type { ActiveRequest } from "./queries";
 

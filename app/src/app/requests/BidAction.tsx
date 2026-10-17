@@ -1,4 +1,4 @@
-// Knappen under prisen på annonsesiden (A til D i mockupen, #185). Serverkomponent, bare visning;
+// Knappen under kategori og tilstand på annonsesiden (A til D i mockupen, #185). Serverkomponent, bare visning;
 // ingenting her er en sikkerhetskontroll, den ligger i placeBid.
 import type { BidState } from "./bid-state";
 

@@ -8,7 +8,7 @@ import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 
 // images: adressene til bildene og miniatyrene deres, forsidebildet først (#150, #155).
 // backLink: lenken øverst; forhåndsvisningen i «Legg ut annonse» har ingen (#171).
-// bidAction: knappen under prisen (#185). Forhåndsvisningen i «Legg ut annonse» har ingen.
+// bidAction: knappen under kategori og tilstand (#185, Max 17.10). Forhåndsvisningen i «Legg ut annonse» har ingen.
 type ListingDetailsProps = {
   listing: Listing;
   ownerName: string;
@@ -43,7 +43,6 @@ export function ListingDetails({ listing, ownerName, images, backLink, bidAction
           </p>
           <h1 className="mt-3 text-2xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
           {price && <p className="mt-3 text-2xl font-bold">{price}</p>}
-          {bidAction && <div className="mt-6">{bidAction}</div>}
 
           <dl className="mt-8 grid grid-cols-2 gap-4">
             <div>
@@ -55,6 +54,7 @@ export function ListingDetails({ listing, ownerName, images, backLink, bidAction
               <dd className="text-lg font-semibold">{conditionLabels[listing.condition]}</dd>
             </div>
           </dl>
+          {bidAction && <div className="mt-6">{bidAction}</div>}
 
           <h2 className="mt-8 text-xl font-bold">Beskrivelse</h2>
           <p className="mt-2 text-lg whitespace-pre-line [overflow-wrap:anywhere]">{listing.description}</p>
