@@ -1,7 +1,7 @@
 // Databasetabeller. Auth-tabellene følger better-auth sin modell (user, session, account,
 // verification, rateLimit); feltene er hentet fra better-auth 1.7 for vår konfigurasjon.
 import { sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 const createdAt = () =>
   integer("created_at", { mode: "timestamp_ms" }).notNull().default(sql`(unixepoch() * 1000)`);
@@ -205,6 +205,11 @@ export const request = sqliteTable(
   (table) => [
     index("request_listing_id_status_idx").on(table.listingId, table.status),
     index("request_requester_id_idx").on(table.requesterId),
+    // En student har høyst én pågående forespørsel per annonse, også når to innsendinger kommer samtidig.
+    // Avslåtte, tilbaketrukne, utløpte, avbestilte og fullførte teller ikke, så man kan by på nytt etterpå.
+    uniqueIndex("request_one_active_per_student_idx")
+      .on(table.listingId, table.requesterId)
+      .where(sql`${table.status} in ('waiting_owner', 'waiting_requester', 'accepted', 'in_use')`),
     check(
       "request_status_check",
       sql`${table.status} in ('waiting_owner', 'waiting_requester', 'accepted', 'declined', 'withdrawn', 'expired', 'cancelled', 'in_use', 'completed')`,

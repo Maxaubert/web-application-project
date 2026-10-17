@@ -37,7 +37,7 @@ const bidSchema = z.object({
     .min(1, "Skriv et bud")
     .regex(/^\d+$/, "Bud må være et helt tall, for eksempel 250")
     .transform(Number)
-    .pipe(z.number().max(PRICE_MAX, "Bud kan være høyst 100 000 kr")),
+    .pipe(z.number().min(1, "Bud må være minst 1 kr").max(PRICE_MAX, "Bud kan være høyst 100 000 kr")),
 });
 
 const day = (missing: string) =>

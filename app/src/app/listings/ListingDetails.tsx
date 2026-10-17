@@ -8,14 +8,21 @@ import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 
 // images: adressene til bildene og miniatyrene deres, forsidebildet først (#150, #155).
 // backLink: lenken øverst; forhåndsvisningen i «Legg ut annonse» har ingen (#171).
-type ListingDetailsProps = { listing: Listing; ownerName: string; images: GalleryImage[]; backLink?: ReactNode };
+// bidAction: knappen under kategori og tilstand (#185, Max 17.10). Forhåndsvisningen i «Legg ut annonse» har ingen.
+type ListingDetailsProps = {
+  listing: Listing;
+  ownerName: string;
+  images: GalleryImage[];
+  backLink?: ReactNode;
+  bidAction?: ReactNode;
+};
 
 // Overskriften i eierboksen, som i wireframene: «Selger» ved salg, «Eier» ved lån. Gis bort er ikke tegnet (#64).
 const ownerHeadings: Record<Listing["type"], string> = { sale: "Selger", loan: "Eier", giveaway: "Eier" };
 
 const pill = "inline-block rounded-full border-2 px-3 py-0.5 text-sm font-semibold";
 
-export function ListingDetails({ listing, ownerName, images, backLink }: ListingDetailsProps) {
+export function ListingDetails({ listing, ownerName, images, backLink, bidAction }: ListingDetailsProps) {
   const price = formatPrice(listing);
 
   return (
@@ -47,6 +54,7 @@ export function ListingDetails({ listing, ownerName, images, backLink }: Listing
               <dd className="text-lg font-semibold">{conditionLabels[listing.condition]}</dd>
             </div>
           </dl>
+          {bidAction && <div className="mt-6">{bidAction}</div>}
 
           <h2 className="mt-8 text-xl font-bold">Beskrivelse</h2>
           <p className="mt-2 text-lg whitespace-pre-line [overflow-wrap:anywhere]">{listing.description}</p>

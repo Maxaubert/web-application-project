@@ -37,6 +37,9 @@ export default function globalSetup() {
     SQL_FILE,
     `INSERT OR IGNORE INTO user (id, name, email, email_verified, phone)
        VALUES ('e2e-user', 'E2E Testesen', 'e2e@hiof.no', 1, '+4790000000');
+     INSERT OR IGNORE INTO user (id, name, email, email_verified, phone)
+       VALUES ('e2e-seller', 'E2E Selger', 'e2e-seller@hiof.no', 1, '+4790000001');
+     DELETE FROM request WHERE requester_id = 'e2e-user';
      DELETE FROM session WHERE user_id = 'e2e-user';
      INSERT INTO session (id, token, user_id, expires_at, created_at, updated_at)
        VALUES ('e2e-session', '${token}', 'e2e-user', ${now + SESSION_MS}, ${now}, ${now});
@@ -45,7 +48,9 @@ export default function globalSetup() {
          ('e2e-calc', 'e2e-user', 'sale', 'Kalkulator Casio fx-991', 'Lite brukt.', 'electronics', 'like_new', 250, 'active'),
          ('e2e-hammock', 'e2e-user', 'loan', 'Hengekøye', 'Til turen.', 'sports', 'used', 30, 'active'),
          ('${TEST_LISTING_ID}', 'e2e-user', 'sale', 'Skrivebordslampe', 'Med LED-pære.', 'furniture', 'used', 120, 'active'),
-         ('${TEST_GALLERY_ID}', 'e2e-user', 'sale', 'Galleritest', 'Seks bilder.', 'furniture', 'used', 10, 'active');
+         ('${TEST_GALLERY_ID}', 'e2e-user', 'sale', 'Galleritest', 'Seks bilder.', 'furniture', 'used', 10, 'active'),
+         ('e2e-bid', 'e2e-seller', 'sale', 'Budtest', 'Til budtestene.', 'books', 'used', 250, 'active'),
+         ('e2e-bid-error', 'e2e-seller', 'sale', 'Budfeil', 'Til budtestene.', 'books', 'used', 250, 'active');
      DELETE FROM listing_image WHERE listing_id IN ('${TEST_LISTING_ID}', '${TEST_GALLERY_ID}');
      INSERT INTO listing_image (id, listing_id, key, position)
        VALUES
