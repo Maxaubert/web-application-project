@@ -1,6 +1,7 @@
 // Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Bare visning: status, siste bud og historikk
 // for de to partene. Andre enn eieren og forespørreren får samme borte-visning med 404 som en ukjent annonse, så
 // ingen kan se om en forespørsel finnes. Handlingsknappene kommer under budkortet med #187.
+// Tilbakelenken går til Min side (#193) og annonsekortet til annonsen.
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
 import { PageShell } from "@/app/shared/page-shell";
@@ -38,8 +39,9 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
 
   return (
     <PageShell title={`Forespørsel: ${listing.title}`} wide headerAction={<HeaderActions />}>
-      <a href={`/listings/${listing.id}`} className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
-        <span aria-hidden="true">‹</span> Tilbake til annonsen
+      {/* Tilbake til listen man kom fra: selgeren til Mottatt, kjøperen til Sendt (#193). Annonsen nås fra kortet under. */}
+      <a href={role === "owner" ? "/me" : "/me?show=sent"} className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
+        <span aria-hidden="true">‹</span> Min side
       </a>
       <h1 className="sr-only">Forespørsel om {listing.title}</h1>
       <div className="mt-2 grid grid-cols-1 gap-6 sm:mt-6 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-12">
@@ -48,6 +50,7 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
             title={listing.title}
             typeAndPrice={formatTypeAndPrice(listing)}
             thumb={coverKey ? imageUrl(coverKey, "thumb") : null}
+            href={`/listings/${listing.id}`}
             sellerName={role === "requester" ? details.ownerName : undefined}
           />
           <StatusBanner banner={bannerFor(request.status, role, names)} />

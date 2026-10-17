@@ -175,6 +175,21 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
   Skjermbilder av det som er bygget: ![Forhåndsvis, mobil](png/Legg-ut-forhandsvis-mobil.png)
   ![Forhåndsvis, desktop](png/Legg-ut-forhandsvis-desktop.png)
 
+## Avvik fra tegningene (Max 17.10, #193)
+
+Min side er bygget etter mockups valgt blant ti listestiler og en mobilversjon, ikke etter `Foresporsler-*`:
+
+- Adressen er `/me` (Forespørsler er eneste fane foreløpig) og `/me?show=sent` for Sendt, ikke `/me?tab=requests`.
+  Mine annonser (#189) og Historikk (#93) legges til som faner senere, og da kommer `?tab=` med.
+- Profilen (avatar, navn, e-post, telefon) står over fanen også på desktop, ikke i en kolonne til venstre (Max 17.10).
+  Ingen «Rediger profil» og ingen «Visning»-merke; redigeringssiden finnes ikke ennå.
+- Raden har stort bilde, tittel, motpart og bud («Til …» på Sendt), typemerke og «Sist endret», og en chip i stedet for
+  tabellkolonner og «Åpne». Chipen er «Din tur» (mørk) eller «Selgers tur»/«Kjøpers tur» mens forespørselen venter, ellers
+  statusen, alt med ramme og uten farger. Mobil: eget kort per rad med 14 px mellomrom, chip og «Åpne ›» på egen linje nederst.
+  Desktop: radene i én ramme med skillelinjer og chipen til høyre.
+- «Min side» står først blant knappene øverst til høyre (ikon på mobil), understreket når man er der.
+- «Sist endret» er tidspunktet for siste bud; en statusendring som avslag får eget tidspunkt først med #187.
+
 ## Skjermer
 
 Filnavn viser til [png/](png/) og [kilde/](kilde/). Filnavnene er arbeidsnavn fra lerretet,
@@ -191,8 +206,8 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 05 | Legg ut annonse | `Legg-ut-*` | `/listings/new` | `ListingForm`, `ListingPreview`, `ImageField`, `ErrorSummary` (bygget 11.10, #133, #141; avvik over) | Type, bilder (1–10), tittel, beskrivelse, kategori, tilstand, pris (ukepris ved lån, valgfri). Desktop viser forhåndsvisning av kortet. | Feltfeil (`Legg-ut-feil-*`). Forhåndsvis: dialog med den ekte annonsesiden og «Avbryt»/«Publiser» (`Legg-ut-forhandsvis-*`, #171). |
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
 | 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
-| 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` | `MyPageTabs`, `ReceivedSentToggle`, `RequestRow` | Mottatt og Sendt. Rad med vare, type, motpart, bud eller periode, status og «Din tur». | Tom liste (`Foresporsler-tom-*`). |
-| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. Bygget 17.10 (#192) som ren visning for begge parter uten knapper; tilbakelenken går til annonsen til Min side finnes (#193). Knappene kommer under budkortet, også på desktop (Max 17.10), med #187. Andre enn de to partene får 404 som for en ukjent annonse. | |
+| 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` (bygget 17.10, #193, som `/me` og `/me?show=sent`, avvik under) | `ProfileCard`, `RequestRow` (fanene og Mottatt/Sendt er lenker i `MyPage`) | Mottatt og Sendt. Rad med bilde, vare, motpart og bud, type, «Sist endret» og en chip: «Din tur», «Selgers tur» eller «Kjøpers tur» mens forespørselen venter, ellers statusen. Din tur ligger øverst, så nyeste. Mobil: eget kort per rad med chip og «Åpne ›» nederst. Desktop: raden i én ramme med chipen til høyre. Hele raden er en lenke til `/requests/:id`. | Tom liste (`Foresporsler-tom-*`). |
+| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. Bygget 17.10 (#192) som ren visning for begge parter uten knapper; tilbakelenken er «‹ Min side» (Mottatt for selgeren, Sendt for kjøperen, #193) og annonsekortet øverst er en lenke til annonsen. Knappene kommer under budkortet, også på desktop (Max 17.10), med #187. Andre enn de to partene får 404 som for en ukjent annonse. | |
 | 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/requests/:id` | `CounterOfferForm` | Felt «Din pris (kr)», «Send motbud», «Avbryt». | |
 | 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/requests/:id` | `ContactCard`, `HandoverConfirmation` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
 | 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `History` | Begge bekreftelser med tidspunkt, pris, historikk. | |

@@ -1,10 +1,10 @@
 // getActiveRequest mot SQLite i minnet: finner studentens pågående forespørsel med siste bud.
 import { beforeEach, describe, expect, it } from "vitest";
-import { listing, offer, request, requestStatuses, user } from "@/db/schema";
+import { listing, listingImage, offer, request, requestStatuses, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
-import { getActiveRequest, getRequestForParty } from "./queries";
+import { getActiveRequest, getRequestForParty, getRequestsForUser } from "./queries";
 
 let db: Db;
 
@@ -90,5 +90,72 @@ describe("getRequestForParty", () => {
     const details = await getRequestForParty(db, "r1", "kari");
 
     expect(JSON.stringify(details)).not.toMatch(/@hiof\.no|\+47/);
+  });
+});
+
+describe("getRequestsForUser", () => {
+  const sameSecond = new Date(1_700_000_000_000);
+
+  beforeEach(async () => {
+    await db.insert(request).values([
+      { id: "r1", listingId: "calc", requesterId: "kari" },
+      { id: "r2", listingId: "lamp", requesterId: "per" },
+    ]);
+    await db.insert(offer).values([
+      { requestId: "r1", senderId: "kari", price: 200, createdAt: sameSecond },
+      { requestId: "r1", senderId: "kari", price: 230, createdAt: sameSecond },
+      { requestId: "r2", senderId: "per", price: 90, createdAt: new Date(1_700_000_100_000) },
+    ]);
+  });
+
+  it("eieren ser forespørslene på sine annonser, med kjøperen som motpart og siste bud", async () => {
+    const mine = await getRequestsForUser(db, OWNER_ID);
+
+    expect(mine.map((r) => r.id).sort()).toEqual(["r1", "r2"]);
+    const r1 = mine.find((r) => r.id === "r1");
+    expect(r1).toMatchObject({ role: "owner", otherName: "Kari Nordmann", status: "waiting_owner", price: 230 });
+    expect(r1?.listing.id).toBe("calc");
+    expect(r1?.changedAt).toEqual(sameSecond);
+  });
+
+  it("kjøperen ser bare sine egne forespørsler, med selgeren som motpart", async () => {
+    const mine = await getRequestsForUser(db, "kari");
+
+    expect(mine).toHaveLength(1);
+    expect(mine[0]).toMatchObject({ id: "r1", role: "requester", otherName: "Ola Nordmann", price: 230 });
+  });
+
+  it("gir en tom liste for en bruker uten forespørsler og for en ukjent bruker", async () => {
+    await db.insert(user).values({ id: "mia", name: "Mia Berg", email: "mia@hiof.no" });
+
+    expect(await getRequestsForUser(db, "mia")).toEqual([]);
+    expect(await getRequestsForUser(db, "finnes-ikke")).toEqual([]);
+    expect(await getRequestsForUser(db, "")).toEqual([]);
+  });
+
+  it("tar med forespørsler i alle statuser, også avsluttede", async () => {
+    await db.update(request).set({ status: "declined" });
+
+    const mine = await getRequestsForUser(db, "kari");
+
+    expect(mine.map((r) => r.status)).toEqual(["declined"]);
+  });
+
+  it("bruker forsidebildet, og gir null for en annonse uten bilde", async () => {
+    await db.insert(listingImage).values([
+      { listingId: "calc", key: "calc-1", position: 1 },
+      { listingId: "calc", key: "calc-0", position: 0 },
+    ]);
+
+    const mine = await getRequestsForUser(db, OWNER_ID);
+
+    expect(mine.find((r) => r.id === "r1")?.coverKey).toBe("calc-0");
+    expect(mine.find((r) => r.id === "r2")?.coverKey).toBeNull();
+    // Flere bilder skal ikke gi flere rader.
+    expect(mine).toHaveLength(2);
+  });
+
+  it("henter bare navn fra brukerne, aldri telefon eller e-post", async () => {
+    expect(JSON.stringify(await getRequestsForUser(db, "kari"))).not.toMatch(/@hiof\.no|\+47/);
   });
 });

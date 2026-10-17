@@ -15,6 +15,11 @@ export function toE164(raw: string, country: CountryCode): string | null {
   return parsed.number;
 }
 
+// Nummeret slik det vises for eieren selv på Min side (#193): «+47 912 34 567». Ukjent format vises som lagret.
+export function formatPhone(e164: string): string {
+  return parsePhoneNumberFromString(e164)?.formatInternational() ?? e164;
+}
+
 // Land for nedtrekkslisten: Norge først, resten sortert etter norsk navn.
 export type CountryOption = { code: CountryCode; name: string; dialCode: string };
 

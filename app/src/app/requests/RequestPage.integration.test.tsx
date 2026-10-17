@@ -44,7 +44,7 @@ describe("RequestPage, selgeren", () => {
     const { html, status } = await visit("r1", OWNER_ID);
 
     expect(status).toBe(200);
-    for (const text of ["Kalkulator", "Salg · 250 kr", "Nytt bud fra Kari Hansen", "Din pris", "250 kr", "Historikk", "Tilbake til annonsen"]) {
+    for (const text of ["Kalkulator", "Salg · 250 kr", "Nytt bud fra Kari Hansen", "Din pris", "250 kr", "Historikk"]) {
       expect(html).toContain(text);
     }
     expect(html).toMatch(/Bud<\/dt><dd[^>]*>230\s*kr<\/dd>/);
@@ -84,6 +84,23 @@ describe("RequestPage, kjøperen", () => {
     expect(status).toBe(200);
     expect(html).toContain("Avslått");
     expect(html).toContain("Kalkulator");
+  });
+});
+
+describe("RequestPage, lenkene (#193)", () => {
+  it("tilbakelenken går til Mottatt for selgeren og Sendt for kjøperen, og heter «Min side»", async () => {
+    const owner = (await visit("r1", OWNER_ID)).html;
+    const buyer = (await visit("r1", "kari")).html;
+
+    expect(owner).toMatch(/<a href="\/me"[^>]*><span aria-hidden="true">‹<\/span> Min side<\/a>/);
+    expect(buyer).toMatch(/<a href="\/me\?show=sent"[^>]*><span aria-hidden="true">‹<\/span> Min side<\/a>/);
+    expect(owner).not.toContain("Tilbake til annonsen");
+  });
+
+  it("annonsekortet er en lenke til annonsen, for begge parter", async () => {
+    for (const userId of [OWNER_ID, "kari"]) {
+      expect((await visit("r1", userId)).html).toMatch(/<a href="\/listings\/calc"[^>]*>Kalkulator<\/a>/);
+    }
   });
 });
 
