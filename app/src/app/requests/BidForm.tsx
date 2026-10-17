@@ -4,8 +4,8 @@
 import { useActionState } from "react";
 import { asFormState, type ActionResult } from "@/app/auth/form-state";
 import { FieldError, PrimaryButton, TextField } from "@/app/shared/form-controls";
-import { ListingImage } from "@/app/listings/ListingImage";
 import { sendBid } from "./actions";
+import { ListingSummary } from "./ListingSummary";
 
 type BidFormProps = {
   listingId: string;
@@ -24,14 +24,7 @@ export function BidForm({ listingId, title, typeAndPrice, ownerName, thumb, init
   return (
     <form action={action} noValidate className="space-y-6">
       <input type="hidden" name="listingId" value={listingId} />
-      <div className="flex gap-4 rounded-xl border-2 border-hairline bg-surface p-3">
-        <ListingImage src={thumb} className="size-[4.5rem] shrink-0 rounded-lg" iconClassName="size-8" />
-        <div className="min-w-0">
-          <p className="font-bold [overflow-wrap:anywhere]">{title}</p>
-          <p>{typeAndPrice}</p>
-          <p className="text-sm text-muted">Selger: {ownerName}</p>
-        </div>
-      </div>
+      <ListingSummary title={title} typeAndPrice={typeAndPrice} thumb={thumb} sellerName={ownerName} />
       <TextField
         id="bid-price"
         name="price"

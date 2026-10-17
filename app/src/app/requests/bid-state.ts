@@ -5,7 +5,7 @@ import type { ActiveRequest } from "./queries";
 export type BidState =
   | { kind: "can_bid" }
   // canChange: selgeren har ikke svart, så budet kan endres. Etter et motbud hører det til svaret i #187.
-  | { kind: "has_bid"; price: number | null; canChange: boolean }
+  | { kind: "has_bid"; requestId: string; price: number | null; canChange: boolean }
   | { kind: "own" }
   | { kind: "sold" }
   | { kind: "none" };
@@ -18,6 +18,6 @@ export function bidState(listing: BidListing, userId: string, active: ActiveRequ
   // Eier først: på din egen annonse står knappen grået ut uansett.
   if (listing.ownerId === userId) return { kind: "own" };
   if (listing.status === "sold") return { kind: "sold" };
-  if (active) return { kind: "has_bid", price: active.price, canChange: active.status === "waiting_owner" };
+  if (active) return { kind: "has_bid", requestId: active.id, price: active.price, canChange: active.status === "waiting_owner" };
   return { kind: "can_bid" };
 }

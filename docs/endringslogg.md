@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-17
 
+- Forespørsler, del 3 (#192): forespørselssiden `/requests/:id`, bare visning for eieren og den som la inn forespørselen: status i et banner (mørkt når det er din tur), siste bud, og historikk med nyeste først. Andre enn de to partene får 404 med samme tekst som en ukjent annonse, og siden leser aldri telefon eller e-post. «Ditt bud» på annonsesiden er nå en lenke hit. Handlingsknappene kommer under budkortet med #187; Min side som inngang for selgeren kommer med #193. (Max, #192)
 - Forespørsler, del 2 av 6 (#185): bud på salgsannonser. Siden `/listings/:id/bid`, serverhandlingen `sendBid` og reglene i `placeBid`. Knappen på annonsesiden har fire tilstander (Legg inn bud, Ditt bud med Endre bud, grået ut på egen og solgt annonse). Bud er fra 1 til 100 000 kr (README sa bud > 0; regelen fra #184 tillot 0 og er rettet). Et nytt bud erstatter det gamle så lenge selgeren ikke har svart, og det gamle blir historikk. En delvis unik indeks sørger for høyst én pågående forespørsel per student per annonse. (Max, #185)
 
 ## 2026-10-16

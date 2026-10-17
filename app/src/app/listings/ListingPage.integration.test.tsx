@@ -101,7 +101,7 @@ describe("ListingPage, budknappen", () => {
 
     const { html } = await renderPage("calc", "", "kari");
 
-    expect(html).toContain("Ditt bud: 220 kr");
+    expect(html).toMatch(/<a href="\/requests\/r1"[^>]*>Ditt bud: 220 kr<\/a>/);
     expect(html).toContain("Endre bud");
     expect(html).not.toContain("Legg inn bud");
   });
