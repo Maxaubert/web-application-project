@@ -25,9 +25,12 @@ export function BidAction({ listingId, state }: { listingId: string; state: BidS
     case "has_bid":
       return (
         <div className="space-y-3">
-          <p className="flex h-12 items-center rounded-md border-2 border-hairline bg-surface px-4 text-lg font-bold">
+          <a
+            href={`/requests/${state.requestId}`}
+            className="flex h-12 items-center rounded-md border-2 border-hairline bg-surface px-4 text-lg font-bold transition-colors hover:border-ink"
+          >
             {state.price === null ? "Ditt bud" : `Ditt bud: ${state.price.toLocaleString("nb-NO")} kr`}
-          </p>
+          </a>
           {state.canChange && (
             <a href={`/listings/${listingId}/bid`} className={`${button} border-ink bg-surface text-ink hover:bg-paper`}>
               Endre bud

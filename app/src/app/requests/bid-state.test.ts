@@ -11,7 +11,7 @@ describe("bidState", () => {
   });
 
   it("B: et ventende bud gir has_bid med prisen, og det kan endres", () => {
-    expect(bidState(listing, "kari", mine)).toEqual({ kind: "has_bid", price: 220, canChange: true });
+    expect(bidState(listing, "kari", mine)).toEqual({ kind: "has_bid", requestId: "r1", price: 220, canChange: true });
   });
 
   it("B: etter et svar fra selgeren kan budet ikke endres her", () => {

@@ -26,6 +26,15 @@ test("legge inn et bud og endre det", async ({ page }) => {
   await page.getByRole("button", { name: "Send bud" }).click();
 
   await expect(page.getByText("Ditt bud: 230 kr")).toBeVisible();
+
+  // Budet er en lenke til forespørselssiden (#192): status, siste bud og historikken med begge budene.
+  await page.getByRole("link", { name: "Ditt bud: 230 kr" }).click();
+  await expect(page).toHaveURL(/\/requests\/[\w-]+$/);
+  await expect(page.getByText("Venter på svar fra E2E Selger")).toBeVisible();
+  await expect(page.getByText("Du bød 230 kr")).toBeVisible();
+  await expect(page.getByText("Du bød 220 kr")).toBeVisible();
+  await page.getByRole("link", { name: "Tilbake til annonsen" }).click();
+  await expect(page).toHaveURL(/\/listings\/e2e-bid$/);
 });
 
 test("et ugyldig bud viser feilen under feltet og lagrer ikke noe", async ({ page }) => {
