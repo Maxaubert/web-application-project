@@ -93,7 +93,7 @@ endrer ingenting i databasen.
 | `createListing`, `updateListing` | Innlogget bruker / eier | `createListing` bygget 11.10 (#131): tittel 3–80 tegn, beskrivelse påkrevd (høyst 2000), kjent kategori, handelstype og tilstand. Pris: salg påkrevd heltall 0–100 000, lån valgfri (tom = gratis), gis bort alltid tom. Eier fra økten, aldri fra skjemaet; uten økt til `/login`, uten kontooppsett til `/account-setup`; ved suksess til `/listings/:id?publisert=1`. Bilder (1–10) kommer med #61. Bare eier kan redigere (`updateListing`, ikke bygget). |
 | `unpublishListing` | Eier | Tar annonsen ut av søket. Endrer ikke eksisterende avtaler. |
 | `sendRequest` | Innlogget bruker | Ikke egen annonse, annonsen er aktiv. Salg: bud > 0. Lån: minst 7 dager, ingen overlapp med godtatte lån. Salg er bygget 17.10 (#185) som `sendBid` (serverhandlingen) og `placeBid` (reglene): bud fra 1 til 100 000 kr, én pågående forespørsel per student per annonse (delvis unik indeks), og et nytt bud mens selgeren ikke har svart legger en ny `offer`-rad på samme forespørsel. Lån og gis bort kommer med #186. |
-| `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Godtatt salg setter annonsen til solgt og avslår andre ventende bud. Godtatt lån avslår overlappende ventende forespørsler. |
+| `acceptOffer`, `declineOffer`, `sendCounterOffer` | Den som har tur | Bare siste forslag kan godtas. Bygget 18.10 (#187) som serverhandlingen `respondToRequest` (skjemafeltet `intent` er `accept`, `decline` eller `counter`) og reglene i `respondToOffer`. Skjemaet sender med forslaget som ble vist (`offerId`); er det ikke lenger det siste, avvises svaret. Et godtatt salg setter ikke annonsen til solgt (det skjer ved overlevering, #188), men så lenge ett bud er godtatt eller i bruk, kan ikke et annet bud på samme annonse godtas. Å avslå andre ventende bud ved aksept, og lån, kommer med #186 og #188. |
 | `withdrawRequest` | Forespørrer | Bare mens den venter. |
 | `cancelAgreement` | Begge | Bare før overlevering er bekreftet av begge. |
 | `confirmHandover` | Begge | Salg fullføres når begge har bekreftet. Lån går til `in_use`. Har bare én bekreftet, regnes det som bekreftet etter 3 dager (planlagt jobb). |
@@ -188,7 +188,21 @@ Min side er bygget etter mockups valgt blant ti listestiler og en mobilversjon, 
   statusen, alt med ramme og uten farger. Mobil: eget kort per rad med 14 px mellomrom, chip og «Åpne ›» på egen linje nederst.
   Desktop: radene i én ramme med skillelinjer og chipen til høyre.
 - «Min side» står først blant knappene øverst til høyre (ikon på mobil), understreket når man er der.
-- «Sist endret» er tidspunktet for siste bud; en statusendring som avslag får eget tidspunkt først med #187.
+- «Sist endret» er tidspunktet for siste bud eller siste statusendring (avslag, aksept, utløp lagret), det som er nyest (#187).
+
+## Avvik fra tegningene (Max 18.10, #187)
+
+Knappene under budkortet er bygget etter en mockup valgt av Max, ikke etter `Avtale-nyttbud-*` og `Avtale-motbud-*`:
+
+- «Godta» er en stor mørk knapp, «Motbud» og «Avslå» er mindre med ramme (Max 18.10). «Foreslå annen pris» heter «Motbud».
+- «Motbud» åpner feltet «Ditt motbud (kr)» med «Send motbud» og «Avbryt» på samme side, ikke en egen side. «Avslå» ber om
+  en bekreftelse («Avslå forespørselen?», «Ja, avslå», «Avbryt») fordi avslag ikke kan angres; «Godta» og «Motbud» gjelder med en gang.
+- Bare den som har tur får knappene. Den som venter og alle avsluttede statuser har ingen.
+- Banneret har mørk kant (din tur) eller lys kant, men ingen mørk fyll, for en mørk flate ligner en knapp (Max 18.10).
+- Utløp etter 7 dager er «lat»: ingen cron. Sidene regner ut at en forespørsel er utløpt (siste forslag eldre enn 7 dager),
+  og skriving (nytt bud, svar) lagrer det først. Databasen kan altså si «venter» en stund etter at fristen er gått.
+  Et svar på en utløpt forespørsel avvises med «Forespørselen er utløpt».
+- Svarene bruker én serverhandling med valget som skjemafelt, ikke tre adresser.
 
 ## Skjermer
 
@@ -207,8 +221,8 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
 | 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
 | 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` (bygget 17.10, #193, som `/me` og `/me?show=sent`, avvik under) | `ProfileCard`, `RequestRow` (fanene og Mottatt/Sendt er lenker i `MyPage`) | Mottatt og Sendt. Rad med bilde, vare, motpart og bud, type, «Sist endret» og en chip: «Din tur», «Selgers tur» eller «Kjøpers tur» mens forespørselen venter, ellers statusen. Din tur ligger øverst, så nyeste. Mobil: eget kort per rad med chip og «Åpne ›» nederst. Desktop: raden i én ramme med chipen til høyre. Hele raden er en lenke til `/requests/:id`. | Tom liste (`Foresporsler-tom-*`). |
-| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Foreslå annen pris», «Avslå», historikk. Bygget 17.10 (#192) som ren visning for begge parter uten knapper; tilbakelenken er «‹ Min side» (Mottatt for selgeren, Sendt for kjøperen, #193) og annonsekortet øverst er en lenke til annonsen. Knappene kommer under budkortet, også på desktop (Max 17.10), med #187. Andre enn de to partene får 404 som for en ukjent annonse. | |
-| 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/requests/:id` | `CounterOfferForm` | Felt «Din pris (kr)», «Send motbud», «Avbryt». | |
+| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Motbud», «Avslå», historikk. Bygget 17.10 (#192) som visning for begge parter; tilbakelenken er «‹ Min side» (Mottatt for selgeren, Sendt for kjøperen, #193) og annonsekortet øverst er en lenke til annonsen. Knappene ligger under budkortet, også på desktop, og vises bare for den som har tur (bygget 18.10, #187, avvik over). Andre enn de to partene får 404 som for en ukjent annonse. | |
+| 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/requests/:id` | `ResponseActions` (bygget 18.10, #187) | Felt «Ditt motbud (kr)», «Send motbud», «Avbryt», åpnet på samme side. Kjøperen har de samme knappene etter et motbud. | |
 | 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/requests/:id` | `ContactCard`, `HandoverConfirmation` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
 | 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `History` | Begge bekreftelser med tidspunkt, pris, historikk. | |
 | 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/requests/:id` | `ExtensionPanel`, `ReturnIssuePanel` | Periode, pris, kontakt. Forleng lånet (WV-01), retur som eieren bekrefter, og rapporter returproblem (WV-02). | |

@@ -4,8 +4,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { listing, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
-import { insertOwner, validListing } from "@/test/test-listings";
-import { sendBid } from "./actions";
+import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
+import { respondToRequest, sendBid } from "./actions";
 
 type Session = { isAuthenticated: boolean; userId?: string; needsSetup?: boolean };
 
@@ -79,5 +79,68 @@ describe("sendBid", () => {
 
     expect(result).toMatchObject({ error: "Du kan ikke by på din egen annonse" });
     expect(await counts()).toEqual({ requests: 0, offers: 0 });
+  });
+});
+
+// respondToRequest (#187): samme mønster som sendBid. Brukeren kommer alltid fra økten, aldri fra skjemaet.
+describe("respondToRequest", () => {
+  beforeEach(async () => {
+    await holder.db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "kari" });
+    await holder.db.insert(offer).values({ id: "o1", requestId: "r1", senderId: "kari", price: 220 });
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: false };
+  });
+
+  async function status() {
+    return (await holder.db.select().from(request))[0].status;
+  }
+
+  it("godtar for brukeren i økten og sender tilbake til forespørselssiden", async () => {
+    const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "accept" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1");
+    expect(await status()).toBe("accepted");
+  });
+
+  it("et motbud lagres med prisen fra skjemaet og avsenderen fra økten", async () => {
+    await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "counter", price: "240", senderId: "kari" }));
+
+    const offers = await holder.db.select().from(offer);
+    expect(offers[1]).toMatchObject({ senderId: OWNER_ID, price: 240 });
+    expect(await status()).toBe("waiting_requester");
+  });
+
+  it("kjøperen i økten kan ikke svare på sitt eget bud, selv om skjemaet påstår noe annet", async () => {
+    holder.session = { isAuthenticated: true, userId: "kari", needsSetup: false };
+
+    const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "accept", userId: OWNER_ID, role: "owner" }));
+
+    expect(result).toMatchObject({ error: "Du kan ikke svare på denne forespørselen nå" });
+    expect(await status()).toBe("waiting_owner");
+  });
+
+  it("sender en uinnlogget til /login og en bruker uten kontooppsett til /account-setup, uten å endre noe", async () => {
+    holder.session = { isAuthenticated: false };
+    const loggedOut = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "accept" }));
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: true };
+    const noSetup = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "accept" }));
+
+    expect((loggedOut as Response).headers.get("Location")).toBe("/login");
+    expect((noSetup as Response).headers.get("Location")).toBe("/account-setup");
+    expect(await status()).toBe("waiting_owner");
+  });
+
+  it("gir feilen og prisen tilbake til skjemaet, og lagrer ingenting", async () => {
+    const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "counter", price: "0" }));
+
+    expect(result).toEqual({ error: undefined, fieldErrors: { price: "Bud må være minst 1 kr" }, values: { price: "0" } });
+    expect(await counts()).toEqual({ requests: 1, offers: 1 });
+    expect(await status()).toBe("waiting_owner");
+  });
+
+  it("mangler feltene, avvises det uten å endre noe", async () => {
+    const result = await respondToRequest({}, form({}));
+
+    expect(result).toMatchObject({ error: "Ukjent handling" });
+    expect(await status()).toBe("waiting_owner");
   });
 });
