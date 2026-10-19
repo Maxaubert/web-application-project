@@ -97,7 +97,7 @@ describe("respondToRequest", () => {
   it("godtar for brukeren i økten og sender tilbake til forespørselssiden", async () => {
     const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "accept" }));
 
-    expect((result as Response).headers.get("Location")).toBe("/requests/r1");
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=godtatt");
     expect(await status()).toBe("accepted");
   });
 
@@ -107,6 +107,18 @@ describe("respondToRequest", () => {
     const offers = await holder.db.select().from(offer);
     expect(offers[1]).toMatchObject({ senderId: OWNER_ID, price: 240 });
     expect(await status()).toBe("waiting_requester");
+  });
+
+  it("et motbud sender tilbake med markøren «motbud»", async () => {
+    const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "counter", price: "240" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=motbud");
+  });
+
+  it("avslag fra selgeren gir markøren «avslatt»", async () => {
+    const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "decline" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=avslatt");
   });
 
   it("kjøperen i økten kan ikke svare på sitt eget bud, selv om skjemaet påstår noe annet", async () => {
