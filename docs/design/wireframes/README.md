@@ -203,6 +203,7 @@ Knappene under budkortet er bygget etter en mockup valgt av Max, ikke etter `Avt
   og skriving (nytt bud, svar) lagrer det først. Databasen kan altså si «venter» en stund etter at fristen er gått.
   Et svar på en utløpt forespørsel avvises med «Forespørselen er utløpt».
 - Svarene bruker én serverhandling med valget som skjemafelt, ikke tre adresser.
+- Etter et svar åpnes siden med en melding øverst («Motbud sendt: 240 kr», «Du godtok budet», «Forespørselen er avslått»). Den står i 5 sekunder og forsvinner, og markøren `?sendt=` fjernes fra adressen. Meldingen vises bare når markøren stemmer med det som er lagret (Max 19.10, #203).
 
 ## Skjermer
 

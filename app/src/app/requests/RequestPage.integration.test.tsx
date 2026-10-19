@@ -19,10 +19,11 @@ vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
 // Serverhandlingen trengs ikke for å tegne knappene.
 vi.mock("./actions", () => ({ respondToRequest: vi.fn() }));
 
-async function visit(id: string, userId: string) {
+async function visit(id: string, userId: string, query = "") {
   const response = { status: 200 } as RequestInfo["response"];
   const ctx = { session: { userId } } as RequestInfo["ctx"];
-  const page = await RequestPage({ params: { id }, ctx, response } as RequestInfo<{ id: string }>);
+  const request = new Request(`https://studentmarkedet.test/requests/${id}${query}`);
+  const page = await RequestPage({ params: { id }, ctx, response, request } as RequestInfo<{ id: string }>);
   return { html: renderToStaticMarkup(page), status: response.status };
 }
 
@@ -183,5 +184,40 @@ describe("RequestPage, knappene (#187)", () => {
 
   it("en tredjepart får ingen knapper og ingenting om forespørselen", async () => {
     expect(hasNoButtons((await visit("r1", "per")).html)).toBe(true);
+  });
+});
+
+describe("RequestPage, meldingen etter svar (#203)", () => {
+  const toast = (html: string) => html.match(/<div role="status"[^>]*>[\s\S]*?<\/div>/)?.[0] ?? "";
+
+  it("selgeren ser «Motbud sendt» med beløpet etter et motbud", async () => {
+    await holder.db.insert(offer).values({ requestId: "r1", senderId: OWNER_ID, price: 240, createdAt: new Date("2026-10-17T09:00:00Z") });
+    await holder.db.update(request).set({ status: "waiting_requester" });
+
+    const { html } = await visit("r1", OWNER_ID, "?sendt=motbud");
+
+    expect(toast(html).replace(/\s/g, " ")).toContain("Motbud sendt: 240 kr");
+  });
+
+  it("«Du godtok budet» og «Forespørselen er avslått» når statusen stemmer", async () => {
+    await holder.db.update(request).set({ status: "accepted" });
+    expect(toast((await visit("r1", OWNER_ID, "?sendt=godtatt")).html)).toContain("Du godtok budet");
+
+    await holder.db.update(request).set({ status: "declined" });
+    expect(toast((await visit("r1", OWNER_ID, "?sendt=avslatt")).html)).toContain("Forespørselen er avslått");
+  });
+
+  it("ingen melding uten markør, med en markør som ikke stemmer, eller for den som ikke sendte motbudet", async () => {
+    expect(toast((await visit("r1", OWNER_ID)).html)).toBe("");
+    expect(toast((await visit("r1", OWNER_ID, "?sendt=godtatt")).html)).toBe("");
+    // Siste forslag er kjøperens, så selgeren har ikke «sendt et motbud».
+    expect(toast((await visit("r1", OWNER_ID, "?sendt=motbud")).html)).toBe("");
+  });
+
+  it("en tredjepart får 404 og ingen melding, selv med markør", async () => {
+    const { html, status } = await visit("r1", "per", "?sendt=motbud");
+
+    expect(status).toBe(404);
+    expect(toast(html)).toBe("");
   });
 });
