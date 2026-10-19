@@ -16,7 +16,7 @@ let db: Db;
 const O1 = "o1";
 
 async function snapshot() {
-  return { requests: await db.select().from(request), offers: await db.select().from(offer) };
+  return { requests: await db.select().from(request), offers: await db.select().from(offer), listings: await db.select().from(listing) };
 }
 
 async function respond(userId: string, action: string, extra: { price?: string; offerId?: string; requestId?: string; now?: Date } = {}) {
@@ -152,38 +152,114 @@ describe("respondToOffer, avvisning endrer ingenting", () => {
   });
 });
 
-describe("respondToOffer, ett godtatt bud per annonse", () => {
+describe("respondToOffer, aksept tar annonsen ut av søket (#201)", () => {
   beforeEach(async () => {
-    await db.insert(request).values({ id: "r2", listingId: "calc", requesterId: "per", status: "accepted" });
-    await db.insert(offer).values({ id: "p1", requestId: "r2", senderId: "per", price: 240, createdAt: BID_AT });
-  });
-
-  it("avviser å godta et annet bud når et er godtatt, men tillater å avslå det", async () => {
-    await expectRejected(OWNER_ID, "accept", { error: "Du har allerede godtatt et annet bud på denne annonsen" });
-
-    expect(await respond(OWNER_ID, "decline")).toEqual({ ok: true });
-  });
-
-  it("det samme gjelder når det andre budet er i bruk", async () => {
-    await db.update(request).set({ status: "in_use" }).where(eq(request.id, "r2"));
-
-    await expectRejected(OWNER_ID, "accept", { error: "Du har allerede godtatt et annet bud på denne annonsen" });
-  });
-
-  it("et avbestilt godtatt bud hindrer ikke", async () => {
-    await db.update(request).set({ status: "cancelled" }).where(eq(request.id, "r2"));
-
-    expect(await respond(OWNER_ID, "accept")).toEqual({ ok: true });
-  });
-
-  it("et godtatt bud på en annen annonse hindrer ikke", async () => {
+    await db.insert(user).values([
+      { id: "mia", name: "Mia Berg", email: "mia@hiof.no" },
+      { id: "ola2", name: "Ola Dahl", email: "ola2@hiof.no" },
+    ]);
+    await db.insert(request).values([
+      { id: "r2", listingId: "calc", requesterId: "per" },
+      { id: "r3", listingId: "calc", requesterId: "mia", status: "waiting_requester" },
+      { id: "r4", listingId: "calc", requesterId: "ola2", status: "withdrawn" },
+    ]);
+    await db.insert(offer).values([
+      { id: "p1", requestId: "r2", senderId: "per", price: 240, createdAt: BID_AT },
+      { id: "m1", requestId: "r3", senderId: "mia", price: 230, createdAt: BID_AT },
+      { id: "m2", requestId: "r3", senderId: OWNER_ID, price: 245, createdAt: BID_AT },
+      { id: "l1", requestId: "r4", senderId: "ola2", price: 100, createdAt: BID_AT },
+    ]);
     await db.insert(listing).values(validListing({ id: "lamp" }));
-    await db.update(request).set({ listingId: "lamp" }).where(eq(request.id, "r2"));
+    await db.insert(request).values({ id: "r5", listingId: "lamp", requesterId: "per" });
+    await db.insert(offer).values({ id: "x1", requestId: "r5", senderId: "per", price: 90, createdAt: BID_AT });
+  });
+
+  async function statuses() {
+    return Object.fromEntries((await db.select().from(request)).map((r) => [r.id, r.status]));
+  }
+  async function listingStatus(id = "calc") {
+    return (await db.select().from(listing)).find((l) => l.id === id)?.status;
+  }
+
+  it("et godtatt salg setter annonsen til solgt og avslår de andre som venter, på begge sider", async () => {
+    expect(await respond(OWNER_ID, "accept")).toEqual({ ok: true });
+
+    expect(await listingStatus()).toBe("sold");
+    expect((await db.select().from(listing)).find((l) => l.id === "calc")?.updatedAt).toEqual(NOW);
+    expect(await statuses()).toEqual({ r1: "accepted", r2: "declined", r3: "declined", r4: "withdrawn", r5: "waiting_owner" });
+    const declined = (await db.select().from(request)).filter((r) => r.status === "declined");
+    expect(declined.map((r) => r.updatedAt)).toEqual([NOW, NOW]);
+  });
+
+  it("kjøperen som godtar et motbud tar også annonsen", async () => {
+    expect(await respond("mia", "accept", { requestId: "r3", offerId: "m2" })).toEqual({ ok: true });
+
+    expect(await listingStatus()).toBe("sold");
+    expect(await statuses()).toMatchObject({ r1: "declined", r2: "declined", r3: "accepted" });
+  });
+
+  it("en godtatt gis bort tar annonsen på samme måte", async () => {
+    await db.update(listing).set({ type: "giveaway", price: null }).where(eq(listing.id, "calc"));
 
     expect(await respond(OWNER_ID, "accept")).toEqual({ ok: true });
+
+    expect(await listingStatus()).toBe("sold");
+    expect((await statuses()).r2).toBe("declined");
+  });
+
+  it("et godtatt lån lar annonsen ligge og de andre vente", async () => {
+    await db.update(listing).set({ type: "loan" }).where(eq(listing.id, "calc"));
+
+    expect(await respond(OWNER_ID, "accept")).toEqual({ ok: true });
+
+    expect(await listingStatus()).toBe("active");
+    expect(await statuses()).toMatchObject({ r1: "accepted", r2: "waiting_owner", r3: "waiting_requester" });
+  });
+
+  it("avslag og motbud rører verken annonsen eller de andre", async () => {
+    await respond(OWNER_ID, "counter", { price: "240" });
+    await db.update(request).set({ status: "waiting_owner" }).where(eq(request.id, "r1"));
+    await respond(OWNER_ID, "decline", { offerId: await latestOfferId() });
+
+    expect(await listingStatus()).toBe("active");
+    expect(await statuses()).toMatchObject({ r2: "waiting_owner", r3: "waiting_requester" });
+  });
+
+  it("avviser aksept når annonsen alt er solgt, nedtatt eller tatt av et annet bud, uten å endre noe", async () => {
+    for (const status of ["sold", "unpublished"] as const) {
+      await db.update(listing).set({ status }).where(eq(listing.id, "calc"));
+      await expectRejected(OWNER_ID, "accept", { error: "Annonsen er ikke lenger tilgjengelig" });
+    }
+    expect(await listingStatus()).toBe("unpublished");
+  });
+
+  it("andre annonser påvirkes ikke", async () => {
+    await respond(OWNER_ID, "accept");
+
+    expect(await listingStatus("lamp")).toBe("active");
+    expect((await statuses()).r5).toBe("waiting_owner");
+  });
+
+  it("to aksepter på samme annonse samtidig: bare ett bud blir godtatt, og annonsen er solgt", async () => {
+    const results = await Promise.all([
+      respond(OWNER_ID, "accept"),
+      respond(OWNER_ID, "accept", { requestId: "r2", offerId: "p1" }),
+    ]);
+
+    expect(results.filter((r) => r.ok)).toHaveLength(1);
+    const all = Object.values(await statuses());
+    expect(all.filter((s) => s === "accepted")).toHaveLength(1);
+    expect(await listingStatus()).toBe("sold");
+  });
+
+  it("taper aksepten et samtidig avslag, gis annonsen tilbake og ingen andre avslås", async () => {
+    const results = await Promise.all([respond(OWNER_ID, "accept"), respond(OWNER_ID, "decline")]);
+
+    expect(results.filter((r) => r.ok)).toHaveLength(1);
+    expect(await listingStatus()).toBe(results[0].ok ? "sold" : "active");
+    expect(await statuses()).toMatchObject({ r2: results[0].ok ? "declined" : "waiting_owner", r3: results[0].ok ? "declined" : "waiting_requester" });
   });
 });
-
 describe("respondToOffer, fristen på 7 dager", () => {
   it("avviser et svar etter 7 dager med «utløpt», og lagrer at forespørselen er utløpt", async () => {
     const result = await respond(OWNER_ID, "accept", { now: new Date(BID_AT.getTime() + 7 * DAY_MS) });
