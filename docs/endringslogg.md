@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-19
+
+- Forespørsler (#201): et godtatt salg eller en godtatt gis bort tar annonsen ut av søket (status solgt) og avslår alle andre ventende forespørsler på den, slik kravene D-30 til D-32 sier. Max avgjorde at det skjer ved aksept, ikke ved overlevering, og at avbestilling legger annonsen ut igjen (kommer med #188). Annonsen kreves først med en betinget oppdatering, som også stopper to samtidige aksepter. Et lån røres ikke. Erstatter vakten fra #187. (Max, #201)
+
 ## 2026-10-18
 
 - Forespørsler, del 5 (#187): den som har tur kan godta, sende motbud eller avslå på forespørselssiden. «Godta» er en stor knapp, «Motbud» åpner et prisfelt og «Avslå» ber om en bekreftelse. Bare siste forslag kan besvares (skjemaet sender med det som ble vist), og to samtidige svar kan aldri begge lykkes. Et bud som ikke er besvart på 7 dager utløper; mekanismen er «lat» (siden regner ut utløpet og skriving lagrer det), ikke cron. Så lenge ett bud er godtatt, kan ikke et annet bud på samme annonse godtas. Banneret har ikke lenger mørk fyll, for det lignet en knapp. «Sist endret» på Min side tar med statusendringer. Mockup valgt av Max. Withdraw («Trekk tilbake») og avbestilling kommer med #188. (Max, #187)
