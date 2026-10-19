@@ -65,7 +65,7 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den fjernes etter 30 dager (#92). Nedtatte annonser vises ikke for andre. |
 | Søk | Avklart 10.10 | Søket går i tittel, beskrivelse og selgerens navn, uten forskjell på store og små bokstaver (også æøå), og tåler skrivefeil og delord («kalkulater» og «kalk» finner «Kalkulator»). Best treff først; uten søkeord nyeste først. Filtre (Max 10.10, #102): kategori, handelstype og tilstand (flere valg), pris fra/til (lånepris per uke, tom pris regnes som 0 kr). Valgene virker med én gang, og opsjoner som ikke gir treff sammen med de andre valgene er grå (Max 10.10, #122). Sortering kommer i egen oppgave (#116). Fra to tegn vises de fem beste treffene i en liste under feltet mens man skriver, med bilde, tittel og «type · pris»; klikk åpner annonsen, og siste rad viser alle treff. Ingen treff gir ingen liste (Max 10.10, #104). |
 | Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93). Telefon og e-post vises fortsatt først etter aksept. |
-| Historikk | Avklart 28.09 | Alle forslag bevares i historikken. Bare siste forslag kan godtas (D-53). Annonseendringer endrer ikke eksisterende avtaler (D-51). |
+| Historikk | Avklart 28.09 | Alle forslag bevares (D-53), men forespørselssiden viser bare det siste; «Historikk» er fanen på Min side (Max 19.10, #205). Bare siste forslag kan godtas. Annonseendringer endrer ikke eksisterende avtaler (D-51). |
 
 **Begreper:** «Salg» overfører eierskap mot betaling utenfor appen. «Lån» gir midlertidig bruk, gratis eller mot ukepris. «Gis bort» overfører eierskap uten betaling.
 
@@ -103,7 +103,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-03 | En innlogget bruker skal kunne legge ut en annonse for salg, lån eller gis bort, med tittel, beskrivelse, kategori, tilstand, 1 til 10 bilder og pris der den gjelder (salgspris, valgfri ukepris ved lån). |
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel på andres annonse: et bud ved salg, en periode på minst én uke ved lån, eller en forespørsel uten vilkår ved gis bort. |
 | FK-05 | Eieren skal kunne godta, avslå eller foreslå en annen pris eller periode. Motforslaget sendes til forespørreren. |
-| FK-06 | Forespørreren skal kunne godta, avslå eller sende nytt motforslag. Partene svarer på omgang, og bare siste forslag kan godtas. Begge skal se forslagshistorikken og hva de er enige om. |
+| FK-06 | Forespørreren skal kunne godta, avslå eller sende nytt motforslag. Partene svarer på omgang, og bare siste forslag kan godtas. Begge skal se siste forslag og hva de er enige om. Eldre forslag bevares i databasen (D-53), men vises ikke på forespørselssiden; «Historikk» er fanen på Min side med fullførte avtaler (Max 19.10, #205). |
 | FK-07 | Ved lån skal eieren kunne bekrefte mottatt retur. Bekreftelsen fullfører lånet og vises for begge. Låneren bekrefter ikke. |
 | FK-08 | Etter aksept skal begge parter se hverandres telefon og e-post og bekrefte overlevering i appen. Salg og gis bort er fullført når begge har bekreftet; lån er da i bruk. |
 | FK-09 | Begge parter i et lån skal kunne foreslå en senere returdato, som den andre godtar eller avslår. |

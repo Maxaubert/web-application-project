@@ -1,5 +1,5 @@
 // Forespørselssiden /requests/:id (WF-08, #192) mot SQLite i minnet: bare de to partene ser den, og den viser
-// status, siste bud og historikk, knappene bare for den som har tur (#187), og aldri kontaktinfo. Godkjent av Max 17.10 og 18.10.
+// status og siste bud, knappene bare for den som har tur (#187), og aldri kontaktinfo. Godkjent av Max 17.10 og 18.10.
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -50,34 +50,31 @@ afterEach(() => {
 });
 
 describe("RequestPage, selgeren", () => {
-  it("viser nytt bud, siste bud og din pris, og historikken med nyeste først", async () => {
+  it("viser nytt bud, siste bud og din pris", async () => {
     const { html, status } = await visit("r1", OWNER_ID);
 
     expect(status).toBe(200);
-    for (const text of ["Kalkulator", "Salg · 250 kr", "Nytt bud fra Kari Hansen", "Din pris", "250 kr", "Historikk"]) {
+    for (const text of ["Kalkulator", "Salg · 250 kr", "Nytt bud fra Kari Hansen", "Din pris", "250 kr"]) {
       expect(html).toContain(text);
     }
     expect(html).toMatch(/Bud<\/dt><dd[^>]*>230\s*kr<\/dd>/);
-    expect(html.indexOf("Kari Hansen bød 230 kr")).toBeLessThan(html.indexOf("Kari Hansen bød 220 kr"));
     expect(html).not.toContain("Selger:");
   });
 
-  it("banneret har mørk kant (din tur) og ingen mørk fyll, og bare det eldste budet i historikken er grået", async () => {
+  it("banneret har mørk kant (din tur) og ingen mørk fyll", async () => {
     const { html } = await visit("r1", OWNER_ID);
 
     expect(html).toMatch(/<p role="status" class="[^"]*border-ink[^"]*"[^>]*>Nytt bud fra/);
     expect(html).not.toMatch(/<p role="status" class="[^"]*bg-action/);
-    expect(html).toMatch(/<li class="[^"]*text-muted[^"]*"[^>]*>(?:<span[^>]*><\/span>)?[^<]*bød 220 kr/);
-    expect(html).not.toMatch(/<li class="[^"]*text-muted[^"]*"[^>]*>(?:<span[^>]*><\/span>)?[^<]*bød 230 kr/);
   });
 });
 
 describe("RequestPage, kjøperen", () => {
-  it("viser at hen venter på selgeren, «Ditt bud» og «Du bød» i historikken", async () => {
+  it("viser at hen venter på selgeren og «Ditt bud»", async () => {
     const { html, status } = await visit("r1", "kari");
 
     expect(status).toBe(200);
-    for (const text of ["Venter på svar fra Ola Nordmann", "Selger: Ola Nordmann", "Du bød 230 kr", "Du bød 220 kr"]) {
+    for (const text of ["Venter på svar fra Ola Nordmann", "Selger: Ola Nordmann"]) {
       expect(html).toContain(text);
     }
     expect(html).toMatch(/Ditt bud<\/dt><dd[^>]*>230\s*kr<\/dd>/);
@@ -184,6 +181,26 @@ describe("RequestPage, knappene (#187)", () => {
 
   it("en tredjepart får ingen knapper og ingenting om forespørselen", async () => {
     expect(hasNoButtons((await visit("r1", "per")).html)).toBe(true);
+  });
+});
+
+describe("RequestPage, ingen Historikk (#205)", () => {
+  it("«Historikk» er navnet på fanen på Min side, så forespørselssiden har hverken panelet eller linjene, for noen av partene", async () => {
+    await holder.db.insert(offer).values({ requestId: "r1", senderId: OWNER_ID, price: 240, createdAt: new Date("2026-10-17T09:00:00Z") });
+    await holder.db.update(request).set({ status: "waiting_requester" });
+
+    for (const userId of [OWNER_ID, "kari"]) {
+      const { html } = await visit("r1", userId);
+      expect(html).not.toMatch(/Historikk|<h2|<ul|<li/);
+      expect(html).not.toMatch(/bød \d|foreslo \d/);
+    }
+  });
+
+  it("viser bare det siste forslaget, i budkortet", async () => {
+    const { html } = await visit("r1", OWNER_ID);
+
+    expect(html).toMatch(/Bud<\/dt><dd[^>]*>230\s*kr<\/dd>/);
+    expect(html).not.toMatch(/220\s*kr/);
   });
 });
 

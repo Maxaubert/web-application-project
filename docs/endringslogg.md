@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-10-19
 
+- Forespørselssiden (#205): Historikk-panelet med forslagene er tatt bort fra `/requests/:id`, og siden er én kolonne. «Historikk» er navnet på fanen på Min side med annonsene man har solgt eller kjøpt (#189, #93), ikke på forslagene i en forespørsel. Siden viser bare det siste forslaget i budkortet; eldre forslag bevares i databasen. FK-06 og README er oppdatert. (Max, #205)
 - Forespørsler (#203): etter et svar (motbud, godta, avslå) vises en melding øverst på forespørselssiden: «Motbud sendt: 240 kr», «Du godtok budet» eller «Forespørselen er avslått». Den står i 5 sekunder og forsvinner. Før forsvant bare feltet og tallene endret seg uten at noe sa at det gikk bra (Max testet #187). Mockup med fire varianter; Max valgte meldingen som forsvinner. (Max, #203)
 - Forespørsler (#201): et godtatt salg eller en godtatt gis bort tar annonsen ut av søket (status solgt) og avslår alle andre ventende forespørsler på den, slik kravene D-30 til D-32 sier. Max avgjorde at det skjer ved aksept, ikke ved overlevering, og at avbestilling legger annonsen ut igjen (kommer med #188). Annonsen kreves først med en betinget oppdatering, som også stopper to samtidige aksepter. Et lån røres ikke. Erstatter vakten fra #187. (Max, #201)
 

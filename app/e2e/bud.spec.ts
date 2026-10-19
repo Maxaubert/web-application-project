@@ -27,12 +27,13 @@ test("legge inn et bud og endre det", async ({ page }) => {
 
   await expect(page.getByText("Ditt bud: 230 kr")).toBeVisible();
 
-  // Budet er en lenke til forespørselssiden (#192): status, siste bud og historikken med begge budene.
+  // Budet er en lenke til forespørselssiden (#192): status og siste bud. Historikk-panelet er fjernet (#205).
   await page.getByRole("link", { name: "Ditt bud: 230 kr" }).click();
   await expect(page).toHaveURL(/\/requests\/[\w-]+$/);
   await expect(page.getByText("Venter på svar fra E2E Selger")).toBeVisible();
-  await expect(page.getByText("Du bød 230 kr")).toBeVisible();
-  await expect(page.getByText("Du bød 220 kr")).toBeVisible();
+  await expect(page.getByText("Ditt bud")).toBeVisible();
+  await expect(page.getByText("230 kr", { exact: true })).toBeVisible();
+  await expect(page.getByText("Historikk")).toHaveCount(0);
   // Annonsekortet øverst går til annonsen (#193).
   await page.getByRole("main").getByRole("link", { name: "Budtest" }).click();
   await expect(page).toHaveURL(/\/listings\/e2e-bid$/);

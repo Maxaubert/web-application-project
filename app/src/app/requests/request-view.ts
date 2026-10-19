@@ -1,4 +1,4 @@
-// Tekstene på forespørselssiden (#192): banneret øverst og linjene i historikken. Rene funksjoner uten database,
+// Tekstene på forespørselssiden (#192): banneret øverst og chipen i Min side. Rene funksjoner uten database,
 // så rollene og statusene kan testes ett for ett.
 import type { Offer } from "@/db/schema";
 import type { RequestRole } from "./queries";
@@ -66,20 +66,6 @@ const clock =new Intl.DateTimeFormat("nb-NO", {
 export function formatWhen(date: Date): string {
   const part = (type: string) => clock.formatToParts(date).find((p) => p.type === type)?.value ?? "";
   return `${part("day")}.${part("month")} kl. ${part("hour")}:${part("minute")}`;
-}
-
-// En linje i historikken: «Du bød 230 kr» eller «Kari Hansen bød 230 kr». Forespørreren byr, eieren foreslår (motbud).
-// Bare priser; perioder for lån kommer med #186.
-export function historyLine(
-  offer: Pick<Offer, "senderId" | "price" | "createdAt">,
-  viewerId: string,
-  requesterId: string,
-  names: Names,
-): string {
-  const fromRequester = offer.senderId === requesterId;
-  const who = offer.senderId === viewerId ? "Du" : fromRequester ? names.requesterName : names.ownerName;
-  const amount = offer.price === null ? "" : ` ${offer.price.toLocaleString("nb-NO")} kr`;
-  return `${formatWhen(offer.createdAt)} · ${who} ${fromRequester ? "bød" : "foreslo"}${amount}`;
 }
 
 // Meldingen som vises rett etter et svar (#203): siden åpnes med ?sendt=<markør>, satt av serverhandlingen. Markøren

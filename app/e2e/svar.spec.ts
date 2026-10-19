@@ -24,7 +24,7 @@ test("selgeren godtar et bud fra Min side", async ({ page }) => {
   await expect(page).toHaveURL(/\/requests\/e2e-req-godta$/);
   await expect(bannerOf(page)).toHaveText("Avtalt");
   await expect(page.getByRole("button", { name: "Godta" })).toHaveCount(0);
-  await expect(page.getByText("E2E Kjøper bød 220 kr")).toBeVisible();
+  await expect(page.getByText("220 kr", { exact: true })).toBeVisible();
 });
 
 test("selgeren sender et motbud, og feil pris viser en feil først", async ({ page }) => {
@@ -43,8 +43,8 @@ test("selgeren sender et motbud, og feil pris viser en feil først", async ({ pa
   await expect(toastOf(page)).toHaveText(/Motbud sendt: 240 kr/);
   await expect(page).toHaveURL(/\/requests\/e2e-req-motbud$/);
   await expect(bannerOf(page)).toHaveText("Venter på svar fra E2E Kjøper");
-  await expect(page.getByText("Du foreslo 240 kr")).toBeVisible();
-  await expect(page.getByText("E2E Kjøper bød 200 kr")).toBeVisible();
+  await expect(page.getByText("Ditt motbud")).toBeVisible();
+  await expect(page.getByText("240 kr", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Godta" })).toHaveCount(0);
 
   // Meldingen står i noen sekunder og forsvinner av seg selv.

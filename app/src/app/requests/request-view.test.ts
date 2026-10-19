@@ -1,7 +1,7 @@
-// Tekstene på forespørselssiden: banneret per status og rolle, etiketten over budet og linjene i historikken.
+// Tekstene på forespørselssiden: banneret per status og rolle, etiketten over budet og klokkeslettet.
 import { describe, expect, it } from "vitest";
 import { requestStatuses } from "@/db/schema";
-import { bannerFor, chipFor, formatWhen, historyLine, noticeFor, noticeMarkers, offerLabel } from "./request-view";
+import { bannerFor, chipFor, formatWhen, noticeFor, noticeMarkers, offerLabel } from "./request-view";
 
 const names = { ownerName: "Ola Nordmann", requesterName: "Kari Hansen" };
 
@@ -82,26 +82,6 @@ describe("formatWhen", () => {
   });
 });
 
-describe("historyLine", () => {
-  const at = new Date("2026-10-17T01:12:00Z");
-
-  it("sier «Du» om deg selv og navnet om den andre", () => {
-    const bid = { senderId: "kari", price: 230, createdAt: at };
-    expect(historyLine(bid, "kari", "kari", names)).toBe("17.10 kl. 03:12 · Du bød 230 kr");
-    expect(historyLine(bid, "ola", "kari", names)).toBe("17.10 kl. 03:12 · Kari Hansen bød 230 kr");
-  });
-
-  it("selgerens forslag heter «foreslo»", () => {
-    const counter = { senderId: "ola", price: 240, createdAt: at };
-    expect(historyLine(counter, "kari", "kari", names)).toBe("17.10 kl. 03:12 · Ola Nordmann foreslo 240 kr");
-    expect(historyLine(counter, "ola", "kari", names)).toBe("17.10 kl. 03:12 · Du foreslo 240 kr");
-  });
-
-  it("tusenskille på store beløp", () => {
-    const line = historyLine({ senderId: "kari", price: 12500, createdAt: at }, "kari", "kari", names);
-    expect(line.replace(/\s/g, " ")).toContain("12 500 kr");
-  });
-});
 
 describe("noticeFor", () => {
   const mine = { senderId: "ola", price: 12500 };

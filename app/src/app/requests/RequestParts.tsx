@@ -1,4 +1,4 @@
-// Delene av forespørselssiden (#192): banneret, budkortet og historikken. Bare visning.
+// Delene av forespørselssiden (#192): banneret og budkortet. Bare visning.
 import type { Banner } from "./request-view";
 
 export function StatusBanner({ banner }: { banner: Banner }) {
@@ -26,22 +26,5 @@ export function OfferCard({ bidLabel, bid, priceLabel, price }: OfferCardProps) 
         <dd className="text-2xl font-bold">{price}</dd>
       </div>
     </dl>
-  );
-}
-
-// Nyeste først; de eldre er grået, så det er tydelig hva som gjelder nå.
-export function History({ lines }: { lines: string[] }) {
-  return (
-    <section className="rounded-xl sm:border-2 sm:border-hairline sm:bg-surface sm:px-5 sm:py-4">
-      <h2 className="text-xl font-bold">Historikk</h2>
-      <ul className="mt-3 space-y-2">
-        {lines.map((line, index) => (
-          <li key={`${index}-${line}`}className={`flex items-baseline gap-3 ${index === 0 ? "" : "text-muted"}`}>
-            <span aria-hidden="true" className="size-2 shrink-0 -translate-y-px rounded-full bg-line" />
-            {line}
-          </li>
-        ))}
-      </ul>
-    </section>
   );
 }
