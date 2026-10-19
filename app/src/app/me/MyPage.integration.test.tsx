@@ -2,7 +2,7 @@
 // Siden viser bare den innloggedes egne forespørsler og egen kontaktinfo. Godkjent av Max 17.10.
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { listing, listingImage, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
@@ -23,7 +23,10 @@ async function visit(userId: string, query = "") {
   return renderToStaticMarkup(await MyPage({ ctx, request } as RequestInfo));
 }
 
+// Klokken står stille: forespørsler utløper etter 7 dager (#187), og datoene under skal ikke bli for gamle.
 beforeEach(async () => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-10-18T12:00:00Z"));
   holder.db = createTestDb();
   await holder.db.insert(user).values([
     { id: OWNER_ID, name: "Ola Nordmann", email: "ola@hiof.no", phone: "+4790000001" },
@@ -31,8 +34,12 @@ beforeEach(async () => {
     { id: "per", name: "Per Olsen", email: "per@hiof.no", phone: "+4790000003" },
   ]);
   await holder.db.insert(listing).values(validListing({ id: "calc", title: "Kalkulator", price: 250 }));
-  await holder.db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "kari" });
+  await holder.db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "kari", updatedAt: new Date("2026-10-17T01:20:00Z") });
   await holder.db.insert(offer).values({ requestId: "r1", senderId: "kari", price: 230, createdAt: new Date("2026-10-17T01:20:00Z") });
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe("Min side, innholdet", () => {
@@ -156,17 +163,17 @@ describe("Min side, rekkefølgen", () => {
       validListing({ id: "bok", title: "Kokebok", price: 60 }),
     ]);
     await holder.db.insert(request).values([
-      { id: "r2", listingId: "lamp", requesterId: "per", status: "declined" },
-      { id: "r3", listingId: "bok", requesterId: "per", status: "waiting_owner" },
+      { id: "r2", listingId: "lamp", requesterId: "per", status: "declined", updatedAt: new Date("2026-10-18T10:00:00Z") },
+      { id: "r3", listingId: "bok", requesterId: "per", status: "waiting_owner", updatedAt: new Date("2026-10-14T10:00:00Z") },
     ]);
     await holder.db.insert(offer).values([
       { requestId: "r2", senderId: "per", price: 80, createdAt: new Date("2026-10-18T10:00:00Z") },
-      { requestId: "r3", senderId: "per", price: 50, createdAt: new Date("2026-10-02T10:00:00Z") },
+      { requestId: "r3", senderId: "per", price: 50, createdAt: new Date("2026-10-14T10:00:00Z") },
     ]);
 
     const html = await visit(OWNER_ID);
 
-    // Kalkulator (din tur, 17.10), Kokebok (din tur, 02.10), Lampe (avslått, 18.10 men uten tur).
+    // Kalkulator (din tur, 17.10), Kokebok (din tur, 14.10), Lampe (avslått, 18.10 men uten tur).
     expect(html.indexOf("Kalkulator")).toBeLessThan(html.indexOf("Kokebok"));
     expect(html.indexOf("Kokebok")).toBeLessThan(html.indexOf("Lampe"));
   });

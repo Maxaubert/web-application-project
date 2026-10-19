@@ -43,7 +43,7 @@ const transitions: Record<RequestAction, Transitions> = {
   cancel: {
     accepted: { owner: "cancelled", requester: "cancelled" },
   },
-  // Ubesvart etter 7 dager. Mekanismen bestemmes i #187.
+  // Ubesvart etter 7 dager. Mekanismen (lat, ingen cron) står i request-expiry.ts (#187).
   expire: {
     waiting_owner: { system: "expired" },
     waiting_requester: { system: "expired" },

@@ -6,13 +6,14 @@ import { listing, offer, request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { validateOffer } from "./offer-rules";
 import { getActiveRequest } from "./queries";
+import { expireOverdueRequest } from "./request-expiry";
 
-type PlaceBidInput = { userId: string; listingId: string; price: string };
+type PlaceBidInput = { userId: string; listingId: string; price: string; now?: Date };
 export type PlaceBidResult = { ok: true } | { ok: false; error?: string; fieldErrors?: Record<string, string> };
 
 const NOT_AVAILABLE = "Du kan ikke legge inn bud på denne annonsen";
 
-export async function placeBid(db: Db, { userId, listingId, price }: PlaceBidInput): Promise<PlaceBidResult> {
+export async function placeBid(db: Db, { userId, listingId, price, now = new Date() }: PlaceBidInput): Promise<PlaceBidResult> {
   const rows = await db.select().from(listing).where(eq(listing.id, listingId)).limit(1);
   const found = rows[0];
   // Samme melding for ukjent, nedtatt, solgt og feil type, så ingen kan lese hva som finnes ut av den.
@@ -24,7 +25,9 @@ export async function placeBid(db: Db, { userId, listingId, price }: PlaceBidInp
   if (!validated.success) return { ok: false, fieldErrors: validated.fieldErrors };
   const bid = validated.data.price;
 
-  const existing = await getActiveRequest(db, listingId, userId);
+  // Et bud som har ligget ubesvart i 7 dager er utløpt (#187). Det lagres først, ellers står det i veien for et nytt bud.
+  await expireOverdueRequest(db, listingId, userId, now);
+  const existing = await getActiveRequest(db, listingId, userId, now);
   if (existing) {
     // Et nytt bud erstatter det gamle så lenge selgeren ikke har svart. Det gamle blir stående som historikk.
     if (existing.status !== "waiting_owner") return { ok: false, error: "Du har allerede en forespørsel på denne annonsen" };

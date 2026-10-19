@@ -1,6 +1,6 @@
-// Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Bare visning: status, siste bud og historikk
+// Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Viser status, siste bud og historikk
 // for de to partene. Andre enn eieren og forespørreren får samme borte-visning med 404 som en ukjent annonse, så
-// ingen kan se om en forespørsel finnes. Handlingsknappene kommer under budkortet med #187.
+// ingen kan se om en forespørsel finnes. Under budkortet har den som har tur knappene Godta, Motbud og Avslå (#187).
 // Tilbakelenken går til Min side (#193) og annonsekortet til annonsen.
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
@@ -14,6 +14,7 @@ import { ListingSummary } from "./ListingSummary";
 import { getRequestForParty } from "./queries";
 import { History, OfferCard, StatusBanner } from "./RequestParts";
 import { bannerFor, historyLine, offerLabel } from "./request-view";
+import { ResponseActions } from "./ResponseActions";
 
 const kroner = (value: number | null) => (value === null ? "–" : `${value.toLocaleString("nb-NO")} kr`);
 
@@ -33,6 +34,7 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
   const { request, listing, offers, role } = details;
   const names = { ownerName: details.ownerName, requesterName: details.requesterName };
   const latest = offers[offers.length - 1];
+  const banner = bannerFor(request.status, role, names);
   const [coverKey] = await getListingImages(db, listing.id);
   // Nyeste først i historikken.
   const lines = offers.map((o) => historyLine(o, userId, request.requesterId, names)).reverse();
@@ -53,7 +55,7 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
             href={`/listings/${listing.id}`}
             sellerName={role === "requester" ? details.ownerName : undefined}
           />
-          <StatusBanner banner={bannerFor(request.status, role, names)} />
+          <StatusBanner banner={banner} />
           {latest && (
             <OfferCard
               bidLabel={offerLabel(latest, userId, request.requesterId)}
@@ -62,6 +64,8 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
               price={kroner(listing.price)}
             />
           )}
+          {/* Knappene bare for den som har tur (#187). Godta gjelder det forslaget som vises, ikke et nyere. */}
+          {latest && banner.yourTurn && <ResponseActions requestId={request.id} offerId={latest.id} />}
         </div>
         <History lines={lines} />
       </div>

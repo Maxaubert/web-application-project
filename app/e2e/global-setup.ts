@@ -7,6 +7,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { E2E_STATE } from "./state";
 
 export const AUTH_FILE = "e2e/.auth/user.json";
+// Selgeren «E2E Selger» er også innlogget, for testene som svarer på bud (#187).
+export const SELLER_AUTH_FILE = "e2e/.auth/seller.json";
 // Testbilder i den lokale R2-emuleringen, så bildeadressen kan testes mot ekte lagring (#138). De hører til
 // testannonsen «Skrivebordslampe», som viser bildene på kortet og annonsesiden (#150).
 export const TEST_LISTING_ID = "e2e00000-0000-4000-8000-000000000001";
@@ -31,6 +33,7 @@ function localSecret(): string {
 
 export default function globalSetup() {
   const token = randomUUID().replaceAll("-", "");
+  const sellerToken = randomUUID().replaceAll("-", "");
   const now = Date.now();
   mkdirSync("e2e/.auth", { recursive: true });
   writeFileSync(
@@ -39,10 +42,14 @@ export default function globalSetup() {
        VALUES ('e2e-user', 'E2E Testesen', 'e2e@hiof.no', 1, '+4790000000');
      INSERT OR IGNORE INTO user (id, name, email, email_verified, phone)
        VALUES ('e2e-seller', 'E2E Selger', 'e2e-seller@hiof.no', 1, '+4790000001');
-     DELETE FROM request WHERE requester_id = 'e2e-user';
-     DELETE FROM session WHERE user_id = 'e2e-user';
+     INSERT OR IGNORE INTO user (id, name, email, email_verified, phone)
+       VALUES ('e2e-buyer', 'E2E Kjøper', 'e2e-buyer@hiof.no', 1, '+4790000002');
+     DELETE FROM request WHERE requester_id IN ('e2e-user', 'e2e-buyer');
+     DELETE FROM session WHERE user_id IN ('e2e-user', 'e2e-seller');
      INSERT INTO session (id, token, user_id, expires_at, created_at, updated_at)
-       VALUES ('e2e-session', '${token}', 'e2e-user', ${now + SESSION_MS}, ${now}, ${now});
+       VALUES
+         ('e2e-session', '${token}', 'e2e-user', ${now + SESSION_MS}, ${now}, ${now}),
+         ('e2e-seller-session', '${sellerToken}', 'e2e-seller', ${now + SESSION_MS}, ${now}, ${now});
      INSERT OR REPLACE INTO listing (id, owner_id, type, title, description, category, condition, price, status)
        VALUES
          ('e2e-calc', 'e2e-user', 'sale', 'Kalkulator Casio fx-991', 'Lite brukt.', 'electronics', 'like_new', 250, 'active'),
@@ -50,7 +57,20 @@ export default function globalSetup() {
          ('${TEST_LISTING_ID}', 'e2e-user', 'sale', 'Skrivebordslampe', 'Med LED-pære.', 'furniture', 'used', 120, 'active'),
          ('${TEST_GALLERY_ID}', 'e2e-user', 'sale', 'Galleritest', 'Seks bilder.', 'furniture', 'used', 10, 'active'),
          ('e2e-bid', 'e2e-seller', 'sale', 'Budtest', 'Til budtestene.', 'books', 'used', 250, 'active'),
-         ('e2e-bid-error', 'e2e-seller', 'sale', 'Budfeil', 'Til budtestene.', 'books', 'used', 250, 'active');
+         ('e2e-bid-error', 'e2e-seller', 'sale', 'Budfeil', 'Til budtestene.', 'books', 'used', 250, 'active'),
+         ('e2e-svar-godta', 'e2e-seller', 'sale', 'Svartest godta', 'Til svartestene.', 'books', 'used', 250, 'active'),
+         ('e2e-svar-motbud', 'e2e-seller', 'sale', 'Svartest motbud', 'Til svartestene.', 'books', 'used', 250, 'active'),
+         ('e2e-svar-avslag', 'e2e-seller', 'sale', 'Svartest avslag', 'Til svartestene.', 'books', 'used', 250, 'active');
+     INSERT INTO request (id, listing_id, requester_id)
+       VALUES
+         ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer'),
+         ('e2e-req-motbud', 'e2e-svar-motbud', 'e2e-buyer'),
+         ('e2e-req-avslag', 'e2e-svar-avslag', 'e2e-buyer');
+     INSERT INTO offer (id, request_id, sender_id, price)
+       VALUES
+         ('e2e-offer-godta', 'e2e-req-godta', 'e2e-buyer', 220),
+         ('e2e-offer-motbud', 'e2e-req-motbud', 'e2e-buyer', 200),
+         ('e2e-offer-avslag', 'e2e-req-avslag', 'e2e-buyer', 180);
      DELETE FROM listing_image WHERE listing_id IN ('${TEST_LISTING_ID}', '${TEST_GALLERY_ID}');
      INSERT INTO listing_image (id, listing_id, key, position)
        VALUES
@@ -75,16 +95,22 @@ ${[1, 2, 3, 4, 5, 6].map((n) => `         ('e2e-gallery-${n}', '${TEST_GALLERY_I
   }
 
   // Samme format som better-call: token.base64(HMAC-SHA256(hemmelighet, token)), URL-kodet.
-  const signature = createHmac("sha256", localSecret()).update(token).digest("base64");
-  const cookie = {
-    name: "better-auth.session_token",
-    value: encodeURIComponent(`${token}.${signature}`),
-    domain: "127.0.0.1",
-    path: "/",
-    expires: Math.floor((now + SESSION_MS) / 1000),
-    httpOnly: true,
-    secure: false,
-    sameSite: "Lax" as const,
-  };
-  writeFileSync(AUTH_FILE, JSON.stringify({ cookies: [cookie], origins: [] }, null, 2));
+  const secret = localSecret();
+  for (const [file, sessionToken] of [
+    [AUTH_FILE, token],
+    [SELLER_AUTH_FILE, sellerToken],
+  ]) {
+    const signature = createHmac("sha256", secret).update(sessionToken).digest("base64");
+    const cookie = {
+      name: "better-auth.session_token",
+      value: encodeURIComponent(`${sessionToken}.${signature}`),
+      domain: "127.0.0.1",
+      path: "/",
+      expires: Math.floor((now + SESSION_MS) / 1000),
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax" as const,
+    };
+    writeFileSync(file, JSON.stringify({ cookies: [cookie], origins: [] }, null, 2));
+  }
 }

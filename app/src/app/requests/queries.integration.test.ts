@@ -1,4 +1,5 @@
 // getActiveRequest mot SQLite i minnet: finner studentens pågående forespørsel med siste bud.
+import { eq } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import { listing, listingImage, offer, request, requestStatuses, user } from "@/db/schema";
 import type { Db } from "@/db/types";
@@ -7,6 +8,9 @@ import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
 import { getActiveRequest, getRequestForParty, getRequestsForUser } from "./queries";
 
 let db: Db;
+// Litt etter budene som er lagret under (1 700 000 000 000 ms), så ingenting er utløpt med mindre testen sier det.
+const NOW = new Date(1_700_003_600_000);
+const DAY_MS = 86_400_000;
 
 beforeEach(async () => {
   db = createTestDb();
@@ -20,7 +24,7 @@ beforeEach(async () => {
 
 describe("getActiveRequest", () => {
   it("gir undefined når studenten ikke har noen forespørsel", async () => {
-    expect(await getActiveRequest(db, "calc", "kari")).toBeUndefined();
+    expect(await getActiveRequest(db, "calc", "kari", NOW)).toBeUndefined();
   });
 
   it("gir forespørselen med siste bud, også når budene er lagret i samme sekund", async () => {
@@ -33,15 +37,15 @@ describe("getActiveRequest", () => {
       { requestId: "r1", senderId: "kari", price: 230, createdAt: sameSecond },
     ]);
 
-    expect(await getActiveRequest(db, "calc", "kari")).toEqual({ id: "r1", status: "waiting_owner", price: 230 });
+    expect(await getActiveRequest(db, "calc", "kari", NOW)).toEqual({ id: "r1", status: "waiting_owner", price: 230 });
   });
 
   it("ser ikke andre studenters forespørsler eller andre annonser", async () => {
     await db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "per" });
     await db.insert(offer).values({ requestId: "r1", senderId: "per", price: 200 });
 
-    expect(await getActiveRequest(db, "calc", "kari")).toBeUndefined();
-    expect(await getActiveRequest(db, "lamp", "per")).toBeUndefined();
+    expect(await getActiveRequest(db, "calc", "kari", NOW)).toBeUndefined();
+    expect(await getActiveRequest(db, "lamp", "per", NOW)).toBeUndefined();
   });
 
   it("finner pågående forespørsler og hopper over avsluttede, i hver status", async () => {
@@ -50,7 +54,7 @@ describe("getActiveRequest", () => {
 
     for (const status of requestStatuses) {
       await db.update(request).set({ status });
-      const found = await getActiveRequest(db, "calc", "kari");
+      const found = await getActiveRequest(db, "calc", "kari", NOW);
       if (["waiting_owner", "waiting_requester", "accepted", "in_use"].includes(status)) expect(found?.status).toBe(status);
       else expect(found, status).toBeUndefined();
     }
@@ -68,7 +72,7 @@ describe("getRequestForParty", () => {
   });
 
   it("gir forespørselen til eieren, med navn, roller og forslagene i rekkefølge", async () => {
-    const details = await getRequestForParty(db, "r1", OWNER_ID);
+    const details = await getRequestForParty(db, "r1", OWNER_ID, NOW);
 
     expect(details).toMatchObject({ role: "owner", ownerName: "Ola Nordmann", requesterName: "Kari Nordmann" });
     expect(details?.request.id).toBe("r1");
@@ -77,17 +81,17 @@ describe("getRequestForParty", () => {
   });
 
   it("gir forespørselen til den som la den inn, som forespørrer", async () => {
-    expect((await getRequestForParty(db, "r1", "kari"))?.role).toBe("requester");
+    expect((await getRequestForParty(db, "r1", "kari", NOW))?.role).toBe("requester");
   });
 
   it("gir undefined for alle andre og for en ukjent id", async () => {
-    expect(await getRequestForParty(db, "r1", "per")).toBeUndefined();
-    expect(await getRequestForParty(db, "finnes-ikke", "kari")).toBeUndefined();
-    expect(await getRequestForParty(db, "r1", "")).toBeUndefined();
+    expect(await getRequestForParty(db, "r1", "per", NOW)).toBeUndefined();
+    expect(await getRequestForParty(db, "finnes-ikke", "kari", NOW)).toBeUndefined();
+    expect(await getRequestForParty(db, "r1", "", NOW)).toBeUndefined();
   });
 
   it("henter bare navn fra brukerne, aldri telefon eller e-post", async () => {
-    const details = await getRequestForParty(db, "r1", "kari");
+    const details = await getRequestForParty(db, "r1", "kari", NOW);
 
     expect(JSON.stringify(details)).not.toMatch(/@hiof\.no|\+47/);
   });
@@ -98,8 +102,8 @@ describe("getRequestsForUser", () => {
 
   beforeEach(async () => {
     await db.insert(request).values([
-      { id: "r1", listingId: "calc", requesterId: "kari" },
-      { id: "r2", listingId: "lamp", requesterId: "per" },
+      { id: "r1", listingId: "calc", requesterId: "kari", updatedAt: sameSecond },
+      { id: "r2", listingId: "lamp", requesterId: "per", updatedAt: new Date(1_700_000_100_000) },
     ]);
     await db.insert(offer).values([
       { requestId: "r1", senderId: "kari", price: 200, createdAt: sameSecond },
@@ -109,7 +113,7 @@ describe("getRequestsForUser", () => {
   });
 
   it("eieren ser forespørslene på sine annonser, med kjøperen som motpart og siste bud", async () => {
-    const mine = await getRequestsForUser(db, OWNER_ID);
+    const mine = await getRequestsForUser(db, OWNER_ID, NOW);
 
     expect(mine.map((r) => r.id).sort()).toEqual(["r1", "r2"]);
     const r1 = mine.find((r) => r.id === "r1");
@@ -119,7 +123,7 @@ describe("getRequestsForUser", () => {
   });
 
   it("kjøperen ser bare sine egne forespørsler, med selgeren som motpart", async () => {
-    const mine = await getRequestsForUser(db, "kari");
+    const mine = await getRequestsForUser(db, "kari", NOW);
 
     expect(mine).toHaveLength(1);
     expect(mine[0]).toMatchObject({ id: "r1", role: "requester", otherName: "Ola Nordmann", price: 230 });
@@ -128,15 +132,15 @@ describe("getRequestsForUser", () => {
   it("gir en tom liste for en bruker uten forespørsler og for en ukjent bruker", async () => {
     await db.insert(user).values({ id: "mia", name: "Mia Berg", email: "mia@hiof.no" });
 
-    expect(await getRequestsForUser(db, "mia")).toEqual([]);
-    expect(await getRequestsForUser(db, "finnes-ikke")).toEqual([]);
-    expect(await getRequestsForUser(db, "")).toEqual([]);
+    expect(await getRequestsForUser(db, "mia", NOW)).toEqual([]);
+    expect(await getRequestsForUser(db, "finnes-ikke", NOW)).toEqual([]);
+    expect(await getRequestsForUser(db, "", NOW)).toEqual([]);
   });
 
   it("tar med forespørsler i alle statuser, også avsluttede", async () => {
     await db.update(request).set({ status: "declined" });
 
-    const mine = await getRequestsForUser(db, "kari");
+    const mine = await getRequestsForUser(db, "kari", NOW);
 
     expect(mine.map((r) => r.status)).toEqual(["declined"]);
   });
@@ -147,7 +151,7 @@ describe("getRequestsForUser", () => {
       { listingId: "calc", key: "calc-0", position: 0 },
     ]);
 
-    const mine = await getRequestsForUser(db, OWNER_ID);
+    const mine = await getRequestsForUser(db, OWNER_ID, NOW);
 
     expect(mine.find((r) => r.id === "r1")?.coverKey).toBe("calc-0");
     expect(mine.find((r) => r.id === "r2")?.coverKey).toBeNull();
@@ -155,7 +159,55 @@ describe("getRequestsForUser", () => {
     expect(mine).toHaveLength(2);
   });
 
+  it("«Sist endret» er siste statusendring når den er nyere enn siste bud, ellers siste bud (#187)", async () => {
+    const declinedAt = new Date(sameSecond.getTime() + 3_600_000);
+    await db.update(request).set({ status: "declined", updatedAt: declinedAt }).where(eq(request.id, "r1"));
+    // r2: forespørselen er eldre enn siste bud (et bud som erstattet et tidligere), så budet gjelder.
+    await db.update(request).set({ updatedAt: new Date(1_600_000_000_000) }).where(eq(request.id, "r2"));
+
+    const mine = await getRequestsForUser(db, OWNER_ID, NOW);
+
+    expect(mine.find((r) => r.id === "r1")?.changedAt).toEqual(declinedAt);
+    expect(mine.find((r) => r.id === "r2")?.changedAt).toEqual(new Date(1_700_000_100_000));
+  });
+
   it("henter bare navn fra brukerne, aldri telefon eller e-post", async () => {
-    expect(JSON.stringify(await getRequestsForUser(db, "kari"))).not.toMatch(/@hiof\.no|\+47/);
+    expect(JSON.stringify(await getRequestsForUser(db, "kari", NOW))).not.toMatch(/@hiof\.no|\+47/);
+  });
+});
+
+// 7-dagersfristen (#187): lesing regner ut at en forespørsel er utløpt, men skriver aldri til databasen.
+describe("utløp ved lesing", () => {
+  const BID_AT = new Date(1_700_000_000_000);
+  const justBefore = new Date(BID_AT.getTime() + 7 * DAY_MS - 1000);
+  const dueAt = new Date(BID_AT.getTime() + 7 * DAY_MS);
+
+  beforeEach(async () => {
+    await db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "kari" });
+    await db.insert(offer).values({ requestId: "r1", senderId: "kari", price: 200, createdAt: BID_AT });
+  });
+
+  it("getActiveRequest: ubesvart i 7 dager er ikke lenger pågående, ett sekund før er det", async () => {
+    expect(await getActiveRequest(db, "calc", "kari", justBefore)).toMatchObject({ id: "r1", status: "waiting_owner" });
+    expect(await getActiveRequest(db, "calc", "kari", dueAt)).toBeUndefined();
+  });
+
+  it("getRequestForParty og getRequestsForUser: statusen er utløpt etter 7 dager, og raden i databasen er uendret", async () => {
+    expect((await getRequestForParty(db, "r1", "kari", justBefore))?.request.status).toBe("waiting_owner");
+    expect((await getRequestForParty(db, "r1", "kari", dueAt))?.request.status).toBe("expired");
+    expect((await getRequestsForUser(db, OWNER_ID, justBefore))[0].status).toBe("waiting_owner");
+    expect((await getRequestsForUser(db, OWNER_ID, dueAt))[0].status).toBe("expired");
+    expect((await db.select().from(request))[0].status).toBe("waiting_owner");
+  });
+
+  it("et motbud starter 7 nye dager, og en godtatt forespørsel utløper aldri", async () => {
+    await db.insert(offer).values({ requestId: "r1", senderId: OWNER_ID, price: 240, createdAt: new Date(BID_AT.getTime() + 5 * DAY_MS) });
+    await db.update(request).set({ status: "waiting_requester" });
+    expect((await getRequestForParty(db, "r1", "kari", dueAt))?.request.status).toBe("waiting_requester");
+
+    await db.update(request).set({ status: "accepted" });
+    const later = new Date(BID_AT.getTime() + 60 * DAY_MS);
+    expect((await getRequestForParty(db, "r1", "kari", later))?.request.status).toBe("accepted");
+    expect((await getRequestsForUser(db, "kari", later))[0].status).toBe("accepted");
   });
 });

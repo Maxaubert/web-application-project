@@ -2,8 +2,9 @@
 import type { Banner } from "./request-view";
 
 export function StatusBanner({ banner }: { banner: Banner }) {
-  // Mørkt når det er din tur, lyst når du venter eller forespørselen er avsluttet. role="status": skjermlesere leser det opp.
-  const tone = banner.yourTurn ? "bg-action text-white" : "border-2 border-hairline bg-surface text-ink";
+  // Mørk kant når det er din tur, lys kant når du venter eller forespørselen er avsluttet. Ikke fylt: en mørk flate
+  // ser ut som en knapp (Max 18.10, #187). role="status": skjermlesere leser det opp.
+  const tone = `border-2 bg-surface text-ink ${banner.yourTurn ? "border-ink" : "border-hairline"}`;
   return (
     <p role="status" className={`rounded-xl px-4 py-4 text-lg font-bold [overflow-wrap:anywhere] ${tone}`}>
       {banner.text}
