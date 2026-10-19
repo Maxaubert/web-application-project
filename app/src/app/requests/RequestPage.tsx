@@ -1,4 +1,4 @@
-// Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Viser status, siste bud og historikk
+// Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Viser status og siste bud
 // for de to partene. Andre enn eieren og forespørreren får samme borte-visning med 404 som en ukjent annonse, så
 // ingen kan se om en forespørsel finnes. Under budkortet har den som har tur knappene Godta, Motbud og Avslå (#187).
 // Tilbakelenken går til Min side (#193) og annonsekortet til annonsen.
@@ -12,8 +12,8 @@ import { ListingGone } from "@/app/listings/ListingGone";
 import { getListingImages } from "@/app/listings/queries";
 import { ListingSummary } from "./ListingSummary";
 import { getRequestForParty } from "./queries";
-import { History, OfferCard, StatusBanner } from "./RequestParts";
-import { bannerFor, historyLine, offerLabel } from "./request-view";
+import { OfferCard, StatusBanner } from "./RequestParts";
+import { bannerFor, offerLabel } from "./request-view";
 import { ResponseActions } from "./ResponseActions";
 
 const kroner = (value: number | null) => (value === null ? "–" : `${value.toLocaleString("nb-NO")} kr`);
@@ -36,18 +36,16 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
   const latest = offers[offers.length - 1];
   const banner = bannerFor(request.status, role, names);
   const [coverKey] = await getListingImages(db, listing.id);
-  // Nyeste først i historikken.
-  const lines = offers.map((o) => historyLine(o, userId, request.requesterId, names)).reverse();
 
   return (
     <PageShell title={`Forespørsel: ${listing.title}`} wide headerAction={<HeaderActions />}>
-      {/* Tilbake til listen man kom fra: selgeren til Mottatt, kjøperen til Sendt (#193). Annonsen nås fra kortet under. */}
-      <a href={role === "owner" ? "/me" : "/me?show=sent"} className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
-        <span aria-hidden="true">‹</span> Min side
-      </a>
-      <h1 className="sr-only">Forespørsel om {listing.title}</h1>
-      <div className="mt-2 grid grid-cols-1 gap-6 sm:mt-6 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-12">
-        <div className="space-y-4">
+      <div className="mx-auto max-w-3xl">
+        {/* Tilbake til listen man kom fra: selgeren til Mottatt, kjøperen til Sendt (#193). Annonsen nås fra kortet under. */}
+        <a href={role === "owner" ? "/me" : "/me?show=sent"} className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
+          <span aria-hidden="true">‹</span> Min side
+        </a>
+        <h1 className="sr-only">Forespørsel om {listing.title}</h1>
+        <div className="mt-2 space-y-4 sm:mt-6">
           <ListingSummary
             title={listing.title}
             typeAndPrice={formatTypeAndPrice(listing)}
@@ -67,7 +65,6 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
           {/* Knappene bare for den som har tur (#187). Godta gjelder det forslaget som vises, ikke et nyere. */}
           {latest && banner.yourTurn && <ResponseActions requestId={request.id} offerId={latest.id} />}
         </div>
-        <History lines={lines} />
       </div>
     </PageShell>
   );

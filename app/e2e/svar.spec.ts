@@ -18,7 +18,7 @@ test("selgeren godtar et bud fra Min side", async ({ page }) => {
 
   await expect(page.getByRole("status")).toHaveText("Avtalt");
   await expect(page.getByRole("button", { name: "Godta" })).toHaveCount(0);
-  await expect(page.getByText("E2E Kjøper bød 220 kr")).toBeVisible();
+  await expect(page.getByText("220 kr", { exact: true })).toBeVisible();
 });
 
 test("selgeren sender et motbud, og feil pris viser en feil først", async ({ page }) => {
@@ -35,8 +35,8 @@ test("selgeren sender et motbud, og feil pris viser en feil først", async ({ pa
   await page.getByRole("button", { name: "Send motbud" }).click();
 
   await expect(page.getByRole("status")).toHaveText("Venter på svar fra E2E Kjøper");
-  await expect(page.getByText("Du foreslo 240 kr")).toBeVisible();
-  await expect(page.getByText("E2E Kjøper bød 200 kr")).toBeVisible();
+  await expect(page.getByText("Ditt motbud")).toBeVisible();
+  await expect(page.getByText("240 kr", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Godta" })).toHaveCount(0);
 });
 

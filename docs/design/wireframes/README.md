@@ -204,6 +204,10 @@ Knappene under budkortet er bygget etter en mockup valgt av Max, ikke etter `Avt
   Et svar på en utløpt forespørsel avvises med «Forespørselen er utløpt».
 - Svarene bruker én serverhandling med valget som skjemafelt, ikke tre adresser.
 
+## Avvik fra tegningene (Max 19.10, #205)
+
+«Historikk» er fanen på Min side med fullførte avtaler (WF-09), ikke et panel på forespørselssiden. Forespørselssiden (WF-08) viser derfor ikke lenger forslagene som liste, bare det siste i budkortet, og er én kolonne som budsiden. Alle forslag bevares i databasen.
+
 ## Skjermer
 
 Filnavn viser til [png/](png/) og [kilde/](kilde/). Filnavnene er arbeidsnavn fra lerretet,
@@ -221,10 +225,10 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 06 | Legg inn bud | `Foresporsel-salg-*` | `/listings/:id/bid` | `BidForm` | Varekort og «Ditt bud (kr)», «Send bud». | |
 | 06 | Send låneforespørsel | `Foresporsel-leie-*` | `/listings/:id/loan` | `PeriodPicker`, `Summary` | Kalender der bare ledige dager kan velges, fra og til, oppsummering med beregnet pris (ukepris / 7 per dag), «Send forespørsel». | |
 | 07 | Min side: Forespørsler | `Foresporsler-*` | `/me?tab=requests` (bygget 17.10, #193, som `/me` og `/me?show=sent`, avvik under) | `ProfileCard`, `RequestRow` (fanene og Mottatt/Sendt er lenker i `MyPage`) | Mottatt og Sendt. Rad med bilde, vare, motpart og bud, type, «Sist endret» og en chip: «Din tur», «Selgers tur» eller «Kjøpers tur» mens forespørselen venter, ellers statusen. Din tur ligger øverst, så nyeste. Mobil: eget kort per rad med chip og «Åpne ›» nederst. Desktop: raden i én ramme med chipen til høyre. Hele raden er en lenke til `/requests/:id`. | Tom liste (`Foresporsler-tom-*`). |
-| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `History` | Bud og egen pris, «Godta», «Motbud», «Avslå», historikk. Bygget 17.10 (#192) som visning for begge parter; tilbakelenken er «‹ Min side» (Mottatt for selgeren, Sendt for kjøperen, #193) og annonsekortet øverst er en lenke til annonsen. Knappene ligger under budkortet, også på desktop, og vises bare for den som har tur (bygget 18.10, #187, avvik over). Andre enn de to partene får 404 som for en ukjent annonse. | |
+| 08a | Nytt bud (selger) | `Avtale-venter-mobil`, `Avtale-nyttbud-desktop` | `/requests/:id` | `StatusBanner`, `OfferCard`, `ResponseActions` | Bud og egen pris, «Godta», «Motbud», «Avslå». Bygget 17.10 (#192) som visning for begge parter; tilbakelenken er «‹ Min side» (Mottatt for selgeren, Sendt for kjøperen, #193) og annonsekortet øverst er en lenke til annonsen. Knappene ligger under budkortet, også på desktop, og vises bare for den som har tur (bygget 18.10, #187, avvik over). Andre enn de to partene får 404 som for en ukjent annonse. | |
 | 08a | Motbud (selger) | `Avtale-motbud-mobil`, `Avtale-venter-desktop` | `/requests/:id` | `ResponseActions` (bygget 18.10, #187) | Felt «Ditt motbud (kr)», «Send motbud», «Avbryt», åpnet på samme side. Kjøperen har de samme knappene etter et motbud. | |
 | 08b | Avtalt (kjøper) | `Avtale-avtalt-*` | `/requests/:id` | `ContactCard`, `HandoverConfirmation` | Pris, kontaktinfo, overleveringsstatus for begge, «Bekreft at jeg har fått varen», «Avbestill». | |
-| 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `History` | Begge bekreftelser med tidspunkt, pris, historikk. | |
+| 08c | Salget er fullført | `Avtale-fullfort-*` | `/requests/:id` | `StatusBanner`, `OfferCard` | Begge bekreftelser med tidspunkt og pris. | |
 | 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/requests/:id` | `ExtensionPanel`, `ReturnIssuePanel` | Periode, pris, kontakt. Forleng lånet (WV-01), retur som eieren bekrefter, og rapporter returproblem (WV-02). | |
 | 09 | Min side: Mine annonser | `Minside-*` | `/me` | `ProfileCard`, `MyPageTabs`, `ListingCard` | Profil og faner. Egne annonser med status, «Rediger» og «Ta ned». Solgte annonser har ingen handlinger; låneannonser blir liggende med opptatte datoer. | |
 | 09 | Min side: Historikk | `Minside-historikk-*` | `/me?tab=history` | `HistoryList` | Fullførte salg og lån, både gitt og mottatt. | |

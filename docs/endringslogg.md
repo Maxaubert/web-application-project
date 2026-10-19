@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-19
+
+- Forespørselssiden (#205): Historikk-panelet med forslagene er tatt bort fra `/requests/:id`, og siden er én kolonne. «Historikk» er navnet på fanen på Min side med annonsene man har solgt eller kjøpt (#189, #93), ikke på forslagene i en forespørsel. Siden viser bare det siste forslaget i budkortet; eldre forslag bevares i databasen. FK-06 og README er oppdatert. (Max, #205)
+
 ## 2026-10-18
 
 - Forespørsler, del 5 (#187): den som har tur kan godta, sende motbud eller avslå på forespørselssiden. «Godta» er en stor knapp, «Motbud» åpner et prisfelt og «Avslå» ber om en bekreftelse. Bare siste forslag kan besvares (skjemaet sender med det som ble vist), og to samtidige svar kan aldri begge lykkes. Et bud som ikke er besvart på 7 dager utløper; mekanismen er «lat» (siden regner ut utløpet og skriving lagrer det), ikke cron. Så lenge ett bud er godtatt, kan ikke et annet bud på samme annonse godtas. Banneret har ikke lenger mørk fyll, for det lignet en knapp. «Sist endret» på Min side tar med statusendringer. Mockup valgt av Max. Withdraw («Trekk tilbake») og avbestilling kommer med #188. (Max, #187)
