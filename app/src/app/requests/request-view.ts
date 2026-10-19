@@ -1,4 +1,4 @@
-// Tekstene på forespørselssiden (#192): banneret øverst og linjene i historikken. Rene funksjoner uten database,
+// Tekstene på forespørselssiden (#192): banneret øverst og chipen i Min side. Rene funksjoner uten database,
 // så rollene og statusene kan testes ett for ett.
 import type { Offer } from "@/db/schema";
 import type { RequestRole } from "./queries";
@@ -34,6 +34,19 @@ export function bannerFor(status: RequestStatus, role: RequestRole, { ownerName,
   return { text: finished[status] ?? status, yourTurn: false };
 }
 
+// Chipen på raden i Min side (#193): hvis tur det er mens forespørselen venter, ellers statusen. Mørk når det er din tur.
+export type Chip = { text: string; yourTurn: boolean };
+
+export function chipFor(status: RequestStatus, role: RequestRole): Chip {
+  if (status === "waiting_owner") {
+    return role === "owner" ? { text: "Din tur", yourTurn: true } : { text: "Selgers tur", yourTurn: false };
+  }
+  if (status === "waiting_requester") {
+    return role === "owner" ? { text: "Kjøpers tur", yourTurn: false } : { text: "Din tur", yourTurn: true };
+  }
+  return { text: finished[status] ?? status, yourTurn: false };
+}
+
 // Etiketten over budkortet: «Bud» fra forespørreren, «Motbud» fra eieren, og «Ditt …» når det er ditt eget.
 export function offerLabel(offer: Pick<Offer, "senderId">, viewerId: string, requesterId: string): string {
   const base = offer.senderId === requesterId ? "bud" : "motbud";
@@ -55,16 +68,22 @@ export function formatWhen(date: Date): string {
   return `${part("day")}.${part("month")} kl. ${part("hour")}:${part("minute")}`;
 }
 
-// En linje i historikken: «Du bød 230 kr» eller «Kari Hansen bød 230 kr». Forespørreren byr, eieren foreslår (motbud).
-// Bare priser; perioder for lån kommer med #186.
-export function historyLine(
-  offer: Pick<Offer, "senderId" | "price" | "createdAt">,
+// Meldingen som vises rett etter et svar (#203): siden åpnes med ?sendt=<markør>, satt av serverhandlingen. Markøren
+// teller bare når den stemmer med det som faktisk er lagret, så en tastet adresse ikke viser en falsk melding.
+export const noticeMarkers = { counter: "motbud", accept: "godtatt", decline: "avslatt" } as const;
+
+export function noticeFor(
+  marker: string | null,
+  status: RequestStatus,
+  latest: Pick<Offer, "senderId" | "price"> | undefined,
   viewerId: string,
-  requesterId: string,
-  names: Names,
-): string {
-  const fromRequester = offer.senderId === requesterId;
-  const who = offer.senderId === viewerId ? "Du" : fromRequester ? names.requesterName : names.ownerName;
-  const amount = offer.price === null ? "" : ` ${offer.price.toLocaleString("nb-NO")} kr`;
-  return `${formatWhen(offer.createdAt)} · ${who} ${fromRequester ? "bød" : "foreslo"}${amount}`;
+): string | null {
+  if (marker === noticeMarkers.counter) {
+    const waiting = status === "waiting_owner" || status === "waiting_requester";
+    if (!waiting || !latest || latest.senderId !== viewerId || latest.price === null) return null;
+    return `Motbud sendt: ${latest.price.toLocaleString("nb-NO")} kr`;
+  }
+  if (marker === noticeMarkers.accept) return status === "accepted" ? "Du godtok budet" : null;
+  if (marker === noticeMarkers.decline) return status === "declined" ? "Forespørselen er avslått" : null;
+  return null;
 }

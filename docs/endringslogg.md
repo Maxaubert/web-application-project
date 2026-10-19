@@ -8,8 +8,19 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-19
+
+- Forespørselssiden (#205): Historikk-panelet med forslagene er tatt bort fra `/requests/:id`, og siden er én kolonne. «Historikk» er navnet på fanen på Min side med annonsene man har solgt eller kjøpt (#189, #93), ikke på forslagene i en forespørsel. Siden viser bare det siste forslaget i budkortet; eldre forslag bevares i databasen. FK-06 og README er oppdatert. (Max, #205)
+- Forespørsler (#203): etter et svar (motbud, godta, avslå) vises en melding øverst på forespørselssiden: «Motbud sendt: 240 kr», «Du godtok budet» eller «Forespørselen er avslått». Den står i 5 sekunder og forsvinner. Før forsvant bare feltet og tallene endret seg uten at noe sa at det gikk bra (Max testet #187). Mockup med fire varianter; Max valgte meldingen som forsvinner. (Max, #203)
+- Forespørsler (#201): et godtatt salg eller en godtatt gis bort tar annonsen ut av søket (status solgt) og avslår alle andre ventende forespørsler på den, slik kravene D-30 til D-32 sier. Max avgjorde at det skjer ved aksept, ikke ved overlevering, og at avbestilling legger annonsen ut igjen (kommer med #188). Annonsen kreves først med en betinget oppdatering, som også stopper to samtidige aksepter. Et lån røres ikke. Erstatter vakten fra #187. (Max, #201)
+
+## 2026-10-18
+
+- Forespørsler, del 5 (#187): den som har tur kan godta, sende motbud eller avslå på forespørselssiden. «Godta» er en stor knapp, «Motbud» åpner et prisfelt og «Avslå» ber om en bekreftelse. Bare siste forslag kan besvares (skjemaet sender med det som ble vist), og to samtidige svar kan aldri begge lykkes. Et bud som ikke er besvart på 7 dager utløper; mekanismen er «lat» (siden regner ut utløpet og skriving lagrer det), ikke cron. Så lenge ett bud er godtatt, kan ikke et annet bud på samme annonse godtas. Banneret har ikke lenger mørk fyll, for det lignet en knapp. «Sist endret» på Min side tar med statusendringer. Mockup valgt av Max. Withdraw («Trekk tilbake») og avbestilling kommer med #188. (Max, #187)
+
 ## 2026-10-17
 
+- Forespørsler, del 4 (#193): Min side `/me` med profil, fanen Forespørsler og Mottatt/Sendt, og «Min side» som første knapp øverst til høyre (ikon på mobil). Hver rad har bilde, tittel, motpart og bud, type, «Sist endret» og en chip («Din tur», «Selgers tur», «Kjøpers tur» eller statusen), og er en lenke til forespørselssiden. Din tur ligger øverst. Tilbakelenken på forespørselssiden er «‹ Min side», og annonsekortet er en lenke til annonsen. Mine annonser og Historikk følger med #189 og #93. Mockup valgt av Max blant ti listestiler. (Max, #193)
 - Forespørsler, del 3 (#192): forespørselssiden `/requests/:id`, bare visning for eieren og den som la inn forespørselen: status i et banner (mørkt når det er din tur), siste bud, og historikk med nyeste først. Andre enn de to partene får 404 med samme tekst som en ukjent annonse, og siden leser aldri telefon eller e-post. «Ditt bud» på annonsesiden er nå en lenke hit. Handlingsknappene kommer under budkortet med #187; Min side som inngang for selgeren kommer med #193. (Max, #192)
 - Forespørsler, del 2 av 6 (#185): bud på salgsannonser. Siden `/listings/:id/bid`, serverhandlingen `sendBid` og reglene i `placeBid`. Knappen på annonsesiden har fire tilstander (Legg inn bud, Ditt bud med Endre bud, grået ut på egen og solgt annonse). Bud er fra 1 til 100 000 kr (README sa bud > 0; regelen fra #184 tillot 0 og er rettet). Et nytt bud erstatter det gamle så lenge selgeren ikke har svart, og det gamle blir historikk. En delvis unik indeks sørger for høyst én pågående forespørsel per student per annonse. (Max, #185)
 

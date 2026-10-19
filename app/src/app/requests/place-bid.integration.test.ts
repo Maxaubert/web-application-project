@@ -57,6 +57,30 @@ describe("placeBid, gyldig bud", () => {
     expect(await placeBid(db, { userId: KARI, listingId: "calc", price: "240" })).toEqual({ ok: true });
     expect(await rowCounts()).toEqual({ requests: 2, offers: 2 });
   });
+
+  // 7-dagersfristen (#187): et bud uten svar utløper, og da kan studenten by på nytt.
+  it("etter 7 dager uten svar er det gamle budet utløpt, og et nytt bud lager en ny forespørsel", async () => {
+    const BID_AT = new Date("2026-10-10T12:00:00Z");
+    await placeBid(db, { userId: KARI, listingId: "calc", price: "220", now: BID_AT });
+    await db.update(offer).set({ createdAt: BID_AT });
+
+    const result = await placeBid(db, { userId: KARI, listingId: "calc", price: "240", now: new Date(BID_AT.getTime() + 7 * 86_400_000) });
+
+    expect(result).toEqual({ ok: true });
+    const requests = await db.select().from(request);
+    expect(requests.map((r) => r.status).sort()).toEqual(["expired", "waiting_owner"]);
+    expect(await rowCounts()).toEqual({ requests: 2, offers: 2 });
+  });
+
+  it("like før 7 dager erstatter et nytt bud fortsatt det gamle", async () => {
+    const BID_AT = new Date("2026-10-10T12:00:00Z");
+    await placeBid(db, { userId: KARI, listingId: "calc", price: "220", now: BID_AT });
+    await db.update(offer).set({ createdAt: BID_AT });
+
+    await placeBid(db, { userId: KARI, listingId: "calc", price: "240", now: new Date(BID_AT.getTime() + 7 * 86_400_000 - 1000) });
+
+    expect(await rowCounts()).toEqual({ requests: 1, offers: 2 });
+  });
 });
 
 describe("placeBid, avvisning endrer ingenting", () => {

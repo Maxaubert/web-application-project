@@ -37,6 +37,12 @@ test("annonsesiden uten innlogging sender til innloggingen", async ({ page }) =>
   await expect(page).toHaveURL(/\/login$/);
 });
 
+// Min side (#193) viser kontaktinfo, så uten innlogging skal den aldri tegnes, ikke engang tom.
+test("Min side uten innlogging sender til innloggingen", async ({ page }) => {
+  await page.goto("/me");
+  await expect(page).toHaveURL(/\/login$/);
+});
+
 test("ukjente adresser gir HTTP 404", async ({ request }) => {
   const response = await request.get("/finnes-ikke");
   expect(response.status()).toBe(404);
