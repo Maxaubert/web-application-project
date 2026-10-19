@@ -6,7 +6,8 @@ import { db } from "@/db";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
 import { log } from "@/app/shared/log";
 import { placeBid } from "./place-bid";
-import { respondToOffer } from "./respond";
+import { respondToOffer, type RespondAction } from "./respond";
+import { noticeMarkers } from "./request-view";
 
 export async function sendBid(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
@@ -38,5 +39,6 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price } };
 
   log.info("request_answered", { userId: ctx.session.userId, requestId, action });
-  return redirect(`/requests/${requestId}`);
+  // Markøren får siden til å vise «Motbud sendt» og lignende (#203).
+  return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as RespondAction]}`);
 }

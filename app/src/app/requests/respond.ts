@@ -3,7 +3,7 @@
 // actions.ts henter brukeren fra økten og kaller hit. All autorisasjon ligger her, så en skjult knapp aldri er
 // det eneste som stopper et ulovlig svar.
 import { and, eq, inArray, ne } from "drizzle-orm";
-import { offer, request } from "@/db/schema";
+import { listing, offer, request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { validateOffer } from "./offer-rules";
 import { getRequestForParty } from "./queries";
@@ -20,7 +20,7 @@ const NOT_FOUND = "Forespørselen finnes ikke";
 const EXPIRED = "Forespørselen er utløpt";
 const NOT_YOUR_TURN = "Du kan ikke svare på denne forespørselen nå";
 const CHANGED = "Forslaget er endret. Last siden på nytt.";
-const ALREADY_ACCEPTED = "Du har allerede godtatt et annet bud på denne annonsen";
+const UNAVAILABLE = "Annonsen er ikke lenger tilgjengelig";
 
 function isRespondAction(action: string): action is RespondAction {
   return (respondActions as readonly string[]).includes(action);
@@ -35,7 +35,7 @@ export async function respondToOffer(
   // Bare de to partene finner forespørselen; alle andre får samme svar som for en ukjent id.
   const details = await getRequestForParty(db, requestId, userId, now);
   if (!details) return { ok: false, error: NOT_FOUND };
-  const { request: found, listing, offers, role } = details;
+  const { request: found, listing: ad, offers, role } = details;
 
   // Lesingen regner utløpet ut; her lagres det, og svaret avvises.
   if (found.status === "expired") {
@@ -50,13 +50,17 @@ export async function respondToOffer(
   const latest = offers[offers.length - 1];
   if (!latest || latest.id !== offerId) return { ok: false, error: CHANGED };
 
-  if (action === "accept" && listing.type === "sale") {
-    const others = await db
-      .select({ id: request.id })
-      .from(request)
-      .where(and(eq(request.listingId, listing.id), ne(request.id, requestId), inArray(request.status, ["accepted", "in_use"])))
-      .limit(1);
-    if (others.length > 0) return { ok: false, error: ALREADY_ACCEPTED };
+  // Et godtatt salg eller en godtatt gis bort tar annonsen ut av søket (D-30 til D-32); et lån lar den ligge. Annonsen
+  // kreves først med en betinget oppdatering, så to aksepter på samme annonse aldri begge lykkes: den andre finner
+  // den allerede solgt. (En vanlig sjekk før skriving ville latt begge passere når de kommer samtidig.)
+  const takesListing = action === "accept" && ad.type !== "loan";
+  if (takesListing) {
+    const taken = await db
+      .update(listing)
+      .set({ status: "sold", updatedAt: now })
+      .where(and(eq(listing.id, ad.id), eq(listing.status, "active")))
+      .returning({ id: listing.id });
+    if (taken.length === 0) return { ok: false, error: UNAVAILABLE };
   }
 
   // Et motbud er et nytt forslag med ny pris. Lån og gis bort har ikke forespørsler ennå (#186), så bare salg.
@@ -79,7 +83,17 @@ export async function respondToOffer(
     .returning({ id: request.id });
   if (changed.length === 0) {
     if (counterId) await db.delete(offer).where(eq(offer.id, counterId));
+    // Svaret tapte, så annonsen vi nettopp tok, gis tilbake.
+    if (takesListing) await db.update(listing).set({ status: "active", updatedAt: now }).where(eq(listing.id, ad.id));
     return { ok: false, error: CHANGED };
+  }
+
+  // De andre som venter på samme annonse får avslag. Allerede avsluttede og godtatte røres ikke.
+  if (takesListing) {
+    await db
+      .update(request)
+      .set({ status: "declined", updatedAt: now })
+      .where(and(eq(request.listingId, ad.id), ne(request.id, requestId), inArray(request.status, ["waiting_owner", "waiting_requester"])));
   }
   return { ok: true };
 }

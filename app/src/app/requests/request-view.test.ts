@@ -1,7 +1,7 @@
 // Tekstene på forespørselssiden: banneret per status og rolle, etiketten over budet og klokkeslettet.
 import { describe, expect, it } from "vitest";
 import { requestStatuses } from "@/db/schema";
-import { bannerFor, chipFor, formatWhen, offerLabel } from "./request-view";
+import { bannerFor, chipFor, formatWhen, noticeFor, noticeMarkers, offerLabel } from "./request-view";
 
 const names = { ownerName: "Ola Nordmann", requesterName: "Kari Hansen" };
 
@@ -79,5 +79,42 @@ describe("formatWhen", () => {
   it("viser norsk tid, også når serveren går i UTC (sommertid og vintertid)", () => {
     expect(formatWhen(new Date("2026-10-17T01:12:00Z"))).toBe("17.10 kl. 03:12");
     expect(formatWhen(new Date("2026-12-24T23:30:00Z"))).toBe("25.12 kl. 00:30");
+  });
+});
+
+
+describe("noticeFor", () => {
+  const mine = { senderId: "ola", price: 12500 };
+
+  it("«motbud»: «Motbud sendt» med beløpet, når siste forslag er ditt og forespørselen venter", () => {
+    for (const status of ["waiting_owner", "waiting_requester"] as const) {
+      expect(noticeFor("motbud", status, mine, "ola")?.replace(/\s/g, " "), status).toBe("Motbud sendt: 12 500 kr");
+    }
+  });
+
+  it("«motbud»: ingen melding når siste forslag er den andres, har ingen pris, mangler, eller forespørselen er avsluttet", () => {
+    expect(noticeFor("motbud", "waiting_requester", mine, "kari")).toBeNull();
+    expect(noticeFor("motbud", "waiting_requester", { senderId: "ola", price: null }, "ola")).toBeNull();
+    expect(noticeFor("motbud", "waiting_requester", undefined, "ola")).toBeNull();
+    for (const status of ["accepted", "declined", "expired", "withdrawn"] as const) {
+      expect(noticeFor("motbud", status, mine, "ola"), status).toBeNull();
+    }
+  });
+
+  it("«godtatt» og «avslatt» gir meldingen bare når statusen stemmer", () => {
+    expect(noticeFor("godtatt", "accepted", mine, "ola")).toBe("Du godtok budet");
+    expect(noticeFor("avslatt", "declined", mine, "ola")).toBe("Forespørselen er avslått");
+    for (const status of requestStatuses.filter((s) => s !== "accepted")) expect(noticeFor("godtatt", status, mine, "ola"), status).toBeNull();
+    for (const status of requestStatuses.filter((s) => s !== "declined")) expect(noticeFor("avslatt", status, mine, "ola"), status).toBeNull();
+  });
+
+  it("ingen markør, en ukjent markør og en tom markør gir ingen melding", () => {
+    for (const marker of [null, "", "annet", "MOTBUD", "motbud "]) {
+      expect(noticeFor(marker, "waiting_requester", mine, "ola"), String(marker)).toBeNull();
+    }
+  });
+
+  it("markørene serverhandlingen setter, er de som siden leser", () => {
+    expect(noticeMarkers).toEqual({ counter: "motbud", accept: "godtatt", decline: "avslatt" });
   });
 });

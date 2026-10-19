@@ -13,12 +13,13 @@ import { getListingImages } from "@/app/listings/queries";
 import { ListingSummary } from "./ListingSummary";
 import { getRequestForParty } from "./queries";
 import { OfferCard, StatusBanner } from "./RequestParts";
-import { bannerFor, offerLabel } from "./request-view";
+import { bannerFor, noticeFor, offerLabel } from "./request-view";
 import { ResponseActions } from "./ResponseActions";
+import { Toast } from "./Toast";
 
 const kroner = (value: number | null) => (value === null ? "–" : `${value.toLocaleString("nb-NO")} kr`);
 
-export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: string }>) {
+export async function RequestPage({ params, ctx, response, request: httpRequest }: RequestInfo<{ id: string }>) {
   const userId = ctx.session.userId ?? "";
   const details = await getRequestForParty(db, params.id, userId);
 
@@ -35,10 +36,14 @@ export async function RequestPage({ params, ctx, response }: RequestInfo<{ id: s
   const names = { ownerName: details.ownerName, requesterName: details.requesterName };
   const latest = offers[offers.length - 1];
   const banner = bannerFor(request.status, role, names);
+  // Meldingen rett etter et svar (#203): bare når markøren i adressen stemmer med det som er lagret.
+  const marker = new URL(httpRequest.url).searchParams.get("sendt");
+  const notice = noticeFor(marker, request.status, latest, userId);
   const [coverKey] = await getListingImages(db, listing.id);
 
   return (
     <PageShell title={`Forespørsel: ${listing.title}`} wide headerAction={<HeaderActions />}>
+      {notice && <Toast key={`${request.id}-${marker}`} message={notice} />}
       <div className="mx-auto max-w-3xl">
         {/* Tilbake til listen man kom fra: selgeren til Mottatt, kjøperen til Sendt (#193). Annonsen nås fra kortet under. */}
         <a href={role === "owner" ? "/me" : "/me?show=sent"} className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">

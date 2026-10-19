@@ -67,3 +67,23 @@ export function formatWhen(date: Date): string {
   const part = (type: string) => clock.formatToParts(date).find((p) => p.type === type)?.value ?? "";
   return `${part("day")}.${part("month")} kl. ${part("hour")}:${part("minute")}`;
 }
+
+// Meldingen som vises rett etter et svar (#203): siden åpnes med ?sendt=<markør>, satt av serverhandlingen. Markøren
+// teller bare når den stemmer med det som faktisk er lagret, så en tastet adresse ikke viser en falsk melding.
+export const noticeMarkers = { counter: "motbud", accept: "godtatt", decline: "avslatt" } as const;
+
+export function noticeFor(
+  marker: string | null,
+  status: RequestStatus,
+  latest: Pick<Offer, "senderId" | "price"> | undefined,
+  viewerId: string,
+): string | null {
+  if (marker === noticeMarkers.counter) {
+    const waiting = status === "waiting_owner" || status === "waiting_requester";
+    if (!waiting || !latest || latest.senderId !== viewerId || latest.price === null) return null;
+    return `Motbud sendt: ${latest.price.toLocaleString("nb-NO")} kr`;
+  }
+  if (marker === noticeMarkers.accept) return status === "accepted" ? "Du godtok budet" : null;
+  if (marker === noticeMarkers.decline) return status === "declined" ? "Forespørselen er avslått" : null;
+  return null;
+}
