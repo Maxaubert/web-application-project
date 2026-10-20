@@ -1,5 +1,6 @@
 // Forespørselssiden /requests/:id (WF-08, #192) mot SQLite i minnet: bare de to partene ser den, og den viser
 // status og siste bud, knappene bare for den som har tur (#187), og aldri kontaktinfo. Godkjent av Max 17.10 og 18.10.
+import { eq } from "drizzle-orm";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -181,6 +182,58 @@ describe("RequestPage, knappene (#187)", () => {
 
   it("en tredjepart får ingen knapper og ingenting om forespørselen", async () => {
     expect(hasNoButtons((await visit("r1", "per")).html)).toBe(true);
+  });
+});
+
+// Lån og gis bort (#186a): periode og pris i kortet, "Ny forespørsel" i banneret, og ingen svarknapper før #208.
+describe("RequestPage, lån og gis bort (#186a)", () => {
+  beforeEach(async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }),
+      validListing({ id: "lamp", title: "Lampe", type: "giveaway", price: null }),
+    ]);
+    await holder.db.insert(request).values([
+      { id: "rl", listingId: "tent", requesterId: "kari" },
+      { id: "rg", listingId: "lamp", requesterId: "kari" },
+    ]);
+    await holder.db.insert(offer).values([
+      { requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19", createdAt: new Date("2026-10-17T01:12:00Z") },
+      { requestId: "rg", senderId: "kari", createdAt: new Date("2026-10-17T01:12:00Z") },
+    ]);
+  });
+
+  it("lån: periode og pris (avrundet opp) i kortet for begge parter, og ingen «Bud»", async () => {
+    for (const userId of [OWNER_ID, "kari"]) {
+      const { html } = await visit("rl", userId);
+      expect(html).toMatch(/Periode<\/dt><dd[^>]*>12\.11 – 19\.11<\/dd>/);
+      expect(html).toMatch(/Pris<\/dt><dd[^>]*>69\s*kr<\/dd>/);
+      expect(html).not.toMatch(/Bud<\/dt>|Din pris/);
+    }
+  });
+
+  it("lån uten ukepris viser «Gratis»", async () => {
+    await holder.db.update(listing).set({ price: null }).where(eq(listing.id, "tent"));
+
+    expect((await visit("rl", OWNER_ID)).html).toMatch(/Pris<\/dt><dd[^>]*>Gratis<\/dd>/);
+  });
+
+  it("eieren ser «Ny forespørsel fra Kari Hansen» med mørk kant, kjøperen venter", async () => {
+    for (const id of ["rl", "rg"]) {
+      expect((await visit(id, OWNER_ID)).html).toMatch(/<p role="status" class="[^"]*border-ink[^"]*"[^>]*>Ny forespørsel fra Kari Hansen/);
+      expect((await visit(id, "kari")).html).toContain("Venter på svar fra Ola Nordmann");
+    }
+  });
+
+  it("gis bort har ikke noe budkort (ingen pris og ingen periode å vise)", async () => {
+    const { html } = await visit("rg", OWNER_ID);
+
+    expect(html).not.toMatch(/<dl|Periode|Pris/);
+  });
+
+  it("ingen svarknapper på lån og gis bort ennå, selv om det er eierens tur", async () => {
+    for (const id of ["rl", "rg"]) {
+      expect((await visit(id, OWNER_ID)).html).not.toMatch(/<button|name="offerId"/);
+    }
   });
 });
 

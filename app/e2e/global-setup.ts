@@ -60,7 +60,10 @@ export default function globalSetup() {
          ('e2e-bid-error', 'e2e-seller', 'sale', 'Budfeil', 'Til budtestene.', 'books', 'used', 250, 'active'),
          ('e2e-svar-godta', 'e2e-seller', 'sale', 'Svartest godta', 'Til svartestene.', 'books', 'used', 250, 'active'),
          ('e2e-svar-motbud', 'e2e-seller', 'sale', 'Svartest motbud', 'Til svartestene.', 'books', 'used', 250, 'active'),
-         ('e2e-svar-avslag', 'e2e-seller', 'sale', 'Svartest avslag', 'Til svartestene.', 'books', 'used', 250, 'active');
+         ('e2e-svar-avslag', 'e2e-seller', 'sale', 'Svartest avslag', 'Til svartestene.', 'books', 'used', 250, 'active'),
+         ('e2e-lan', 'e2e-seller', 'loan', 'Lantest telt', 'Til lånetestene.', 'sports', 'used', 60, 'active'),
+         ('e2e-lan-feil', 'e2e-seller', 'loan', 'Lanfeil telt', 'Til lånetestene.', 'sports', 'used', 60, 'active'),
+         ('e2e-gis', 'e2e-seller', 'giveaway', 'Gistest lampe', 'Til gis bort-testen.', 'furniture', 'used', NULL, 'active');
      INSERT INTO request (id, listing_id, requester_id)
        VALUES
          ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer'),

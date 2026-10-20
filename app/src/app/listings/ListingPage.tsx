@@ -34,7 +34,7 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
           listing={result.listing}
           ownerName={result.ownerName}
           images={images}
-          bidAction={<BidAction listingId={params.id} state={bid} />}
+          bidAction={<BidAction listingId={params.id} type={result.listing.type} state={bid} />}
         />
       ) : (
         <ListingGone />

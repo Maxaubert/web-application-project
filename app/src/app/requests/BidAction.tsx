@@ -1,11 +1,17 @@
-// Knappen under kategori og tilstand på annonsesiden (A til D i mockupen, #185). Serverkomponent, bare visning;
-// ingenting her er en sikkerhetskontroll, den ligger i placeBid.
+// Knappen under kategori og tilstand på annonsesiden (A til D i mockupen, #185; lån og gis bort #186). Serverkomponent,
+// bare visning; ingenting her er en sikkerhetskontroll, den ligger i placeBid og placeRequest.
+import type { Listing } from "@/db/schema";
 import type { BidState } from "./bid-state";
+import { RequestButton } from "./RequestButton";
+import { formatPeriod } from "./request-view";
 
 const button =
   "flex h-12 w-full items-center justify-center rounded-md border-2 text-lg font-semibold transition-colors";
 
-export function BidAction({ listingId, state }: { listingId: string; state: BidState }) {
+// Det knappen heter når den kan trykkes, og når den er grået ut.
+const labels = { sale: "Legg inn bud", loan: "Send låneforespørsel", giveaway: "Send forespørsel" } as const;
+
+export function BidAction({ listingId, type, state }: { listingId: string; type: Listing["type"]; state: BidState }) {
   switch (state.kind) {
     case "none":
       return null;
@@ -13,13 +19,30 @@ export function BidAction({ listingId, state }: { listingId: string; state: BidS
     case "sold":
       return (
         <button type="button" disabled className={`${button} border-hairline bg-hairline text-muted`}>
-          Legg inn bud
+          {labels[type]}
         </button>
       );
     case "can_bid":
       return (
         <a href={`/listings/${listingId}/bid`} className={`${button} border-action bg-action text-white hover:bg-action-hover`}>
-          Legg inn bud
+          {labels.sale}
+        </a>
+      );
+    case "can_request":
+      return type === "loan" ? (
+        <a href={`/listings/${listingId}/loan`} className={`${button} border-action bg-action text-white hover:bg-action-hover`}>
+          {labels.loan}
+        </a>
+      ) : (
+        <RequestButton listingId={listingId} label={labels.giveaway} />
+      );
+    case "has_request":
+      return (
+        <a
+          href={`/requests/${state.requestId}`}
+          className="flex h-12 items-center rounded-md border-2 border-hairline bg-surface px-4 text-lg font-bold transition-colors hover:border-ink"
+        >
+          {state.startDate && state.endDate ? `Din forespørsel: ${formatPeriod(state.startDate, state.endDate)}` : "Din forespørsel sendt"}
         </a>
       );
     case "has_bid":

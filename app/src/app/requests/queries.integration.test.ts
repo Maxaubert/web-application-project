@@ -37,7 +37,27 @@ describe("getActiveRequest", () => {
       { requestId: "r1", senderId: "kari", price: 230, createdAt: sameSecond },
     ]);
 
-    expect(await getActiveRequest(db, "calc", "kari", NOW)).toEqual({ id: "r1", status: "waiting_owner", price: 230 });
+    expect(await getActiveRequest(db, "calc", "kari", NOW)).toEqual({
+      id: "r1",
+      status: "waiting_owner",
+      price: 230,
+      startDate: null,
+      endDate: null,
+    });
+  });
+
+  it("gir perioden i siste forslag for et lån (#186)", async () => {
+    await db.insert(listing).values(validListing({ id: "tent", type: "loan", price: 60 }));
+    await db.insert(request).values({ id: "rl", listingId: "tent", requesterId: "kari" });
+    await db.insert(offer).values({ requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-18", createdAt: NOW });
+
+    expect(await getActiveRequest(db, "tent", "kari", NOW)).toEqual({
+      id: "rl",
+      status: "waiting_owner",
+      price: null,
+      startDate: "2026-11-12",
+      endDate: "2026-11-18",
+    });
   });
 
   it("ser ikke andre studenters forespørsler eller andre annonser", async () => {

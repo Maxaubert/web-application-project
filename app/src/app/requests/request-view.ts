@@ -1,6 +1,6 @@
 // Tekstene på forespørselssiden (#192): banneret øverst og chipen i Min side. Rene funksjoner uten database,
 // så rollene og statusene kan testes ett for ett.
-import type { Offer } from "@/db/schema";
+import type { Listing, Offer } from "@/db/schema";
 import type { RequestRole } from "./queries";
 import type { RequestStatus } from "./request-status";
 
@@ -19,11 +19,21 @@ const finished: Partial<Record<RequestStatus, string>> = {
   completed: "Fullført",
 };
 
-export function bannerFor(status: RequestStatus, role: RequestRole, { ownerName, requesterName }: Names): Banner {
+// «12.11» av 2026-11-12, og «12.11 – 19.11» for en periode (#186).
+const formatDay = (day: string) => `${day.slice(8, 10)}.${day.slice(5, 7)}`;
+export const formatPeriod = (startDate: string, endDate: string) => `${formatDay(startDate)} – ${formatDay(endDate)}`;
+
+// Et bud bare på salg; lån og gis bort er forespørsler (#186).
+export function bannerFor(
+  status: RequestStatus,
+  role: RequestRole,
+  { ownerName, requesterName }: Names,
+  type: Listing["type"] = "sale",
+): Banner {
   const other = role === "owner" ? requesterName : ownerName;
   if (status === "waiting_owner") {
     return role === "owner"
-      ? { text: `Nytt bud fra ${requesterName}`, yourTurn: true }
+      ? { text: `${type === "sale" ? "Nytt bud" : "Ny forespørsel"} fra ${requesterName}`, yourTurn: true }
       : { text: `Venter på svar fra ${other}`, yourTurn: false };
   }
   if (status === "waiting_requester") {
