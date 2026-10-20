@@ -85,15 +85,21 @@ export const noticeMarkers = { counter: "motbud", accept: "godtatt", decline: "a
 export function noticeFor(
   marker: string | null,
   status: RequestStatus,
-  latest: Pick<Offer, "senderId" | "price"> | undefined,
+  latest: Pick<Offer, "senderId" | "price" | "startDate" | "endDate"> | undefined,
   viewerId: string,
+  type: Listing["type"] = "sale",
 ): string | null {
   if (marker === noticeMarkers.counter) {
     const waiting = status === "waiting_owner" || status === "waiting_requester";
-    if (!waiting || !latest || latest.senderId !== viewerId || latest.price === null) return null;
-    return `Motbud sendt: ${latest.price.toLocaleString("nb-NO")} kr`;
+    if (!waiting || !latest || latest.senderId !== viewerId) return null;
+    // Et lånemotbud har en periode, et salgsmotbud en pris (#208).
+    if (type === "loan") return latest.startDate && latest.endDate ? `Motbud sendt: ${formatPeriod(latest.startDate, latest.endDate)}` : null;
+    return latest.price === null ? null : `Motbud sendt: ${latest.price.toLocaleString("nb-NO")} kr`;
   }
-  if (marker === noticeMarkers.accept) return status === "accepted" ? "Du godtok budet" : null;
+  if (marker === noticeMarkers.accept) {
+    if (status !== "accepted") return null;
+    return type === "sale" ? "Du godtok budet" : "Du godtok forespørselen";
+  }
   if (marker === noticeMarkers.decline) return status === "declined" ? "Forespørselen er avslått" : null;
   return null;
 }

@@ -44,7 +44,7 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
   const banner = bannerFor(request.status, role, names, listing.type);
   // Meldingen rett etter et svar (#203): bare når markøren i adressen stemmer med det som er lagret.
   const marker = new URL(httpRequest.url).searchParams.get("sendt");
-  const notice = noticeFor(marker, request.status, latest, userId);
+  const notice = noticeFor(marker, request.status, latest, userId, listing.type);
   const [coverKey] = await getListingImages(db, listing.id);
 
   return (
@@ -82,9 +82,10 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
               price={loanPriceText(latest.startDate, latest.endDate, listing.price)}
             />
           )}
-          {/* Knappene bare for den som har tur (#187). Godta gjelder det forslaget som vises, ikke et nyere.
-              Svar på lån og gis bort kommer med #208; til da vises ingen knapper for dem. */}
-          {latest && listing.type === "sale" && banner.yourTurn && <ResponseActions requestId={request.id} offerId={latest.id} />}
+          {/* Knappene bare for den som har tur (#187, #208). Godta gjelder det forslaget som vises, ikke et nyere. */}
+          {latest && banner.yourTurn && (
+            <ResponseActions requestId={request.id} offerId={latest.id} type={listing.type} weeklyPrice={listing.price} />
+          )}
         </div>
       </div>
     </PageShell>
