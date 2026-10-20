@@ -165,6 +165,38 @@ describe("respondToRequest", () => {
     expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=avslatt");
   });
 
+  describe("lån (#208)", () => {
+    beforeEach(async () => {
+      await holder.db.insert(listing).values(validListing({ id: "tent", type: "loan", price: 60 }));
+      await holder.db.insert(request).values({ id: "rl", listingId: "tent", requesterId: "kari" });
+      await holder.db.insert(offer).values({ id: "ol", requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19" });
+    });
+
+    it("et lånemotbud lagrer perioden fra skjemaet med avsenderen fra økten og sender tilbake med «motbud»", async () => {
+      const result = await respondToRequest(
+        {},
+        form({ requestId: "rl", offerId: "ol", intent: "counter", startDate: "2026-11-14", endDate: "2026-11-21", senderId: "kari" }),
+      );
+
+      expect((result as Response).headers.get("Location")).toBe("/requests/rl?sendt=motbud");
+      const offers = await holder.db.select().from(offer);
+      expect(offers[offers.length - 1]).toMatchObject({ senderId: OWNER_ID, startDate: "2026-11-14", endDate: "2026-11-21", price: null });
+    });
+
+    it("gir feilen og datoene tilbake til skjemaet, og lagrer ingenting", async () => {
+      const before = await counts();
+
+      const result = await respondToRequest({}, form({ requestId: "rl", offerId: "ol", intent: "counter", startDate: "2026-11-14", endDate: "2026-11-16" }));
+
+      expect(result).toEqual({
+        error: undefined,
+        fieldErrors: { endDate: "Lånet må vare minst én uke" },
+        values: { price: "", startDate: "2026-11-14", endDate: "2026-11-16" },
+      });
+      expect(await counts()).toEqual(before);
+    });
+  });
+
   it("kjøperen i økten kan ikke svare på sitt eget bud, selv om skjemaet påstår noe annet", async () => {
     holder.session = { isAuthenticated: true, userId: "kari", needsSetup: false };
 
@@ -188,7 +220,11 @@ describe("respondToRequest", () => {
   it("gir feilen og prisen tilbake til skjemaet, og lagrer ingenting", async () => {
     const result = await respondToRequest({}, form({ requestId: "r1", offerId: "o1", intent: "counter", price: "0" }));
 
-    expect(result).toEqual({ error: undefined, fieldErrors: { price: "Bud må være minst 1 kr" }, values: { price: "0" } });
+    expect(result).toEqual({
+      error: undefined,
+      fieldErrors: { price: "Bud må være minst 1 kr" },
+      values: { price: "0", startDate: "", endDate: "" },
+    });
     expect(await counts()).toEqual({ requests: 1, offers: 1 });
     expect(await status()).toBe("waiting_owner");
   });
