@@ -6,6 +6,7 @@ import { db } from "@/db";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
 import { log } from "@/app/shared/log";
 import { placeBid } from "./place-bid";
+import { placeRequest } from "./place-request";
 import { respondToOffer, type RespondAction } from "./respond";
 import { noticeMarkers } from "./request-view";
 
@@ -22,6 +23,24 @@ export async function sendBid(_prev: ActionResult, formData: FormData): Promise<
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price } };
 
   log.info("bid_sent", { userId: ctx.session.userId, listingId });
+  return redirect(`/listings/${listingId}`);
+}
+
+// Låneforespørsel (periode) og gis bort (#186): samme mønster som sendBid, men med datoene fra skjemaet. For gis bort
+// er det bare listingId som gjelder; felt som ikke hører til handelstypen avvises i placeRequest.
+export async function sendRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const { ctx } = getRequestInfo();
+  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
+  if (ctx.session.needsSetup) return redirect("/account-setup");
+
+  const listingId = String(formData.get("listingId") ?? "");
+  const startDate = String(formData.get("startDate") ?? "");
+  const endDate = String(formData.get("endDate") ?? "");
+
+  const result = await placeRequest(db, { userId: ctx.session.userId, listingId, startDate, endDate });
+  if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { startDate, endDate } };
+
+  log.info("request_sent", { userId: ctx.session.userId, listingId });
   return redirect(`/listings/${listingId}`);
 }
 
