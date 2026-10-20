@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-20
+
+- Forespørsler (#186a, serverdelen): reglene for å sende en låneforespørsel (periode, minst 7 dager, ingen overlapp med godtatte eller pågående lån, TK-06) og en gis bort-forespørsel er på plass som `placeRequest`, med serverhandlingen `sendRequest`. `placeBid` er nå en tynn kontroll for salg oppå den samme funksjonen. Én pågående forespørsel per student per annonse; lån og gis bort kan ikke endres etter at de er sendt, bare salg-bud kan det. Låne-siden og knappene kommer i neste PR. #186 er delt i #186 (sende) og #208 (svare på lån). (Max, #186)
+
 ## 2026-10-19
 
 - Forespørselssiden (#205): Historikk-panelet med forslagene er tatt bort fra `/requests/:id`, og siden er én kolonne. «Historikk» er navnet på fanen på Min side med annonsene man har solgt eller kjøpt (#189, #93), ikke på forslagene i en forespørsel. Siden viser bare det siste forslaget i budkortet; eldre forslag bevares i databasen. FK-06 og README er oppdatert. (Max, #205)

@@ -5,7 +5,7 @@ import { listing, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
-import { respondToRequest, sendBid } from "./actions";
+import { respondToRequest, sendBid, sendRequest } from "./actions";
 
 type Session = { isAuthenticated: boolean; userId?: string; needsSetup?: boolean };
 
@@ -78,6 +78,50 @@ describe("sendBid", () => {
     const result = await sendBid({}, form({ listingId: "calc", price: "220" }));
 
     expect(result).toMatchObject({ error: "Du kan ikke by på din egen annonse" });
+    expect(await counts()).toEqual({ requests: 0, offers: 0 });
+  });
+});
+
+// sendRequest (#186): lån og gis bort. Brukeren kommer fra økten, aldri fra skjemaet.
+describe("sendRequest", () => {
+  beforeEach(async () => {
+    await holder.db.insert(listing).values([validListing({ id: "tent", type: "loan", price: 60 }), validListing({ id: "lamp", type: "giveaway", price: null })]);
+  });
+
+  it("lagrer perioden for brukeren i økten og sender tilbake til annonsen", async () => {
+    const result = await sendRequest({}, form({ listingId: "tent", startDate: "2026-11-12", endDate: "2026-11-18", userId: OWNER_ID, requesterId: OWNER_ID }));
+
+    expect((result as Response).headers.get("Location")).toBe("/listings/tent");
+    expect((await holder.db.select().from(request))[0]).toMatchObject({ requesterId: "kari", listingId: "tent" });
+    expect((await holder.db.select().from(offer))[0]).toMatchObject({ senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-18" });
+  });
+
+  it("gis bort lagres uten datoer", async () => {
+    const result = await sendRequest({}, form({ listingId: "lamp" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/listings/lamp");
+    expect((await holder.db.select().from(offer))[0]).toMatchObject({ startDate: null, endDate: null, price: null });
+  });
+
+  it("sender en uinnlogget til /login og en bruker uten kontooppsett til /account-setup uten å lagre", async () => {
+    holder.session = { isAuthenticated: false };
+    const loggedOut = await sendRequest({}, form({ listingId: "lamp" }));
+    holder.session = { isAuthenticated: true, userId: "kari", needsSetup: true };
+    const noSetup = await sendRequest({}, form({ listingId: "lamp" }));
+
+    expect((loggedOut as Response).headers.get("Location")).toBe("/login");
+    expect((noSetup as Response).headers.get("Location")).toBe("/account-setup");
+    expect(await counts()).toEqual({ requests: 0, offers: 0 });
+  });
+
+  it("gir feilen og datoene tilbake til skjemaet, og lagrer ingenting", async () => {
+    const result = await sendRequest({}, form({ listingId: "tent", startDate: "2026-11-12", endDate: "2026-11-14" }));
+
+    expect(result).toEqual({
+      error: undefined,
+      fieldErrors: { endDate: "Lånet må vare minst én uke" },
+      values: { startDate: "2026-11-12", endDate: "2026-11-14" },
+    });
     expect(await counts()).toEqual({ requests: 0, offers: 0 });
   });
 });
