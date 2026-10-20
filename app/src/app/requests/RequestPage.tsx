@@ -13,11 +13,17 @@ import { getListingImages } from "@/app/listings/queries";
 import { ListingSummary } from "./ListingSummary";
 import { getRequestForParty } from "./queries";
 import { OfferCard, StatusBanner } from "./RequestParts";
-import { bannerFor, noticeFor, offerLabel } from "./request-view";
+import { formatLoanPrice, loanSummary } from "./loan-summary";
+import { bannerFor, formatPeriod, noticeFor, offerLabel } from "./request-view";
 import { ResponseActions } from "./ResponseActions";
 import { Toast } from "./Toast";
 
 const kroner = (value: number | null) => (value === null ? "–" : `${value.toLocaleString("nb-NO")} kr`);
+
+function loanPriceText(startDate: string, endDate: string, weeklyPrice: number | null) {
+  const summary = loanSummary(startDate, endDate, weeklyPrice);
+  return summary ? formatLoanPrice(summary.price) : "–";
+}
 
 export async function RequestPage({ params, ctx, response, request: httpRequest }: RequestInfo<{ id: string }>) {
   const userId = ctx.session.userId ?? "";
@@ -35,7 +41,7 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
   const { request, listing, offers, role } = details;
   const names = { ownerName: details.ownerName, requesterName: details.requesterName };
   const latest = offers[offers.length - 1];
-  const banner = bannerFor(request.status, role, names);
+  const banner = bannerFor(request.status, role, names, listing.type);
   // Meldingen rett etter et svar (#203): bare når markøren i adressen stemmer med det som er lagret.
   const marker = new URL(httpRequest.url).searchParams.get("sendt");
   const notice = noticeFor(marker, request.status, latest, userId);
@@ -59,7 +65,7 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
             sellerName={role === "requester" ? details.ownerName : undefined}
           />
           <StatusBanner banner={banner} />
-          {latest && (
+          {latest && listing.type === "sale" && (
             <OfferCard
               bidLabel={offerLabel(latest, userId, request.requesterId)}
               bid={kroner(latest.price)}
@@ -67,8 +73,18 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
               price={kroner(listing.price)}
             />
           )}
-          {/* Knappene bare for den som har tur (#187). Godta gjelder det forslaget som vises, ikke et nyere. */}
-          {latest && banner.yourTurn && <ResponseActions requestId={request.id} offerId={latest.id} />}
+          {/* Lån (#186): perioden og prisen for den. Gis bort har ingenting å vise utover banneret. */}
+          {latest?.startDate && latest.endDate && listing.type === "loan" && (
+            <OfferCard
+              bidLabel="Periode"
+              bid={formatPeriod(latest.startDate, latest.endDate)}
+              priceLabel="Pris"
+              price={loanPriceText(latest.startDate, latest.endDate, listing.price)}
+            />
+          )}
+          {/* Knappene bare for den som har tur (#187). Godta gjelder det forslaget som vises, ikke et nyere.
+              Svar på lån og gis bort kommer med #208; til da vises ingen knapper for dem. */}
+          {latest && listing.type === "sale" && banner.yourTurn && <ResponseActions requestId={request.id} offerId={latest.id} />}
         </div>
       </div>
     </PageShell>

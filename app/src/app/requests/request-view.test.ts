@@ -1,9 +1,29 @@
 // Tekstene på forespørselssiden: banneret per status og rolle, etiketten over budet og klokkeslettet.
 import { describe, expect, it } from "vitest";
 import { requestStatuses } from "@/db/schema";
-import { bannerFor, chipFor, formatWhen, noticeFor, noticeMarkers, offerLabel } from "./request-view";
+import { bannerFor, chipFor, formatPeriod, formatWhen, noticeFor, noticeMarkers, offerLabel } from "./request-view";
 
 const names = { ownerName: "Ola Nordmann", requesterName: "Kari Hansen" };
+
+describe("formatPeriod (#186)", () => {
+  it("skriver dag og måned for begge datoene, uten år", () => {
+    expect(formatPeriod("2026-11-12", "2026-11-19")).toBe("12.11 – 19.11");
+    expect(formatPeriod("2026-12-28", "2027-01-04")).toBe("28.12 – 04.01");
+  });
+});
+
+describe("bannerFor, lån og gis bort (#186)", () => {
+  it("eieren ser «Ny forespørsel» i stedet for «Nytt bud», og det er hens tur", () => {
+    for (const type of ["loan", "giveaway"] as const) {
+      expect(bannerFor("waiting_owner", "owner", names, type)).toEqual({ text: "Ny forespørsel fra Kari Hansen", yourTurn: true });
+    }
+    expect(bannerFor("waiting_owner", "owner", names, "sale").text).toBe("Nytt bud fra Kari Hansen");
+  });
+
+  it("kjøperen ser det samme som for salg", () => {
+    expect(bannerFor("waiting_owner", "requester", names, "loan")).toEqual({ text: "Venter på svar fra Ola Nordmann", yourTurn: false });
+  });
+});
 
 describe("bannerFor", () => {
   it("selgeren ser «Nytt bud» og har tur, kjøperen venter", () => {

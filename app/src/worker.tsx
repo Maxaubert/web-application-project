@@ -15,6 +15,7 @@ import { ListingPage } from "@/app/listings/ListingPage";
 import { NewListingPage } from "@/app/listings/NewListingPage";
 import { MyPage } from "@/app/me/MyPage";
 import { BidPage } from "@/app/requests/BidPage";
+import { LoanPage } from "@/app/requests/LoanPage";
 import { RequestPage } from "@/app/requests/RequestPage";
 
 export type AppContext = { session: AppSession };
@@ -36,6 +37,7 @@ export default defineApp([
     // Før /listings/:id, ellers ville «new» blitt lest som en annonse-ID.
     route("/listings/new", [requireUser, NewListingPage]),
     route("/listings/:id/bid", [requireUser, BidPage]),
+    route("/listings/:id/loan", [requireUser, LoanPage]),
     route("/requests/:id", [requireUser, RequestPage]),
     route("/me", [requireUser, MyPage]),
     route("/listings/:id", [requireUser, ListingPage]),

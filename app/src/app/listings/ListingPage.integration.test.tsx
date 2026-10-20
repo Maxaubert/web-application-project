@@ -1,5 +1,6 @@
 // Annonsesiden velger riktig visning og statuskode ut fra annonsens status. Siden kjøres mot
 // SQLite i minnet med appens migrasjoner i stedet for D1. Godkjent av Max 08.10.
+import { eq } from "drizzle-orm";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -18,6 +19,8 @@ vi.mock("@/db", () => ({
 }));
 // Utloggingsknappen trengs ikke her, og den drar inn innloggingsoppsettet.
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
+// Serverhandlingen trengs ikke for å tegne «Send forespørsel»-knappen.
+vi.mock("@/app/requests/actions", () => ({ sendRequest: vi.fn() }));
 
 async function renderPage(id: string, query = "", userId = "someone-else") {
   const request = new Request(`http://localhost/listings/${id}${query}`);
@@ -126,10 +129,69 @@ describe("ListingPage, budknappen", () => {
     }
   });
 
-  it("lån og gis bort har ingen knapp", async () => {
+  it("lån og gis bort har aldri budknappen", async () => {
     await holder.db.insert(listing).values([validListing({ id: "loan", type: "loan" }), validListing({ id: "free", type: "giveaway", price: null })]);
 
     for (const id of ["loan", "free"]) expect((await renderPage(id, "", "kari")).html).not.toContain("Legg inn bud");
+  });
+});
+
+// Lån og gis bort (#186a): knappene i mockupen, godkjent av Max 20.10.
+describe("ListingPage, lån og gis bort", () => {
+  beforeEach(async () => {
+    await holder.db.insert(user).values({ id: "kari", name: "Kari Hansen", email: "kari-h@hiof.no" });
+    await holder.db.insert(listing).values([
+      validListing({ id: "tent", type: "loan", price: 60 }),
+      validListing({ id: "lamp", type: "giveaway", price: null }),
+    ]);
+  });
+
+  it("lån: andre ser «Send låneforespørsel» som lenke til lånesiden", async () => {
+    const { html } = await renderPage("tent", "", "kari");
+
+    expect(html).toMatch(/<a href="\/listings\/tent\/loan"[^>]*>Send låneforespørsel<\/a>/);
+  });
+
+  it("lån: en sendt forespørsel vises som «Din forespørsel: 12.11 – 19.11» og lenker til forespørselen", async () => {
+    await holder.db.insert(request).values({ id: "rl", listingId: "tent", requesterId: "kari" });
+    await holder.db.insert(offer).values({ requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19" });
+
+    const { html } = await renderPage("tent", "", "kari");
+
+    expect(html).toMatch(/<a href="\/requests\/rl"[^>]*>Din forespørsel: 12\.11 – 19\.11<\/a>/);
+    expect(html).not.toContain("Send låneforespørsel");
+  });
+
+  it("gis bort: andre ser «Send forespørsel» som skjemaknapp med annonsen som skjult felt", async () => {
+    const { html } = await renderPage("lamp", "", "kari");
+
+    expect(html).toMatch(/<button type="submit"[^>]*>Send forespørsel<\/button>/);
+    expect(html).toContain('<input type="hidden" name="listingId" value="lamp"/>');
+  });
+
+  it("gis bort: en sendt forespørsel vises som «Din forespørsel sendt» uten skjemaknapp", async () => {
+    await holder.db.insert(request).values({ id: "rg", listingId: "lamp", requesterId: "kari" });
+    await holder.db.insert(offer).values({ requestId: "rg", senderId: "kari" });
+
+    const { html } = await renderPage("lamp", "", "kari");
+
+    expect(html).toMatch(/<a href="\/requests\/rg"[^>]*>Din forespørsel sendt<\/a>/);
+    expect(html).not.toContain("Send forespørsel");
+  });
+
+  it("eieren ser knappen grået ut, med riktig navn for hver type, og uten lenke", async () => {
+    const loan = (await renderPage("tent", "", OWNER_ID)).html;
+    const free = (await renderPage("lamp", "", OWNER_ID)).html;
+
+    expect(loan).toMatch(/<button[^>]*disabled[^>]*>Send låneforespørsel<\/button>/);
+    expect(free).toMatch(/<button[^>]*disabled[^>]*>Send forespørsel<\/button>/);
+    expect(loan).not.toContain("/loan");
+  });
+
+  it("en gis bort som er tatt, har knappen grået ut for andre", async () => {
+    await holder.db.update(listing).set({ status: "sold" }).where(eq(listing.id, "lamp"));
+
+    expect((await renderPage("lamp", "", "kari")).html).toMatch(/<button[^>]*disabled[^>]*>Send forespørsel<\/button>/);
   });
 });
 
