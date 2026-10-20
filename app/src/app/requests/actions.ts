@@ -52,10 +52,20 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
 
   const requestId = String(formData.get("requestId") ?? "");
   const price = String(formData.get("price") ?? "");
+  const startDate = String(formData.get("startDate") ?? "");
+  const endDate = String(formData.get("endDate") ?? "");
   const action = String(formData.get("intent") ?? "");
 
-  const result = await respondToOffer(db, { userId: ctx.session.userId, requestId, offerId: String(formData.get("offerId") ?? ""), action, price });
-  if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price } };
+  const result = await respondToOffer(db, {
+    userId: ctx.session.userId,
+    requestId,
+    offerId: String(formData.get("offerId") ?? ""),
+    action,
+    price,
+    startDate,
+    endDate,
+  });
+  if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price, startDate, endDate } };
 
   log.info("request_answered", { userId: ctx.session.userId, requestId, action });
   // Markøren får siden til å vise «Motbud sendt» og lignende (#203).
