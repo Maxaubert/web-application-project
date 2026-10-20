@@ -7,7 +7,8 @@ import { effectiveStatus } from "./request-expiry";
 import { activeStatuses, type RequestStatus } from "./request-status";
 
 // price: det siste budet (nyeste offer-rad). Salg har alltid pris, men kolonnen kan være tom for lån og gis bort.
-export type ActiveRequest = { id: string; status: RequestStatus; price: number | null };
+// startDate og endDate: perioden i det siste forslaget, bare for lån (#186).
+export type ActiveRequest = { id: string; status: RequestStatus; price: number | null; startDate: string | null; endDate: string | null };
 
 // Studentens pågående forespørsel på en annonse, med siste bud, eller undefined. Det finnes høyst én (indeksen
 // request_one_active_per_student_idx). Nyeste offer sorteres på rowid: created_at har bare hele sekunder, så to
@@ -19,7 +20,14 @@ export async function getActiveRequest(
   now = new Date(),
 ): Promise<ActiveRequest | undefined> {
   const rows = await db
-    .select({ id: request.id, status: request.status, price: offer.price, lastOfferAt: offer.createdAt })
+    .select({
+      id: request.id,
+      status: request.status,
+      price: offer.price,
+      startDate: offer.startDate,
+      endDate: offer.endDate,
+      lastOfferAt: offer.createdAt,
+    })
     .from(request)
     .innerJoin(offer, eq(offer.requestId, request.id))
     .where(and(eq(request.listingId, listingId), eq(request.requesterId, requesterId), inArray(request.status, activeStatuses)))
@@ -27,7 +35,7 @@ export async function getActiveRequest(
     .limit(1);
   const row = rows[0];
   if (!row || effectiveStatus(row.status, row.lastOfferAt, now) === "expired") return undefined;
-  return { id: row.id, status: row.status, price: row.price };
+  return { id: row.id, status: row.status, price: row.price, startDate: row.startDate, endDate: row.endDate };
 }
 
 export type RequestRole = "owner" | "requester";

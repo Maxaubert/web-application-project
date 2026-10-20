@@ -1,9 +1,29 @@
 // Tekstene på forespørselssiden: banneret per status og rolle, etiketten over budet og klokkeslettet.
 import { describe, expect, it } from "vitest";
 import { requestStatuses } from "@/db/schema";
-import { bannerFor, chipFor, formatWhen, noticeFor, noticeMarkers, offerLabel } from "./request-view";
+import { bannerFor, chipFor, formatPeriod, formatWhen, noticeFor, noticeMarkers, offerLabel } from "./request-view";
 
 const names = { ownerName: "Ola Nordmann", requesterName: "Kari Hansen" };
+
+describe("formatPeriod (#186)", () => {
+  it("skriver dag og måned for begge datoene, uten år", () => {
+    expect(formatPeriod("2026-11-12", "2026-11-19")).toBe("12.11 – 19.11");
+    expect(formatPeriod("2026-12-28", "2027-01-04")).toBe("28.12 – 04.01");
+  });
+});
+
+describe("bannerFor, lån og gis bort (#186)", () => {
+  it("eieren ser «Ny forespørsel» i stedet for «Nytt bud», og det er hens tur", () => {
+    for (const type of ["loan", "giveaway"] as const) {
+      expect(bannerFor("waiting_owner", "owner", names, type)).toEqual({ text: "Ny forespørsel fra Kari Hansen", yourTurn: true });
+    }
+    expect(bannerFor("waiting_owner", "owner", names, "sale").text).toBe("Nytt bud fra Kari Hansen");
+  });
+
+  it("kjøperen ser det samme som for salg", () => {
+    expect(bannerFor("waiting_owner", "requester", names, "loan")).toEqual({ text: "Venter på svar fra Ola Nordmann", yourTurn: false });
+  });
+});
 
 describe("bannerFor", () => {
   it("selgeren ser «Nytt bud» og har tur, kjøperen venter", () => {
@@ -84,7 +104,8 @@ describe("formatWhen", () => {
 
 
 describe("noticeFor", () => {
-  const mine = { senderId: "ola", price: 12500 };
+  const mine = { senderId: "ola", price: 12500, startDate: null, endDate: null };
+  const myPeriod = { senderId: "ola", price: null, startDate: "2026-11-14", endDate: "2026-11-21" };
 
   it("«motbud»: «Motbud sendt» med beløpet, når siste forslag er ditt og forespørselen venter", () => {
     for (const status of ["waiting_owner", "waiting_requester"] as const) {
@@ -94,7 +115,7 @@ describe("noticeFor", () => {
 
   it("«motbud»: ingen melding når siste forslag er den andres, har ingen pris, mangler, eller forespørselen er avsluttet", () => {
     expect(noticeFor("motbud", "waiting_requester", mine, "kari")).toBeNull();
-    expect(noticeFor("motbud", "waiting_requester", { senderId: "ola", price: null }, "ola")).toBeNull();
+    expect(noticeFor("motbud", "waiting_requester", { ...mine, price: null }, "ola")).toBeNull();
     expect(noticeFor("motbud", "waiting_requester", undefined, "ola")).toBeNull();
     for (const status of ["accepted", "declined", "expired", "withdrawn"] as const) {
       expect(noticeFor("motbud", status, mine, "ola"), status).toBeNull();
@@ -106,6 +127,20 @@ describe("noticeFor", () => {
     expect(noticeFor("avslatt", "declined", mine, "ola")).toBe("Forespørselen er avslått");
     for (const status of requestStatuses.filter((s) => s !== "accepted")) expect(noticeFor("godtatt", status, mine, "ola"), status).toBeNull();
     for (const status of requestStatuses.filter((s) => s !== "declined")) expect(noticeFor("avslatt", status, mine, "ola"), status).toBeNull();
+  });
+
+  it("lån (#208): «Motbud sendt» med perioden, og ingenting uten periode, med en annens forslag eller på en avsluttet forespørsel", () => {
+    expect(noticeFor("motbud", "waiting_requester", myPeriod, "ola", "loan")).toBe("Motbud sendt: 14.11 – 21.11");
+    expect(noticeFor("motbud", "waiting_requester", mine, "ola", "loan")).toBeNull();
+    expect(noticeFor("motbud", "waiting_requester", myPeriod, "kari", "loan")).toBeNull();
+    expect(noticeFor("motbud", "declined", myPeriod, "ola", "loan")).toBeNull();
+  });
+
+  it("«godtatt» sier «Du godtok forespørselen» for lån og gis bort, og «Du godtok budet» for salg", () => {
+    expect(noticeFor("godtatt", "accepted", myPeriod, "ola", "loan")).toBe("Du godtok forespørselen");
+    expect(noticeFor("godtatt", "accepted", myPeriod, "ola", "giveaway")).toBe("Du godtok forespørselen");
+    expect(noticeFor("godtatt", "accepted", mine, "ola", "sale")).toBe("Du godtok budet");
+    expect(noticeFor("godtatt", "waiting_owner", myPeriod, "ola", "loan")).toBeNull();
   });
 
   it("ingen markør, en ukjent markør og en tom markør gir ingen melding", () => {

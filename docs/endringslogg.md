@@ -8,6 +8,14 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-20
+
+- Forespørsler (#208, knappene): forespørselssiden har nå Godta, Motbud og Avslå for lån og Godta og Avslå for gis bort, for den som har tur. «Motbud» på et lån åpner «Fra» og «Til» med antall dager og pris; periodefeltene er trukket ut i `PeriodFields`, som lånesiden også bruker. Meldingene er «Motbud sendt: 14.11 – 21.11» og «Du godtok forespørselen». Max godkjente mockupen og ba om at PR-en merges når den er ferdig. (Max, #208)
+- Forespørsler (#208, serverdelen): reglene for å svare på lån og gis bort er på plass i `respondToOffer`. Et motbud på lån er en ny periode (minst 7 dager, ikke overlapp med et godtatt lån), gis bort har ikke motbud. Å godta et lån gjør perioden opptatt og avslår ventende forespørsler som overlapper; annonsen ligger fortsatt ute. En periode som overlapper et godtatt lån avvises. Overlappen kontrolleres på nytt etter at statusen er flyttet, så to samtidige aksepter aldri begge lykkes (D1 har ingen transaksjoner). Knappene på forespørselssiden kommer i neste PR. (Max, #208)
+
+- Forespørsler (#186a, serverdelen): reglene for å sende en låneforespørsel (periode, minst 7 dager, ingen overlapp med godtatte eller pågående lån, TK-06) og en gis bort-forespørsel er på plass som `placeRequest`, med serverhandlingen `sendRequest`. `placeBid` er nå en tynn kontroll for salg oppå den samme funksjonen. Én pågående forespørsel per student per annonse; lån og gis bort kan ikke endres etter at de er sendt, bare salg-bud kan det. Låne-siden og knappene kommer i neste PR. #186 er delt i #186 (sende) og #208 (svare på lån). (Max, #186)
+- Forespørsler (#186a, skjermene): lån og gis bort har knapper på annonsesiden, og en egen lånesiden `/listings/:id/loan` med «Fra» og «Til», en liste over opptatte perioder og en sum med antall dager og pris. Prisen er ukepris / 7 per dag, avrundet opp til hele kroner, slik at utlåneren aldri får mindre enn ukeprisen (Max 20.10; `loanPrice` var uavklart på avrunding). Forespørselssiden viser periode og pris for lån og «Ny forespørsel» i banneret; svarknappene for lån og gis bort kommer med #208, så eieren kan ikke svare ennå. Mockup godkjent av Max 20.10. (Max, #186)
+
 ## 2026-10-19
 
 - Forespørselssiden (#205): Historikk-panelet med forslagene er tatt bort fra `/requests/:id`, og siden er én kolonne. «Historikk» er navnet på fanen på Min side med annonsene man har solgt eller kjøpt (#189, #93), ikke på forslagene i en forespørsel. Siden viser bare det siste forslaget i budkortet; eldre forslag bevares i databasen. FK-06 og README er oppdatert. (Max, #205)

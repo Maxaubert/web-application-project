@@ -1,5 +1,6 @@
 // Forespørselssiden /requests/:id (WF-08, #192) mot SQLite i minnet: bare de to partene ser den, og den viser
 // status og siste bud, knappene bare for den som har tur (#187), og aldri kontaktinfo. Godkjent av Max 17.10 og 18.10.
+import { eq } from "drizzle-orm";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -184,6 +185,92 @@ describe("RequestPage, knappene (#187)", () => {
   });
 });
 
+// Lån og gis bort (#186a, #208): periode og pris i kortet, "Ny forespørsel" i banneret, og svarknappene for den som har tur.
+describe("RequestPage, lån og gis bort (#186a)", () => {
+  beforeEach(async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }),
+      validListing({ id: "lamp", title: "Lampe", type: "giveaway", price: null }),
+    ]);
+    await holder.db.insert(request).values([
+      { id: "rl", listingId: "tent", requesterId: "kari" },
+      { id: "rg", listingId: "lamp", requesterId: "kari" },
+    ]);
+    await holder.db.insert(offer).values([
+      { requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19", createdAt: new Date("2026-10-17T01:12:00Z") },
+      { requestId: "rg", senderId: "kari", createdAt: new Date("2026-10-17T01:12:00Z") },
+    ]);
+  });
+
+  it("lån: periode og pris (avrundet opp) i kortet for begge parter, og ingen «Bud»", async () => {
+    for (const userId of [OWNER_ID, "kari"]) {
+      const { html } = await visit("rl", userId);
+      expect(html).toMatch(/Periode<\/dt><dd[^>]*>12\.11 – 19\.11<\/dd>/);
+      expect(html).toMatch(/Pris<\/dt><dd[^>]*>69\s*kr<\/dd>/);
+      expect(html).not.toMatch(/Bud<\/dt>|Din pris/);
+    }
+  });
+
+  it("lån uten ukepris viser «Gratis»", async () => {
+    await holder.db.update(listing).set({ price: null }).where(eq(listing.id, "tent"));
+
+    expect((await visit("rl", OWNER_ID)).html).toMatch(/Pris<\/dt><dd[^>]*>Gratis<\/dd>/);
+  });
+
+  it("eieren ser «Ny forespørsel fra Kari Hansen» med mørk kant, kjøperen venter", async () => {
+    for (const id of ["rl", "rg"]) {
+      expect((await visit(id, OWNER_ID)).html).toMatch(/<p role="status" class="[^"]*border-ink[^"]*"[^>]*>Ny forespørsel fra Kari Hansen/);
+      expect((await visit(id, "kari")).html).toContain("Venter på svar fra Ola Nordmann");
+    }
+  });
+
+  it("gis bort har ikke noe budkort (ingen pris og ingen periode å vise)", async () => {
+    const { html } = await visit("rg", OWNER_ID);
+
+    expect(html).not.toMatch(/<dl|Periode|Pris/);
+  });
+
+  it("lån: eieren har Godta, Motbud og Avslå under periodekortet, med forespørselen og forslaget som skjulte felt", async () => {
+    const { html } = await visit("rl", OWNER_ID);
+    const [, , latest] = await holder.db.select().from(offer);
+
+    for (const text of ["Godta", "Motbud", "Avslå"]) expect(html).toContain(`>${text}</button>`);
+    expect(html).toContain(`<input type="hidden" name="requestId" value="rl"/>`);
+    expect(html).toContain(`<input type="hidden" name="offerId" value="${latest.id}"/>`);
+    expect(html.indexOf("Periode")).toBeLessThan(html.indexOf(">Godta</button>"));
+  });
+
+  it("gis bort: eieren har bare Godta og Avslå, aldri Motbud", async () => {
+    const { html } = await visit("rg", OWNER_ID);
+
+    expect(html).toContain(">Godta</button>");
+    expect(html).toContain(">Avslå</button>");
+    expect(html).not.toContain("Motbud");
+  });
+
+  it("kjøperen har ingen knapper mens eieren har tur, på lån og gis bort", async () => {
+    for (const id of ["rl", "rg"]) {
+      expect((await visit(id, "kari")).html).not.toMatch(/<button|name="offerId"/);
+    }
+  });
+
+  it("etter et lånemotbud er det låneren som har knappene, ikke eieren", async () => {
+    await holder.db.insert(offer).values({ requestId: "rl", senderId: OWNER_ID, startDate: "2026-11-14", endDate: "2026-11-21", createdAt: new Date("2026-10-17T09:00:00Z") });
+    await holder.db.update(request).set({ status: "waiting_requester" }).where(eq(request.id, "rl"));
+
+    const buyer = (await visit("rl", "kari")).html;
+    expect(buyer).toContain(">Godta</button>");
+    expect(buyer).toMatch(/Periode<\/dt><dd[^>]*>14\.11 – 21\.11<\/dd>/);
+    expect((await visit("rl", OWNER_ID)).html).not.toMatch(/<button|name="offerId"/);
+  });
+
+  it("ingen knapper på en avsluttet lånforespørsel", async () => {
+    await holder.db.update(request).set({ status: "accepted" }).where(eq(request.id, "rl"));
+
+    for (const userId of [OWNER_ID, "kari"]) expect((await visit("rl", userId)).html).not.toMatch(/<button|name="offerId"/);
+  });
+});
+
 describe("RequestPage, ingen Historikk (#205)", () => {
   it("«Historikk» er navnet på fanen på Min side, så forespørselssiden har hverken panelet eller linjene, for noen av partene", async () => {
     await holder.db.insert(offer).values({ requestId: "r1", senderId: OWNER_ID, price: 240, createdAt: new Date("2026-10-17T09:00:00Z") });
@@ -229,6 +316,20 @@ describe("RequestPage, meldingen etter svar (#203)", () => {
     expect(toast((await visit("r1", OWNER_ID, "?sendt=godtatt")).html)).toBe("");
     // Siste forslag er kjøperens, så selgeren har ikke «sendt et motbud».
     expect(toast((await visit("r1", OWNER_ID, "?sendt=motbud")).html)).toBe("");
+  });
+
+  it("lån: «Motbud sendt» med den nye perioden, og «Du godtok forespørselen»", async () => {
+    await holder.db.insert(listing).values(validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }));
+    await holder.db.insert(request).values({ id: "rl", listingId: "tent", requesterId: "kari", status: "waiting_requester" });
+    await holder.db.insert(offer).values([
+      { requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19", createdAt: new Date("2026-10-17T01:12:00Z") },
+      { requestId: "rl", senderId: OWNER_ID, startDate: "2026-11-14", endDate: "2026-11-21", createdAt: new Date("2026-10-17T09:00:00Z") },
+    ]);
+
+    expect(toast((await visit("rl", OWNER_ID, "?sendt=motbud")).html)).toContain("Motbud sendt: 14.11 – 21.11");
+
+    await holder.db.update(request).set({ status: "accepted" }).where(eq(request.id, "rl"));
+    expect(toast((await visit("rl", "kari", "?sendt=godtatt")).html)).toContain("Du godtok forespørselen");
   });
 
   it("en tredjepart får 404 og ingen melding, selv med markør", async () => {
