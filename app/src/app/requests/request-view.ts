@@ -80,7 +80,14 @@ export function formatWhen(date: Date): string {
 
 // Meldingen som vises rett etter et svar (#203): siden åpnes med ?sendt=<markør>, satt av serverhandlingen. Markøren
 // teller bare når den stemmer med det som faktisk er lagret, så en tastet adresse ikke viser en falsk melding.
-export const noticeMarkers = { counter: "motbud", accept: "godtatt", decline: "avslatt" } as const;
+export const noticeMarkers = {
+  counter: "motbud",
+  accept: "godtatt",
+  decline: "avslatt",
+  confirm: "bekreftet",
+  cancel: "avbestilt",
+  withdraw: "trukket",
+} as const;
 
 export function noticeFor(
   marker: string | null,

@@ -150,6 +150,13 @@ describe("noticeFor", () => {
   });
 
   it("markørene serverhandlingen setter, er de som siden leser", () => {
-    expect(noticeMarkers).toEqual({ counter: "motbud", accept: "godtatt", decline: "avslatt" });
+    expect(noticeMarkers).toEqual({
+      counter: "motbud",
+      accept: "godtatt",
+      decline: "avslatt",
+      confirm: "bekreftet",
+      cancel: "avbestilt",
+      withdraw: "trukket",
+    });
   });
 });
