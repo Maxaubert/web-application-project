@@ -52,6 +52,8 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
   const contact = await getContactForParty(db, request.id, userId);
   const accepted = request.status === "accepted";
   const waiting = request.status === "waiting_owner" || request.status === "waiting_requester";
+  // Bare eieren bekrefter retur, og bare mens lånet er i bruk (#214).
+  const returnable = request.status === "in_use" && role === "owner" && listing.type === "loan";
   const youConfirmed = role === "owner" ? request.ownerConfirmed : request.requesterConfirmed;
   const otherConfirmed = role === "owner" ? request.requesterConfirmed : request.ownerConfirmed;
 
@@ -103,12 +105,13 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
               otherConfirmed={otherConfirmed}
             />
           )}
-          {(accepted || waiting) && (
+          {(accepted || waiting || returnable) && (
             <HandoverActions
               requestId={request.id}
               canConfirm={accepted && !youConfirmed}
               canCancel={accepted}
               canWithdraw={waiting && role === "requester"}
+              canReturn={returnable}
             />
           )}
         </div>

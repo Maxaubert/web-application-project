@@ -401,6 +401,62 @@ describe("RequestPage, overlevering og kontakt (#188)", () => {
   });
 });
 
+// Retur ved lån (FK-07, #214): bare eieren, bare mens lånet er i bruk.
+describe("RequestPage, bekreft retur (#214)", () => {
+  const returnButton = />Bekreft retur<\/button>/;
+  const inUse = { status: "in_use", ownerConfirmed: true, requesterConfirmed: true } as const;
+
+  beforeEach(async () => {
+    await holder.db.insert(listing).values(validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }));
+    await holder.db.insert(request).values({ id: "rl", listingId: "tent", requesterId: "kari", ...inUse });
+    await holder.db.insert(offer).values({ requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19", createdAt: new Date("2026-10-17T01:12:00Z") });
+  });
+
+  it("eieren av et lån i bruk har Bekreft retur, og låneren har ingen knapper", async () => {
+    const owner = (await visit("rl", OWNER_ID)).html;
+    const buyer = (await visit("rl", "kari")).html;
+
+    expect(owner).toMatch(returnButton);
+    expect(owner).toContain('<input type="hidden" name="requestId" value="rl"/>');
+    expect(owner).not.toMatch(/Bekreft overlevering|Avbestill|Trekk tilbake/);
+    expect(buyer).not.toMatch(/<button|Bekreft retur/);
+  });
+
+  it("ingen Bekreft retur før lånet er i bruk, etter at det er levert, eller når det ikke er et lån", async () => {
+    for (const status of ["waiting_owner", "waiting_requester", "accepted", "declined", "withdrawn", "expired", "cancelled", "completed"] as const) {
+      await holder.db.update(request).set({ status }).where(eq(request.id, "rl"));
+      expect((await visit("rl", OWNER_ID)).html, status).not.toMatch(returnButton);
+    }
+    await holder.db.update(request).set({ status: "in_use" }).where(eq(request.id, "r1"));
+    expect((await visit("r1", OWNER_ID)).html).not.toMatch(returnButton);
+  });
+
+  it("en tredjepart får 404 og ingen knapp", async () => {
+    const { html, status } = await visit("rl", "per");
+
+    expect(status).toBe(404);
+    expect(html).not.toMatch(returnButton);
+  });
+
+  it("et lån som ble i bruk av den automatiske bekreftelsen etter 3 dager, har Bekreft retur med en gang", async () => {
+    await holder.db
+      .update(request)
+      .set({ status: "accepted", ownerConfirmed: false, requesterConfirmed: true, updatedAt: new Date("2026-10-14T12:00:00Z") })
+      .where(eq(request.id, "rl"));
+
+    expect((await visit("rl", OWNER_ID)).html).toMatch(returnButton);
+    expect((await holder.db.select().from(request).where(eq(request.id, "rl")))[0].status).toBe("accepted");
+  });
+
+  it("meldingen «Retur bekreftet» vises bare når lånet er fullført", async () => {
+    const toast = (html: string) => html.match(/<div role="status"[^>]*>[\s\S]*?<\/div>/)?.[0] ?? "";
+
+    expect(toast((await visit("rl", OWNER_ID, "?sendt=levert")).html)).toBe("");
+    await holder.db.update(request).set({ status: "completed" }).where(eq(request.id, "rl"));
+    expect(toast((await visit("rl", OWNER_ID, "?sendt=levert")).html)).toContain("Retur bekreftet");
+  });
+});
+
 describe("RequestPage, ingen Historikk (#205)", () => {
   it("«Historikk» er navnet på fanen på Min side, så forespørselssiden har hverken panelet eller linjene, for noen av partene", async () => {
     await holder.db.insert(offer).values({ requestId: "r1", senderId: OWNER_ID, price: 240, createdAt: new Date("2026-10-17T09:00:00Z") });

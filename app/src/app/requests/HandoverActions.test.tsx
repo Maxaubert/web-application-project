@@ -8,7 +8,7 @@ import { HandoverActions } from "./HandoverActions";
 vi.mock("./actions", () => ({ updateRequest: vi.fn() }));
 
 const render = (props: Partial<Parameters<typeof HandoverActions>[0]> = {}) =>
-  renderToStaticMarkup(<HandoverActions requestId="r1" canConfirm canCancel canWithdraw={false} {...props} />);
+  renderToStaticMarkup(<HandoverActions requestId="r1" canConfirm canCancel canWithdraw={false} canReturn={false} {...props} />);
 
 describe("HandoverActions", () => {
   it("Bekreft overlevering sender skjemaet med handlingen «confirm», og kommer før Avbestill", () => {
@@ -27,7 +27,15 @@ describe("HandoverActions", () => {
     expect(html).not.toMatch(/value="cancel"|value="withdraw"/);
   });
 
+  it("Bekreft retur er en vanlig knapp som ikke sender skjemaet, og bekreftelsen er skjult til man trykker (#214)", () => {
+    const html = render({ canConfirm: false, canCancel: false, canReturn: true });
+
+    expect(html).toMatch(/<button type="button"[^>]*>Bekreft retur<\/button>/);
+    expect(html).not.toMatch(/Bekrefte at lånet er levert tilbake\?|Ja, bekreft retur|value="return"/);
+  });
+
   it("viser bare knappene siden sier at du kan bruke", () => {
+    expect(render()).not.toContain("Bekreft retur");
     expect(render({ canConfirm: false })).not.toContain("Bekreft overlevering");
     expect(render({ canCancel: false })).not.toContain("Avbestill");
     expect(render()).not.toContain("Trekk tilbake");

@@ -1,24 +1,29 @@
 "use client";
 // Knappene etter at en forespørsel er godtatt eller mens den venter (WF-08, #188): Bekreft overlevering, Avbestill og
-// Trekk tilbake. Avbestill og Trekk tilbake åpner en bekreftelse (lokal tilstand), som Avslå i ResponseActions. Alle tre
-// går til serverhandlingen updateRequest med valget i skjemafeltet «intent»; reglene ligger i handover.ts og withdraw.ts.
+// Trekk tilbake, og for eieren av et lån i bruk Bekreft retur (#214). Alle unntatt Bekreft overlevering åpner en
+// bekreftelse (lokal tilstand), som Avslå i ResponseActions. Alle går til serverhandlingen updateRequest med valget i
+// skjemafeltet «intent»; reglene ligger i handover.ts, withdraw.ts og return.ts.
 import { useActionState, useState } from "react";
 import { asFormState, type ActionResult } from "@/app/auth/form-state";
 import { FieldError } from "@/app/shared/form-controls";
 import { updateRequest } from "./actions";
 
-type Mode = "idle" | "cancel" | "withdraw";
-type HandoverActionsProps = { requestId: string; canConfirm: boolean; canCancel: boolean; canWithdraw: boolean };
+type Mode = "idle" | "cancel" | "withdraw" | "return";
+type HandoverActionsProps = { requestId: string; canConfirm: boolean; canCancel: boolean; canWithdraw: boolean; canReturn: boolean };
 
 const secondary =
   "h-12 w-full rounded-md border-2 border-ink bg-surface text-base font-semibold enabled:hover:bg-paper disabled:cursor-wait disabled:opacity-70";
 const primary =
   "h-14 w-full rounded-md bg-action text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70";
 
-const questions = { cancel: "Avbestille avtalen?", withdraw: "Trekke tilbake forespørselen?" } as const;
-const confirmLabels = { cancel: "Ja, avbestill", withdraw: "Ja, trekk tilbake" } as const;
+const questions = {
+  cancel: "Avbestille avtalen?",
+  withdraw: "Trekke tilbake forespørselen?",
+  return: "Bekrefte at lånet er levert tilbake?",
+} as const;
+const confirmLabels = { cancel: "Ja, avbestill", withdraw: "Ja, trekk tilbake", return: "Ja, bekreft retur" } as const;
 
-export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw }: HandoverActionsProps) {
+export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw, canReturn }: HandoverActionsProps) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(updateRequest, {});
   const state = asFormState(result);
   const [mode, setMode] = useState<Mode>("idle");
@@ -38,6 +43,11 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw 
           {canCancel && (
             <button type="button" onClick={() => setMode("cancel")} className={secondary}>
               Avbestill
+            </button>
+          )}
+          {canReturn && (
+            <button type="button" onClick={() => setMode("return")} className={primary}>
+              Bekreft retur
             </button>
           )}
           {canWithdraw && (

@@ -155,6 +155,11 @@ describe("noticeFor", () => {
     for (const status of requestStatuses.filter((s) => s !== "withdrawn")) expect(noticeFor("trukket", status, mine, "ola"), status).toBeNull();
   });
 
+  it("«levert» gir meldingen bare når lånet er fullført (#214)", () => {
+    expect(noticeFor("levert", "completed", mine, "ola", "loan")).toBe("Retur bekreftet");
+    for (const status of requestStatuses.filter((s) => s !== "completed")) expect(noticeFor("levert", status, mine, "ola", "loan"), status).toBeNull();
+  });
+
   it("ingen markør, en ukjent markør og en tom markør gir ingen melding", () => {
     for (const marker of [null, "", "annet", "MOTBUD", "motbud "]) {
       expect(noticeFor(marker, "waiting_requester", mine, "ola"), String(marker)).toBeNull();
