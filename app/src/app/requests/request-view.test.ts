@@ -169,6 +169,7 @@ describe("noticeFor", () => {
       confirm: "bekreftet",
       cancel: "avbestilt",
       withdraw: "trukket",
+      return: "levert",
     });
   });
 });

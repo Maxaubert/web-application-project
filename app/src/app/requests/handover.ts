@@ -4,6 +4,7 @@
 import { and, eq } from "drizzle-orm";
 import { listing, request } from "@/db/schema";
 import type { Db } from "@/db/types";
+import { settleHandover } from "./auto-confirm";
 import { getRequestForParty } from "./queries";
 import { nextStatus, statusAfterHandover } from "./request-status";
 
@@ -20,6 +21,8 @@ export async function confirmHandover(db: Db, { userId, requestId, now = new Dat
   // Bare de to partene finner forespørselen; alle andre får samme svar som for en ukjent id.
   const details = await getRequestForParty(db, requestId, userId, now);
   if (!details) return { ok: false, error: NOT_FOUND };
+  // Har den andre ikke bekreftet på 3 dager, er overleveringen allerede bekreftet (#214); det lagres før vi svarer.
+  await settleHandover(db, requestId, now);
   const { request: found, listing: ad, role } = details;
   if (found.status !== "accepted") return { ok: false, error: NOT_NOW };
   if (role === "owner" ? found.ownerConfirmed : found.requesterConfirmed) return { ok: false, error: ALREADY };
@@ -50,6 +53,7 @@ export async function confirmHandover(db: Db, { userId, requestId, now = new Dat
 export async function cancelRequest(db: Db, { userId, requestId, now = new Date() }: HandoverInput): Promise<HandoverResult> {
   const details = await getRequestForParty(db, requestId, userId, now);
   if (!details) return { ok: false, error: NOT_FOUND };
+  await settleHandover(db, requestId, now);
   const { request: found, listing: ad, role } = details;
 
   const next = nextStatus(found.status, "cancel", role);
