@@ -3,6 +3,7 @@ import { and, asc, desc, eq, inArray, or, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/sqlite-core";
 import { listing, listingImage, offer, request, user, type Listing, type Offer, type Request } from "@/db/schema";
 import type { Db } from "@/db/types";
+import { handoverEffective } from "./auto-confirm";
 import { effectiveStatus } from "./request-expiry";
 import { activeStatuses, type RequestStatus } from "./request-status";
 
@@ -131,6 +132,8 @@ export async function getRequestForParty(
   // rowid av samme grunn som i getActiveRequest: created_at har bare hele sekunder.
   const offers = await db.select().from(offer).where(eq(offer.requestId, requestId)).orderBy(asc(sql`${offer}.rowid`));
   const lastOfferAt = offers[offers.length - 1]?.createdAt ?? row.request.createdAt;
-  const found = { ...row.request, status: effectiveStatus(row.request.status, lastOfferAt, now) };
+  // Både 7-dagersfristen og den automatiske bekreftelsen etter 3 dager (#214) regnes ut her; lagring skjer i skrivefunksjonene.
+  const handover = handoverEffective(row.request, row.listing.type, now);
+  const found = { ...row.request, ...handover, status: effectiveStatus(handover.status, lastOfferAt, now) };
   return { ...row, request: found, offers, role: row.listing.ownerId === userId ? "owner" : "requester" };
 }

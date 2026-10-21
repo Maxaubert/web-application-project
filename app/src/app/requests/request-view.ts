@@ -87,6 +87,7 @@ export const noticeMarkers = {
   confirm: "bekreftet",
   cancel: "avbestilt",
   withdraw: "trukket",
+  return: "levert",
 } as const;
 
 export function noticeFor(

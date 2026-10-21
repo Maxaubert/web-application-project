@@ -8,6 +8,7 @@ import { log } from "@/app/shared/log";
 import { cancelRequest, confirmHandover } from "./handover";
 import { placeBid } from "./place-bid";
 import { placeRequest } from "./place-request";
+import { confirmReturn } from "./return";
 import { respondToOffer, type RespondAction } from "./respond";
 import { noticeMarkers } from "./request-view";
 import { withdrawRequest } from "./withdraw";
@@ -74,11 +75,11 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as RespondAction]}`);
 }
 
-const updateActions = { confirm: confirmHandover, cancel: cancelRequest, withdraw: withdrawRequest } as const;
+const updateActions = { confirm: confirmHandover, cancel: cancelRequest, withdraw: withdrawRequest, return: confirmReturn } as const;
 type UpdateAction = keyof typeof updateActions;
 
-// Bekreft overlevering, avbestill og trekk tilbake (#188): én handling med valget som skjemafelt, som respondToRequest.
-// Reglene ligger i confirmHandover, cancelRequest og withdrawRequest.
+// Bekreft overlevering, avbestill, trekk tilbake (#188) og bekreft retur (#214): én handling med valget som skjemafelt,
+// som respondToRequest. Reglene ligger i confirmHandover, cancelRequest, withdrawRequest og confirmReturn.
 export async function updateRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
   if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");

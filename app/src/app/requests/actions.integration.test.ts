@@ -273,6 +273,20 @@ describe("updateRequest", () => {
     expect((await current()).status).toBe("withdrawn");
   });
 
+  it("bekrefter retur for eieren og sender tilbake med «levert»; låneren i økten får feilen", async () => {
+    await holder.db.update(listing).set({ type: "loan", status: "active" });
+    await holder.db.update(request).set({ status: "in_use", ownerConfirmed: true, requesterConfirmed: true });
+
+    expect(await updateRequest({}, form({ requestId: "r1", intent: "return" }))).toEqual({ error: "Du kan ikke gjøre dette nå" });
+    expect((await current()).status).toBe("in_use");
+
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: false };
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "return" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=levert");
+    expect((await current()).status).toBe("completed");
+  });
+
   it("gir feilen tilbake til skjemaet når handlingen ikke er lov, og endrer ingenting", async () => {
     const result = await updateRequest({}, form({ requestId: "r1", intent: "withdraw" }));
 
