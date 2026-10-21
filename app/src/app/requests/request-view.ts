@@ -108,5 +108,9 @@ export function noticeFor(
     return type === "sale" ? "Du godtok budet" : "Du godtok forespørselen";
   }
   if (marker === noticeMarkers.decline) return status === "declined" ? "Forespørselen er avslått" : null;
+  // Den siste bekreftelsen flytter avtalen videre til i bruk eller fullført, så bekreftet gjelder alle tre.
+  if (marker === noticeMarkers.confirm) return status === "accepted" || status === "in_use" || status === "completed" ? "Overlevering bekreftet" : null;
+  if (marker === noticeMarkers.cancel) return status === "cancelled" ? "Avtalen er avbestilt" : null;
+  if (marker === noticeMarkers.withdraw) return status === "withdrawn" ? "Forespørselen er trukket tilbake" : null;
   return null;
 }

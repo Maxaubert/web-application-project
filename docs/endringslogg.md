@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-21
+
+- Forespørsler (#188, skjermene): forespørselssiden viser nå den andres kontaktkort fra godtatt (navn, telefon og e-post som lenker, med linjen «Kontakt Kari for å avtale overlevering»), hvem som har bekreftet («Du» og den andres fornavn, uten farge), og knappene «Bekreft overlevering» og «Avbestill». Forespørreren har «Trekk tilbake» mens forespørselen venter. Avbestill og Trekk tilbake spør «Ja, …» først, som Avslå. Meldingene er «Overlevering bekreftet», «Avtalen er avbestilt» og «Forespørselen er trukket tilbake». Kontaktkortet står også i bruk og fullført. Max sa å bygge uten mockup. Automatisk bekreftelse og bekreftet retur kommer i #214. (Max, #188)
+
 ## 2026-10-20
 
 - Forespørsler (#188, serverdelen): reglene for overlevering er på plass. `confirmHandover` lar hver part bekrefte for seg, og salg og gis bort er fullført (lån i bruk) når begge har det. `cancelRequest` lar begge avbestille en godtatt forespørsel og legger en solgt annonse ut igjen. `withdrawRequest` lar forespørreren trekke tilbake en ventende. `getContactForParty` gir den andre partens navn, telefon og e-post, bare til de to partene og bare når avtalen står. Kortet og knappene kommer i neste PR. Automatisk bekreftelse etter 3 dager og bekreftet retur ved lån er flyttet til #214. (Max, #188)

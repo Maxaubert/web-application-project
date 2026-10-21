@@ -69,19 +69,26 @@ export default function globalSetup() {
          ('e2e-lan-feil', 'e2e-seller', 'loan', 'Lanfeil telt', 'Til lånetestene.', 'sports', 'used', 60, 'active'),
          ('e2e-gis', 'e2e-seller', 'giveaway', 'Gistest lampe', 'Til gis bort-testen.', 'furniture', 'used', NULL, 'active'),
          ('e2e-lan-svar', 'e2e-seller', 'loan', 'Lansvar telt', 'Til svartestene for lån.', 'sports', 'used', 60, 'active'),
-         ('e2e-gis-svar', 'e2e-seller', 'giveaway', 'Gissvar lampe', 'Til svartestene for gis bort.', 'furniture', 'used', NULL, 'active');
-     INSERT INTO request (id, listing_id, requester_id)
+         ('e2e-gis-svar', 'e2e-seller', 'giveaway', 'Gissvar lampe', 'Til svartestene for gis bort.', 'furniture', 'used', NULL, 'active'),
+         ('e2e-svar-trekk', 'e2e-seller', 'sale', 'Svartest trekk', 'Til svartestene.', 'books', 'used', 250, 'active'),
+         ('e2e-over-ok', 'e2e-seller', 'sale', 'Overlevering ok', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
+         ('e2e-over-avbest', 'e2e-seller', 'sale', 'Overlevering avbestilt', 'Til overleveringstesten.', 'books', 'used', 250, 'sold');
+     INSERT INTO request (id, listing_id, requester_id, status)
        VALUES
-         ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer'),
-         ('e2e-req-motbud', 'e2e-svar-motbud', 'e2e-buyer'),
-         ('e2e-req-avslag', 'e2e-svar-avslag', 'e2e-buyer'),
-         ('e2e-req-lan', 'e2e-lan-svar', 'e2e-buyer'),
-         ('e2e-req-gis', 'e2e-gis-svar', 'e2e-buyer');
+         ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer', 'waiting_owner'),
+         ('e2e-req-motbud', 'e2e-svar-motbud', 'e2e-buyer', 'waiting_owner'),
+         ('e2e-req-avslag', 'e2e-svar-avslag', 'e2e-buyer', 'waiting_owner'),
+         ('e2e-req-lan', 'e2e-lan-svar', 'e2e-buyer', 'waiting_owner'),
+         ('e2e-req-gis', 'e2e-gis-svar', 'e2e-buyer', 'waiting_owner'),
+         ('e2e-req-trekk', 'e2e-svar-trekk', 'e2e-buyer', 'waiting_owner'),
+         ('e2e-req-over-ok', 'e2e-over-ok', 'e2e-buyer', 'accepted'),
+         ('e2e-req-over-avbest', 'e2e-over-avbest', 'e2e-buyer', 'accepted');
      INSERT INTO offer (id, request_id, sender_id, price, start_date, end_date)
        VALUES
          ('e2e-offer-godta', 'e2e-req-godta', 'e2e-buyer', 220, NULL, NULL),
          ('e2e-offer-motbud', 'e2e-req-motbud', 'e2e-buyer', 200, NULL, NULL),
          ('e2e-offer-avslag', 'e2e-req-avslag', 'e2e-buyer', 180, NULL, NULL),
+         ('e2e-offer-trekk', 'e2e-req-trekk', 'e2e-buyer', 190, NULL, NULL),
          ('e2e-offer-lan', 'e2e-req-lan', 'e2e-buyer', NULL, '2026-11-12', '2026-11-19'),
          ('e2e-offer-gis', 'e2e-req-gis', 'e2e-buyer', NULL, NULL, NULL);
      DELETE FROM listing_image WHERE listing_id IN ('${TEST_LISTING_ID}', '${TEST_GALLERY_ID}');
