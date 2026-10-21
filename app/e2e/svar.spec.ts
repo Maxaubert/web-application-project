@@ -151,6 +151,35 @@ test("Avbestill krever en bekreftelse, og en avbestilt avtale legger annonsen ut
   await buyer.close();
 });
 
+// Retur (#214). Lånet er i bruk; «E2E Selger» eier det.
+test("eieren bekrefter retur etter en bekreftelse, og lånet er fullført for begge", async ({ page, browser, baseURL }) => {
+  await page.goto("/requests/e2e-req-retur", { waitUntil: "networkidle" });
+  await expect(bannerOf(page)).toHaveText("I bruk");
+  await expect(page.getByText("12.11 – 19.11", { exact: true })).toBeVisible();
+
+  const buyer = await browser.newContext({ storageState: BUYER_AUTH_FILE, baseURL });
+  const buyerPage = await buyer.newPage();
+  await buyerPage.goto("/requests/e2e-req-retur", { waitUntil: "networkidle" });
+  await expect(buyerPage.getByRole("main").getByRole("button")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Bekreft retur" }).click();
+  await expect(page.getByText("Bekrefte at lånet er levert tilbake?")).toBeVisible();
+  await page.getByRole("button", { name: "Avbryt" }).click();
+  await expect(page.getByText("Bekrefte at lånet er levert tilbake?")).toHaveCount(0);
+  await expect(bannerOf(page)).toHaveText("I bruk");
+
+  await page.getByRole("button", { name: "Bekreft retur" }).click();
+  await page.getByRole("button", { name: "Ja, bekreft retur" }).click();
+
+  await expect(toastOf(page)).toHaveText(/Retur bekreftet/);
+  await expect(bannerOf(page)).toHaveText("Fullført");
+  await expect(page.getByRole("main").getByRole("button")).toHaveCount(0);
+
+  await buyerPage.reload({ waitUntil: "networkidle" });
+  await expect(buyerPage.locator('p[role="status"]')).toHaveText("Fullført");
+  await buyer.close();
+});
+
 test("forespørreren trekker tilbake mens forespørselen venter, og eieren har ikke knappen", async ({ page, browser, baseURL }) => {
   await page.goto("/requests/e2e-req-trekk", { waitUntil: "networkidle" });
   await expect(page.getByRole("button", { name: "Trekk tilbake" })).toHaveCount(0);

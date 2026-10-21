@@ -113,5 +113,6 @@ export function noticeFor(
   if (marker === noticeMarkers.confirm) return status === "accepted" || status === "in_use" || status === "completed" ? "Overlevering bekreftet" : null;
   if (marker === noticeMarkers.cancel) return status === "cancelled" ? "Avtalen er avbestilt" : null;
   if (marker === noticeMarkers.withdraw) return status === "withdrawn" ? "Forespørselen er trukket tilbake" : null;
+  if (marker === noticeMarkers.return) return status === "completed" ? "Retur bekreftet" : null;
   return null;
 }
