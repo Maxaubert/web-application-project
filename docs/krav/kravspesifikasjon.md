@@ -144,7 +144,7 @@ tilstand og hva begge parter ser etterpå.
 | I bruk | Foreslå senere returdato | Begge | Motparten godtar eller avslår |
 | I bruk | Bekreft mottatt retur | Eier | Fullført |
 
-Har bare én part bekreftet overlevering, regnes den som bekreftet 3 dager senere. Når avbestilling stenges i mellomtiden, er ikke avklart.
+Har bare én part bekreftet overlevering, regnes den som bekreftet 3 dager senere. Når avbestilling stenges i mellomtiden, er ikke avklart i kravene. Bygget slik (Max, #188 og #214, valgt av oss, ikke avklart med faglærer): begge kan avbestille helt til begge har bekreftet, også etter at én har bekreftet; etter 3 dager er overleveringen bekreftet, og avbestilling stenges.
 
 ### Tilgjengelighet og reservering
 

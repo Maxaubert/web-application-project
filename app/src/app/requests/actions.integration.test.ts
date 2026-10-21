@@ -5,7 +5,7 @@ import { listing, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
-import { respondToRequest, sendBid, sendRequest } from "./actions";
+import { respondToRequest, sendBid, sendRequest, updateRequest } from "./actions";
 
 type Session = { isAuthenticated: boolean; userId?: string; needsSetup?: boolean };
 
@@ -234,5 +234,91 @@ describe("respondToRequest", () => {
 
     expect(result).toMatchObject({ error: "Ukjent handling" });
     expect(await status()).toBe("waiting_owner");
+  });
+});
+
+// updateRequest (#188): bekreft overlevering, avbestill og trekk tilbake. Brukeren kommer alltid fra økten.
+describe("updateRequest", () => {
+  beforeEach(async () => {
+    await holder.db.update(listing).set({ status: "sold" });
+    await holder.db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "kari", status: "accepted" });
+    holder.session = { isAuthenticated: true, userId: "kari", needsSetup: false };
+  });
+
+  async function current() {
+    return (await holder.db.select().from(request))[0];
+  }
+
+  it("bekrefter for brukeren i økten og sender tilbake med markøren «bekreftet»", async () => {
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "confirm", userId: OWNER_ID, role: "owner" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=bekreftet");
+    expect(await current()).toMatchObject({ requesterConfirmed: true, ownerConfirmed: false });
+  });
+
+  it("avbestiller og sender tilbake med «avbestilt», og annonsen er ute igjen", async () => {
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "cancel" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=avbestilt");
+    expect((await current()).status).toBe("cancelled");
+    expect((await holder.db.select().from(listing))[0].status).toBe("active");
+  });
+
+  it("trekker tilbake og sender tilbake med «trukket»", async () => {
+    await holder.db.update(request).set({ status: "waiting_owner" });
+
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "withdraw" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=trukket");
+    expect((await current()).status).toBe("withdrawn");
+  });
+
+  it("bekrefter retur for eieren og sender tilbake med «levert»; låneren i økten får feilen", async () => {
+    await holder.db.update(listing).set({ type: "loan", status: "active" });
+    await holder.db.update(request).set({ status: "in_use", ownerConfirmed: true, requesterConfirmed: true });
+
+    expect(await updateRequest({}, form({ requestId: "r1", intent: "return" }))).toEqual({ error: "Du kan ikke gjøre dette nå" });
+    expect((await current()).status).toBe("in_use");
+
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: false };
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "return" }));
+
+    expect((result as Response).headers.get("Location")).toBe("/requests/r1?sendt=levert");
+    expect((await current()).status).toBe("completed");
+  });
+
+  it("gir feilen tilbake til skjemaet når handlingen ikke er lov, og endrer ingenting", async () => {
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "withdraw" }));
+
+    expect(result).toEqual({ error: "Du kan ikke gjøre dette nå" });
+    expect((await current()).status).toBe("accepted");
+  });
+
+  it("en tredjepart i økten kan ikke gjøre noe, selv om skjemaet påstår noe annet", async () => {
+    await holder.db.insert(user).values({ id: "per", name: "Per Olsen", email: "per@hiof.no" });
+    holder.session = { isAuthenticated: true, userId: "per", needsSetup: false };
+
+    const result = await updateRequest({}, form({ requestId: "r1", intent: "cancel", userId: "kari" }));
+
+    expect(result).toEqual({ error: "Forespørselen finnes ikke" });
+    expect((await current()).status).toBe("accepted");
+  });
+
+  it("sender en uinnlogget til /login og en bruker uten kontooppsett til /account-setup, uten å endre noe", async () => {
+    holder.session = { isAuthenticated: false };
+    const loggedOut = await updateRequest({}, form({ requestId: "r1", intent: "cancel" }));
+    holder.session = { isAuthenticated: true, userId: "kari", needsSetup: true };
+    const noSetup = await updateRequest({}, form({ requestId: "r1", intent: "cancel" }));
+
+    expect((loggedOut as Response).headers.get("Location")).toBe("/login");
+    expect((noSetup as Response).headers.get("Location")).toBe("/account-setup");
+    expect((await current()).status).toBe("accepted");
+  });
+
+  it("en ukjent eller manglende handling avvises uten å endre noe", async () => {
+    for (const intent of ["", "accept", "toString", "__proto__"]) {
+      expect(await updateRequest({}, form({ requestId: "r1", intent })), intent).toEqual({ error: "Ukjent handling" });
+    }
+    expect((await current()).status).toBe("accepted");
   });
 });

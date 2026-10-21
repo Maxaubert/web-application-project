@@ -18,7 +18,7 @@ vi.mock("@/db", () => ({
 }));
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
 // Serverhandlingen trengs ikke for å tegne knappene.
-vi.mock("./actions", () => ({ respondToRequest: vi.fn() }));
+vi.mock("./actions", () => ({ respondToRequest: vi.fn(), updateRequest: vi.fn() }));
 
 async function visit(id: string, userId: string, query = "") {
   const response = { status: 200 } as RequestInfo["response"];
@@ -142,8 +142,11 @@ describe("RequestPage, knappene (#187)", () => {
     expect(html.indexOf("Din pris")).toBeLessThan(html.indexOf(">Godta</button>"));
   });
 
-  it("kjøperen mens selgeren har tur: ingen knapper", async () => {
-    expect(hasNoButtons((await visit("r1", "kari")).html)).toBe(true);
+  it("kjøperen mens selgeren har tur: ingen svarknapper, bare Trekk tilbake (#188)", async () => {
+    const { html } = await visit("r1", "kari");
+
+    expect(html).not.toMatch(/name="offerId"|>Godta<|>Motbud<|>Avslå</);
+    expect(html).toContain(">Trekk tilbake</button>");
   });
 
   it("etter et motbud er det kjøperen som har knappene, ikke selgeren", async () => {
@@ -155,7 +158,7 @@ describe("RequestPage, knappene (#187)", () => {
   });
 
   it("ingen knapper på en avsluttet forespørsel, for noen av partene", async () => {
-    for (const status of ["accepted", "declined", "withdrawn", "cancelled", "in_use", "completed"] as const) {
+    for (const status of ["declined", "withdrawn", "cancelled", "in_use", "completed"] as const) {
       await holder.db.update(request).set({ status });
       for (const userId of [OWNER_ID, "kari"]) {
         expect(hasNoButtons((await visit("r1", userId)).html), `${status} ${userId}`).toBe(true);
@@ -248,9 +251,9 @@ describe("RequestPage, lån og gis bort (#186a)", () => {
     expect(html).not.toContain("Motbud");
   });
 
-  it("kjøperen har ingen knapper mens eieren har tur, på lån og gis bort", async () => {
+  it("kjøperen har ingen svarknapper mens eieren har tur, på lån og gis bort", async () => {
     for (const id of ["rl", "rg"]) {
-      expect((await visit(id, "kari")).html).not.toMatch(/<button|name="offerId"/);
+      expect((await visit(id, "kari")).html).not.toMatch(/name="offerId"|>Godta<|>Motbud<|>Avslå</);
     }
   });
 
@@ -265,9 +268,192 @@ describe("RequestPage, lån og gis bort (#186a)", () => {
   });
 
   it("ingen knapper på en avsluttet lånforespørsel", async () => {
-    await holder.db.update(request).set({ status: "accepted" }).where(eq(request.id, "rl"));
+    await holder.db.update(request).set({ status: "declined" }).where(eq(request.id, "rl"));
 
     for (const userId of [OWNER_ID, "kari"]) expect((await visit("rl", userId)).html).not.toMatch(/<button|name="offerId"/);
+  });
+});
+
+// Etter godtatt (#188): kontaktinfo, hvem som har bekreftet, og knappene for å bekrefte, avbestille og trekke tilbake.
+describe("RequestPage, overlevering og kontakt (#188)", () => {
+  const contactCard = (html: string) => html.includes("for å avtale overlevering");
+  const setStatus = (status: (typeof request.$inferSelect)["status"], flags: Partial<typeof request.$inferSelect> = {}) =>
+    holder.db.update(request).set({ status, ...flags }).where(eq(request.id, "r1"));
+
+  it("godtatt: begge ser den andres navn, telefon og e-post og linjen «Kontakt … for å avtale overlevering», aldri sin egen", async () => {
+    await setStatus("accepted");
+
+    const owner = (await visit("r1", OWNER_ID)).html;
+    const buyer = (await visit("r1", "kari")).html;
+
+    expect(owner).toContain("Kontakt Kari for å avtale overlevering");
+    expect(owner).toContain("Kari Hansen");
+    expect(owner).toContain('href="tel:+4790000002"');
+    expect(owner).toContain('href="mailto:kari@hiof.no"');
+    expect(owner).not.toMatch(/ola@hiof\.no|\+4790000001/);
+    expect(buyer).toContain("Kontakt Ola for å avtale overlevering");
+    expect(buyer).toContain('href="mailto:ola@hiof.no"');
+    expect(buyer).not.toMatch(/kari@hiof\.no|\+4790000002/);
+  });
+
+  it("uten telefonnummer vises bare e-posten", async () => {
+    await setStatus("accepted");
+    await holder.db.update(user).set({ phone: null }).where(eq(user.id, "kari"));
+
+    const { html } = await visit("r1", OWNER_ID);
+
+    expect(html).toContain('href="mailto:kari@hiof.no"');
+    expect(html).not.toMatch(/tel:|Telefon/);
+  });
+
+  it("kontaktkortet vises i godtatt, i bruk og fullført, og ellers aldri", async () => {
+    for (const status of ["waiting_owner", "waiting_requester", "declined", "withdrawn", "expired", "cancelled"] as const) {
+      await setStatus(status);
+      for (const userId of [OWNER_ID, "kari"]) {
+        const { html } = await visit("r1", userId);
+        expect(contactCard(html), `${status} ${userId}`).toBe(false);
+        expect(html, `${status} ${userId}`).not.toMatch(/@hiof\.no|\+47/);
+      }
+    }
+    for (const status of ["accepted", "in_use", "completed"] as const) {
+      await setStatus(status);
+      for (const userId of [OWNER_ID, "kari"]) expect(contactCard((await visit("r1", userId)).html), `${status} ${userId}`).toBe(true);
+    }
+  });
+
+  it("en tredjepart får 404 og ingen kontaktinfo, også etter godtatt", async () => {
+    await setStatus("accepted");
+
+    const { html, status } = await visit("r1", "per");
+
+    expect(status).toBe(404);
+    expect(html).not.toMatch(/@hiof\.no|\+47|overlevering/);
+  });
+
+  it("godtatt: Bekreft overlevering (sender «confirm») og Avbestill, for begge parter, og ingen Trekk tilbake", async () => {
+    await setStatus("accepted");
+
+    for (const userId of [OWNER_ID, "kari"]) {
+      const { html } = await visit("r1", userId);
+      expect(html, userId).toMatch(/<button type="submit"(?=[^>]*name="intent")(?=[^>]*value="confirm")[^>]*>Bekreft overlevering<\/button>/);
+      expect(html, userId).toMatch(/<button type="button"[^>]*>Avbestill<\/button>/);
+      expect(html, userId).toContain('<input type="hidden" name="requestId" value="r1"/>');
+      expect(html, userId).not.toMatch(/Trekk tilbake|>Godta<|>Avslå</);
+    }
+  });
+
+  it("hver side ser hvem som har bekreftet: «Du» og den andres fornavn", async () => {
+    await setStatus("accepted", { ownerConfirmed: true });
+
+    const owner = (await visit("r1", OWNER_ID)).html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+    const buyer = (await visit("r1", "kari")).html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+
+    expect(owner).toContain("Du Bekreftet Kari Ikke bekreftet");
+    expect(buyer).toContain("Du Ikke bekreftet Ola Bekreftet");
+  });
+
+  it("den som har bekreftet, mister Bekreft overlevering men beholder Avbestill; den andre beholder begge", async () => {
+    await setStatus("accepted", { requesterConfirmed: true });
+
+    const buyer = (await visit("r1", "kari")).html;
+    const owner = (await visit("r1", OWNER_ID)).html;
+
+    expect(buyer).not.toContain("Bekreft overlevering</button>");
+    expect(buyer).toContain(">Avbestill</button>");
+    expect(owner).toContain(">Bekreft overlevering</button>");
+  });
+
+  it("ikke bekreftet vises ikke som fullført: i bruk og fullført har verken Bekreft, Avbestill eller bekreftelsesstatus", async () => {
+    for (const status of ["in_use", "completed"] as const) {
+      await setStatus(status, { ownerConfirmed: true, requesterConfirmed: true });
+      for (const userId of [OWNER_ID, "kari"]) {
+        const { html } = await visit("r1", userId);
+        expect(html, `${status} ${userId}`).not.toMatch(/<button|bekreftet/i);
+      }
+    }
+  });
+
+  it("forespørreren kan trekke tilbake mens forespørselen venter, uansett hvis tur det er; eieren kan ikke", async () => {
+    for (const status of ["waiting_owner", "waiting_requester"] as const) {
+      await setStatus(status);
+      expect((await visit("r1", "kari")).html, status).toMatch(/<button type="button"[^>]*>Trekk tilbake<\/button>/);
+      expect((await visit("r1", OWNER_ID)).html, status).not.toContain("Trekk tilbake");
+    }
+  });
+
+  it("avsluttede forespørsler har ikke Trekk tilbake, Avbestill eller Bekreft overlevering", async () => {
+    for (const status of ["declined", "withdrawn", "expired", "cancelled"] as const) {
+      await setStatus(status);
+      for (const userId of [OWNER_ID, "kari"]) expect((await visit("r1", userId)).html, `${status} ${userId}`).not.toMatch(/Trekk tilbake<\/button>|Avbestill<\/button>|Bekreft overlevering/);
+    }
+  });
+
+  it("meldingene etter bekreft, avbestill og trekk tilbake vises bare når statusen stemmer", async () => {
+    const toast = (html: string) => html.match(/<div role="status"[^>]*>[\s\S]*?<\/div>/)?.[0] ?? "";
+
+    await setStatus("accepted", { ownerConfirmed: true });
+    expect(toast((await visit("r1", OWNER_ID, "?sendt=bekreftet")).html)).toContain("Overlevering bekreftet");
+    await setStatus("cancelled");
+    expect(toast((await visit("r1", OWNER_ID, "?sendt=avbestilt")).html)).toContain("Avtalen er avbestilt");
+    await setStatus("withdrawn");
+    expect(toast((await visit("r1", "kari", "?sendt=trukket")).html)).toContain("Forespørselen er trukket tilbake");
+    expect(toast((await visit("r1", "kari", "?sendt=avbestilt")).html)).toBe("");
+  });
+});
+
+// Retur ved lån (FK-07, #214): bare eieren, bare mens lånet er i bruk.
+describe("RequestPage, bekreft retur (#214)", () => {
+  const returnButton = />Bekreft retur<\/button>/;
+  const inUse = { status: "in_use", ownerConfirmed: true, requesterConfirmed: true } as const;
+
+  beforeEach(async () => {
+    await holder.db.insert(listing).values(validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }));
+    await holder.db.insert(request).values({ id: "rl", listingId: "tent", requesterId: "kari", ...inUse });
+    await holder.db.insert(offer).values({ requestId: "rl", senderId: "kari", startDate: "2026-11-12", endDate: "2026-11-19", createdAt: new Date("2026-10-17T01:12:00Z") });
+  });
+
+  it("eieren av et lån i bruk har Bekreft retur, og låneren har ingen knapper", async () => {
+    const owner = (await visit("rl", OWNER_ID)).html;
+    const buyer = (await visit("rl", "kari")).html;
+
+    expect(owner).toMatch(returnButton);
+    expect(owner).toContain('<input type="hidden" name="requestId" value="rl"/>');
+    expect(owner).not.toMatch(/Bekreft overlevering|Avbestill|Trekk tilbake/);
+    expect(buyer).not.toMatch(/<button|Bekreft retur/);
+  });
+
+  it("ingen Bekreft retur før lånet er i bruk, etter at det er levert, eller når det ikke er et lån", async () => {
+    for (const status of ["waiting_owner", "waiting_requester", "accepted", "declined", "withdrawn", "expired", "cancelled", "completed"] as const) {
+      await holder.db.update(request).set({ status }).where(eq(request.id, "rl"));
+      expect((await visit("rl", OWNER_ID)).html, status).not.toMatch(returnButton);
+    }
+    await holder.db.update(request).set({ status: "in_use" }).where(eq(request.id, "r1"));
+    expect((await visit("r1", OWNER_ID)).html).not.toMatch(returnButton);
+  });
+
+  it("en tredjepart får 404 og ingen knapp", async () => {
+    const { html, status } = await visit("rl", "per");
+
+    expect(status).toBe(404);
+    expect(html).not.toMatch(returnButton);
+  });
+
+  it("et lån som ble i bruk av den automatiske bekreftelsen etter 3 dager, har Bekreft retur med en gang", async () => {
+    await holder.db
+      .update(request)
+      .set({ status: "accepted", ownerConfirmed: false, requesterConfirmed: true, updatedAt: new Date("2026-10-14T12:00:00Z") })
+      .where(eq(request.id, "rl"));
+
+    expect((await visit("rl", OWNER_ID)).html).toMatch(returnButton);
+    expect((await holder.db.select().from(request).where(eq(request.id, "rl")))[0].status).toBe("accepted");
+  });
+
+  it("meldingen «Retur bekreftet» vises bare når lånet er fullført", async () => {
+    const toast = (html: string) => html.match(/<div role="status"[^>]*>[\s\S]*?<\/div>/)?.[0] ?? "";
+
+    expect(toast((await visit("rl", OWNER_ID, "?sendt=levert")).html)).toBe("");
+    await holder.db.update(request).set({ status: "completed" }).where(eq(request.id, "rl"));
+    expect(toast((await visit("rl", OWNER_ID, "?sendt=levert")).html)).toContain("Retur bekreftet");
   });
 });
 

@@ -1,6 +1,7 @@
 // Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Viser status og siste bud
 // for de to partene. Andre enn eieren og forespørreren får samme borte-visning med 404 som en ukjent annonse, så
-// ingen kan se om en forespørsel finnes. Under budkortet har den som har tur knappene Godta, Motbud og Avslå (#187).
+// ingen kan se om en forespørsel finnes. Under budkortet har den som har tur knappene Godta, Motbud og Avslå (#187). Fra godtatt vises den andres
+// kontaktinfo og knappene Bekreft overlevering og Avbestill; forespørreren kan trekke tilbake mens den venter (#188).
 // Tilbakelenken går til Min side (#193) og annonsekortet til annonsen.
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
@@ -11,8 +12,10 @@ import { formatTypeAndPrice } from "@/app/listings/format-type-and-price";
 import { ListingGone } from "@/app/listings/ListingGone";
 import { getListingImages } from "@/app/listings/queries";
 import { ListingSummary } from "./ListingSummary";
+import { getContactForParty } from "./contact";
+import { HandoverActions } from "./HandoverActions";
 import { getRequestForParty } from "./queries";
-import { OfferCard, StatusBanner } from "./RequestParts";
+import { ContactCard, HandoverStatus, OfferCard, StatusBanner } from "./RequestParts";
 import { formatLoanPrice, loanSummary } from "./loan-summary";
 import { bannerFor, formatPeriod, noticeFor, offerLabel } from "./request-view";
 import { ResponseActions } from "./ResponseActions";
@@ -46,6 +49,13 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
   const marker = new URL(httpRequest.url).searchParams.get("sendt");
   const notice = noticeFor(marker, request.status, latest, userId, listing.type);
   const [coverKey] = await getListingImages(db, listing.id);
+  const contact = await getContactForParty(db, request.id, userId);
+  const accepted = request.status === "accepted";
+  const waiting = request.status === "waiting_owner" || request.status === "waiting_requester";
+  // Bare eieren bekrefter retur, og bare mens lånet er i bruk (#214).
+  const returnable = request.status === "in_use" && role === "owner" && listing.type === "loan";
+  const youConfirmed = role === "owner" ? request.ownerConfirmed : request.requesterConfirmed;
+  const otherConfirmed = role === "owner" ? request.requesterConfirmed : request.ownerConfirmed;
 
   return (
     <PageShell title={`Forespørsel: ${listing.title}`} wide headerAction={<HeaderActions />}>
@@ -85,6 +95,24 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
           {/* Knappene bare for den som har tur (#187, #208). Godta gjelder det forslaget som vises, ikke et nyere. */}
           {latest && banner.yourTurn && (
             <ResponseActions requestId={request.id} offerId={latest.id} type={listing.type} weeklyPrice={listing.price} />
+          )}
+          {/* Etter godtatt (#188): den andres kontaktinfo, hvem som har bekreftet, og knappene for å bekrefte eller avbestille. */}
+          {contact && <ContactCard {...contact} />}
+          {accepted && (
+            <HandoverStatus
+              youConfirmed={youConfirmed}
+              otherName={role === "owner" ? details.requesterName : details.ownerName}
+              otherConfirmed={otherConfirmed}
+            />
+          )}
+          {(accepted || waiting || returnable) && (
+            <HandoverActions
+              requestId={request.id}
+              canConfirm={accepted && !youConfirmed}
+              canCancel={accepted}
+              canWithdraw={waiting && role === "requester"}
+              canReturn={returnable}
+            />
           )}
         </div>
       </div>

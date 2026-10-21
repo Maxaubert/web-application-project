@@ -143,6 +143,23 @@ describe("noticeFor", () => {
     expect(noticeFor("godtatt", "waiting_owner", myPeriod, "ola", "loan")).toBeNull();
   });
 
+  it("«bekreftet» gjelder godtatt, i bruk og fullført, fordi den siste bekreftelsen flytter avtalen videre", () => {
+    for (const status of ["accepted", "in_use", "completed"] as const) expect(noticeFor("bekreftet", status, mine, "ola"), status).toBe("Overlevering bekreftet");
+    for (const status of requestStatuses.filter((s) => !["accepted", "in_use", "completed"].includes(s))) expect(noticeFor("bekreftet", status, mine, "ola"), status).toBeNull();
+  });
+
+  it("«avbestilt» og «trukket» gir meldingen bare når statusen stemmer", () => {
+    expect(noticeFor("avbestilt", "cancelled", mine, "ola")).toBe("Avtalen er avbestilt");
+    expect(noticeFor("trukket", "withdrawn", mine, "ola")).toBe("Forespørselen er trukket tilbake");
+    for (const status of requestStatuses.filter((s) => s !== "cancelled")) expect(noticeFor("avbestilt", status, mine, "ola"), status).toBeNull();
+    for (const status of requestStatuses.filter((s) => s !== "withdrawn")) expect(noticeFor("trukket", status, mine, "ola"), status).toBeNull();
+  });
+
+  it("«levert» gir meldingen bare når lånet er fullført (#214)", () => {
+    expect(noticeFor("levert", "completed", mine, "ola", "loan")).toBe("Retur bekreftet");
+    for (const status of requestStatuses.filter((s) => s !== "completed")) expect(noticeFor("levert", status, mine, "ola", "loan"), status).toBeNull();
+  });
+
   it("ingen markør, en ukjent markør og en tom markør gir ingen melding", () => {
     for (const marker of [null, "", "annet", "MOTBUD", "motbud "]) {
       expect(noticeFor(marker, "waiting_requester", mine, "ola"), String(marker)).toBeNull();
@@ -150,6 +167,14 @@ describe("noticeFor", () => {
   });
 
   it("markørene serverhandlingen setter, er de som siden leser", () => {
-    expect(noticeMarkers).toEqual({ counter: "motbud", accept: "godtatt", decline: "avslatt" });
+    expect(noticeMarkers).toEqual({
+      counter: "motbud",
+      accept: "godtatt",
+      decline: "avslatt",
+      confirm: "bekreftet",
+      cancel: "avbestilt",
+      withdraw: "trukket",
+      return: "levert",
+    });
   });
 });

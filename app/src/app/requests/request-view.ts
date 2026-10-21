@@ -80,7 +80,15 @@ export function formatWhen(date: Date): string {
 
 // Meldingen som vises rett etter et svar (#203): siden åpnes med ?sendt=<markør>, satt av serverhandlingen. Markøren
 // teller bare når den stemmer med det som faktisk er lagret, så en tastet adresse ikke viser en falsk melding.
-export const noticeMarkers = { counter: "motbud", accept: "godtatt", decline: "avslatt" } as const;
+export const noticeMarkers = {
+  counter: "motbud",
+  accept: "godtatt",
+  decline: "avslatt",
+  confirm: "bekreftet",
+  cancel: "avbestilt",
+  withdraw: "trukket",
+  return: "levert",
+} as const;
 
 export function noticeFor(
   marker: string | null,
@@ -101,5 +109,10 @@ export function noticeFor(
     return type === "sale" ? "Du godtok budet" : "Du godtok forespørselen";
   }
   if (marker === noticeMarkers.decline) return status === "declined" ? "Forespørselen er avslått" : null;
+  // Den siste bekreftelsen flytter avtalen videre til i bruk eller fullført, så bekreftet gjelder alle tre.
+  if (marker === noticeMarkers.confirm) return status === "accepted" || status === "in_use" || status === "completed" ? "Overlevering bekreftet" : null;
+  if (marker === noticeMarkers.cancel) return status === "cancelled" ? "Avtalen er avbestilt" : null;
+  if (marker === noticeMarkers.withdraw) return status === "withdrawn" ? "Forespørselen er trukket tilbake" : null;
+  if (marker === noticeMarkers.return) return status === "completed" ? "Retur bekreftet" : null;
   return null;
 }

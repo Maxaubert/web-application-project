@@ -5,10 +5,13 @@ import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
 import { log } from "@/app/shared/log";
+import { cancelRequest, confirmHandover } from "./handover";
 import { placeBid } from "./place-bid";
 import { placeRequest } from "./place-request";
+import { confirmReturn } from "./return";
 import { respondToOffer, type RespondAction } from "./respond";
 import { noticeMarkers } from "./request-view";
+import { withdrawRequest } from "./withdraw";
 
 export async function sendBid(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
@@ -70,4 +73,25 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   log.info("request_answered", { userId: ctx.session.userId, requestId, action });
   // Markøren får siden til å vise «Motbud sendt» og lignende (#203).
   return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as RespondAction]}`);
+}
+
+const updateActions = { confirm: confirmHandover, cancel: cancelRequest, withdraw: withdrawRequest, return: confirmReturn } as const;
+type UpdateAction = keyof typeof updateActions;
+
+// Bekreft overlevering, avbestill, trekk tilbake (#188) og bekreft retur (#214): én handling med valget som skjemafelt,
+// som respondToRequest. Reglene ligger i confirmHandover, cancelRequest, withdrawRequest og confirmReturn.
+export async function updateRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const { ctx } = getRequestInfo();
+  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
+  if (ctx.session.needsSetup) return redirect("/account-setup");
+
+  const requestId = String(formData.get("requestId") ?? "");
+  const action = String(formData.get("intent") ?? "");
+  if (!Object.hasOwn(updateActions, action)) return { error: "Ukjent handling" };
+
+  const result = await updateActions[action as UpdateAction](db, { userId: ctx.session.userId, requestId });
+  if (!result.ok) return { error: result.error };
+
+  log.info("request_updated", { userId: ctx.session.userId, requestId, action });
+  return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as UpdateAction]}`);
 }
