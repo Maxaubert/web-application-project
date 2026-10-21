@@ -102,6 +102,69 @@ test("selgeren sender motbud på et lån med ny periode, og låneren godtar det"
   await buyer.close();
 });
 
+// Overlevering (#188). Avtalene ligger klare som godtatt; annonsene er solgt.
+test("begge ser kontaktinfo, bekrefter hver for seg, og avtalen blir fullført når den andre har bekreftet", async ({ page, browser, baseURL }) => {
+  await page.goto("/requests/e2e-req-over-ok", { waitUntil: "networkidle" });
+  await expect(bannerOf(page)).toHaveText("Avtalt");
+  await expect(page.getByText("Kontakt E2E for å avtale overlevering")).toBeVisible();
+  await expect(page.getByRole("link", { name: "e2e-buyer@hiof.no" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "+4790000002" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Bekreft overlevering" }).click();
+
+  await expect(toastOf(page)).toHaveText(/Overlevering bekreftet/);
+  await expect(bannerOf(page)).toHaveText("Avtalt");
+  await expect(page.getByRole("button", { name: "Bekreft overlevering" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Avbestill" })).toBeVisible();
+
+  const buyer = await browser.newContext({ storageState: BUYER_AUTH_FILE, baseURL });
+  const buyerPage = await buyer.newPage();
+  await buyerPage.goto("/requests/e2e-req-over-ok", { waitUntil: "networkidle" });
+  await expect(buyerPage.getByRole("link", { name: "e2e-seller@hiof.no" })).toBeVisible();
+  await buyerPage.getByRole("button", { name: "Bekreft overlevering" }).click();
+  await expect(buyerPage.locator('p[role="status"]')).toHaveText("Fullført");
+  await expect(buyerPage.getByRole("main").getByRole("button")).toHaveCount(0);
+  await buyer.close();
+});
+
+test("Avbestill krever en bekreftelse, og en avbestilt avtale legger annonsen ut igjen", async ({ page, browser, baseURL }) => {
+  await page.goto("/requests/e2e-req-over-avbest", { waitUntil: "networkidle" });
+  await expect(page.getByText("Avbestille avtalen?")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Avbestill" }).click();
+  await expect(page.getByText("Avbestille avtalen?")).toBeVisible();
+  await page.getByRole("button", { name: "Avbryt" }).click();
+  await expect(page.getByText("Avbestille avtalen?")).toHaveCount(0);
+  await expect(bannerOf(page)).toHaveText("Avtalt");
+
+  await page.getByRole("button", { name: "Avbestill" }).click();
+  await page.getByRole("button", { name: "Ja, avbestill" }).click();
+
+  await expect(toastOf(page)).toHaveText(/Avtalen er avbestilt/);
+  await expect(bannerOf(page)).toHaveText("Avbestilt");
+  await expect(page.getByText(/Kontakt .* for å avtale overlevering/)).toHaveCount(0);
+
+  const buyer = await browser.newContext({ storageState: BUYER_AUTH_FILE, baseURL });
+  const buyerPage = await buyer.newPage();
+  await buyerPage.goto("/listings/e2e-over-avbest", { waitUntil: "networkidle" });
+  await expect(buyerPage.getByRole("link", { name: "Legg inn bud" })).toBeVisible();
+  await buyer.close();
+});
+
+test("forespørreren trekker tilbake mens forespørselen venter, og eieren har ikke knappen", async ({ page, browser, baseURL }) => {
+  await page.goto("/requests/e2e-req-trekk", { waitUntil: "networkidle" });
+  await expect(page.getByRole("button", { name: "Trekk tilbake" })).toHaveCount(0);
+
+  const buyer = await browser.newContext({ storageState: BUYER_AUTH_FILE, baseURL });
+  const buyerPage = await buyer.newPage();
+  await buyerPage.goto("/requests/e2e-req-trekk", { waitUntil: "networkidle" });
+  await buyerPage.getByRole("button", { name: "Trekk tilbake" }).click();
+  await buyerPage.getByRole("button", { name: "Ja, trekk tilbake" }).click();
+  await expect(buyerPage.locator('div[role="status"]')).toHaveText(/Forespørselen er trukket tilbake/);
+  await expect(buyerPage.locator('p[role="status"]')).toHaveText("Trukket tilbake");
+  await buyer.close();
+});
+
 test("en gis bort har bare Godta og Avslå, og Godta gir «Du godtok forespørselen»", async ({ page }) => {
   await page.goto("/requests/e2e-req-gis", { waitUntil: "networkidle" });
   await expect(page.getByRole("button", { name: "Godta" })).toBeVisible();
