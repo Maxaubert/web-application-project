@@ -183,8 +183,8 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
 
 Min side er bygget etter mockups valgt blant ti listestiler og en mobilversjon, ikke etter `Foresporsler-*`:
 
-- Adressen er `/me` (Forespørsler er eneste fane foreløpig) og `/me?show=sent` for Sendt, ikke `/me?tab=requests`.
-  Mine annonser (#189) og Historikk (#93) legges til som faner senere, og da kommer `?tab=` med.
+- Adressen er `/me` for Forespørsler og `/me?show=sent` for Sendt, ikke `/me?tab=requests`. `?tab=` kom med Mine favoritter
+  (`/me?tab=favorites`, 24.10, #224); Mine annonser (#189) og Historikk (#220) legges til som faner senere.
 - Profilen (avatar, navn, e-post, telefon) står over fanen også på desktop, ikke i en kolonne til venstre (Max 17.10).
   Ingen «Rediger profil» og ingen «Visning»-merke; redigeringssiden finnes ikke ennå.
 - Raden har stort bilde, tittel, motpart og bud («Til …» på Sendt), typemerke og «Sist endret», og en chip i stedet for
@@ -242,7 +242,7 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/requests/:id` | `StatusBanner`, `ContactCard` (#188), `HandoverActions` (#214); `ExtensionPanel`, `ReturnIssuePanel` er ikke bygget | Bygget: banneret «I bruk», periode, pris og kontakt, og for eieren «Bekreft retur» (21.10, #214; spør «Ja, bekreft retur» først, meldingen er «Retur bekreftet», og banneret blir «Fullført»). Låneren har ingen knapper. Ikke bygget: forleng lånet (WV-01) og rapporter returproblem (WV-02). | |
 | 09 | Min side: Mine annonser | `Minside-*` | `/me` | `ProfileCard`, `MyPageTabs`, `ListingCard` | Profil og faner. Egne annonser med status, «Rediger» og «Ta ned». Solgte annonser har ingen handlinger; låneannonser blir liggende med opptatte datoer. | |
 | 09 | Min side: Historikk | `Minside-historikk-*` | `/me?tab=history` | `HistoryList` | Fullførte salg og lån, både gitt og mottatt. | |
-| 09 | Min side: Mine favoritter | Ingen tegning (#224) | `/me?tab=favorites` | `ListingCard` | Lagt til 24.10 (#224), ikke bygget. Annonsene brukeren har markert med hjerte, bare de som er ute; solgte, gitt bort og nedtatte vises ikke, utlånte lån vises. Hjertet står også på kortet i søket (WF-03) og på annonsesiden (WF-04), ikke på egne annonser. Mockup godkjennes før skjermen bygges. | Tom liste. |
+| 09 | Min side: Mine favoritter | Ingen tegning (#224) | `/me?tab=favorites` | `FavoriteRow`, `FavoriteButton` | Bygget 24.10 (#224) uten mockup, som rader i samme stil som Forespørsler (Max 24.10): bilde, tittel, eier og pris, type, og fylt hjerte til høyre. Hele raden lenker til annonsen; hjertet ligger over lenken. Tas hjertet av, forsvinner raden. Ingen tall i fanenavnet (Max 24.10). Bare annonser som er ute, sist lagret først; solgte, gitt bort og nedtatte vises ikke, utlånte lån vises. Fanene er Forespørsler og Mine favoritter til Mine annonser og Historikk kommer. | «Du har ingen favoritter» med «Se annonser». |
 | 09 | Rediger profil | `Profil-rediger-*` | `/me/profile` | `ProfileForm` | Bytt eller fjern bilde, navn, telefon, e-post (låst), «Lagre», «Logg ut». | |
 
 ## Ikke avklart

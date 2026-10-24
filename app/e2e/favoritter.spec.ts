@@ -31,3 +31,19 @@ test("hjertet på kortet lagres, er fylt på annonsesiden, og kan fjernes der", 
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(cardHeart(page)).toHaveAttribute("aria-pressed", "false");
 });
+
+// Fanen Mine favoritter (#224). Godkjent av Max 24.10.
+test("en lagret annonse står i Mine favoritter og forsvinner når hjertet tas av der", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await cardHeart(page).click();
+  await expect(cardHeart(page)).toHaveAttribute("aria-pressed", "true");
+
+  await page.goto("/me?tab=favorites", { waitUntil: "networkidle" });
+  await expect(page.getByRole("link", { name: "Mine favoritter" })).toHaveAttribute("aria-current", "page");
+  const row = page.getByRole("listitem").filter({ hasText: "Favoritt sykkel" });
+  await expect(row).toBeVisible();
+
+  await row.getByRole("button", { name: "Fjern fra favoritter" }).click();
+  await expect(row).toHaveCount(0);
+  await expect(page.getByText("Du har ingen favoritter")).toBeVisible();
+});
