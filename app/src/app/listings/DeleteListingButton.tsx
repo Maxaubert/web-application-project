@@ -8,7 +8,10 @@ import { FieldError } from "@/app/shared/form-controls";
 import { takeDownListing } from "./actions";
 
 const button = "h-12 rounded-md px-6 text-lg font-semibold transition-colors disabled:cursor-wait disabled:opacity-70";
-const danger = `${button} border-2 border-danger bg-surface text-danger enabled:hover:bg-paper`;
+// «Slett annonse» har rød kant og står helt til venstre i knapperaden (Max 24.10), så den ikke forveksles med «Lagre endringer».
+// «Ja, slett» i vinduet er fylt rød, for der er valget tatt.
+const outlined = `${button} border-2 border-danger bg-surface text-danger hover:bg-paper`;
+const danger = `${button} bg-danger text-white enabled:hover:opacity-90`;
 
 export function DeleteListingButton({ listingId }: { listingId: string }) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(takeDownListing, {});
@@ -32,7 +35,7 @@ export function DeleteListingButton({ listingId }: { listingId: string }) {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className={danger}>
+      <button type="button" onClick={() => setOpen(true)} className={`${outlined} sm:mr-auto`}>
         Slett annonse
       </button>
       <dialog
@@ -51,7 +54,7 @@ export function DeleteListingButton({ listingId }: { listingId: string }) {
               <button type="button" onClick={() => setOpen(false)} className={`${button} border-2 border-ink bg-surface hover:bg-paper`}>
                 Avbryt
               </button>
-              <button type="button" onClick={confirm} disabled={pending} aria-busy={pending} className={`${button} bg-danger text-white enabled:hover:opacity-90`}>
+              <button type="button" onClick={confirm} disabled={pending} aria-busy={pending} className={danger}>
                 Ja, slett
               </button>
             </div>
