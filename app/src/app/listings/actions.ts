@@ -11,6 +11,7 @@ import { checkImages, checkThumbs } from "@/app/images/image-files";
 import { storeImages, withThumbs } from "@/app/images/storage";
 import { log } from "@/app/shared/log";
 import { validateListing, type ListingFormValues } from "./listing-schema";
+import { unpublishListing } from "./unpublish";
 
 const FIELDS = ["title", "description", "category", "type", "condition", "price"] as const;
 
@@ -46,4 +47,18 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
   }
   log.info("listing_created", { userId: ctx.session.userId, listingId, images: keys.length });
   return redirect(`/listings/${listingId}?publisert=1`);
+}
+
+// «Ta ned» på Min side (#229). Reglene ligger i unpublishListing; her skjer bare det som hører til nettforespørselen.
+export async function takeDownListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const { ctx } = getRequestInfo();
+  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
+  if (ctx.session.needsSetup) return redirect("/account-setup");
+
+  const listingId = String(formData.get("listingId") ?? "");
+  const result = await unpublishListing(db, { userId: ctx.session.userId, listingId });
+  if (!result.ok) return { error: result.error };
+
+  log.info("listing_unpublished", { userId: ctx.session.userId, listingId });
+  return {};
 }
