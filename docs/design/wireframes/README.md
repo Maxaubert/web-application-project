@@ -103,7 +103,7 @@ endrer ingenting i databasen.
 | `proposeExtension` | Begge | Ny returdato etter nåværende, ikke over neste godtatte lån. Motparten godtar eller avslår. |
 | `confirmReturn` | Eier | Bare ved lån i bruk. Fullfører lånet. Bygget 21.10 (#214, med knappen «Bekreft retur» på forespørselssiden): når som helst mens lånet er i bruk (Max 21.10), og perioden er ledig etterpå. Intent `return` i `updateRequest`. |
 | `reportIssue` | Begge | Lagrer rapport. Endrer ikke status. Bare avsender og admin kan lese den. |
-| Favoritt på og av | Innlogget bruker | Bygget 24.10 (#224) som serverhandlingen `toggleFavorite` (skjemafeltet `intent` er `on` eller `off`) og reglene i `setFavorite`; hjertet er ikke bygget. Bruker fra økten. Ikke egen annonse, og bare en annonse som er ute. Av fjerner bare egen rad. |
+| Favoritt på og av | Innlogget bruker | Bygget 24.10 (#224) som serverhandlingen `toggleFavorite` (skjemafeltet `intent` er `on` eller `off`) og reglene i `setFavorite`; hjertet (`FavoriteButton`) er bygget 24.10. Bruker fra økten. Ikke egen annonse, og bare en annonse som er ute. Av fjerner bare egen rad. |
 | `updateProfile` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
 
 ## Avvik fra tegningene (Max 08.10, #91)
@@ -213,6 +213,10 @@ Knappene under budkortet er bygget etter en mockup valgt av Max, ikke etter `Avt
 ## Avvik fra tegningene (Max 19.10, #205)
 
 «Historikk» er fanen på Min side med fullførte avtaler (WF-09), ikke et panel på forespørselssiden. Forespørselssiden (WF-08) viser derfor ikke lenger forslagene som liste, bare det siste i budkortet, og er én kolonne som budsiden. Alle forslag bevares i databasen.
+
+## Avvik fra tegningene (Max 24.10, #224)
+
+Hjertet er ikke tegnet og er bygget uten mockup (Max 24.10). Et tomt hjerte i en hvit rund knapp på 44 px står nederst til høyre i bildet på kortet i søket (WF-03), og til høyre for tittelen på annonsesiden (WF-04). Lagret er hjertet fylt med tekstfargen, uten egen farge. Knappen heter «Lagre som favoritt» eller «Fjern fra favoritter» for skjermlesere (`aria-pressed`). Hjertet snur med én gang og snur tilbake hvis serveren avviser, med feilen under. Ingen hjerte på egne annonser, på solgte annonser eller i forhåndsvisningen.
 
 ## Skjermer
 

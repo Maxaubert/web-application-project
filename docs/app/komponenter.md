@@ -142,6 +142,9 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Søket (#97, 10.10): `SearchField` er et vanlig GET-skjema uten klientkode. `HomePage` validerer `?q=` med
   `parseSearch`, henter aktive annonser med `getActiveListings` og rangerer dem med `searchListings` (Fuse.js).
   `SearchNotice` er den stiplede boksen for ingen treff og ugyldig søk.
+- Hjertet (#224, 24.10): `FavoriteButton` (klient, `favorites/`) er et skjema med serverhandlingen `toggleFavorite` og snur med
+  `useOptimistic`. `ListingCard` tar `favorite` (uten den: ikke noe hjerte) og legger hjertet ved siden av lenken, ikke inni den;
+  `ListingDetails` har plassen `favoriteAction` ved tittelen, som `bidAction`.
 - Live søkeforslag (#104, 10.10): `SearchField` er nå klientkomponent (combobox etter WAI-ARIA), men rendres
   ferdig på serveren og virker uten JavaScript. `useSuggestions` henter fra `GET /api/listings` 200 ms etter
   siste tastetrykk og avbryter eldre forespørsler; `suggestions.ts` har den rene logikken (når hente, piltaster).
