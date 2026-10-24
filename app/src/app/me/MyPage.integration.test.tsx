@@ -3,7 +3,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { listing, listingImage, offer, request, user } from "@/db/schema";
+import { favorite, listing, listingImage, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { OWNER_ID, validListing } from "@/test/test-listings";
@@ -16,6 +16,8 @@ vi.mock("@/db", () => ({
   },
 }));
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
+// Serverhandlingen bak hjertet (#224) trengs ikke for å tegne det.
+vi.mock("@/app/favorites/actions", () => ({ toggleFavorite: vi.fn() }));
 
 async function visit(userId: string, query = "") {
   const ctx = { session: { userId } } as RequestInfo["ctx"];
@@ -176,5 +178,42 @@ describe("Min side, rekkefølgen", () => {
     // Kalkulator (din tur, 17.10), Kokebok (din tur, 14.10), Lampe (avslått, 18.10 men uten tur).
     expect(html.indexOf("Kalkulator")).toBeLessThan(html.indexOf("Kokebok"));
     expect(html.indexOf("Kokebok")).toBeLessThan(html.indexOf("Lampe"));
+  });
+});
+
+// Fanen Mine favoritter (#224). Godkjent av Max 24.10.
+describe("Min side, Mine favoritter", () => {
+  it("viser bare egne lagrede, aktive annonser, sist lagret først, med fylt hjerte og fanen markert", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "bike", title: "Sykkel", price: 900 }),
+      validListing({ id: "lamp", title: "Lampe", status: "sold" }),
+      validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }),
+    ]);
+    await holder.db.insert(favorite).values([
+      { userId: "kari", listingId: "bike", createdAt: new Date("2026-10-18T09:00:00Z") },
+      { userId: "kari", listingId: "calc", createdAt: new Date("2026-10-18T10:00:00Z") },
+      { userId: "kari", listingId: "lamp", createdAt: new Date("2026-10-18T11:00:00Z") },
+      { userId: "per", listingId: "tent" },
+    ]);
+
+    const html = await visit("kari", "?tab=favorites");
+
+    expect(html).toMatch(/<a href="\/me\?tab=favorites" aria-current="page"[^>]*>Mine favoritter<\/a>/);
+    expect(html).not.toMatch(/aria-current="page"[^>]*>Forespørsler<\/a>/);
+    expect(html.indexOf(">Kalkulator<")).toBeGreaterThan(-1);
+    expect(html.indexOf(">Kalkulator<")).toBeLessThan(html.indexOf(">Sykkel<"));
+    expect(html).toContain("Ola Nordmann · 900 kr");
+    expect(html).not.toContain("Lampe");
+    expect(html).not.toContain("Telt");
+    expect(html.match(/aria-pressed="true"/g)).toHaveLength(2);
+    // Forespørslene hentes ikke på denne fanen.
+    expect(html).not.toContain("Mottatt (");
+  });
+
+  it("viser «Du har ingen favoritter» når brukeren ikke har lagret noe", async () => {
+    const html = await visit("per", "?tab=favorites");
+
+    expect(html).toContain("Du har ingen favoritter");
+    expect(html).toContain('href="/"');
   });
 });
