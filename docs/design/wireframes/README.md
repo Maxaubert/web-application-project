@@ -42,7 +42,7 @@ Avklart av Max 29.09.2026. Disse erstatter eldre varianter i notatet
 | Frister | Ubesvart forespørsel utløper etter 7 dager. Har bare én part bekreftet overlevering, regnes den som bekreftet etter 3 dager. |
 | Returrapporter | Bare den som skrev og admin kan lese dem. Admin kontakter partene ved behov. |
 | Bilder | Sannsynligvis Cloudflare R2, muligens D1. Ikke endelig valgt. |
-| Min side | Én side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk. Rediger profil og logg ut ligger under profilen. |
+| Min side | Én side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk. Mine favoritter er lagt til 24.10 (#224). Rediger profil og logg ut ligger under profilen. |
 | Hovedmeny | Annonser, Min side, Legg ut annonse. |
 | API-stil | REST-endepunkter for lesing (T03), server actions for all skriving med tilgangskontroll i handleren (T04). |
 
@@ -67,6 +67,7 @@ statuser, ruter og komponentnavn er på engelsk; teksten brukerne ser, er på no
 | `listing_image` | id, listing_id, key, position | Bygget 11.10 (#138). 1–10 per annonse; `key` er filens plass i R2 (`listings/<annonse>/<uuid>.<jpg/png/webp>`), `position` 0 er forsidebildet. |
 | `request` | id, listing_id, requester_id, status, owner_confirmed, requester_confirmed, created_at | Status: `waiting_owner`, `waiting_requester`, `accepted`, `declined`, `withdrawn`, `expired`, `cancelled`, `in_use`, `completed`. |
 | `offer` | id, request_id, sender_id, price, start_date, end_date, created_at | Hvert bud, motbud og forlengelse. Siste rad er gjeldende. Eldre rader er historikk. |
+| `favorite` | user_id, listing_id, created_at | Lagt til 24.10 (#224), ikke bygget. Én rad per bruker og annonse. Raden slettes ikke når annonsen selges eller tas ned; fanen viser bare `active`. |
 | `issue_report` | id, request_id, sender_id, type, description, created_at | Returproblem (WV-02). Lagres som påstand, avgjør ingenting. |
 
 ## REST-endepunkter (lesing)
@@ -102,6 +103,7 @@ endrer ingenting i databasen.
 | `proposeExtension` | Begge | Ny returdato etter nåværende, ikke over neste godtatte lån. Motparten godtar eller avslår. |
 | `confirmReturn` | Eier | Bare ved lån i bruk. Fullfører lånet. Bygget 21.10 (#214, med knappen «Bekreft retur» på forespørselssiden): når som helst mens lånet er i bruk (Max 21.10), og perioden er ledig etterpå. Intent `return` i `updateRequest`. |
 | `reportIssue` | Begge | Lagrer rapport. Endrer ikke status. Bare avsender og admin kan lese den. |
+| Favoritt på og av | Innlogget bruker | Lagt til 24.10 (#224), ikke bygget. Bruker fra økten. Ikke egen annonse, og bare en annonse som er ute. Av fjerner bare egen rad. |
 | `updateProfile` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
 
 ## Avvik fra tegningene (Max 08.10, #91)
@@ -236,6 +238,7 @@ ikke kodenavn. Ruter og komponentnavn er forslag.
 | 08d | Lån i bruk | `Avtale-leie-aktiv-*` | `/requests/:id` | `StatusBanner`, `ContactCard` (#188), `HandoverActions` (#214); `ExtensionPanel`, `ReturnIssuePanel` er ikke bygget | Bygget: banneret «I bruk», periode, pris og kontakt, og for eieren «Bekreft retur» (21.10, #214; spør «Ja, bekreft retur» først, meldingen er «Retur bekreftet», og banneret blir «Fullført»). Låneren har ingen knapper. Ikke bygget: forleng lånet (WV-01) og rapporter returproblem (WV-02). | |
 | 09 | Min side: Mine annonser | `Minside-*` | `/me` | `ProfileCard`, `MyPageTabs`, `ListingCard` | Profil og faner. Egne annonser med status, «Rediger» og «Ta ned». Solgte annonser har ingen handlinger; låneannonser blir liggende med opptatte datoer. | |
 | 09 | Min side: Historikk | `Minside-historikk-*` | `/me?tab=history` | `HistoryList` | Fullførte salg og lån, både gitt og mottatt. | |
+| 09 | Min side: Mine favoritter | Ingen tegning (#224) | `/me?tab=favorites` | `ListingCard` | Lagt til 24.10 (#224), ikke bygget. Annonsene brukeren har markert med hjerte, bare de som er ute; solgte, gitt bort og nedtatte vises ikke, utlånte lån vises. Hjertet står også på kortet i søket (WF-03) og på annonsesiden (WF-04), ikke på egne annonser. Mockup godkjennes før skjermen bygges. | Tom liste. |
 | 09 | Rediger profil | `Profil-rediger-*` | `/me/profile` | `ProfileForm` | Bytt eller fjern bilde, navn, telefon, e-post (låst), «Lagre», «Logg ut». | |
 
 ## Ikke avklart

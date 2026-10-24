@@ -38,6 +38,13 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-15:** Gitt at lagringen av en forespørsel eller et svar feiler, når brukeren utfører handlingen, så skal appen ikke vise den som fullført, og brukeren skal få en tydelig feilmelding.
 - **AK-33:** Gitt flere ventende bud på samme salgsannonse, når eieren godtar ett, så skal annonsen forsvinne fra søket og de andre budene avslås.
 
+## Favoritter (FK-14, TK-03)
+
+- **AK-42:** Gitt en innlogget bruker og en annen students aktive annonse, når brukeren trykker på hjertet på kortet eller annonsesiden, så skal annonsen lagres som favoritt og vises i «Mine favoritter». Trykker brukeren igjen, fjernes den.
+- **AK-43:** Gitt en favoritt, når annonsen blir solgt, gitt bort eller tatt ned, så skal den ikke lenger vises i «Mine favoritter». En låneannonse som er utlånt, vises fortsatt. Avbestilles salget og annonsen legges ut igjen, vises favoritten igjen.
+- **AK-44:** Gitt at en bruker prøver å favorittmerke sin egen annonse, så skal serveren avvise det uten å lagre noe.
+- **AK-45:** Gitt to brukere med hver sine favoritter, når den ene åpner «Mine favoritter», så skal bare egne favoritter vises.
+
 ## Bruk på ulike enheter og tilgjengelighet (KK-01, KK-04, DK-03, DK-04)
 
 - **AK-16:** Gitt en mobil, et nettbrett eller en PC, når brukeren utfører en kjerneoppgave, så skal alle nødvendige felt og handlinger være tilgjengelige uten at innhold skjules av layouten. Prøves separat for søk, annonsevisning, publisering, forespørsel, svar, motforslag og overleveringsbekreftelse.
