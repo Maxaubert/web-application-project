@@ -10,17 +10,18 @@ import type { ListingFormValues } from "./listing-schema";
 import { ListingPreview } from "./ListingPreview";
 import type { useListingImages } from "./useListingImages";
 
-type Props = { values: ListingFormValues; images: ReturnType<typeof useListingImages>; error?: string };
+// readOnly: «Administrer» viser bildene som ligger lagret, men de kan ikke endres ennå (Max 24.10, #229).
+type Props = { values: ListingFormValues; images: ReturnType<typeof useListingImages>; error?: string; readOnly?: boolean };
 
 const busyOverlay = "pointer-events-none absolute inset-0 grid place-items-center bg-ink/55 p-1 text-center font-semibold text-white";
 
-export function ImageField({ values, images, error }: Props) {
+export function ImageField({ values, images, error, readOnly = false }: Props) {
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   const open = () => input.current?.click();
   const [cover] = images.images;
 
-  const drop = {
+  const drop = readOnly ? {} : {
     onDragOver: (event: DragEvent) => {
       event.preventDefault();
       setDragging(true);
@@ -37,8 +38,10 @@ export function ImageField({ values, images, error }: Props) {
   const photo = cover ? (
     <div {...drop} className={`relative aspect-[16/9] bg-hairline/60 bg-cover bg-center ${dragRing}`} style={{ backgroundImage: `url(${cover.url})` }}>
       <span className="absolute top-3 left-3 rounded-md bg-surface/90 px-2.5 py-1 text-sm font-bold">Forsidebilde</span>
-      {!cover.file && <span className={`${busyOverlay} text-lg`}>Gjør klar …</span>}
+      {!cover.file && !cover.stored && <span className={`${busyOverlay} text-lg`}>Gjør klar …</span>}
     </div>
+  ) : readOnly ? (
+    <div className="aspect-[16/9] bg-hairline/60" />
   ) : (
     <button
       type="button"
@@ -74,7 +77,17 @@ export function ImageField({ values, images, error }: Props) {
         }}
       />
       <div className="mt-3 flex flex-wrap gap-2.5">
-        {images.images.map((image, index) => (
+        {readOnly &&
+          images.images.map((image, index) => (
+            <div
+              key={image.id}
+              role="img"
+              aria-label={`Bilde ${index + 1}`}
+              className="size-[72px] rounded-lg bg-hairline/60 bg-cover bg-center sm:size-[86px]"
+              style={{ backgroundImage: `url(${image.thumbUrl ?? image.url})` }}
+            />
+          ))}
+        {!readOnly && images.images.map((image, index) => (
           <div key={image.id} className="relative size-[72px] overflow-hidden rounded-lg sm:size-[86px]">
             <button
               type="button"
@@ -95,7 +108,7 @@ export function ImageField({ values, images, error }: Props) {
             </button>
           </div>
         ))}
-        {images.images.length < MAX_IMAGES && (
+        {!readOnly && images.images.length < MAX_IMAGES && (
           <button
             type="button"
             id="listing-images-add"

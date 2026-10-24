@@ -13,6 +13,7 @@ import { serveImage } from "@/app/images/serve-image";
 import { getListings } from "@/app/listings/api";
 import { ListingPage } from "@/app/listings/ListingPage";
 import { NewListingPage } from "@/app/listings/NewListingPage";
+import { EditListingPage } from "@/app/listings/EditListingPage";
 import { MyPage } from "@/app/me/MyPage";
 import { BidPage } from "@/app/requests/BidPage";
 import { LoanPage } from "@/app/requests/LoanPage";
@@ -38,6 +39,7 @@ export default defineApp([
     route("/listings/new", [requireUser, NewListingPage]),
     route("/listings/:id/bid", [requireUser, BidPage]),
     route("/listings/:id/loan", [requireUser, LoanPage]),
+    route("/listings/:id/edit", [requireUser, EditListingPage]),
     route("/requests/:id", [requireUser, RequestPage]),
     route("/me", [requireUser, MyPage]),
     route("/listings/:id", [requireUser, ListingPage]),

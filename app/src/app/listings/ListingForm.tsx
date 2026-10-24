@@ -1,16 +1,18 @@
 "use client";
 // Skjemaet for «Legg ut annonse» (FK-03, mockup 13, #133). Feltene er kontrollerte, så forhåndsvisningen
 // over skjemaet følger med mens man skriver. Alt valideres på nytt i serverhandlingen createListing (#131).
+// Med edit er det samme skjema for «Administrer» (#229, Max 24.10): fylt ut, handelstypen låst, bildene bare vist,
+// og «Lagre endringer» sender til updateListing.
 import { startTransition, useActionState, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { asFormState, type ActionResult } from "@/app/auth/form-state";
 import { ErrorSummary } from "@/app/shared/ErrorSummary";
 import { FieldError, inputClass } from "@/app/shared/form-controls";
-import { createListing } from "./actions";
+import { createListing, updateListing } from "./actions";
 import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 import type { ListingFormValues } from "./listing-schema";
 import { ImageField } from "./ImageField";
 import { ListingPreviewDialog } from "./ListingPreviewDialog";
-import { useListingImages } from "./useListingImages";
+import { useListingImages, type PickedImage } from "./useListingImages";
 
 const EMPTY: ListingFormValues = { title: "", description: "", category: "", type: "sale", condition: "", price: "" };
 
@@ -30,12 +32,15 @@ const PRICE_LABELS = { sale: "Pris (kr)", loan: "Pris per uke (kr, valgfri)" };
 
 const entries = <K extends string>(labels: Record<K, string>) => Object.entries(labels) as [K, string][];
 
-export function ListingForm({ ownerName }: { ownerName: string }) {
-  const [result, action, pending] = useActionState<ActionResult, FormData>(createListing, {});
+// edit: annonsen som administreres. Uten den er skjemaet «Legg ut annonse».
+export type EditListing = { listingId: string; values: ListingFormValues; images: PickedImage[] };
+
+export function ListingForm({ ownerName, edit }: { ownerName: string; edit?: EditListing }) {
+  const [result, action, pending] = useActionState<ActionResult, FormData>(edit ? updateListing : createListing, {});
   const errors = asFormState(result).fieldErrors ?? {};
-  const [values, setValues] = useState(EMPTY);
+  const [values, setValues] = useState(edit?.values ?? EMPTY);
   const [previewing, setPreviewing] = useState(false);
-  const images = useListingImages();
+  const images = useListingImages(edit?.images);
 
   const set = (key: keyof ListingFormValues) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setValues({ ...values, [key]: event.target.value });
@@ -54,7 +59,15 @@ export function ListingForm({ ownerName }: { ownerName: string }) {
     }
     startTransition(() => action(data));
   }
-  const publishLabel = pending ? "Publiserer …" : images.busy ? "Gjør klar bilder …" : "Publiser";
+  const publishLabel = edit
+    ? pending
+      ? "Lagrer …"
+      : "Lagre endringer"
+    : pending
+      ? "Publiserer …"
+      : images.busy
+        ? "Gjør klar bilder …"
+        : "Publiser";
   // Feltet beskrives av telleren og av feilen, i den rekkefølgen de står på skjermen.
   const describe = (id: string, key: string, parts: { count?: boolean }) => ({
     "aria-invalid": errors[key] ? true : undefined,
@@ -63,11 +76,12 @@ export function ListingForm({ ownerName }: { ownerName: string }) {
 
   return (
     <form onSubmit={submit} noValidate className="flex flex-1 flex-col space-y-8">
-      <ErrorSummary errors={errors} fieldIds={FIELD_IDS} action="publiserer" />
+      {edit && <input type="hidden" name="listingId" value={edit.listingId} />}
+      <ErrorSummary errors={errors} fieldIds={FIELD_IDS} action={edit ? "lagrer" : "publiserer"} />
       {/* Fra 1024 px: forhåndsvisningen til venstre, som blir stående mens man ruller, og feltene til høyre (#135). */}
       <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-12">
         <div className="lg:sticky lg:top-6">
-          <ImageField values={values} images={images} error={errors.images} />
+          <ImageField values={values} images={images} error={errors.images} readOnly={Boolean(edit)} />
         </div>
 
         {/* @container: de små feltene står parvis når feltkolonnen er bred nok. Radioknappene får sin naturlige
@@ -117,7 +131,16 @@ export function ListingForm({ ownerName }: { ownerName: string }) {
               </select>
             </Field>
 
-            <RadioGroup name="type" legend="Handelstype" idPrefix="listing-type" options={entries(typeLabels)} value={values.type} onChange={set("type")} error={errors.type} />
+            <RadioGroup
+              name="type"
+              legend="Handelstype"
+              idPrefix="listing-type"
+              options={entries(typeLabels)}
+              value={values.type}
+              onChange={set("type")}
+              error={errors.type}
+              disabled={Boolean(edit)}
+            />
           </div>
 
           <div className="grid gap-8 @lg:grid-cols-[minmax(0,1fr)_auto]">
@@ -160,7 +183,7 @@ export function ListingForm({ ownerName }: { ownerName: string }) {
       {/* Knappene nederst til høyre i kortet: «Avbryt», «Forhåndsvis» og «Publiser» (Max 11.10, #135; #171).
           På mobil under hverandre med «Publiser» øverst. */}
       <div className="flex flex-col-reverse gap-3 pt-2 sm:mt-auto sm:flex-row sm:justify-end sm:pt-10">
-        <a href="/" className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
+        <a href={edit ? `/listings/${edit.listingId}` : "/"} className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
           Avbryt
         </a>
         <button
@@ -218,16 +241,18 @@ type RadioGroupProps = {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  // Låst handelstype i «Administrer» (#229): valget vises, men kan ikke endres, og sendes ikke med.
+  disabled?: boolean;
 };
 
-function RadioGroup({ name, legend, idPrefix, options, value, onChange, error }: RadioGroupProps) {
+function RadioGroup({ name, legend, idPrefix, options, value, onChange, error, disabled }: RadioGroupProps) {
   return (
-    <fieldset aria-describedby={error ? `${name}-error` : undefined}>
+    <fieldset disabled={disabled} aria-describedby={error ? `${name}-error` : undefined}>
       <legend className="mb-2 font-semibold">{legend}</legend>
       <FieldError id={`${name}-error`} message={error} />
       <div className="flex flex-wrap gap-x-7">
         {options.map(([optionValue, label]) => (
-          <label key={optionValue} className="flex min-h-11 cursor-pointer items-center gap-3 text-lg">
+          <label key={optionValue} className={`flex min-h-11 items-center gap-3 text-lg ${disabled ? "text-muted" : "cursor-pointer"}`}>
             <input
               id={`${idPrefix}-${optionValue}`}
               type="radio"

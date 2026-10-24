@@ -122,13 +122,20 @@ describe("ListingPage, budknappen", () => {
     expect(html).not.toContain("Endre bud");
   });
 
-  it("C og D: eieren og alle på en solgt annonse ser knappen grået ut, uten lenke", async () => {
+  // Endret 24.10 (#229, AK-50): eieren ser «Administrer» i stedet for den gråe knappen. Godkjent av Max 24.10.
+  it("C: eieren ser «Administrer» med lenke til redigering, og ingen budlenke", async () => {
+    const { html } = await renderPage("calc", "", OWNER_ID);
+    expect(html).toMatch(/<a href="\/listings\/calc\/edit"[^>]*>Administrer<\/a>/);
+    expect(html).not.toContain("Legg inn bud");
+  });
+
+  it("D: alle, også eieren, ser knappen grået ut på en solgt annonse, uten lenke", async () => {
     await holder.db.insert(listing).values(validListing({ id: "sold", status: "sold" }));
 
-    for (const [id, userId] of [["calc", OWNER_ID], ["sold", "kari"]] as const) {
-      const { html } = await renderPage(id, "", userId);
+    for (const userId of [OWNER_ID, "kari"]) {
+      const { html } = await renderPage("sold", "", userId);
       expect(html).toMatch(/<button[^>]*disabled[^>]*>Legg inn bud<\/button>/);
-      expect(html).not.toContain("/bid");
+      expect(html).not.toMatch(/\/bid|\/edit/);
     }
   });
 
@@ -182,13 +189,15 @@ describe("ListingPage, lån og gis bort", () => {
     expect(html).not.toContain("Send forespørsel");
   });
 
-  it("eieren ser knappen grået ut, med riktig navn for hver type, og uten lenke", async () => {
+  // Endret 24.10 (#229, AK-50): «Administrer» for eieren også ved lån og gis bort.
+  it("eieren ser «Administrer» i stedet for forespørselsknappen", async () => {
     const loan = (await renderPage("tent", "", OWNER_ID)).html;
     const free = (await renderPage("lamp", "", OWNER_ID)).html;
 
-    expect(loan).toMatch(/<button[^>]*disabled[^>]*>Send låneforespørsel<\/button>/);
-    expect(free).toMatch(/<button[^>]*disabled[^>]*>Send forespørsel<\/button>/);
-    expect(loan).not.toContain("/loan");
+    expect(loan).toMatch(/<a href="\/listings\/tent\/edit"[^>]*>Administrer<\/a>/);
+    expect(free).toMatch(/<a href="\/listings\/lamp\/edit"[^>]*>Administrer<\/a>/);
+    expect(loan).not.toMatch(/Send låneforespørsel|\/loan/);
+    expect(free).not.toContain("Send forespørsel");
   });
 
   it("en gis bort som er tatt, har knappen grået ut for andre", async () => {

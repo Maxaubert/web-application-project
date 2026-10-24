@@ -5,11 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { moveToFront, pickImages, type Rejected } from "@/app/images/pick-images";
 import { prepareImage } from "@/app/images/prepare-image";
 
-// file og thumb er ferdig behandlet; url og thumbUrl viser dem. Før det vises bare originalen.
-export type PickedImage = { id: string; url: string; thumbUrl?: string; file?: File; thumb?: File };
+// file og thumb er ferdig behandlet; url og thumbUrl viser dem. Før det vises bare originalen. stored: bildet ligger
+// allerede i R2 (Administrer, #229) og har ingen fil å gjøre klar.
+export type PickedImage = { id: string; url: string; thumbUrl?: string; file?: File; thumb?: File; stored?: true };
 
-export function useListingImages() {
-  const [images, setImages] = useState<PickedImage[]>([]);
+export function useListingImages(initial: PickedImage[] = []) {
+  const [images, setImages] = useState<PickedImage[]>(initial);
   const [rejected, setRejected] = useState<Rejected[]>([]);
   // Alle forhåndsvisningsadresser som er laget, så de kan frigjøres når siden forlates.
   const urls = useRef(new Set<string>());
@@ -43,5 +44,5 @@ export function useListingImages() {
   const remove = (id: string) => setImages((current) => current.filter((image) => image.id !== id));
   const makeCover = (id: string) => setImages((current) => moveToFront(current, current.findIndex((image) => image.id === id)));
 
-  return { images, rejected, busy: images.some((image) => !image.file), add, remove, makeCover };
+  return { images, rejected, busy: images.some((image) => !image.file && !image.stored), add, remove, makeCover };
 }

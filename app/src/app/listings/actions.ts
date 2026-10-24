@@ -50,7 +50,8 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
   return redirect(`/listings/${listingId}?publisert=1`);
 }
 
-// «Ta ned» på Min side (#229). Reglene ligger i unpublishListing; her skjer bare det som hører til nettforespørselen.
+// «Slett annonse» i «Administrer» (#229): annonsen tas ned, dataene beholdes. Reglene ligger i unpublishListing; her skjer
+// bare det som hører til nettforespørselen. Ved suksess til Mine annonser (Max 24.10).
 export async function takeDownListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
   if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
@@ -61,7 +62,7 @@ export async function takeDownListing(_prev: ActionResult, formData: FormData): 
   if (!result.ok) return { error: result.error };
 
   log.info("listing_unpublished", { userId: ctx.session.userId, listingId });
-  return {};
+  return redirect("/me?tab=listings");
 }
 
 // «Administrer» (#229): lagre endringer i en egen annonse. Reglene ligger i updateListingFields; handelstypen er låst og
