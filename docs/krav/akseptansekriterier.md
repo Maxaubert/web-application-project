@@ -45,6 +45,12 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-44:** Gitt at en bruker prøver å favorittmerke sin egen annonse, så skal serveren avvise det uten å lagre noe.
 - **AK-45:** Gitt to brukere med hver sine favoritter, når den ene åpner «Mine favoritter», så skal bare egne favoritter vises.
 
+## Mine annonser og «Ta ned» (FK-11, TK-03)
+
+- **AK-46:** Gitt en aktiv annonse, når eieren tar den ned, så skal den forsvinne fra søket. Prøver en annen bruker, eller er annonsen solgt eller allerede tatt ned, skal serveren avvise det uten å endre noe.
+- **AK-47:** Gitt en annonse med ventende forespørsler, en godtatt avtale og et lån i bruk, når eieren tar den ned, så skal de ventende avslås, mens avtalen og lånet er uendret.
+- **AK-48:** Gitt at eieren åpner Mine annonser, så skal alle egne annonser vises, også solgte og nedtatte, med status, antall ventende forespørsler og «utlånt til» for et lån i bruk. Andres annonser vises ikke.
+
 ## Bruk på ulike enheter og tilgjengelighet (KK-01, KK-04, DK-03, DK-04)
 
 - **AK-16:** Gitt en mobil, et nettbrett eller en PC, når brukeren utfører en kjerneoppgave, så skal alle nødvendige felt og handlinger være tilgjengelige uten at innhold skjules av layouten. Prøves separat for søk, annonsevisning, publisering, forespørsel, svar, motforslag og overleveringsbekreftelse.
