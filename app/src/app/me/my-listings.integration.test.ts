@@ -19,7 +19,8 @@ beforeEach(async () => {
 });
 
 describe("getMyListings", () => {
-  it("gir bare egne annonser, også solgte og nedtatte, med ventende forespørsler og utlånt til", async () => {
+  // Endret 24.10 (#229, AK-48): bare aktive annonser; solgte hører til Historikk, og slettede er borte. Godkjent av Max 24.10.
+  it("gir bare egne aktive annonser, med ventende forespørsler (utløpte teller ikke) og utlånt til", async () => {
     await db.insert(listing).values([
       validListing({ id: "calc", createdAt: new Date("2026-10-20T10:00:00Z") }),
       validListing({ id: "sold", status: "sold", createdAt: new Date("2026-10-19T10:00:00Z") }),
@@ -40,11 +41,9 @@ describe("getMyListings", () => {
 
     const mine = await getMyListings(db, OWNER_ID, NOW);
 
-    expect(mine.map((row) => [row.listing.id, row.listing.status, row.pending, row.loanedUntil])).toEqual([
-      ["calc", "active", 1, null],
-      ["sold", "sold", 0, null],
-      ["down", "unpublished", 0, null],
-      ["drill", "active", 0, "2026-10-30"],
+    expect(mine.map((row) => [row.listing.id, row.pending, row.loanedUntil])).toEqual([
+      ["calc", 1, null],
+      ["drill", 0, "2026-10-30"],
     ]);
   });
 });

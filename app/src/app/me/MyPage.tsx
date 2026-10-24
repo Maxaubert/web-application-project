@@ -1,5 +1,5 @@
-// Min side /me (WF-09, #193). Beskyttet av requireUser. Fanene Forespørsler (WF-07) med Mottatt og Sendt, og Mine favoritter
-// (?tab=favorites, #224); Mine annonser og Historikk kommer med #189 og #220. Fanene og Mottatt/Sendt er vanlige lenker,
+// Min side /me (WF-09, #193). Beskyttet av requireUser. Fanene Forespørsler (WF-07) med Mottatt og Sendt, Mine annonser
+// (?tab=listings, #229) og Mine favoritter (?tab=favorites, #224); Historikk kommer med #220. Fanene og Mottatt/Sendt er vanlige lenker,
 // ikke klientkode, og siden henter bare dataene til fanen som er åpen.
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
@@ -12,6 +12,8 @@ import { parseShow, splitRequests, type Show } from "./my-requests";
 import { ProfileCard } from "./ProfileCard";
 import { getProfile } from "./queries";
 import { FavoriteRow } from "./FavoriteRow";
+import { getMyListings, type MyListing } from "./my-listings";
+import { MyListingRow } from "./MyListingRow";
 import { RequestRow } from "./RequestRow";
 import { parseTab } from "./tabs";
 
@@ -34,14 +36,13 @@ export async function MyPage({ ctx, request }: RequestInfo) {
 
         <nav aria-label="Faner" className="mt-6 flex border-b-2 border-hairline">
           <TabLink href="/me" current={tab === "requests"} label="Forespørsler" />
+          <TabLink href="/me?tab=listings" current={tab === "listings"} label="Mine annonser" />
           <TabLink href="/me?tab=favorites" current={tab === "favorites"} label="Mine favoritter" />
         </nav>
 
-        {tab === "requests" ? (
-          <Requests lists={splitRequests(await getRequestsForUser(db, userId))} show={parseShow(params.get("show"))} />
-        ) : (
-          <Favorites items={await getFavoriteListings(db, userId)} />
-        )}
+        {tab === "requests" && <Requests lists={splitRequests(await getRequestsForUser(db, userId))} show={parseShow(params.get("show"))} />}
+        {tab === "listings" && <MyListings items={await getMyListings(db, userId)} />}
+        {tab === "favorites" && <Favorites items={await getFavoriteListings(db, userId)} />}
       </div>
     </PageShell>
   );
@@ -69,6 +70,18 @@ function Requests({ lists, show }: { lists: ReturnType<typeof splitRequests>; sh
   );
 }
 
+// Mine annonser (#229): bare egne aktive annonser, nyeste først (getMyListings).
+function MyListings({ items }: { items: MyListing[] }) {
+  if (items.length === 0) return <Empty text="Du har ingen annonser" action={{ href: "/listings/new", label: "Legg ut annonse" }} />;
+  return (
+    <ul className={listClass}>
+      {items.map((item) => (
+        <MyListingRow key={item.listing.id} item={item} />
+      ))}
+    </ul>
+  );
+}
+
 // Mine favoritter (#224): bare aktive annonser, sist lagret først (getFavoriteListings). Fjernes hjertet, tegnes siden på nytt uten raden.
 function Favorites({ items }: { items: ListingWithOwner[] }) {
   if (items.length === 0) return <Empty text="Du har ingen favoritter" />;
@@ -84,15 +97,15 @@ function Favorites({ items }: { items: ListingWithOwner[] }) {
 const listClass =
   "mt-4 space-y-3.5 sm:space-y-0 sm:divide-y sm:divide-hairline sm:overflow-hidden sm:rounded-xl sm:border-2 sm:border-hairline sm:bg-surface";
 
-function Empty({ text }: { text: string }) {
+function Empty({ text, action = { href: "/", label: "Se annonser" } }: { text: string; action?: { href: string; label: string } }) {
   return (
     <div className="mt-4 rounded-xl border-2 border-dashed border-line px-6 py-8 text-center">
       <p className="text-xl font-bold">{text}</p>
       <a
-        href="/"
+        href={action.href}
         className="mt-4 inline-flex h-12 items-center rounded-md bg-action px-5 text-lg font-semibold text-white transition-colors hover:bg-action-hover"
       >
-        Se annonser
+        {action.label}
       </a>
     </div>
   );
