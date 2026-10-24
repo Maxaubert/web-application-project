@@ -66,12 +66,13 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Søk | Avklart 10.10 | Søket går i tittel, beskrivelse og selgerens navn, uten forskjell på store og små bokstaver (også æøå), og tåler skrivefeil og delord («kalkulater» og «kalk» finner «Kalkulator»). Best treff først; uten søkeord nyeste først. Filtre (Max 10.10, #102): kategori, handelstype og tilstand (flere valg), pris fra/til (lånepris per uke, tom pris regnes som 0 kr). Valgene virker med én gang, og opsjoner som ikke gir treff sammen med de andre valgene er grå (Max 10.10, #122). Sortering kommer i egen oppgave (#116). Fra to tegn vises de fem beste treffene i en liste under feltet mens man skriver, med bilde, tittel og «type · pris»; klikk åpner annonsen, og siste rad viser alle treff. Ingen treff gir ingen liste (Max 10.10, #104). |
 | Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93). Telefon og e-post vises fortsatt først etter aksept. |
 | Historikk | Avklart 28.09 | Alle forslag bevares (D-53), men forespørselssiden viser bare det siste; «Historikk» er fanen på Min side (Max 19.10, #205). Bare siste forslag kan godtas. Annonseendringer endrer ikke eksisterende avtaler (D-51). |
+| Favoritter | Avklart 24.10 | En innlogget bruker kan markere andres annonser med et hjerte, på kortet i søket og på annonsesiden, og finner dem i fanen «Mine favoritter» på Min side. Egne annonser kan ikke favorittmerkes; serveren avviser det. Solgte, gitt bort og nedtatte annonser vises ikke i fanen; lån blir liggende også mens de er utlånt, som i søket. Favoritten slettes ikke når annonsen blir borte, den skjules, så den kommer tilbake hvis et salg avbestilles og annonsen legges ut igjen (Max 24.10, #224). |
 
 **Begreper:** «Salg» overfører eierskap mot betaling utenfor appen. «Lån» gir midlertidig bruk, gratis eller mot ukepris. «Gis bort» overfører eierskap uten betaling.
 
 ## 2. MVP og avgrensning
 
-Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer, publisering for alle tre handelstyper, bud og låneforespørsler med motforslag på omgang, deling av kontaktinfo etter aksept, overleveringsbekreftelse fra begge, forlengelse av lån, rapport om returproblem, e-postvarsler og Min side med egne annonser, forespørsler og historikk. Salgsflyten bygges først, deretter lån og gis bort; alle tre skal være med ved MVP-lansering (D-68).
+Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer, publisering for alle tre handelstyper, bud og låneforespørsler med motforslag på omgang, deling av kontaktinfo etter aksept, overleveringsbekreftelse fra begge, forlengelse av lån, rapport om returproblem, e-postvarsler og Min side med egne annonser, forespørsler, historikk og favoritter. Salgsflyten bygges først, deretter lån og gis bort; alle tre skal være med ved MVP-lansering (D-68).
 
 ### Ikke med i MVP
 
@@ -108,9 +109,10 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-08 | Etter aksept skal begge parter se hverandres telefon og e-post og bekrefte overlevering i appen. Salg og gis bort er fullført når begge har bekreftet; lån er da i bruk. |
 | FK-09 | Begge parter i et lån skal kunne foreslå en senere returdato, som den andre godtar eller avslår. |
 | FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. |
-| FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler og Historikk, og kunne redigere profil, ta ned egne annonser og logge ut. |
+| FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler, Historikk og Mine favoritter, og kunne redigere profil, ta ned egne annonser og logge ut. |
 | FK-12 | Partene skal få e-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. |
 | FK-13 | En innlogget bruker skal kunne klikke på eierens navn på en annonse og se brukerens andre aktive annonser (Max 08.10). |
+| FK-14 | En innlogget bruker skal kunne markere og avmarkere andres annonser som favoritt med et hjerte, på kortet i søket og på annonsesiden, og se dem i fanen «Mine favoritter» på Min side. Fanen viser bare annonser som fortsatt er ute; solgte, gitt bort og nedtatte annonser vises ikke (Max 24.10, #224). |
 
 ### Informasjon per handelstype
 

@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-10-24
+
+- Krav (#224): ny funksjon «Mine favoritter». Andres annonser kan markeres med et hjerte på kortet i søket og på annonsesiden, og vises i en ny fane på Min side (FK-14, FK-11, AK-42 til AK-45). Egne annonser kan ikke favorittmerkes. Solgte, gitt bort og nedtatte annonser vises ikke; utlånte lån blir liggende, som i søket. Favoritten skjules ved lesing i stedet for å slettes, så den kommer tilbake hvis et salg avbestilles. Ikke bygget. (Max, #224)
+
 ## 2026-10-21
 
 - Forespørsler (#214, skjermen): eieren av et lån i bruk har «Bekreft retur» på forespørselssiden. Knappen spør «Bekrefte at lånet er levert tilbake?» og «Ja, bekreft retur» først, meldingen er «Retur bekreftet», og banneret blir «Fullført». Låneren har ingen knapper. Knappen vises også for et lån som ble i bruk av den automatiske bekreftelsen etter 3 dager. Max sa å bygge uten mockup. (Max, #214)
