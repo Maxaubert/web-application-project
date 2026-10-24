@@ -45,11 +45,13 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-44:** Gitt at en bruker prøver å favorittmerke sin egen annonse, så skal serveren avvise det uten å lagre noe.
 - **AK-45:** Gitt to brukere med hver sine favoritter, når den ene åpner «Mine favoritter», så skal bare egne favoritter vises.
 
-## Mine annonser og «Ta ned» (FK-11, TK-03)
+## Mine annonser, Administrer og Slett (FK-11, TK-03)
 
-- **AK-46:** Gitt en aktiv annonse, når eieren tar den ned, så skal den forsvinne fra søket. Prøver en annen bruker, eller er annonsen solgt eller allerede tatt ned, skal serveren avvise det uten å endre noe.
-- **AK-47:** Gitt en annonse med ventende forespørsler, en godtatt avtale og et lån i bruk, når eieren tar den ned, så skal de ventende avslås, mens avtalen og lånet er uendret.
-- **AK-48:** Gitt at eieren åpner Mine annonser, så skal alle egne annonser vises, også solgte og nedtatte, med status, antall ventende forespørsler og «utlånt til» for et lån i bruk. Andres annonser vises ikke.
+- **AK-46:** Gitt en aktiv annonse, når eieren sletter den, så skal den forsvinne fra søket og Mine annonser. Prøver en annen bruker, eller er annonsen solgt eller allerede slettet, skal serveren avvise det uten å endre noe.
+- **AK-47:** Gitt en annonse med ventende forespørsler, en godtatt avtale og et lån i bruk, når eieren sletter den, så skal de ventende avslås, mens avtalen og lånet er uendret.
+- **AK-48:** Gitt at eieren åpner Mine annonser, så skal bare egne aktive annonser vises, med antall ventende forespørsler og «utlånt til» for et lån i bruk. Solgte, slettede og andres annonser vises ikke.
+- **AK-49:** Gitt eierens aktive annonse, når eieren lagrer endringer, så skal tittel, beskrivelse, kategori, tilstand og pris lagres med samme regler som ved publisering, mens handelstypen og eksisterende avtaler er uendret. Andre brukere, solgte og slettede annonser avvises uten endring.
+- **AK-50:** Gitt at eieren åpner sin egen annonse, så skal «Administrer» vises i stedet for «Legg inn bud» eller «Send forespørsel».
 
 ## Bruk på ulike enheter og tilgjengelighet (KK-01, KK-04, DK-03, DK-04)
 
