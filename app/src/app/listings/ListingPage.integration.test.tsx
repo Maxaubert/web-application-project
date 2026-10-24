@@ -4,11 +4,14 @@ import { eq } from "drizzle-orm";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { listing, offer, request, user } from "@/db/schema";
+import { favorite, listing, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { OWNER_ID, validListing } from "@/test/test-listings";
 import { ListingPage } from "./ListingPage";
+
+// Serverhandlingen bak hjertet (#224) trengs ikke for å tegne det.
+vi.mock("@/app/favorites/actions", () => ({ toggleFavorite: vi.fn() }));
 
 // Den ekte databasen finnes bare i Cloudflare, så siden får testdatabasen i stedet.
 const holder = vi.hoisted(() => ({ db: undefined as unknown as Db }));
@@ -210,5 +213,27 @@ describe("ListingPage etter publisering", () => {
   it("andre ser ikke bekreftelsen, og eieren ser den ikke uten ?publisert=1", async () => {
     expect((await renderPage("calc", "?publisert=1", "someone-else")).html).not.toContain("Annonsen er publisert");
     expect((await renderPage("calc", "", OWNER_ID)).html).not.toContain("Annonsen er publisert");
+  });
+});
+
+// Hjertet ved tittelen (#224). Godkjent av Max 24.10.
+describe("ListingPage, hjertet", () => {
+  beforeEach(async () => {
+    await holder.db.insert(user).values({ id: "per", name: "Per Olsen", email: "per@hiof.no" });
+  });
+
+  it("er fylt for en annonse brukeren har lagret, og tomt ellers", async () => {
+    await holder.db.insert(listing).values([validListing({ id: "calc" }), validListing({ id: "lamp" })]);
+    await holder.db.insert(favorite).values({ userId: "per", listingId: "calc" });
+
+    expect((await renderPage("calc", "", "per")).html).toMatch(/aria-pressed="true"/);
+    expect((await renderPage("lamp", "", "per")).html).toMatch(/aria-pressed="false"/);
+  });
+
+  it("vises ikke på egen annonse eller på en solgt annonse", async () => {
+    await holder.db.insert(listing).values([validListing({ id: "calc" }), validListing({ id: "sold", status: "sold" })]);
+
+    expect((await renderPage("calc", "", OWNER_ID)).html).not.toContain("aria-pressed");
+    expect((await renderPage("sold", "", "per")).html).not.toContain("aria-pressed");
   });
 });

@@ -9,12 +9,14 @@ import { categoryLabels, conditionLabels, typeLabels } from "./labels";
 // images: adressene til bildene og miniatyrene deres, forsidebildet først (#150, #155).
 // backLink: lenken øverst; forhåndsvisningen i «Legg ut annonse» har ingen (#171).
 // bidAction: knappen under kategori og tilstand (#185, Max 17.10). Forhåndsvisningen i «Legg ut annonse» har ingen.
+// favoriteAction: hjertet til høyre for tittelen (#224, Max 24.10). Bare på andres aktive annonser.
 type ListingDetailsProps = {
   listing: Listing;
   ownerName: string;
   images: GalleryImage[];
   backLink?: ReactNode;
   bidAction?: ReactNode;
+  favoriteAction?: ReactNode;
 };
 
 // Overskriften i eierboksen, som i wireframene: «Selger» ved salg, «Eier» ved lån. Gis bort er ikke tegnet (#64).
@@ -22,7 +24,7 @@ const ownerHeadings: Record<Listing["type"], string> = { sale: "Selger", loan: "
 
 const pill = "inline-block rounded-full border-2 px-3 py-0.5 text-sm font-semibold";
 
-export function ListingDetails({ listing, ownerName, images, backLink, bidAction }: ListingDetailsProps) {
+export function ListingDetails({ listing, ownerName, images, backLink, bidAction, favoriteAction }: ListingDetailsProps) {
   const price = formatPrice(listing);
 
   return (
@@ -41,7 +43,10 @@ export function ListingDetails({ listing, ownerName, images, backLink, bidAction
             <span className={`${pill} border-ink`}>{typeLabels[listing.type]}</span>
             {listing.status === "sold" && <span className={`${pill} border-ink bg-ink text-paper`}>Solgt</span>}
           </p>
-          <h1 className="mt-3 text-2xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
+          <div className="mt-3 flex items-start justify-between gap-4">
+            <h1 className="text-2xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl">{listing.title}</h1>
+            {favoriteAction && <div className="shrink-0">{favoriteAction}</div>}
+          </div>
           {price && <p className="mt-3 text-2xl font-bold">{price}</p>}
 
           <dl className="mt-8 grid grid-cols-2 gap-4">

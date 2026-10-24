@@ -12,6 +12,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 - Krav (#224): ny funksjon «Mine favoritter». Andres annonser kan markeres med et hjerte på kortet i søket og på annonsesiden, og vises i en ny fane på Min side (FK-14, FK-11, AK-42 til AK-45). Egne annonser kan ikke favorittmerkes. Solgte, gitt bort og nedtatte annonser vises ikke; utlånte lån blir liggende, som i søket. Favoritten skjules ved lesing i stedet for å slettes, så den kommer tilbake hvis et salg avbestilles. Ikke bygget. (Max, #224)
 - Favoritter (#224, serverdelen): tabellen `favorite` med paret bruker og annonse som nøkkel (migrasjon 0005). `setFavorite` avviser egne, solgte og nedtatte annonser, og to trykk gir én rad. `getFavoriteListings` viser bare aktive annonser, sist lagret først, og `getFavoriteIds` gir hvilke hjerter som er fylt. Serverhandlingen `toggleFavorite` henter brukeren fra økten. Hjertet og fanen kommer i egne PR-er. (Max, #224)
+- Favoritter (#224, hjertet): et tomt hjerte nederst til høyre i bildet på kortene i søket og til høyre for tittelen på annonsesiden. Det snur med én gang (`useOptimistic`) og snur tilbake med feilen under hvis serveren avviser. Ingen hjerte på egne eller solgte annonser. Max valgte plasseringen og sa å bygge uten mockup. Fanen Mine favoritter kommer i neste PR. (Max, #224)
 
 ## 2026-10-21
 

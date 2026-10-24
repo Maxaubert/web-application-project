@@ -48,6 +48,7 @@ export default function globalSetup() {
      INSERT OR IGNORE INTO user (id, name, email, email_verified, phone)
        VALUES ('e2e-buyer', 'E2E Kjøper', 'e2e-buyer@hiof.no', 1, '+4790000002');
      DELETE FROM request WHERE requester_id IN ('e2e-user', 'e2e-buyer');
+     DELETE FROM favorite WHERE user_id IN ('e2e-user', 'e2e-seller', 'e2e-buyer');
      DELETE FROM session WHERE user_id IN ('e2e-user', 'e2e-seller', 'e2e-buyer');
      INSERT INTO session (id, token, user_id, expires_at, created_at, updated_at)
        VALUES
@@ -73,7 +74,8 @@ export default function globalSetup() {
          ('e2e-svar-trekk', 'e2e-seller', 'sale', 'Svartest trekk', 'Til svartestene.', 'books', 'used', 250, 'active'),
          ('e2e-over-lan', 'e2e-seller', 'loan', 'Overlevering lån', 'Til returtesten.', 'sports', 'used', 60, 'active'),
          ('e2e-over-ok', 'e2e-seller', 'sale', 'Overlevering ok', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
-         ('e2e-over-avbest', 'e2e-seller', 'sale', 'Overlevering avbestilt', 'Til overleveringstesten.', 'books', 'used', 250, 'sold');
+         ('e2e-over-avbest', 'e2e-seller', 'sale', 'Overlevering avbestilt', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
+         ('e2e-fav', 'e2e-seller', 'sale', 'Favoritt sykkel', 'Til favorittesten.', 'bikes', 'used', 900, 'active');
      INSERT INTO request (id, listing_id, requester_id, status)
        VALUES
          ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer', 'waiting_owner'),
