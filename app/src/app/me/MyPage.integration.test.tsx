@@ -182,6 +182,38 @@ describe("Min side, rekkefølgen", () => {
 });
 
 // Fanen Mine favoritter (#224). Godkjent av Max 24.10.
+// Fanen Mine annonser (#229). Godkjent av Max 24.10.
+describe("Min side, Mine annonser", () => {
+  it("viser bare egne aktive annonser med statuslinje og «Administrer», og fanen markert", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "sold", title: "Solgt bok", status: "sold" }),
+      validListing({ id: "down", title: "Slettet lampe", status: "unpublished" }),
+      validListing({ id: "drill", title: "Drill", type: "loan", price: null }),
+      validListing({ id: "theirs", title: "Karis sykkel", ownerId: "kari" }),
+    ]);
+    await holder.db.insert(request).values({ id: "loan", listingId: "drill", requesterId: "per", status: "in_use" });
+    await holder.db.insert(offer).values({ requestId: "loan", senderId: "per", startDate: "2026-10-15", endDate: "2026-10-30" });
+
+    const html = await visit(OWNER_ID, "?tab=listings");
+
+    expect(html).toMatch(/<a href="\/me\?tab=listings" aria-current="page"[^>]*>Mine annonser<\/a>/);
+    expect(html).toContain("Publisert · 1 ventende forespørsel");
+    expect(html).toContain("Publisert · utlånt til 30.10");
+    for (const hidden of ["Solgt bok", "Slettet lampe", "Karis sykkel"]) expect(html).not.toContain(hidden);
+    // Raden åpner annonsen, og «Administrer» åpner redigeringssiden.
+    expect(html).toContain('href="/listings/calc"');
+    expect(html).toMatch(/<a href="\/listings\/calc\/edit"[^>]*>Administrer<\/a>/);
+    expect(html).toMatch(/<a href="\/listings\/drill\/edit"[^>]*>Administrer<\/a>/);
+  });
+
+  it("viser «Du har ingen annonser» med «Legg ut annonse» når brukeren ikke har noen", async () => {
+    const html = await visit("per", "?tab=listings");
+
+    expect(html).toContain("Du har ingen annonser");
+    expect(html).toMatch(/<a href="\/listings\/new"[^>]*>Legg ut annonse<\/a>/);
+  });
+});
+
 describe("Min side, Mine favoritter", () => {
   it("viser bare egne lagrede, aktive annonser, sist lagret først, med fylt hjerte og fanen markert", async () => {
     await holder.db.insert(listing).values([

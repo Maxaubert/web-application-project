@@ -151,6 +151,9 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
   `ListingDetails` har plassen `favoriteAction` ved tittelen, som `bidAction`.
 - Mine favoritter (#224, 24.10): `MyPage` leser fanen med `parseTab` (`me/tabs.ts`) og henter bare den åpne fanens data. `FavoriteRow`
   er raden, i samme stil som `RequestRow`, med `FavoriteButton` over den strukne lenken (`z-10`).
+- Mine annonser (#229, 24.10): `MyListingRow` er raden med `statusLine` og «Administrer» over den strukne lenken (`z-10`).
+  `getMyListings` (`me/my-listings.ts`) gir bare aktive annonser, med join på eieren i stedet for en id-liste (D1 tåler 100
+  parametere). `formatDay` i `request-view.ts` er eksportert.
 - Live søkeforslag (#104, 10.10): `SearchField` er nå klientkomponent (combobox etter WAI-ARIA), men rendres
   ferdig på serveren og virker uten JavaScript. `useSuggestions` henter fra `GET /api/listings` 200 ms etter
   siste tastetrykk og avbryter eldre forespørsler; `suggestions.ts` har den rene logikken (når hente, piltaster).

@@ -1,6 +1,6 @@
-// Mine annonser på Min side (FK-11, #229): alle egne annonser, også solgte og nedtatte, med det statuslinjen trenger.
-// Tar databasen som argument, så testene kan bruke SQLite i minnet.
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+// Mine annonser på Min side (FK-11, #229): egne aktive annonser med det statuslinjen trenger. Solgte hører til Historikk,
+// og slettede (nedtatte) er borte (Max 24.10, AK-48). Tar databasen som argument, så testene kan bruke SQLite i minnet.
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { listing, listingImage, offer, request, type Listing } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { handoverEffective } from "@/app/requests/auto-confirm";
@@ -14,19 +14,23 @@ export async function getMyListings(db: Db, userId: string, now = new Date()): P
     .select({ listing, coverKey: listingImage.key })
     .from(listing)
     .leftJoin(listingImage, and(eq(listingImage.listingId, listing.id), eq(listingImage.position, 0)))
-    .where(eq(listing.ownerId, userId))
+    .where(and(eq(listing.ownerId, userId), eq(listing.status, "active")))
     .orderBy(desc(listing.createdAt));
 
-  const ids = rows.map((row) => row.listing.id);
-  const requests = ids.length === 0 ? [] : await db.select().from(request).where(inArray(request.listingId, ids));
-  const offers =
-    requests.length === 0
-      ? []
-      : await db
-          .select()
-          .from(offer)
-          .where(inArray(offer.requestId, requests.map((r) => r.id)))
-          .orderBy(asc(sql`${offer}.rowid`));
+  // Forespørsler og forslag hentes med en join på eieren, ikke med en liste av id-er: D1 godtar høyst 100 parametere per
+  // spørring, så inArray feiler for en bruker med mange annonser (funnet av nettlesertesten 24.10).
+  const requests = (
+    await db.select({ request }).from(request).innerJoin(listing, eq(request.listingId, listing.id)).where(eq(listing.ownerId, userId))
+  ).map((row) => row.request);
+  const offers = (
+    await db
+      .select({ offer })
+      .from(offer)
+      .innerJoin(request, eq(offer.requestId, request.id))
+      .innerJoin(listing, eq(request.listingId, listing.id))
+      .where(eq(listing.ownerId, userId))
+      .orderBy(asc(sql`${offer}.rowid`))
+  ).map((row) => row.offer);
   // Senere forslag overskriver tidligere, så mappet ender med det siste per forespørsel.
   const latest = new Map(offers.map((o) => [o.requestId, o]));
 
