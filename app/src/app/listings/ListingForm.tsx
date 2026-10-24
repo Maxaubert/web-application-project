@@ -32,10 +32,13 @@ const PRICE_LABELS = { sale: "Pris (kr)", loan: "Pris per uke (kr, valgfri)" };
 
 const entries = <K extends string>(labels: Record<K, string>) => Object.entries(labels) as [K, string][];
 
-// edit: annonsen som administreres. Uten den er skjemaet «Legg ut annonse».
+// edit: annonsen som administreres. Uten den er skjemaet «Legg ut annonse». extraAction står først i knapperaden
+// («Slett annonse», #229): alle handlinger på siden står i samme rad til høyre (Max 24.10).
 export type EditListing = { listingId: string; values: ListingFormValues; images: PickedImage[] };
 
-export function ListingForm({ ownerName, edit }: { ownerName: string; edit?: EditListing }) {
+type ListingFormProps = { ownerName: string; edit?: EditListing; extraAction?: ReactNode };
+
+export function ListingForm({ ownerName, edit, extraAction }: ListingFormProps) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(edit ? updateListing : createListing, {});
   const errors = asFormState(result).fieldErrors ?? {};
   const [values, setValues] = useState(edit?.values ?? EMPTY);
@@ -183,6 +186,7 @@ export function ListingForm({ ownerName, edit }: { ownerName: string; edit?: Edi
       {/* Knappene nederst til høyre i kortet: «Avbryt», «Forhåndsvis» og «Publiser» (Max 11.10, #135; #171).
           På mobil under hverandre med «Publiser» øverst. */}
       <div className="flex flex-col-reverse gap-3 pt-2 sm:mt-auto sm:flex-row sm:justify-end sm:pt-10">
+        {extraAction}
         <a href={edit ? `/listings/${edit.listingId}` : "/"} className="inline-flex h-12 items-center justify-center rounded-md border-2 border-ink bg-surface px-6 text-lg font-semibold transition-colors hover:bg-paper">
           Avbryt
         </a>

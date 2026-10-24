@@ -12,6 +12,8 @@ describe("DeleteListingButton", () => {
 
     expect(html).toMatch(/<button type="button"[^>]*>Slett annonse<\/button>/);
     expect(html).not.toMatch(/type="submit"|Slette annonsen\?|Ja, slett/);
-    expect(html).toContain('<input type="hidden" name="listingId" value="calc"/>');
+    // Sprettoppvinduet finnes, men er lukket (Max 24.10: spørsmålet i et vindu, ikke under knappene).
+    expect(html).toContain('aria-labelledby="delete-listing-title"');
+    expect(html).not.toMatch(/<dialog[^>]* open/);
   });
 });

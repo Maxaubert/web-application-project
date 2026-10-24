@@ -1,42 +1,63 @@
 "use client";
-// «Slett annonse» i «Administrer» (#229, Max 24.10). Spør «Ja, slett» først (lokal tilstand), som Avbestill i
-// HandoverActions, og sender til serverhandlingen takeDownListing: annonsen tas ned, dataene beholdes. Ved suksess til
-// Mine annonser; avviser serveren, vises feilen under.
-import { useActionState, useState } from "react";
+// «Slett annonse» i «Administrer» (#229). Står i knapperaden med de andre, og spør i et sprettoppvindu (Max 24.10: aldri
+// en boks under knappene). Den ligger inne i redigeringsskjemaet, så den har ikke eget skjema: «Ja, slett» sender
+// listingId til serverhandlingen takeDownListing selv. Annonsen tas ned og dataene beholdes; ved suksess til Mine annonser.
+import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { asFormState, type ActionResult } from "@/app/auth/form-state";
 import { FieldError } from "@/app/shared/form-controls";
 import { takeDownListing } from "./actions";
 
-const danger =
-  "h-12 rounded-md border-2 border-danger bg-surface px-6 text-lg font-semibold text-danger enabled:hover:bg-paper disabled:cursor-wait disabled:opacity-70";
+const button = "h-12 rounded-md px-6 text-lg font-semibold transition-colors disabled:cursor-wait disabled:opacity-70";
+const danger = `${button} border-2 border-danger bg-surface text-danger enabled:hover:bg-paper`;
 
 export function DeleteListingButton({ listingId }: { listingId: string }) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(takeDownListing, {});
   const state = asFormState(result);
-  const [asking, setAsking] = useState(false);
+  const [open, setOpen] = useState(false);
+  const dialog = useRef<HTMLDialogElement>(null);
+
+  // Vinduet åpnes og lukkes av open, også når nettleseren lukker det selv (Esc), som i ListingPreviewDialog.
+  useEffect(() => {
+    const element = dialog.current;
+    if (!element) return;
+    if (open && !element.open) element.showModal();
+    if (!open && element.open) element.close();
+  }, [open]);
+
+  function confirm() {
+    const data = new FormData();
+    data.set("listingId", listingId);
+    startTransition(() => action(data));
+  }
 
   return (
-    <form action={action} noValidate className="space-y-3">
-      <input type="hidden" name="listingId" value={listingId} />
-      <FieldError id="delete-listing-error" message={state.error} />
-      {/* Egen key per del, så React lager nye knapper og klikket på «Slett annonse» ikke sender skjemaet. */}
-      {asking ? (
-        <div key="ask" className="space-y-3 rounded-xl border-2 border-danger bg-surface p-4">
-          <p className="text-lg font-bold">Slette annonsen?</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <button type="submit" disabled={pending} aria-busy={pending} className={danger}>
-              Ja, slett
-            </button>
-            <button type="button" onClick={() => setAsking(false)} className="min-h-12 px-2 font-semibold underline">
-              Avbryt
-            </button>
+    <>
+      <button type="button" onClick={() => setOpen(true)} className={danger}>
+        Slett annonse
+      </button>
+      <dialog
+        ref={dialog}
+        onClose={() => setOpen(false)}
+        aria-labelledby="delete-listing-title"
+        className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border-2 border-ink bg-surface p-6 text-ink backdrop:bg-ink/40"
+      >
+        {open && (
+          <div className="space-y-5">
+            <h2 id="delete-listing-title" className="text-xl font-bold">
+              Slette annonsen?
+            </h2>
+            <FieldError id="delete-listing-error" message={state.error} />
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button type="button" onClick={() => setOpen(false)} className={`${button} border-2 border-ink bg-surface hover:bg-paper`}>
+                Avbryt
+              </button>
+              <button type="button" onClick={confirm} disabled={pending} aria-busy={pending} className={`${button} bg-danger text-white enabled:hover:opacity-90`}>
+                Ja, slett
+              </button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <button key="idle" type="button" onClick={() => setAsking(true)} className={danger}>
-          Slett annonse
-        </button>
-      )}
-    </form>
+        )}
+      </dialog>
+    </>
   );
 }

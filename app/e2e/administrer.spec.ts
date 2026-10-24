@@ -20,13 +20,15 @@ test("eieren endrer tittel og pris fra annonsesiden, og sletter annonsen etter e
 
   await page.getByRole("link", { name: "Administrer" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Administrer annonse" })).toBeVisible();
+  // Bekreftelsen er et sprettoppvindu (Max 24.10).
+  const confirm = page.getByRole("dialog", { name: "Slette annonsen?" });
   await page.getByRole("button", { name: "Slett annonse" }).click();
-  await expect(page.getByText("Slette annonsen?")).toBeVisible();
-  await page.getByRole("button", { name: "Avbryt" }).click();
-  await expect(page.getByText("Slette annonsen?")).toHaveCount(0);
+  await expect(confirm).toBeVisible();
+  await confirm.getByRole("button", { name: "Avbryt" }).click();
+  await expect(confirm).toBeHidden();
 
   await page.getByRole("button", { name: "Slett annonse" }).click();
-  await page.getByRole("button", { name: "Ja, slett" }).click();
+  await confirm.getByRole("button", { name: "Ja, slett" }).click();
   await expect(page).toHaveURL(/\/me\?tab=listings$/);
 
   await page.goto("/", { waitUntil: "networkidle" });
