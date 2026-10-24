@@ -128,6 +128,10 @@ og gitt dobbel kode for kortet.
 og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å sende uten gevinst
 (for tidlig abstraksjon, RR/10:1697).
 
+- «Administrer» (#229, 24.10): `EditListingPage` gjenbruker `ListingForm` med `edit` (fylt ut, `updateListing`, låst `RadioGroup` for
+  handelstype). `ImageField` har `readOnly`, og `useListingImages` kan starte med lagrede bilder (`stored`), som ikke gjør
+  skjemaet opptatt. `DeleteListingButton` (klient) står i knapperaden via `extraAction` og spør i en modal `<dialog>`; uten eget skjema, så den kan ligge inne i redigeringsskjemaet. `BidAction` gir eieren «Administrer» (`own`).
+
 ## Annonsesider (WF-03, WF-04)
 
 - Siden er en tynn serverkomponent som henter data og setter sammen delene.

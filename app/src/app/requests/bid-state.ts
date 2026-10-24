@@ -19,7 +19,8 @@ export function bidState(listing: BidListing, userId: string, active: ActiveRequ
   // Nedtatte annonser vises ikke.
   if (listing.status === "unpublished") return { kind: "none" };
   // Eier først: på din egen annonse står knappen grået ut uansett.
-  if (listing.ownerId === userId) return { kind: "own" };
+  // Eieren får «Administrer» (#229), men bare så lenge annonsen er aktiv; en solgt annonse kan ikke endres.
+  if (listing.ownerId === userId) return listing.status === "sold" ? { kind: "sold" } : { kind: "own" };
   if (listing.status === "sold") return { kind: "sold" };
   if (listing.type !== "sale") {
     if (active) return { kind: "has_request", requestId: active.id, startDate: active.startDate, endDate: active.endDate };

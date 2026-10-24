@@ -75,7 +75,8 @@ export default function globalSetup() {
          ('e2e-over-lan', 'e2e-seller', 'loan', 'Overlevering lån', 'Til returtesten.', 'sports', 'used', 60, 'active'),
          ('e2e-over-ok', 'e2e-seller', 'sale', 'Overlevering ok', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
          ('e2e-over-avbest', 'e2e-seller', 'sale', 'Overlevering avbestilt', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
-         ('e2e-fav', 'e2e-seller', 'sale', 'Favoritt sykkel', 'Til favorittesten.', 'bikes', 'used', 900, 'active');
+         ('e2e-fav', 'e2e-seller', 'sale', 'Favoritt sykkel', 'Til favorittesten.', 'bikes', 'used', 900, 'active'),
+         ('e2e-rediger', 'e2e-user', 'sale', 'Rediger stol', 'Til administrer-testen.', 'furniture', 'used', 150, 'active');
      INSERT INTO request (id, listing_id, requester_id, status)
        VALUES
          ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer', 'waiting_owner'),
