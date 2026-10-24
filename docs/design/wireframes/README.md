@@ -67,7 +67,7 @@ statuser, ruter og komponentnavn er på engelsk; teksten brukerne ser, er på no
 | `listing_image` | id, listing_id, key, position | Bygget 11.10 (#138). 1–10 per annonse; `key` er filens plass i R2 (`listings/<annonse>/<uuid>.<jpg/png/webp>`), `position` 0 er forsidebildet. |
 | `request` | id, listing_id, requester_id, status, owner_confirmed, requester_confirmed, created_at | Status: `waiting_owner`, `waiting_requester`, `accepted`, `declined`, `withdrawn`, `expired`, `cancelled`, `in_use`, `completed`. |
 | `offer` | id, request_id, sender_id, price, start_date, end_date, created_at | Hvert bud, motbud og forlengelse. Siste rad er gjeldende. Eldre rader er historikk. |
-| `favorite` | user_id, listing_id, created_at | Lagt til 24.10 (#224), ikke bygget. Én rad per bruker og annonse. Raden slettes ikke når annonsen selges eller tas ned; fanen viser bare `active`. |
+| `favorite` | user_id, listing_id, created_at | Bygget 24.10 (#224). Paret `user_id`, `listing_id` er nøkkelen, så det blir aldri to rader for samme bruker og annonse. Raden slettes ikke når annonsen selges eller tas ned; fanen viser bare `active`. |
 | `issue_report` | id, request_id, sender_id, type, description, created_at | Returproblem (WV-02). Lagres som påstand, avgjør ingenting. |
 
 ## REST-endepunkter (lesing)
@@ -103,7 +103,7 @@ endrer ingenting i databasen.
 | `proposeExtension` | Begge | Ny returdato etter nåværende, ikke over neste godtatte lån. Motparten godtar eller avslår. |
 | `confirmReturn` | Eier | Bare ved lån i bruk. Fullfører lånet. Bygget 21.10 (#214, med knappen «Bekreft retur» på forespørselssiden): når som helst mens lånet er i bruk (Max 21.10), og perioden er ledig etterpå. Intent `return` i `updateRequest`. |
 | `reportIssue` | Begge | Lagrer rapport. Endrer ikke status. Bare avsender og admin kan lese den. |
-| Favoritt på og av | Innlogget bruker | Lagt til 24.10 (#224), ikke bygget. Bruker fra økten. Ikke egen annonse, og bare en annonse som er ute. Av fjerner bare egen rad. |
+| Favoritt på og av | Innlogget bruker | Bygget 24.10 (#224) som serverhandlingen `toggleFavorite` (skjemafeltet `intent` er `on` eller `off`) og reglene i `setFavorite`; hjertet er ikke bygget. Bruker fra økten. Ikke egen annonse, og bare en annonse som er ute. Av fjerner bare egen rad. |
 | `updateProfile` | Innlogget bruker | Navn, telefon, bilde. E-post kan ikke endres. |
 
 ## Avvik fra tegningene (Max 08.10, #91)
