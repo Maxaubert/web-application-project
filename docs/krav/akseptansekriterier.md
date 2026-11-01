@@ -76,15 +76,15 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 ## Overlevering, forlengelse og retur (FK-07 til FK-10, TK-02, TK-03)
 
 - **AK-34:** Gitt en godtatt avtale, når bare én part har bekreftet overlevering, så skal avtalen ikke vises som fullført. Når begge har bekreftet, skal salg og gis bort vises som fullført og lån som i bruk.
-- **AK-35:** Gitt et lån i bruk, når én part foreslår senere returdato som overlapper et annet godtatt lån, så skal forslaget avvises. Et gyldig forslag gjelder først når motparten har godtatt det.
-- **AK-36:** Gitt et lån i bruk, når en part rapporterer et returproblem, så skal rapporten lagres uten å endre avtalens status.
+- **AK-35:** Gitt et lån i bruk, når én part foreslår senere returdato som overlapper et annet godtatt lån, så skal forslaget avvises. Et gyldig forslag gjelder først når motparten har godtatt det. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først).
+- **AK-36:** Gitt et lån i bruk, når en part rapporterer et returproblem, så skal rapporten lagres uten å endre avtalens status. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først).
 - **AK-26:** Gitt et lån i bruk, når eieren bekrefter mottatt retur, så skal lånet lagres som fullført og vises slik for begge etter ny innlogging, uten at låneren bekrefter.
 - **AK-27:** Gitt at en innlogget bruker ikke er eieren, når brukeren forsøker å bekrefte retur, så skal serveren avvise handlingen uten å endre avtalen. Prøves både med låneren og en utenforstående.
 - **AK-28:** Gitt at lagring av returbekreftelsen feiler, når eieren bekrefter, så skal appen vise feil uten å vise lånet som fullført.
 - **AK-29:** Gitt en forespørsel som ikke er godtatt, når eieren forsøker å bekrefte retur, så skal serveren avvise handlingen uten å endre status.
 - **AK-38:** Gitt at bare én part har bekreftet overlevering, når det har gått 3 dager uten at motparten har bekreftet, så skal overleveringen regnes som bekreftet av begge.
 - **AK-39:** Gitt en forespørsel uten svar, når det har gått 7 dager, så skal den lagres som utløpt og ikke kunne godtas.
-- **AK-40:** Gitt en returrapport, når motparten eller en utenforstående prøver å lese den, så skal den ikke vises.
+- **AK-40:** Gitt en returrapport, når motparten eller en utenforstående prøver å lese den, så skal den ikke vises. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først).
 - **AK-37:** Gitt et lån med ukepris på 100 kr og en periode på 10 dager, når forespørselen vises, så skal prisen være 100 / 7 × 10 kr.
 
 **Før endelig godkjenning:** avklar kategorilisten, bildelagring og hvordan admin leser returrapporter, og gå gjennom kriteriene med Emil. Kriteriene er utkast, ikke ferdige eller beståtte tester.
