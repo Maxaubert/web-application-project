@@ -71,6 +71,17 @@ Ved deploy må `BETTER_AUTH_SECRET` settes som hemmelighet. `baseURL` settes ikk
 adressen fra forespørselen, og Workeren svarer bare på studentmarkedet.org (`workers_dev` er av), så
 adressen er alltid den samme (kontrollert mot `instance.ts` 10.10).
 
+## E-postvarsler (#232, valgt av Max 01.11.2026)
+
+| Valg | Begrunnelse |
+|---|---|
+| Samme utsending som innloggingskodene | Resend fra eget domene og `LOGIN_CODE_DELIVERY` (`log` lokalt), så ingen nye skyressurser eller hemmeligheter trengs. |
+| Sendes med `waitUntil` etter svaret | Handlingen er lagret før e-posten går, og en treg eller nede Resend gjør aldri klikket tregere. |
+| Feil logges, angrer ingenting | Et varsel som ikke kom frem, skal ikke angre en avtale; `notification_failed` i loggen viser det. |
+| Bare motparten, bare fem hendelser | FK-12: ny forespørsel, motbud, godta, avslå, avbestill. Utløp sender ikke, for appen har ingen planlagt jobb. |
+
+Koden: `notifications/messages.ts` (teksten, ren funksjon), `notify.ts` (finner motparten) og `sender.ts` (utsendingen). Serverhandlingene i `requests/actions.ts` kaller `notifyLater` etter at handlingen er lagret.
+
 ## Søk på forsiden (#97, valgt av Max 10.10.2026)
 
 | Valg | Hvorfor |
