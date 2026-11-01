@@ -1,8 +1,11 @@
 // Kortet rendres til HTML på serveren, uten nettleser. Godkjent av Max 07.10 og 08.10 (lenken).
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { Listing } from "@/db/schema";
 import { ListingCard } from "./ListingCard";
+
+// Serverhandlingen bak hjertet (#224) trengs ikke for å tegne det.
+vi.mock("@/app/favorites/actions", () => ({ toggleFavorite: vi.fn() }));
 
 const tent: Listing = {
   id: "tent",
@@ -41,5 +44,17 @@ describe("ListingCard", () => {
     const without = renderToStaticMarkup(<ListingCard listing={tent} cover={null} />);
     expect(without).not.toContain("<img");
     expect(without).toContain('aria-hidden="true"');
+  });
+
+  // Hjertet (#224). Godkjent av Max 24.10.
+  it("viser hjertet med riktig tilstand utenfor lenken, og ikke noe hjerte uten favorite", () => {
+    const saved = renderToStaticMarkup(<ListingCard listing={tent} cover={null} favorite />);
+    expect(saved).toMatch(/<button[^>]*aria-pressed="true"[^>]*aria-label="Fjern fra favoritter"/);
+    expect(saved.indexOf("aria-pressed")).toBeGreaterThan(saved.indexOf("</a>"));
+
+    const unsaved = renderToStaticMarkup(<ListingCard listing={tent} cover={null} favorite={false} />);
+    expect(unsaved).toMatch(/<button[^>]*aria-pressed="false"[^>]*aria-label="Lagre som favoritt"/);
+
+    expect(renderToStaticMarkup(<ListingCard listing={tent} cover={null} />)).not.toContain("<button");
   });
 });

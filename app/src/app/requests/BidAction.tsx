@@ -15,7 +15,13 @@ export function BidAction({ listingId, type, state }: { listingId: string; type:
   switch (state.kind) {
     case "none":
       return null;
+    // «Administrer» der andre ser budknappen (#229, Max 24.10), også når eieren finner annonsen i søket.
     case "own":
+      return (
+        <a href={`/listings/${listingId}/edit`} className={`${button} border-ink bg-surface text-ink hover:bg-paper`}>
+          Administrer
+        </a>
+      );
     case "sold":
       return (
         <button type="button" disabled className={`${button} border-hairline bg-hairline text-muted`}>

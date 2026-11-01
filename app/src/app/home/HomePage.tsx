@@ -6,6 +6,7 @@ import { availableOptions, matchesFilters } from "@/app/listings/filter-listings
 import { Filters } from "@/app/listings/Filters";
 import { imageUrl } from "@/app/images/image-url";
 import { ListingCard } from "@/app/listings/ListingCard";
+import { getFavoriteIds } from "@/app/favorites/queries";
 import { getActiveListings, type ListingWithOwner } from "@/app/listings/queries";
 import { countActiveFilters, parseSearch, type ListingFilters } from "@/app/listings/search-params";
 import { searchListings } from "@/app/listings/search-listings";
@@ -15,7 +16,7 @@ import { HeaderActions } from "@/app/shared/HeaderActions";
 import { PageShell } from "@/app/shared/page-shell";
 import { db } from "@/db";
 
-export async function HomePage({ request, response }: RequestInfo) {
+export async function HomePage({ request, response, ctx }: RequestInfo) {
   const search = parseSearch(new URL(request.url));
   if (!search.success) response.status = 400;
   // Ugyldig adresse: siden vises med tomme felt og «Ugyldig søk».
@@ -28,6 +29,8 @@ export async function HomePage({ request, response }: RequestInfo) {
     filters,
   );
   const active = countActiveFilters(filters);
+  const userId = ctx.session.userId ?? "";
+  const favorites = await getFavoriteIds(db, userId);
 
   return (
     <PageShell title="Annonser" wide headerAction={<HeaderActions />}>
@@ -41,7 +44,7 @@ export async function HomePage({ request, response }: RequestInfo) {
         </div>
         <Filters q={q} filters={filters} available={available} activeCount={active} count={listings.length} />
         <div className="col-span-2 lg:col-span-1 lg:col-start-2">
-          <Results valid={search.success} searched={q !== "" || active > 0} listings={listings} />
+          <Results valid={search.success} searched={q !== "" || active > 0} listings={listings} userId={userId} favorites={favorites} />
         </div>
       </div>
     </PageShell>
@@ -50,9 +53,10 @@ export async function HomePage({ request, response }: RequestInfo) {
 
 const NO_FILTERS: ListingFilters = { type: [], condition: [] };
 
-type ResultsProps = { valid: boolean; searched: boolean; listings: ListingWithOwner[] };
+// favorites: annonsene brukeren har lagret (#224). Egne annonser får ikke hjerte.
+type ResultsProps = { valid: boolean; searched: boolean; listings: ListingWithOwner[]; userId: string; favorites: Set<string> };
 
-function Results({ valid, searched, listings }: ResultsProps) {
+function Results({ valid, searched, listings, userId, favorites }: ResultsProps) {
   if (!valid) return <SearchNotice title="Ugyldig søk" />;
   if (listings.length === 0) {
     return searched ? <SearchNotice title="Ingen annonser passer søket" /> : <SearchNotice title="Ingen annonser ennå" showReset={false} />;
@@ -65,7 +69,11 @@ function Results({ valid, searched, listings }: ResultsProps) {
       <ul className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {listings.map(({ listing, coverKey }) => (
           <li key={listing.id}>
-            <ListingCard listing={listing} cover={coverKey && imageUrl(coverKey, "thumb")} />
+            <ListingCard
+              listing={listing}
+              cover={coverKey && imageUrl(coverKey, "thumb")}
+              favorite={listing.ownerId === userId ? undefined : favorites.has(listing.id)}
+            />
           </li>
         ))}
       </ul>

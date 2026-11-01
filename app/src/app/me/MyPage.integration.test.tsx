@@ -3,7 +3,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import type { RequestInfo } from "rwsdk/worker";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { listing, listingImage, offer, request, user } from "@/db/schema";
+import { favorite, listing, listingImage, offer, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { OWNER_ID, validListing } from "@/test/test-listings";
@@ -16,6 +16,8 @@ vi.mock("@/db", () => ({
   },
 }));
 vi.mock("@/app/auth/LogoutButton", () => ({ LogoutButton: () => null }));
+// Serverhandlingen bak hjertet (#224) trengs ikke for å tegne det.
+vi.mock("@/app/favorites/actions", () => ({ toggleFavorite: vi.fn() }));
 
 async function visit(userId: string, query = "") {
   const ctx = { session: { userId } } as RequestInfo["ctx"];
@@ -103,11 +105,12 @@ describe("Min side, selgeren (Mottatt)", () => {
     expect(html).toMatch(/<a href="\/me\?show=sent" aria-current="page"[^>]*>Sendt \(0\)<\/a>/);
   });
 
+  // Endret 01.11 (#220): avsluttede står i Historikk, så den lyse «Avslått»-chipen sjekkes der.
   it("«Din tur» er en mørk chip, og avsluttede statuser er lyse chips med statusen", async () => {
     expect(await visit(OWNER_ID)).toMatch(/<span class="[^"]*bg-action[^"]*">Din tur<\/span>/);
 
     await holder.db.update(request).set({ status: "declined" });
-    const html = await visit(OWNER_ID);
+    const html = await visit(OWNER_ID, "?tab=history");
 
     expect(html).toMatch(/<span class="[^"]*">Avslått<\/span>/);
     expect(html).not.toMatch(/<span class="[^"]*bg-action[^"]*">Avslått<\/span>/);
@@ -163,7 +166,7 @@ describe("Min side, rekkefølgen", () => {
       validListing({ id: "bok", title: "Kokebok", price: 60 }),
     ]);
     await holder.db.insert(request).values([
-      { id: "r2", listingId: "lamp", requesterId: "per", status: "declined", updatedAt: new Date("2026-10-18T10:00:00Z") },
+      { id: "r2", listingId: "lamp", requesterId: "per", status: "accepted", updatedAt: new Date("2026-10-18T10:00:00Z") },
       { id: "r3", listingId: "bok", requesterId: "per", status: "waiting_owner", updatedAt: new Date("2026-10-14T10:00:00Z") },
     ]);
     await holder.db.insert(offer).values([
@@ -173,8 +176,111 @@ describe("Min side, rekkefølgen", () => {
 
     const html = await visit(OWNER_ID);
 
-    // Kalkulator (din tur, 17.10), Kokebok (din tur, 14.10), Lampe (avslått, 18.10 men uten tur).
+    // Kalkulator (din tur, 17.10), Kokebok (din tur, 14.10), Lampe (avtalt, 18.10 men uten tur).
     expect(html.indexOf("Kalkulator")).toBeLessThan(html.indexOf("Kokebok"));
     expect(html.indexOf("Kokebok")).toBeLessThan(html.indexOf("Lampe"));
+  });
+});
+
+// Fanen Mine favoritter (#224). Godkjent av Max 24.10.
+// Fanen Mine annonser (#229). Godkjent av Max 24.10.
+describe("Min side, Mine annonser", () => {
+  it("viser bare egne aktive annonser med statuslinje og «Administrer», og fanen markert", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "sold", title: "Solgt bok", status: "sold" }),
+      validListing({ id: "down", title: "Slettet lampe", status: "unpublished" }),
+      validListing({ id: "drill", title: "Drill", type: "loan", price: null }),
+      validListing({ id: "theirs", title: "Karis sykkel", ownerId: "kari" }),
+    ]);
+    await holder.db.insert(request).values({ id: "loan", listingId: "drill", requesterId: "per", status: "in_use" });
+    await holder.db.insert(offer).values({ requestId: "loan", senderId: "per", startDate: "2026-10-15", endDate: "2026-10-30" });
+
+    const html = await visit(OWNER_ID, "?tab=listings");
+
+    expect(html).toMatch(/<a href="\/me\?tab=listings" aria-current="page"[^>]*>Mine annonser<\/a>/);
+    expect(html).toContain("Publisert · 1 ventende forespørsel");
+    expect(html).toContain("Publisert · utlånt til 30.10");
+    for (const hidden of ["Solgt bok", "Slettet lampe", "Karis sykkel"]) expect(html).not.toContain(hidden);
+    // Raden åpner annonsen, og «Administrer» åpner redigeringssiden.
+    expect(html).toContain('href="/listings/calc"');
+    expect(html).toMatch(/<a href="\/listings\/calc\/edit"[^>]*>Administrer<\/a>/);
+    expect(html).toMatch(/<a href="\/listings\/drill\/edit"[^>]*>Administrer<\/a>/);
+  });
+
+  it("viser «Du har ingen annonser» med «Legg ut annonse» når brukeren ikke har noen", async () => {
+    const html = await visit("per", "?tab=listings");
+
+    expect(html).toContain("Du har ingen annonser");
+    expect(html).toMatch(/<a href="\/listings\/new"[^>]*>Legg ut annonse<\/a>/);
+  });
+});
+
+// Fanen Historikk (#220). Godkjent av Max 01.11.
+describe("Min side, Historikk", () => {
+  it("viser avsluttede fra begge roller med statuschip, fanen markert, og Forespørsler viser dem ikke", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "lamp", title: "Lampe", price: 90 }),
+      validListing({ id: "bok", title: "Kokebok", ownerId: "kari", price: 60 }),
+    ]);
+    await holder.db.insert(request).values([
+      { id: "r2", listingId: "lamp", requesterId: "per", status: "completed", updatedAt: new Date("2026-10-16T10:00:00Z") },
+      { id: "r3", listingId: "bok", requesterId: OWNER_ID, status: "declined", updatedAt: new Date("2026-10-15T10:00:00Z") },
+    ]);
+    await holder.db.insert(offer).values([
+      { requestId: "r2", senderId: "per", price: 80, createdAt: new Date("2026-10-16T10:00:00Z") },
+      { requestId: "r3", senderId: OWNER_ID, price: 50, createdAt: new Date("2026-10-15T10:00:00Z") },
+    ]);
+
+    const history = await visit(OWNER_ID, "?tab=history");
+    expect(history).toMatch(/<a href="\/me\?tab=history" aria-current="page"[^>]*>Historikk<\/a>/);
+    expect(history).toMatch(/>Fullført<\/span>/);
+    expect(history).toMatch(/>Avslått<\/span>/);
+    expect(history.indexOf(">Lampe<")).toBeLessThan(history.indexOf(">Kokebok<"));
+    // Den pågående (Kalkulator, din tur) står ikke i Historikk.
+    expect(history).not.toContain(">Kalkulator<");
+
+    const requests = await visit(OWNER_ID);
+    expect(requests).toContain(">Kalkulator<");
+    for (const closed of [">Lampe<", ">Kokebok<"]) expect(requests).not.toContain(closed);
+  });
+
+  it("viser «Ingen avsluttede avtaler ennå» når det ikke finnes noen", async () => {
+    expect(await visit(OWNER_ID, "?tab=history")).toContain("Ingen avsluttede avtaler ennå");
+  });
+});
+
+describe("Min side, Mine favoritter", () => {
+  it("viser bare egne lagrede, aktive annonser, sist lagret først, med fylt hjerte og fanen markert", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "bike", title: "Sykkel", price: 900 }),
+      validListing({ id: "lamp", title: "Lampe", status: "sold" }),
+      validListing({ id: "tent", title: "Telt", type: "loan", price: 60 }),
+    ]);
+    await holder.db.insert(favorite).values([
+      { userId: "kari", listingId: "bike", createdAt: new Date("2026-10-18T09:00:00Z") },
+      { userId: "kari", listingId: "calc", createdAt: new Date("2026-10-18T10:00:00Z") },
+      { userId: "kari", listingId: "lamp", createdAt: new Date("2026-10-18T11:00:00Z") },
+      { userId: "per", listingId: "tent" },
+    ]);
+
+    const html = await visit("kari", "?tab=favorites");
+
+    expect(html).toMatch(/<a href="\/me\?tab=favorites" aria-current="page"[^>]*>Mine favoritter<\/a>/);
+    expect(html).not.toMatch(/aria-current="page"[^>]*>Forespørsler<\/a>/);
+    expect(html.indexOf(">Kalkulator<")).toBeGreaterThan(-1);
+    expect(html.indexOf(">Kalkulator<")).toBeLessThan(html.indexOf(">Sykkel<"));
+    expect(html).toContain("Ola Nordmann · 900 kr");
+    expect(html).not.toContain("Lampe");
+    expect(html).not.toContain("Telt");
+    expect(html.match(/aria-pressed="true"/g)).toHaveLength(2);
+    // Forespørslene hentes ikke på denne fanen.
+    expect(html).not.toContain("Mottatt (");
+  });
+
+  it("viser «Du har ingen favoritter» når brukeren ikke har lagret noe", async () => {
+    const html = await visit("per", "?tab=favorites");
+
+    expect(html).toContain("Du har ingen favoritter");
+    expect(html).toContain('href="/"');
   });
 });

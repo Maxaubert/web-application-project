@@ -48,6 +48,7 @@ export default function globalSetup() {
      INSERT OR IGNORE INTO user (id, name, email, email_verified, phone)
        VALUES ('e2e-buyer', 'E2E Kjøper', 'e2e-buyer@hiof.no', 1, '+4790000002');
      DELETE FROM request WHERE requester_id IN ('e2e-user', 'e2e-buyer');
+     DELETE FROM favorite WHERE user_id IN ('e2e-user', 'e2e-seller', 'e2e-buyer');
      DELETE FROM session WHERE user_id IN ('e2e-user', 'e2e-seller', 'e2e-buyer');
      INSERT INTO session (id, token, user_id, expires_at, created_at, updated_at)
        VALUES
@@ -73,7 +74,10 @@ export default function globalSetup() {
          ('e2e-svar-trekk', 'e2e-seller', 'sale', 'Svartest trekk', 'Til svartestene.', 'books', 'used', 250, 'active'),
          ('e2e-over-lan', 'e2e-seller', 'loan', 'Overlevering lån', 'Til returtesten.', 'sports', 'used', 60, 'active'),
          ('e2e-over-ok', 'e2e-seller', 'sale', 'Overlevering ok', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
-         ('e2e-over-avbest', 'e2e-seller', 'sale', 'Overlevering avbestilt', 'Til overleveringstesten.', 'books', 'used', 250, 'sold');
+         ('e2e-over-avbest', 'e2e-seller', 'sale', 'Overlevering avbestilt', 'Til overleveringstesten.', 'books', 'used', 250, 'sold'),
+         ('e2e-fav', 'e2e-seller', 'sale', 'Favoritt sykkel', 'Til favorittesten.', 'bikes', 'used', 900, 'active'),
+         ('e2e-rediger', 'e2e-user', 'sale', 'Rediger stol', 'Til administrer-testen.', 'furniture', 'used', 150, 'active'),
+         ('e2e-hist', 'e2e-seller', 'sale', 'Historikktest bok', 'Til historikktesten.', 'books', 'used', 250, 'active');
      INSERT INTO request (id, listing_id, requester_id, status)
        VALUES
          ('e2e-req-godta', 'e2e-svar-godta', 'e2e-buyer', 'waiting_owner'),
@@ -84,7 +88,8 @@ export default function globalSetup() {
          ('e2e-req-trekk', 'e2e-svar-trekk', 'e2e-buyer', 'waiting_owner'),
          ('e2e-req-retur', 'e2e-over-lan', 'e2e-buyer', 'in_use'),
          ('e2e-req-over-ok', 'e2e-over-ok', 'e2e-buyer', 'accepted'),
-         ('e2e-req-over-avbest', 'e2e-over-avbest', 'e2e-buyer', 'accepted');
+         ('e2e-req-over-avbest', 'e2e-over-avbest', 'e2e-buyer', 'accepted'),
+         ('e2e-req-hist', 'e2e-hist', 'e2e-buyer', 'declined');
      INSERT INTO offer (id, request_id, sender_id, price, start_date, end_date)
        VALUES
          ('e2e-offer-godta', 'e2e-req-godta', 'e2e-buyer', 220, NULL, NULL),
@@ -93,7 +98,8 @@ export default function globalSetup() {
          ('e2e-offer-retur', 'e2e-req-retur', 'e2e-buyer', NULL, '2026-11-12', '2026-11-19'),
          ('e2e-offer-trekk', 'e2e-req-trekk', 'e2e-buyer', 190, NULL, NULL),
          ('e2e-offer-lan', 'e2e-req-lan', 'e2e-buyer', NULL, '2026-11-12', '2026-11-19'),
-         ('e2e-offer-gis', 'e2e-req-gis', 'e2e-buyer', NULL, NULL, NULL);
+         ('e2e-offer-gis', 'e2e-req-gis', 'e2e-buyer', NULL, NULL, NULL),
+         ('e2e-offer-hist', 'e2e-req-hist', 'e2e-buyer', 170, NULL, NULL);
      DELETE FROM listing_image WHERE listing_id IN ('${TEST_LISTING_ID}', '${TEST_GALLERY_ID}');
      INSERT INTO listing_image (id, listing_id, key, position)
        VALUES

@@ -1,7 +1,7 @@
 // Databasetabeller. Auth-tabellene følger better-auth sin modell (user, session, account,
 // verification, rateLimit); feltene er hentet fra better-auth 1.7 for vår konfigurasjon.
 import { sql } from "drizzle-orm";
-import { check, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { check, index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 const createdAt = () =>
   integer("created_at", { mode: "timestamp_ms" }).notNull().default(sql`(unixepoch() * 1000)`);
@@ -251,3 +251,19 @@ export const offer = sqliteTable(
 );
 
 export type Offer = typeof offer.$inferSelect;
+
+// Favoritter (FK-14, #224): én rad per bruker og annonse, og paret er nøkkelen, så databasen selv hindrer duplikater.
+// Raden slettes ikke når annonsen selges eller tas ned; Mine favoritter viser bare aktive annonser (Max 24.10).
+export const favorite = sqliteTable(
+  "favorite",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    listingId: text("listing_id")
+      .notNull()
+      .references(() => listing.id, { onDelete: "cascade" }),
+    createdAt: createdAt(),
+  },
+  (table) => [primaryKey({ columns: [table.userId, table.listingId] }), index("favorite_listing_id_idx").on(table.listingId)],
+);

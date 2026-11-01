@@ -11,6 +11,8 @@ import { checkImages, checkThumbs } from "@/app/images/image-files";
 import { storeImages, withThumbs } from "@/app/images/storage";
 import { log } from "@/app/shared/log";
 import { validateListing, type ListingFormValues } from "./listing-schema";
+import { unpublishListing } from "./unpublish";
+import { updateListingFields } from "./update";
 
 const FIELDS = ["title", "description", "category", "type", "condition", "price"] as const;
 
@@ -46,4 +48,35 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
   }
   log.info("listing_created", { userId: ctx.session.userId, listingId, images: keys.length });
   return redirect(`/listings/${listingId}?publisert=1`);
+}
+
+// «Slett annonse» i «Administrer» (#229): annonsen tas ned, dataene beholdes. Reglene ligger i unpublishListing; her skjer
+// bare det som hører til nettforespørselen. Ved suksess til Mine annonser (Max 24.10).
+export async function takeDownListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const { ctx } = getRequestInfo();
+  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
+  if (ctx.session.needsSetup) return redirect("/account-setup");
+
+  const listingId = String(formData.get("listingId") ?? "");
+  const result = await unpublishListing(db, { userId: ctx.session.userId, listingId });
+  if (!result.ok) return { error: result.error };
+
+  log.info("listing_unpublished", { userId: ctx.session.userId, listingId });
+  return redirect("/me?tab=listings");
+}
+
+// «Administrer» (#229): lagre endringer i en egen annonse. Reglene ligger i updateListingFields; handelstypen er låst og
+// leses ikke fra skjemaet. Ved suksess til annonsesiden, ved feil tilbake til skjemaet med det som var fylt inn.
+export async function updateListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+  const { ctx } = getRequestInfo();
+  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
+  if (ctx.session.needsSetup) return redirect("/account-setup");
+
+  const listingId = String(formData.get("listingId") ?? "");
+  const values = Object.fromEntries(FIELDS.map((key) => [key, String(formData.get(key) ?? "")])) as ListingFormValues;
+  const result = await updateListingFields(db, { userId: ctx.session.userId, listingId, values });
+  if (!result.ok) return "fieldErrors" in result ? { fieldErrors: result.fieldErrors, values } : { error: result.error };
+
+  log.info("listing_updated", { userId: ctx.session.userId, listingId });
+  return redirect(`/listings/${listingId}`);
 }

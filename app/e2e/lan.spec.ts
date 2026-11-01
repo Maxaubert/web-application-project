@@ -64,9 +64,11 @@ test("gis bort: «Send forespørsel» sender uten felt, og knappen blir en lenke
   await expect(page.getByText("Venter på svar fra E2E Selger")).toBeVisible();
 });
 
-test("på din egen annonse er knappen grået ut", async ({ page }) => {
+// Endret 24.10 (#229, AK-50): eieren ser «Administrer» i stedet for den grå knappen.
+test("på din egen annonse står «Administrer» i stedet for knappen", async ({ page }) => {
   await page.goto("/listings/e2e-hammock", { waitUntil: "networkidle" });
-  await expect(page.getByRole("button", { name: "Send låneforespørsel" })).toBeDisabled();
+  await expect(page.getByRole("link", { name: "Administrer" })).toHaveAttribute("href", "/listings/e2e-hammock/edit");
+  await expect(page.getByText("Send låneforespørsel")).toHaveCount(0);
 
   await page.goto("/listings/e2e-hammock/loan");
   await expect(page).toHaveURL(/\/listings\/e2e-hammock$/);

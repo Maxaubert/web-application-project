@@ -20,7 +20,7 @@ const finished: Partial<Record<RequestStatus, string>> = {
 };
 
 // «12.11» av 2026-11-12, og «12.11 – 19.11» for en periode (#186).
-const formatDay = (day: string) => `${day.slice(8, 10)}.${day.slice(5, 7)}`;
+export const formatDay = (day: string) => `${day.slice(8, 10)}.${day.slice(5, 7)}`;
 export const formatPeriod = (startDate: string, endDate: string) => `${formatDay(startDate)} – ${formatDay(endDate)}`;
 
 // Et bud bare på salg; lån og gis bort er forespørsler (#186).

@@ -38,6 +38,26 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-15:** Gitt at lagringen av en forespørsel eller et svar feiler, når brukeren utfører handlingen, så skal appen ikke vise den som fullført, og brukeren skal få en tydelig feilmelding.
 - **AK-33:** Gitt flere ventende bud på samme salgsannonse, når eieren godtar ett, så skal annonsen forsvinne fra søket og de andre budene avslås.
 
+## Favoritter (FK-14, TK-03)
+
+- **AK-42:** Gitt en innlogget bruker og en annen students aktive annonse, når brukeren trykker på hjertet på kortet eller annonsesiden, så skal annonsen lagres som favoritt og vises i «Mine favoritter». Trykker brukeren igjen, fjernes den.
+- **AK-43:** Gitt en favoritt, når annonsen blir solgt, gitt bort eller tatt ned, så skal den ikke lenger vises i «Mine favoritter». En låneannonse som er utlånt, vises fortsatt. Avbestilles salget og annonsen legges ut igjen, vises favoritten igjen.
+- **AK-44:** Gitt at en bruker prøver å favorittmerke sin egen annonse, så skal serveren avvise det uten å lagre noe.
+- **AK-45:** Gitt to brukere med hver sine favoritter, når den ene åpner «Mine favoritter», så skal bare egne favoritter vises.
+
+## Mine annonser, Administrer og Slett (FK-11, TK-03)
+
+- **AK-46:** Gitt en aktiv annonse, når eieren sletter den, så skal den forsvinne fra søket og Mine annonser. Prøver en annen bruker, eller er annonsen solgt eller allerede slettet, skal serveren avvise det uten å endre noe.
+- **AK-47:** Gitt en annonse med ventende forespørsler, en godtatt avtale og et lån i bruk, når eieren sletter den, så skal de ventende avslås, mens avtalen og lånet er uendret.
+- **AK-48:** Gitt at eieren åpner Mine annonser, så skal bare egne aktive annonser vises, med antall ventende forespørsler og «utlånt til» for et lån i bruk. Solgte, slettede og andres annonser vises ikke.
+- **AK-49:** Gitt eierens aktive annonse, når eieren lagrer endringer, så skal tittel, beskrivelse, kategori, tilstand og pris lagres med samme regler som ved publisering, mens handelstypen og eksisterende avtaler er uendret. Andre brukere, solgte og slettede annonser avvises uten endring.
+- **AK-50:** Gitt at eieren åpner sin egen annonse, så skal «Administrer» vises i stedet for «Legg inn bud» eller «Send forespørsel».
+
+## Historikk (FK-06, FK-11)
+
+- **AK-51:** Gitt en bruker med pågående og avsluttede forespørsler både som eier og forespørrer, når brukeren åpner Historikk, så skal alle avsluttede (fullført, avslått, trukket tilbake, utløpt, avbestilt) vises med statusen, nyeste først, og ingen pågående.
+- **AK-52:** Gitt en avsluttet forespørsel, når brukeren åpner Forespørsler, så skal den ikke vises der. En avtale som er bekreftet automatisk etter 3 dager, regnes som fullført også i listene.
+
 ## Bruk på ulike enheter og tilgjengelighet (KK-01, KK-04, DK-03, DK-04)
 
 - **AK-16:** Gitt en mobil, et nettbrett eller en PC, når brukeren utfører en kjerneoppgave, så skal alle nødvendige felt og handlinger være tilgjengelige uten at innhold skjules av layouten. Prøves separat for søk, annonsevisning, publisering, forespørsel, svar, motforslag og overleveringsbekreftelse.

@@ -128,6 +128,10 @@ og gitt dobbel kode for kortet.
 og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å sende uten gevinst
 (for tidlig abstraksjon, RR/10:1697).
 
+- «Administrer» (#229, 24.10): `EditListingPage` gjenbruker `ListingForm` med `edit` (fylt ut, `updateListing`, låst `RadioGroup` for
+  handelstype). `ImageField` har `readOnly`, og `useListingImages` kan starte med lagrede bilder (`stored`), som ikke gjør
+  skjemaet opptatt. `DeleteListingButton` (klient) står i knapperaden via `extraAction` og spør i en modal `<dialog>`; uten eget skjema, så den kan ligge inne i redigeringsskjemaet. `BidAction` gir eieren «Administrer» (`own`).
+
 ## Annonsesider (WF-03, WF-04)
 
 - Siden er en tynn serverkomponent som henter data og setter sammen delene.
@@ -142,6 +146,17 @@ og har ingen egen logikk utover feltene. Egne filer ville gitt flere props å se
 - Søket (#97, 10.10): `SearchField` er et vanlig GET-skjema uten klientkode. `HomePage` validerer `?q=` med
   `parseSearch`, henter aktive annonser med `getActiveListings` og rangerer dem med `searchListings` (Fuse.js).
   `SearchNotice` er den stiplede boksen for ingen treff og ugyldig søk.
+- Hjertet (#224, 24.10): `FavoriteButton` (klient, `favorites/`) er et skjema med serverhandlingen `toggleFavorite` og snur med
+  `useOptimistic`. `ListingCard` tar `favorite` (uten den: ikke noe hjerte) og legger hjertet ved siden av lenken, ikke inni den;
+  `ListingDetails` har plassen `favoriteAction` ved tittelen, som `bidAction`.
+- Mine favoritter (#224, 24.10): `MyPage` leser fanen med `parseTab` (`me/tabs.ts`) og henter bare den åpne fanens data. `FavoriteRow`
+  er raden, i samme stil som `RequestRow`, med `FavoriteButton` over den strukne lenken (`z-10`).
+- Historikk (#220, 01.11): `splitRequests` (`me/my-requests.ts`) gir `received`, `sent` (bare pågående) og `history` (alle
+  avsluttede, nyeste først); fanen bruker `RequestRow`. `getRequestsForUser` regner med automatisk bekreftelse og henter
+  budene med join i stedet for en id-liste (D1 tåler 100 parametere).
+- Mine annonser (#229, 24.10): `MyListingRow` er raden med `statusLine` og «Administrer» over den strukne lenken (`z-10`).
+  `getMyListings` (`me/my-listings.ts`) gir bare aktive annonser, med join på eieren i stedet for en id-liste (D1 tåler 100
+  parametere). `formatDay` i `request-view.ts` er eksportert.
 - Live søkeforslag (#104, 10.10): `SearchField` er nå klientkomponent (combobox etter WAI-ARIA), men rendres
   ferdig på serveren og virker uten JavaScript. `useSuggestions` henter fra `GET /api/listings` 200 ms etter
   siste tastetrykk og avbryter eldre forespørsler; `suggestions.ts` har den rene logikken (når hente, piltaster).

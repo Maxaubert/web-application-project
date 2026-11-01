@@ -76,10 +76,11 @@ test("et ugyldig bud viser feilen under feltet og lagrer ikke noe", async ({ pag
   await expect(page.getByRole("link", { name: "Legg inn bud" })).toBeVisible();
 });
 
-test("på din egen annonse er knappen grået ut, og budsiden sender deg tilbake", async ({ page }) => {
+// Endret 24.10 (#229, AK-50): eieren ser «Administrer» i stedet for den grå budknappen.
+test("på din egen annonse står «Administrer» i stedet for budknappen, og budsiden sender deg tilbake", async ({ page }) => {
   await page.goto("/listings/e2e-calc", { waitUntil: "networkidle" });
-  await expect(page.getByRole("button", { name: "Legg inn bud" })).toBeDisabled();
-  await expect(page.getByRole("link", { name: "Legg inn bud" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Administrer" })).toHaveAttribute("href", "/listings/e2e-calc/edit");
+  await expect(page.getByText("Legg inn bud")).toHaveCount(0);
 
   await page.goto("/listings/e2e-calc/bid");
   await expect(page).toHaveURL(/\/listings\/e2e-calc$/);

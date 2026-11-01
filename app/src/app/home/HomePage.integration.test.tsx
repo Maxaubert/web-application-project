@@ -9,6 +9,9 @@ import { createTestDb } from "@/test/test-db";
 import { insertOwner, validListing } from "@/test/test-listings";
 import { HomePage } from "./HomePage";
 
+// Serverhandlingen bak hjertet (#224) trengs ikke for å tegne det.
+vi.mock("@/app/favorites/actions", () => ({ toggleFavorite: vi.fn() }));
+
 // Den ekte databasen finnes bare i Cloudflare, så siden får testdatabasen i stedet.
 const holder = vi.hoisted(() => ({ db: undefined as unknown as Db }));
 vi.mock("@/db", () => ({
@@ -24,7 +27,7 @@ vi.mock("rwsdk/client", () => ({ navigate: vi.fn() }));
 async function renderPage(query: string) {
   const request = new Request(`http://localhost/${query}`);
   const response = { status: 200 } as RequestInfo["response"];
-  const page = await HomePage({ request, response } as RequestInfo);
+  const page = await HomePage({ request, response, ctx: { session: { userId: "someone-else" } } } as RequestInfo);
   return { html: renderToStaticMarkup(page), status: response.status };
 }
 

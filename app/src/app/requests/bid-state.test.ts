@@ -24,9 +24,10 @@ describe("bidState", () => {
     expect(bidState(listing, "owner", mine)).toEqual({ kind: "own" });
   });
 
-  it("D: solgt gir sold for andre, men egen solgt annonse er fortsatt own", () => {
+  // Endret 24.10 (#229, AK-50): eieren får «Administrer» bare på en aktiv annonse; en solgt kan ikke endres.
+  it("D: solgt gir sold for alle, også eieren", () => {
     expect(bidState({ ...listing, status: "sold" }, "kari", undefined)).toEqual({ kind: "sold" });
-    expect(bidState({ ...listing, status: "sold" }, "owner", undefined)).toEqual({ kind: "own" });
+    expect(bidState({ ...listing, status: "sold" }, "owner", undefined)).toEqual({ kind: "sold" });
   });
 
   it("nedtatte annonser gir ingen knapp, uansett type", () => {
