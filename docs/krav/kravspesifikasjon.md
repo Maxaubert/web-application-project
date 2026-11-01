@@ -52,12 +52,12 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Sted og tid | Avklart 29.09 | Ikke i appen. Partene avtaler overlevering og retur på telefon eller e-post etter aksept. Erstatter D-03 til D-12 om møtepunkt og hentetid i forespørselen. |
 | Overlevering | Avklart 28.09 og 29.09 | Begge bekrefter overlevering i appen. Salg og gis bort er fullført etter begge bekreftelsene; lån er da i bruk (D-36, D-37). Har bare én part bekreftet, regnes overleveringen som bekreftet 3 dager senere. |
 | Retur | Avklart 29.09 | Bare eieren bekrefter retur ved lån. Låneren bekrefter ikke. Hvordan faktisk returdato registreres ved senere bekreftelse, er åpent. |
-| Forlengelse | Avklart 28.09 | Begge kan foreslå senere returdato; den andre godtar eller avslår. Blokkeres ved kollisjon med annet godtatt lån (D-19 til D-25). |
+| Forlengelse | Avklart 28.09 | Begge kan foreslå senere returdato; den andre godtar eller avslår. Blokkeres ved kollisjon med annet godtatt lån (D-19 til D-25). Utenfor MVP (Max 01.11: tiden går til kjerneflyten først). |
 | Avbestilling | Avklart 28.09 | Forespørrer kan trekke en ventende forespørsel. Etter aksept kan begge avbestille før overlevering. Ingen avbestilling midt i et lån (D-55). |
 | Reservasjon | Avklart 28.09 | Ventende forespørsler reserverer ikke. Første godtatte avtale reserverer, og overlappende ventende forespørsler avslås (D-27 til D-29). |
 | Salg fullført | Avklart 28.09 | Godtatt kjøpsforespørsel tar annonsen ut av søket og avslår andre ventende bud (D-30 til D-32). Solgte annonser kan ikke legges ut på nytt. Låneannonser blir liggende i søket, med opptatte datoer markert. |
-| Varsler | Avklart 28.09 | E-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. Status vises også i appen (D-65 til D-67). Påminnelser om forsinket retur er med; kanal og hyppighet er åpent (D-86). |
-| Returproblemer | Avklart 28.09 og 29.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Bare den som skrev og admin kan lese den; admin kontakter partene ved behov. Admin-dashboard er utenfor MVP (D-89), så hvordan admin leser rapportene, er åpent. |
+| Varsler | Avklart 28.09, bygget 01.11 | E-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. Status vises også i appen (D-65 til D-67). Bygget 01.11 (#232): motparten til den som handlet får e-posten, med navnet, annonsetittelen og lenke til forespørselen, aldri telefon eller e-post. Trekk tilbake, bekreftelser, retur og utløp sender ingenting. E-posten sendes etter svaret til nettleseren, så den aldri gjør handlingen tregere, og en feil logges uten å angre handlingen (Max 01.11). Påminnelser om forsinket retur er med; kanal og hyppighet er åpent (D-86). |
+| Returproblemer | Avklart 28.09 og 29.09 | Begge kan rapportere returproblem. Rapporten lagres som påstand og avgjør ingenting (D-87). Bare den som skrev og admin kan lese den; admin kontakter partene ved behov. Admin-dashboard er utenfor MVP (D-89), så hvordan admin leser rapportene, er åpent. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først). |
 | Utløp | Avklart 29.09 | En ubesvart forespørsel utløper etter 7 dager. Erstatter D-54. |
 | Pris og tekst i annonser | Avklart 11.10 | Tittel 3–80 tegn, beskrivelse påkrevd og høyst 2000 tegn. Salgspris er påkrevd, hele kroner fra 0 til 100 000; ukepris ved lån er valgfri, og tom betyr gratis; gis bort har aldri pris. Samme øvre grense gjelder prisfilteret (Max 11.10, #131). |
 | Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
@@ -73,7 +73,7 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 
 ## 2. MVP og avgrensning
 
-Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer, publisering for alle tre handelstyper, bud og låneforespørsler med motforslag på omgang, deling av kontaktinfo etter aksept, overleveringsbekreftelse fra begge, forlengelse av lån, rapport om returproblem, e-postvarsler og Min side med egne annonser, forespørsler, historikk og favoritter. Salgsflyten bygges først, deretter lån og gis bort; alle tre skal være med ved MVP-lansering (D-68).
+Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer, publisering for alle tre handelstyper, bud og låneforespørsler med motforslag på omgang, deling av kontaktinfo etter aksept, overleveringsbekreftelse fra begge, bekreftet retur ved lån, e-postvarsler og Min side med egne annonser, forespørsler, historikk og favoritter. Salgsflyten bygges først, deretter lån og gis bort; alle tre skal være med ved MVP-lansering (D-68).
 
 ### Ikke med i MVP
 
@@ -82,13 +82,15 @@ Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer
 | Chat i appen | Forespørsler, bud og motforslag dekker avtalen. Chat er ønsket etter MVP. | D-70 til D-73 |
 | Betaling i appen | Oppgjøret skjer utenfor appen. Pris og beregnet lånepris vises. | D-70 til D-73 |
 | Frakt | Varer hentes og leveres fysisk mellom studentene. | D-70 til D-73 |
-| Depositum | Ingen sikkerhet kreves; returproblemer kan rapporteres. | D-70 til D-73 |
+| Depositum | Ingen sikkerhet kreves. | D-70 til D-73 |
 | Vurderinger og anmeldelser | Ingen omdømmesystem i første versjon. | D-70 til D-73 |
 | Tjenester, som undervisning og hjelp | Bare fysiske ting: salg, lån og gis bort. | D-70 til D-73 |
-| Forsinkelsesgebyrer | Ingen gebyr. Godkjent forlengelse gir ny returdato. | D-85 |
+| Forsinkelsesgebyrer | Ingen gebyr. | D-85 |
 | Admin-dashboard | Rapporter lagres og ses av den som skrev og admin. | D-88, D-89 |
 | Full tvisteløsning i appen | En returrapport lagres som påstand og avgjør ingenting. | D-87 |
 | Møtested og hentetid | Avtales mellom partene utenfor appen. | Max 29.09 |
+| Forlengelse av lån (FK-09) | Partene avtaler ny returdato utenfor appen; eieren bekrefter retur når tingen er levert. | Max 01.11 (tid: kjerneflyten først) |
+| Rapport om returproblem (FK-10) | Partene løser det seg imellom utenfor appen. | Max 01.11 (tid: kjerneflyten først) |
 
 Begrunnelsen for hvert punkt er ikke skrevet ned ennå.
 
@@ -108,8 +110,8 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-06 | Forespørreren skal kunne godta, avslå eller sende nytt motforslag. Partene svarer på omgang, og bare siste forslag kan godtas. Begge skal se siste forslag og hva de er enige om. Eldre forslag bevares i databasen (D-53), men vises ikke på forespørselssiden; «Historikk» er fanen på Min side med alle avsluttede forespørsler (Max 19.10, #205; endret 01.11, #220). |
 | FK-07 | Ved lån skal eieren kunne bekrefte mottatt retur. Bekreftelsen fullfører lånet og vises for begge. Låneren bekrefter ikke. |
 | FK-08 | Etter aksept skal begge parter se hverandres telefon og e-post og bekrefte overlevering i appen. Salg og gis bort er fullført når begge har bekreftet; lån er da i bruk. |
-| FK-09 | Begge parter i et lån skal kunne foreslå en senere returdato, som den andre godtar eller avslår. |
-| FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. |
+| FK-09 | Begge parter i et lån skal kunne foreslå en senere returdato, som den andre godtar eller avslår. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først). |
+| FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først). |
 | FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler, Historikk og Mine favoritter, og kunne redigere profil, ta ned egne annonser og logge ut. |
 | FK-12 | Partene skal få e-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. |
 | FK-13 | En innlogget bruker skal kunne klikke på eierens navn på en annonse og se brukerens andre aktive annonser (Max 08.10). |
