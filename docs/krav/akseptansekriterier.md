@@ -53,6 +53,11 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-49:** Gitt eierens aktive annonse, når eieren lagrer endringer, så skal tittel, beskrivelse, kategori, tilstand og pris lagres med samme regler som ved publisering, mens handelstypen og eksisterende avtaler er uendret. Andre brukere, solgte og slettede annonser avvises uten endring.
 - **AK-50:** Gitt at eieren åpner sin egen annonse, så skal «Administrer» vises i stedet for «Legg inn bud» eller «Send forespørsel».
 
+## Historikk (FK-06, FK-11)
+
+- **AK-51:** Gitt en bruker med pågående og avsluttede forespørsler både som eier og forespørrer, når brukeren åpner Historikk, så skal alle avsluttede (fullført, avslått, trukket tilbake, utløpt, avbestilt) vises med statusen, nyeste først, og ingen pågående.
+- **AK-52:** Gitt en avsluttet forespørsel, når brukeren åpner Forespørsler, så skal den ikke vises der. En avtale som er bekreftet automatisk etter 3 dager, regnes som fullført også i listene.
+
 ## Bruk på ulike enheter og tilgjengelighet (KK-01, KK-04, DK-03, DK-04)
 
 - **AK-16:** Gitt en mobil, et nettbrett eller en PC, når brukeren utfører en kjerneoppgave, så skal alle nødvendige felt og handlinger være tilgjengelige uten at innhold skjules av layouten. Prøves separat for søk, annonsevisning, publisering, forespørsel, svar, motforslag og overleveringsbekreftelse.

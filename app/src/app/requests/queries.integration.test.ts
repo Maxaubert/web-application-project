@@ -231,3 +231,17 @@ describe("utløp ved lesing", () => {
     expect((await getRequestsForUser(db, "kari", later))[0].status).toBe("accepted");
   });
 });
+
+// Listen regner med den automatiske bekreftelsen, som forespørselssiden (#214), så avtalen havner i Historikk (#220).
+// Godkjent av Max 01.11.
+describe("getRequestsForUser, automatisk bekreftelse", () => {
+  it("gir fullført for et salg der bare én bekreftet for over 3 dager siden", async () => {
+    const confirmedAt = new Date(NOW.getTime() - 4 * DAY_MS);
+    await db.insert(request).values({ id: "r1", listingId: "calc", requesterId: "kari", status: "accepted", ownerConfirmed: true, updatedAt: confirmedAt });
+    await db.insert(offer).values({ requestId: "r1", senderId: "kari", price: 200, createdAt: confirmedAt });
+
+    const [found] = await getRequestsForUser(db, "kari", NOW);
+
+    expect(found?.status).toBe("completed");
+  });
+});

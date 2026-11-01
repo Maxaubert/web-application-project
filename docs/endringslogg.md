@@ -8,6 +8,10 @@ Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-11-01
+
+- Historikk (#220): Min side har fanen Historikk (`/me?tab=history`) med alle avsluttede forespørsler fra begge roller, nyeste først: fullført, avslått, trukket tilbake, utløpt og avbestilt, i samme rader som Forespørsler med statusen som chip. Forespørsler viser nå bare pågående. Max tok over #220 fra Emil, som ikke hadde startet, og valgte alle avsluttede (ikke bare fullførte, som i FK-06 før), rader og ingen duplikater (AK-51, AK-52). Rettet samtidig i `getRequestsForUser`: listene regner nå med den automatiske bekreftelsen etter 3 dager, og budene hentes med join i stedet for en id-liste (D1 tåler 100 parametere). Fem eksisterende tester som brukte avslått som eksempel på en rad i Forespørsler, bruker nå avtalt eller i bruk, og chip-testen for «Avslått» ser i Historikk. (Max, #220)
+
 ## 2026-10-24
 
 - Mine annonser (#229, fanen): Min side har fanene Forespørsler, Mine annonser (`/me?tab=listings`) og Mine favoritter. Fanen viser bare aktive annonser som rader med statuslinjen «Publisert», «· 1 ventende forespørsel» eller «· utlånt til 30.10»; klikk på raden åpner annonsen, og «Administrer» åpner redigeringssiden. Tom fane: «Du har ingen annonser» med «Legg ut annonse». Rettet samtidig: `getMyListings` (fra #233) sendte alle annonse-id-ene som parametere, og D1 godtar høyst 100 per spørring; nå brukes en join på eieren. Nettlesertesten fant feilen; enhetstestene bruker SQLite uten den grensen. Testen fra #233 som ventet solgte og nedtatte, er skrevet om (AK-48). (Max, #229)

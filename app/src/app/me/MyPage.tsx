@@ -1,10 +1,10 @@
 // Min side /me (WF-09, #193). Beskyttet av requireUser. Fanene Forespørsler (WF-07) med Mottatt og Sendt, Mine annonser
-// (?tab=listings, #229) og Mine favoritter (?tab=favorites, #224); Historikk kommer med #220. Fanene og Mottatt/Sendt er vanlige lenker,
+// (?tab=listings, #229), Historikk (?tab=history, #220) og Mine favoritter (?tab=favorites, #224). Fanene og Mottatt/Sendt er vanlige lenker,
 // ikke klientkode, og siden henter bare dataene til fanen som er åpen.
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
 import { PageShell } from "@/app/shared/page-shell";
-import { getRequestsForUser } from "@/app/requests/queries";
+import { getRequestsForUser, type MyRequest } from "@/app/requests/queries";
 import { getFavoriteListings } from "@/app/favorites/queries";
 import type { ListingWithOwner } from "@/app/listings/queries";
 import { db } from "@/db";
@@ -37,11 +37,13 @@ export async function MyPage({ ctx, request }: RequestInfo) {
         <nav aria-label="Faner" className="mt-6 flex border-b-2 border-hairline">
           <TabLink href="/me" current={tab === "requests"} label="Forespørsler" />
           <TabLink href="/me?tab=listings" current={tab === "listings"} label="Mine annonser" />
+          <TabLink href="/me?tab=history" current={tab === "history"} label="Historikk" />
           <TabLink href="/me?tab=favorites" current={tab === "favorites"} label="Mine favoritter" />
         </nav>
 
         {tab === "requests" && <Requests lists={splitRequests(await getRequestsForUser(db, userId))} show={parseShow(params.get("show"))} />}
         {tab === "listings" && <MyListings items={await getMyListings(db, userId)} />}
+        {tab === "history" && <History items={splitRequests(await getRequestsForUser(db, userId)).history} />}
         {tab === "favorites" && <Favorites items={await getFavoriteListings(db, userId)} />}
       </div>
     </PageShell>
@@ -67,6 +69,18 @@ function Requests({ lists, show }: { lists: ReturnType<typeof splitRequests>; sh
         </ul>
       )}
     </>
+  );
+}
+
+// Historikk (#220, Max 01.11): alle avsluttede forespørsler fra begge roller, nyeste først, i samme rad som Forespørsler.
+function History({ items }: { items: MyRequest[] }) {
+  if (items.length === 0) return <Empty text="Ingen avsluttede avtaler ennå" />;
+  return (
+    <ul className={listClass}>
+      {items.map((item) => (
+        <RequestRow key={item.id} item={item} />
+      ))}
+    </ul>
   );
 }
 
