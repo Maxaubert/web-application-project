@@ -9,13 +9,40 @@ import { respondToRequest, sendBid, sendRequest, updateRequest } from "./actions
 
 type Session = { isAuthenticated: boolean; userId?: string; needsSetup?: boolean };
 
-const holder = vi.hoisted(() => ({ db: undefined as unknown as Db, session: {} as Session }));
+// E-postvarslene (#232): waitUntil samler løftene, så testen kan vente på dem, og en falsk utsending husker hva som ville
+// blitt sendt. failEmail lar utsendingen feile.
+type Sent = { to: string; subject: string; text: string };
+const holder = vi.hoisted(() => ({
+  db: undefined as unknown as Db,
+  session: {} as Session,
+  pending: [] as Promise<unknown>[],
+  sent: [] as Sent[],
+  failEmail: false,
+}));
 vi.mock("@/db", () => ({
   get db() {
     return holder.db;
   },
 }));
-vi.mock("rwsdk/worker", () => ({ getRequestInfo: () => ({ ctx: { session: holder.session } }) }));
+vi.mock("rwsdk/worker", () => ({
+  getRequestInfo: () => ({
+    ctx: { session: holder.session },
+    request: new Request("https://studentmarkedet.test/requests"),
+    cf: { waitUntil: (promise: Promise<unknown>) => holder.pending.push(promise) },
+  }),
+}));
+vi.mock("@/app/notifications/sender", () => ({
+  getEmailSender: () => async (to: string, message: { subject: string; text: string }) => {
+    if (holder.failEmail) throw new Error("Resend svarte 500.");
+    holder.sent.push({ to, ...message });
+  },
+}));
+
+// Venter på varslene som serverhandlingen la i waitUntil.
+async function settled() {
+  await Promise.all(holder.pending);
+  return holder.sent;
+}
 
 function form(fields: Record<string, string>) {
   const data = new FormData();
@@ -33,6 +60,9 @@ beforeEach(async () => {
   await holder.db.insert(user).values({ id: "kari", name: "Kari Nordmann", email: "kari@hiof.no", phone: "+4791234567" });
   await holder.db.insert(listing).values(validListing({ id: "calc" }));
   holder.session = { isAuthenticated: true, userId: "kari", needsSetup: false };
+  holder.pending = [];
+  holder.sent = [];
+  holder.failEmail = false;
 });
 
 describe("sendBid", () => {
@@ -320,5 +350,71 @@ describe("updateRequest", () => {
       expect(await updateRequest({}, form({ requestId: "r1", intent })), intent).toEqual({ error: "Ukjent handling" });
     }
     expect((await current()).status).toBe("accepted");
+  });
+});
+
+// E-postvarsler (FK-12, #232): motparten får e-post ved de fem hendelsene, aldri den som handlet. Godkjent av Max 01.11.
+describe("e-postvarsler", () => {
+  const recipients = async () => (await settled()).map((mail) => mail.to);
+
+  it("et nytt bud varsler eieren, og et motbud varsler forespørreren", async () => {
+    await sendBid({}, form({ listingId: "calc", price: "220" }));
+    expect(await recipients()).toEqual([`${OWNER_ID}@hiof.no`]);
+    expect(holder.sent[0]).toMatchObject({ subject: "Nytt bud på «Kalkulator»" });
+    expect(holder.sent[0]?.text).toContain("https://studentmarkedet.test/requests/");
+
+    const [req] = await holder.db.select().from(request);
+    const [first] = await holder.db.select().from(offer);
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: false };
+    holder.sent = [];
+    await respondToRequest({}, form({ requestId: req.id, offerId: first.id, intent: "counter", price: "240" }));
+    expect(await recipients()).toEqual(["kari@hiof.no"]);
+    expect(holder.sent[0]?.subject).toBe("Motbud på «Kalkulator»");
+  });
+
+  it("godta, avslå og avbestill varsler den andre parten, og trekk tilbake og bekreft varsler ingen", async () => {
+    await holder.db.insert(request).values([
+      { id: "ra", listingId: "calc", requesterId: "kari" },
+      { id: "rd", listingId: "calc", requesterId: "kari", status: "withdrawn" },
+    ]);
+    await holder.db.insert(offer).values({ id: "oa", requestId: "ra", senderId: "kari", price: 220 });
+
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: false };
+    await respondToRequest({}, form({ requestId: "ra", offerId: "oa", intent: "accept" }));
+    expect(await recipients()).toEqual(["kari@hiof.no"]);
+    expect(holder.sent[0]?.subject).toBe("Godtatt: «Kalkulator»");
+
+    holder.sent = [];
+    holder.session = { isAuthenticated: true, userId: "kari", needsSetup: false };
+    await updateRequest({}, form({ requestId: "ra", intent: "confirm" }));
+    expect(await recipients()).toEqual([]);
+
+    await updateRequest({}, form({ requestId: "ra", intent: "cancel" }));
+    expect(await recipients()).toEqual([`${OWNER_ID}@hiof.no`]);
+    expect(holder.sent[0]?.subject).toBe("Avbestilt: «Kalkulator»");
+
+    // Avslag fra eieren på en ny forespørsel.
+    holder.sent = [];
+    await holder.db.update(listing).set({ status: "active" });
+    await holder.db.insert(request).values({ id: "rx", listingId: "calc", requesterId: "kari" });
+    await holder.db.insert(offer).values({ id: "ox", requestId: "rx", senderId: "kari", price: 200 });
+    holder.session = { isAuthenticated: true, userId: OWNER_ID, needsSetup: false };
+    await respondToRequest({}, form({ requestId: "rx", offerId: "ox", intent: "decline" }));
+    expect(await recipients()).toEqual(["kari@hiof.no"]);
+    expect(holder.sent[0]?.subject).toBe("Avslått: «Kalkulator»");
+  });
+
+  it("når e-posten feiler, er handlingen likevel lagret og feilen logget", async () => {
+    holder.failEmail = true;
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    const result = await sendBid({}, form({ listingId: "calc", price: "220" }));
+    await settled();
+
+    expect((result as Response).headers.get("Location")).toBe("/listings/calc");
+    expect(await counts()).toEqual({ requests: 1, offers: 1 });
+    expect(holder.sent).toEqual([]);
+    expect(warn.mock.calls.map((call) => String(call[0])).join("\n")).toContain("notification_failed");
+    warn.mockRestore();
   });
 });

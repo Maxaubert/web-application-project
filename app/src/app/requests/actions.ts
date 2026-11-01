@@ -12,6 +12,23 @@ import { confirmReturn } from "./return";
 import { respondToOffer, type RespondAction } from "./respond";
 import { noticeMarkers } from "./request-view";
 import { withdrawRequest } from "./withdraw";
+import { notifyOtherParty } from "@/app/notifications/notify";
+import type { NotifyEvent } from "@/app/notifications/messages";
+import { getEmailSender } from "@/app/notifications/sender";
+import { getActiveRequest } from "./queries";
+
+// E-postvarsel til motparten (FK-12, #232) etter at handlingen er lagret. waitUntil sender det etter svaret til nettleseren
+// (Max 01.11), så Resend aldri gjør handlingen tregere; en feil logges i notifyOtherParty og angrer ingenting.
+function notifyLater(actorId: string, event: NotifyEvent, requestId: () => Promise<string | undefined>) {
+  const { cf, request } = getRequestInfo();
+  const origin = new URL(request.url).origin;
+  cf.waitUntil(
+    requestId().then((id) => (id ? notifyOtherParty(db, getEmailSender(), { requestId: id, actorId, event, origin }) : undefined)),
+  );
+}
+
+// Svarene som varsles; Trekk tilbake, bekreftelser og retur sender ikke noe (Max 01.11).
+const notifyOnRespond: Record<string, NotifyEvent> = { accept: "accepted", decline: "declined", counter: "counter" };
 
 export async function sendBid(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
@@ -26,6 +43,8 @@ export async function sendBid(_prev: ActionResult, formData: FormData): Promise<
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price } };
 
   log.info("bid_sent", { userId: ctx.session.userId, listingId });
+  const userId = ctx.session.userId;
+  notifyLater(userId, "new", async () => (await getActiveRequest(db, listingId, userId))?.id);
   return redirect(`/listings/${listingId}`);
 }
 
@@ -44,6 +63,8 @@ export async function sendRequest(_prev: ActionResult, formData: FormData): Prom
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { startDate, endDate } };
 
   log.info("request_sent", { userId: ctx.session.userId, listingId });
+  const userId = ctx.session.userId;
+  notifyLater(userId, "new", async () => (await getActiveRequest(db, listingId, userId))?.id);
   return redirect(`/listings/${listingId}`);
 }
 
@@ -71,6 +92,7 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price, startDate, endDate } };
 
   log.info("request_answered", { userId: ctx.session.userId, requestId, action });
+  if (Object.hasOwn(notifyOnRespond, action)) notifyLater(ctx.session.userId, notifyOnRespond[action], async () => requestId);
   // Markøren får siden til å vise «Motbud sendt» og lignende (#203).
   return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as RespondAction]}`);
 }
@@ -93,5 +115,6 @@ export async function updateRequest(_prev: ActionResult, formData: FormData): Pr
   if (!result.ok) return { error: result.error };
 
   log.info("request_updated", { userId: ctx.session.userId, requestId, action });
+  if (action === "cancel") notifyLater(ctx.session.userId, "cancelled", async () => requestId);
   return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as UpdateAction]}`);
 }
