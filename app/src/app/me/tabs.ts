@@ -1,7 +1,7 @@
-// Fanene på Min side (FK-11). ?tab=listings viser Mine annonser (#229) og ?tab=favorites Mine favoritter (#224); alt annet,
-// også en ukjent verdi, gir Forespørsler. Historikk (#220) kommer som egen verdi.
-export type Tab = "requests" | "listings" | "favorites";
+// Fanene på Min side (FK-11). ?tab=listings viser Mine annonser (#229), ?tab=history Historikk (#220) og ?tab=favorites
+// Mine favoritter (#224); alt annet, også en ukjent verdi, gir Forespørsler.
+export type Tab = "requests" | "listings" | "history" | "favorites";
 
 export function parseTab(value: string | null): Tab {
-  return value === "listings" || value === "favorites" ? value : "requests";
+  return value === "listings" || value === "history" || value === "favorites" ? value : "requests";
 }

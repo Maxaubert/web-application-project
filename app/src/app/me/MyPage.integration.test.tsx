@@ -105,11 +105,12 @@ describe("Min side, selgeren (Mottatt)", () => {
     expect(html).toMatch(/<a href="\/me\?show=sent" aria-current="page"[^>]*>Sendt \(0\)<\/a>/);
   });
 
+  // Endret 01.11 (#220): avsluttede står i Historikk, så den lyse «Avslått»-chipen sjekkes der.
   it("«Din tur» er en mørk chip, og avsluttede statuser er lyse chips med statusen", async () => {
     expect(await visit(OWNER_ID)).toMatch(/<span class="[^"]*bg-action[^"]*">Din tur<\/span>/);
 
     await holder.db.update(request).set({ status: "declined" });
-    const html = await visit(OWNER_ID);
+    const html = await visit(OWNER_ID, "?tab=history");
 
     expect(html).toMatch(/<span class="[^"]*">Avslått<\/span>/);
     expect(html).not.toMatch(/<span class="[^"]*bg-action[^"]*">Avslått<\/span>/);
@@ -165,7 +166,7 @@ describe("Min side, rekkefølgen", () => {
       validListing({ id: "bok", title: "Kokebok", price: 60 }),
     ]);
     await holder.db.insert(request).values([
-      { id: "r2", listingId: "lamp", requesterId: "per", status: "declined", updatedAt: new Date("2026-10-18T10:00:00Z") },
+      { id: "r2", listingId: "lamp", requesterId: "per", status: "accepted", updatedAt: new Date("2026-10-18T10:00:00Z") },
       { id: "r3", listingId: "bok", requesterId: "per", status: "waiting_owner", updatedAt: new Date("2026-10-14T10:00:00Z") },
     ]);
     await holder.db.insert(offer).values([
@@ -175,7 +176,7 @@ describe("Min side, rekkefølgen", () => {
 
     const html = await visit(OWNER_ID);
 
-    // Kalkulator (din tur, 17.10), Kokebok (din tur, 14.10), Lampe (avslått, 18.10 men uten tur).
+    // Kalkulator (din tur, 17.10), Kokebok (din tur, 14.10), Lampe (avtalt, 18.10 men uten tur).
     expect(html.indexOf("Kalkulator")).toBeLessThan(html.indexOf("Kokebok"));
     expect(html.indexOf("Kokebok")).toBeLessThan(html.indexOf("Lampe"));
   });
@@ -211,6 +212,40 @@ describe("Min side, Mine annonser", () => {
 
     expect(html).toContain("Du har ingen annonser");
     expect(html).toMatch(/<a href="\/listings\/new"[^>]*>Legg ut annonse<\/a>/);
+  });
+});
+
+// Fanen Historikk (#220). Godkjent av Max 01.11.
+describe("Min side, Historikk", () => {
+  it("viser avsluttede fra begge roller med statuschip, fanen markert, og Forespørsler viser dem ikke", async () => {
+    await holder.db.insert(listing).values([
+      validListing({ id: "lamp", title: "Lampe", price: 90 }),
+      validListing({ id: "bok", title: "Kokebok", ownerId: "kari", price: 60 }),
+    ]);
+    await holder.db.insert(request).values([
+      { id: "r2", listingId: "lamp", requesterId: "per", status: "completed", updatedAt: new Date("2026-10-16T10:00:00Z") },
+      { id: "r3", listingId: "bok", requesterId: OWNER_ID, status: "declined", updatedAt: new Date("2026-10-15T10:00:00Z") },
+    ]);
+    await holder.db.insert(offer).values([
+      { requestId: "r2", senderId: "per", price: 80, createdAt: new Date("2026-10-16T10:00:00Z") },
+      { requestId: "r3", senderId: OWNER_ID, price: 50, createdAt: new Date("2026-10-15T10:00:00Z") },
+    ]);
+
+    const history = await visit(OWNER_ID, "?tab=history");
+    expect(history).toMatch(/<a href="\/me\?tab=history" aria-current="page"[^>]*>Historikk<\/a>/);
+    expect(history).toMatch(/>Fullført<\/span>/);
+    expect(history).toMatch(/>Avslått<\/span>/);
+    expect(history.indexOf(">Lampe<")).toBeLessThan(history.indexOf(">Kokebok<"));
+    // Den pågående (Kalkulator, din tur) står ikke i Historikk.
+    expect(history).not.toContain(">Kalkulator<");
+
+    const requests = await visit(OWNER_ID);
+    expect(requests).toContain(">Kalkulator<");
+    for (const closed of [">Lampe<", ">Kokebok<"]) expect(requests).not.toContain(closed);
+  });
+
+  it("viser «Ingen avsluttede avtaler ennå» når det ikke finnes noen", async () => {
+    expect(await visit(OWNER_ID, "?tab=history")).toContain("Ingen avsluttede avtaler ennå");
   });
 });
 

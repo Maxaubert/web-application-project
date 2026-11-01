@@ -56,7 +56,8 @@ export type MyRequest = {
 
 // Alle forespørslene der brukeren er eier av annonsen eller har lagt inn forespørselen, med siste bud og forsidebilde.
 // To spørringer i stedet for én per rad: først forespørslene, så budene til dem. Siste bud er det med høyest rowid
-// (created_at har bare hele sekunder). Rekkefølgen avgjøres av siden, ikke her. Statusen er regnet ut for 7-dagersfristen (#187).
+// (created_at har bare hele sekunder). Rekkefølgen avgjøres av siden, ikke her. Statusen er regnet ut for 7-dagersfristen (#187)
+// og den automatiske bekreftelsen etter 3 dager (#214), som på forespørselssiden, så listene og Historikk (#220) stemmer.
 export async function getRequestsForUser(db: Db, userId: string, now = new Date()): Promise<MyRequest[]> {
   const owner = alias(user, "owner");
   const requester = alias(user, "requester");
@@ -69,11 +70,17 @@ export async function getRequestsForUser(db: Db, userId: string, now = new Date(
     .leftJoin(listingImage, and(eq(listingImage.listingId, listing.id), eq(listingImage.position, 0)))
     .where(or(eq(request.requesterId, userId), eq(listing.ownerId, userId)));
 
-  const offers = await db
-    .select()
-    .from(offer)
-    .where(inArray(offer.requestId, rows.map((row) => row.request.id)))
-    .orderBy(asc(sql`${offer}.rowid`));
+  // Budene hentes med samme vilkår som forespørslene, ikke med en liste av id-er: D1 godtar høyst 100 parametere per
+  // spørring, og Historikk gjør at listen vokser (#220, samme feil som i Mine annonser, #229).
+  const offers = (
+    await db
+      .select({ offer })
+      .from(offer)
+      .innerJoin(request, eq(offer.requestId, request.id))
+      .innerJoin(listing, eq(request.listingId, listing.id))
+      .where(or(eq(request.requesterId, userId), eq(listing.ownerId, userId)))
+      .orderBy(asc(sql`${offer}.rowid`))
+  ).map((row) => row.offer);
   // Senere bud overskriver tidligere, så mappet ender med det siste per forespørsel.
   const latest = new Map<string, Offer>(offers.map((o) => [o.requestId, o]));
 
@@ -85,7 +92,7 @@ export async function getRequestsForUser(db: Db, userId: string, now = new Date(
     const changedAt = new Date(Math.max(lastOfferAt.getTime(), row.request.updatedAt.getTime()));
     return {
       id: row.request.id,
-      status: effectiveStatus(row.request.status, lastOfferAt, now),
+      status: effectiveStatus(handoverEffective(row.request, row.listing.type, now).status, lastOfferAt, now),
       role,
       listing: row.listing,
       coverKey: row.coverKey,
