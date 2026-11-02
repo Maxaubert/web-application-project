@@ -4,9 +4,13 @@ Løpende oversikt over vesentlige endringer i prosjektet: funksjoner, krav, besl
 og struktur. Nyeste først. Anbefalt av studentassistenten ved sign-off uke 40.
 
 Detaljene står i Git-historikken og PR-ene; daglig arbeid står i
-[arbeidsloggen](prosess/arbeidslogg-max-og-emil.md). Én linje per endring holder.
+den lokale arbeidsloggen (se [loggrutinen](prosess/loggrutine.md)). Én linje per endring holder.
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
+
+## 2026-11-02
+
+- Docs (#247): arbeidsloggen og timelisten ligger nå bare lokalt i den Git-ignorerte `wal/`-mappen (`wal/arbeidslogg.md`, `wal/timeliste.md`), ikke på GitHub. Historikken er ikke omskrevet, så eldre versjoner finnes fortsatt i Git. (Max, #247)
 
 ## 2026-11-01
 
