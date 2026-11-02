@@ -102,7 +102,7 @@ export function ImageField({ values, images, error, readOnly = false }: Props) {
               type="button"
               onClick={() => images.remove(image.id)}
               aria-label={`Fjern bilde ${index + 1}`}
-              className="absolute top-1 right-1 grid size-8 place-items-center rounded-full bg-surface/95 text-base font-bold"
+              className="absolute top-0 right-0 grid size-11 place-items-center rounded-full bg-surface/95 text-base font-bold"
             >
               ✕
             </button>

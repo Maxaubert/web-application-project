@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-02
 
+- UI (#253): fra UI-reviewen 02.11. Fanene på Min side ruller sidelengs på mobil i stedet for å gjøre siden 462 px bred, knappen som fjerner et bilde er 44 px, og «Avbestill» og «Trekk tilbake» har rød kant som andre destruktive handlinger. (Max, #253)
 - Krav (#250): før leveransen 05.11 er selgersiden (FK-13, #93), fjerning av solgte etter 30 dager (#92), sortering og «Vis flere» (#116, #101), filteret «Tilgjengelig nå» (#100), flere kategorier (#62) og egen skjerm for gis bort (#64) tatt ut av MVP. Begrunnelse fra Max: tiden går til kjerneflyten. Issuene er lukket som «not planned». (Max, #250)
 - Retting (#57): hovedknappen i skjemaene (innlogging, bud, lån og forespørsel) er låst til React har lastet. Før kunne et klikk på en treg mobil sende skjemaet uten handlingen, og feilmeldingen for en e-post utenfor @hiof.no kom aldri frem. Ny hook `useHydrated`, og e2e-testen holder igjen JavaScript for å vise det. (Max, #57)
 - Docs (#247): arbeidsloggen og timelisten ligger nå bare lokalt i den Git-ignorerte `wal/`-mappen (`wal/arbeidslogg.md`, `wal/timeliste.md`), ikke på GitHub. Historikken er ikke omskrevet, så eldre versjoner finnes fortsatt i Git. (Max, #247)

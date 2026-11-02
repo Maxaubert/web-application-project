@@ -13,6 +13,8 @@ type HandoverActionsProps = { requestId: string; canConfirm: boolean; canCancel:
 
 const secondary =
   "h-12 w-full rounded-md border-2 border-ink bg-surface text-base font-semibold enabled:hover:bg-paper disabled:cursor-wait disabled:opacity-70";
+// Avbestill og Trekk tilbake er destruktive: rød kant og tekst, som «Slett annonse» (#253).
+const destructive = secondary.replace("border-ink", "border-danger text-danger");
 const primary =
   "h-14 w-full rounded-md bg-action text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70";
 
@@ -41,7 +43,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
             </button>
           )}
           {canCancel && (
-            <button type="button" onClick={() => setMode("cancel")} className={secondary}>
+            <button type="button" onClick={() => setMode("cancel")} className={destructive}>
               Avbestill
             </button>
           )}
@@ -51,7 +53,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
             </button>
           )}
           {canWithdraw && (
-            <button type="button" onClick={() => setMode("withdraw")} className={secondary}>
+            <button type="button" onClick={() => setMode("withdraw")} className={destructive}>
               Trekk tilbake
             </button>
           )}
