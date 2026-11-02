@@ -78,6 +78,24 @@ test.describe("mobil (375 px)", () => {
     expect(await row.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
+
+  // UI-reviewen 02.11 (#253): fire faner gjorde siden 462 px bred. Godkjent av Max 02.11.
+  test("Min side er ikke bredere enn telefonen, selv med fire faner", async ({ page }) => {
+    await page.goto("/me", { waitUntil: "networkidle" });
+
+    await expect(page.getByRole("link", { name: "Mine favoritter" })).toBeAttached();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  });
+
+  // #253: fjern-knappen på et bilde var 32 px. Godkjent av Max 02.11.
+  test("knappen som fjerner et bilde er minst 44 px", async ({ page }) => {
+    await page.goto("/listings/new", { waitUntil: "networkidle" });
+    await page.getByLabel("Bilder").setInputFiles("e2e/fixtures/test.jpg");
+
+    const box = await size(page.getByRole("button", { name: "Fjern bilde 1" }));
+    expect(box.width).toBeGreaterThanOrEqual(44);
+    expect(box.height).toBeGreaterThanOrEqual(44);
+  });
 });
 
 test.describe("desktop (1280 px)", () => {
