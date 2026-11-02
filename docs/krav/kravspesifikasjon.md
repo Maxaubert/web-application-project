@@ -62,9 +62,9 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Pris og tekst i annonser | Avklart 11.10 | Tittel 3–80 tegn, beskrivelse påkrevd og høyst 2000 tegn. Salgspris er påkrevd, hele kroner fra 0 til 100 000; ukepris ved lån er valgfri, og tom betyr gratis; gis bort har aldri pris. Samme øvre grense gjelder prisfilteret (Max 11.10, #131). |
 | Pris for lån | Avklart 29.09 | Lån med ukepris koster forholdsmessig per dag: ukepris delt på 7, ganget med antall dager. Minst én uke (D-22 til D-24). |
 | Kategorier og bilder | Avklart 11.10 | Fast kategoriliste, men innholdet er åpent (D-47). Bilder lagres i Cloudflare R2 (Max 11.10, #61; KI-kurset L14). 1–10 bilder per annonse, JPEG, PNG eller WebP, høyst 5 MB per bilde; filtypen leses fra innholdet. I nettleseren gjøres HEIC fra iPhone om, og alle bilder skaleres til høyst 2000 px og lagres som JPEG før opplasting, noe som også fjerner EXIF-data som GPS-posisjon; originalen kan være opptil 25 MB (#141). Hvert bilde får også en miniatyr på 640 px (JPEG, ca. 50 KB) som kort og søkeforslag viser, så forsiden ikke laster og dekoder store bilder (#155). Første bilde er forsidebilde. Bildene vises bare for innloggede. |
-| Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den fjernes etter 30 dager (#92). Nedtatte annonser vises ikke for andre. |
+| Solgte annonser | Avklart 08.10 | En solgt annonse kan fortsatt åpnes fra en lagret lenke og vises med «Solgt»-merke, så brukeren ser at varen er borte. Den skulle fjernes etter 30 dager (#92); det er utenfor MVP, så den blir stående. Nedtatte annonser vises ikke for andre. |
 | Søk | Avklart 10.10 | Søket går i tittel, beskrivelse og selgerens navn, uten forskjell på store og små bokstaver (også æøå), og tåler skrivefeil og delord («kalkulater» og «kalk» finner «Kalkulator»). Best treff først; uten søkeord nyeste først. Filtre (Max 10.10, #102): kategori, handelstype og tilstand (flere valg), pris fra/til (lånepris per uke, tom pris regnes som 0 kr). Valgene virker med én gang, og opsjoner som ikke gir treff sammen med de andre valgene er grå (Max 10.10, #122). Sortering kommer i egen oppgave (#116). Fra to tegn vises de fem beste treffene i en liste under feltet mens man skriver, med bilde, tittel og «type · pris»; klikk åpner annonsen, og siste rad viser alle treff. Ingen treff gir ingen liste (Max 10.10, #104). |
-| Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93). Telefon og e-post vises fortsatt først etter aksept. |
+| Selgerens navn | Avklart 08.10 | Annonsesiden viser eierens fulle navn, ikke bare fornavn. Klikk på navnet skal vise brukerens andre annonser (FK-13, #93); utenfor MVP (Max 02.11: leveransen er 05.11, tiden går til kjerneflyten). Telefon og e-post vises fortsatt først etter aksept. |
 | Historikk | Avklart 28.09, endret 01.11 | Alle forslag bevares (D-53), men forespørselssiden viser bare det siste; «Historikk» er fanen på Min side (Max 19.10, #205). Historikk viser alle avsluttede forespørsler, fra begge roller og nyeste først: fullført, avslått, trukket tilbake, utløpt og avbestilt. Forespørsler viser bare pågående (venter, avtalt, lån i bruk), så ingenting står to steder. Radene er de samme som i Forespørsler, med statusen som chip (Max 01.11, #220). Bare siste forslag kan godtas. Annonseendringer endrer ikke eksisterende avtaler (D-51). |
 | Administrer og slett | Avklart 24.10 | Eieren ser «Administrer» der andre ser «Legg inn bud» eller «Send forespørsel», både fra søket, en lenke og Mine annonser. «Administrer» åpner samme side som «Legg ut annonse», fylt ut med annonsen. Alt kan endres unntatt handelstypen; bildene vises, men kan ikke endres ennå. Endringer gjelder ikke eksisterende avtaler (D-51). På siden er «Slett annonse», som spør «Ja, slett» først: annonsen forsvinner fra søket og Mine annonser, ventende forespørsler avslås, og godtatte avtaler og lån i bruk fortsetter. Dataene beholdes, så avtalene og Historikk har annonsen. Mine annonser viser bare aktive annonser; solgte hører til Historikk (Max 24.10, #229). |
 | Favoritter | Avklart 24.10 | En innlogget bruker kan markere andres annonser med et hjerte, på kortet i søket og på annonsesiden, og finner dem i fanen «Mine favoritter» på Min side. Egne annonser kan ikke favorittmerkes; serveren avviser det. Solgte, gitt bort og nedtatte annonser vises ikke i fanen; lån blir liggende også mens de er utlånt, som i søket. Favoritten slettes ikke når annonsen blir borte, den skjules, så den kommer tilbake hvis et salg avbestilles og annonsen legges ut igjen (Max 24.10, #224). |
@@ -91,6 +91,12 @@ Første versjon omfatter e-postinnlogging, kontooppsett, søk og annonsedetaljer
 | Møtested og hentetid | Avtales mellom partene utenfor appen. | Max 29.09 |
 | Forlengelse av lån (FK-09) | Partene avtaler ny returdato utenfor appen; eieren bekrefter retur når tingen er levert. | Max 01.11 (tid: kjerneflyten først) |
 | Rapport om returproblem (FK-10) | Partene løser det seg imellom utenfor appen. | Max 01.11 (tid: kjerneflyten først) |
+| Selgerside (FK-13, #93) | Navnet på annonsesiden er vanlig tekst; søket finner også selgerens navn. | Max 02.11 (leveranse 05.11) |
+| Fjerne solgte etter 30 dager (#92) | Solgte annonser blir stående med «Solgt»-merke. | Max 02.11 (leveranse 05.11) |
+| Sortering og «Vis flere» (#116, #101) | Listen har ingen egen sortering eller sideinndeling; søket viser beste treff først. | Max 02.11 (leveranse 05.11) |
+| Filteret «Tilgjengelig nå» (#100) | Annonsesiden viser opptatte datoer for lån. | Max 02.11 (leveranse 05.11) |
+| Flere kategorier (#62) | Dagens faste kategoriliste beholdes. | Max 02.11 (leveranse 05.11) |
+| Egen skjerm for gis bort (#64) | Gis bort bruker samme annonseside og forespørsel som lån, med eierboksen «Eier». | Max 02.11 (leveranse 05.11) |
 
 Begrunnelsen for hvert punkt er ikke skrevet ned ennå.
 
@@ -103,7 +109,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | ID | Funksjonelt krav |
 |---|---|
 | FK-01 | En HiØ-student skal kunne logge inn eller lage konto med e-post, uten passord, via en engangskode sendt til en `@hiof.no`-adresse. Første gang fyller brukeren inn fullt navn, land og telefon. |
-| FK-02 | En innlogget bruker skal kunne søke i tittel, beskrivelse og selgerens navn med feiltolerant søk og forslag mens man skriver, filtrere på kategori, handelstype, tilstand, pris og «Tilgjengelig nå / Alle», åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
+| FK-02 | En innlogget bruker skal kunne søke i tittel, beskrivelse og selgerens navn med feiltolerant søk og forslag mens man skriver, filtrere på kategori, handelstype, tilstand og pris («Tilgjengelig nå / Alle» er utenfor MVP, Max 02.11), åpne en annonse og se bilder, beskrivelse, handelstype, pris, tilstand og opptatte datoer for lån før en forespørsel sendes. |
 | FK-03 | En innlogget bruker skal kunne legge ut en annonse for salg, lån eller gis bort, med tittel, beskrivelse, kategori, tilstand, 1 til 10 bilder og pris der den gjelder (salgspris, valgfri ukepris ved lån). |
 | FK-04 | En innlogget bruker skal kunne sende en forespørsel på andres annonse: et bud ved salg, en periode på minst én uke ved lån, eller en forespørsel uten vilkår ved gis bort. |
 | FK-05 | Eieren skal kunne godta, avslå eller foreslå en annen pris eller periode. Motforslaget sendes til forespørreren. |
@@ -114,7 +120,7 @@ Chat er ønsket etter MVP. Betaling, vurderinger og konfliktløsning kan vurdere
 | FK-10 | Begge parter i et lån skal kunne rapportere et returproblem. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først). |
 | FK-11 | Brukeren skal ha Min side med profil (bilde, navn, e-post, telefon) og fanene Mine annonser, Forespørsler, Historikk og Mine favoritter, og kunne redigere profil, ta ned egne annonser og logge ut. |
 | FK-12 | Partene skal få e-post ved ny forespørsel, motforslag, aksept, avslag og avbestilling. |
-| FK-13 | En innlogget bruker skal kunne klikke på eierens navn på en annonse og se brukerens andre aktive annonser (Max 08.10). |
+| FK-13 | En innlogget bruker skal kunne klikke på eierens navn på en annonse og se brukerens andre aktive annonser (Max 08.10). Utenfor MVP (Max 02.11: leveransen er 05.11, tiden går til kjerneflyten). |
 | FK-14 | En innlogget bruker skal kunne markere og avmarkere andres annonser som favoritt med et hjerte, på kortet i søket og på annonsesiden, og se dem i fanen «Mine favoritter» på Min side. Fanen viser bare annonser som fortsatt er ute; solgte, gitt bort og nedtatte annonser vises ikke (Max 24.10, #224). |
 
 ### Informasjon per handelstype
@@ -159,7 +165,7 @@ Har bare én part bekreftet overlevering, regnes den som bekreftet 3 dager sener
 | Når reserveres tingen? | Avklart: først ved godtatt avtale. Ventende forespørsler reserverer ikke (D-27). |
 | Flere ventende forespørsler | Avklart: tillatt. Når én godtas, avslås overlappende ventende lån og alle andre ventende bud ved salg (D-28, D-30). |
 | Datogrenser | Avklart: hele returdatoen kan brukes, og neste lån kan tidligst starte dagen etter (D-63). |
-| «Tilgjengelig nå» | Avklart: krever minst én hel ledig uke fra nå. En forsinket ting vises ikke som tilgjengelig før retur er registrert (D-62, D-64). |
+| «Tilgjengelig nå» | Avklart: krever minst én hel ledig uke fra nå. En forsinket ting vises ikke som tilgjengelig før retur er registrert (D-62, D-64). Filteret er utenfor MVP (Max 02.11: leveransen er 05.11, tiden går til kjerneflyten). |
 | Eierens kalender | Avklart: eier setter ingen tilgjengelighetsplan. Ønsker kan stå i beskrivelsen (D-61). |
 
 ## 4. Tekniske krav og teknologivalg
