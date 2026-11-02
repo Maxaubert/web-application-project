@@ -27,6 +27,16 @@ describe("HandoverActions", () => {
     expect(html).not.toMatch(/value="cancel"|value="withdraw"/);
   });
 
+  // #253: destruktive handlinger har rød kant, som «Slett annonse». Godkjent av Max 02.11.
+  it("Avbestill og Trekk tilbake har rød kant, og Bekreft overlevering har det ikke", () => {
+    const html = render({ canWithdraw: true });
+    const button = (label: string) => html.match(new RegExp(`<button[^>]*>${label}</button>`))?.[0] ?? "";
+
+    expect(button("Avbestill")).toContain("border-danger");
+    expect(button("Trekk tilbake")).toContain("border-danger");
+    expect(button("Bekreft overlevering")).not.toContain("border-danger");
+  });
+
   it("Bekreft retur er en vanlig knapp som ikke sender skjemaet, og bekreftelsen er skjult til man trykker (#214)", () => {
     const html = render({ canConfirm: false, canCancel: false, canReturn: true });
 

@@ -34,7 +34,8 @@ export async function MyPage({ ctx, request }: RequestInfo) {
         <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">Min side</h1>
         {profile && <ProfileCard profile={profile} />}
 
-        <nav aria-label="Faner" className="mt-6 flex border-b-2 border-hairline">
+        {/* Fire faner er bredere enn en telefon, så raden ruller sidelengs i stedet for å gjøre hele siden bredere (#253). */}
+        <nav aria-label="Faner" className="mt-6 flex overflow-x-auto border-b-2 border-hairline">
           <TabLink href="/me" current={tab === "requests"} label="Forespørsler" />
           <TabLink href="/me?tab=listings" current={tab === "listings"} label="Mine annonser" />
           <TabLink href="/me?tab=history" current={tab === "history"} label="Historikk" />
@@ -130,7 +131,7 @@ function TabLink({ href, current, label }: { href: string; current: boolean; lab
     <a
       href={href}
       aria-current={current ? "page" : undefined}
-      className={`-mb-0.5 inline-flex min-h-11 items-center border-b-[3px] px-4 font-semibold ${current ? "border-ink" : "border-transparent text-muted hover:text-ink"}`}
+      className={`-mb-0.5 inline-flex min-h-11 items-center border-b-[3px] px-3 font-semibold whitespace-nowrap sm:px-4 ${current ? "border-ink" : "border-transparent text-muted hover:text-ink"}`}
     >
       {label}
     </a>
