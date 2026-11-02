@@ -97,7 +97,7 @@
 - Marker hull som «ikke prøvd» eller «trenger øving». Lesing og KI-forklaring beviser ikke mestring.
 - Loggfør faktiske KI-bidrag og verifikasjon. Ikke dikt bidrag, timer, møter, refleksjon,
   signaturer, git-forfattere eller læringsresultater. Ingen ferdigutfylte studentbesvarelser.
-- Etter hver meningsfull økt: oppdater [felles arbeidslogg](docs/prosess/arbeidslogg-max-og-emil.md). Før vesentlige
+- Etter hver meningsfull økt: oppdater den lokale arbeidsloggen `wal/arbeidslogg.md`. Før vesentlige
   endringer (funksjon, struktur, krav, beslutning) inn i [endringsloggen](docs/endringslogg.md) samme dag. Oppgaver styres
   som GitHub Issues på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1). Bevar historikk og lenk til utført arbeid.
 - **WAL (Max 29.09):** før alltid en løpende, tidsstemplet arbeidslogg hver arbeidsdag i
@@ -105,8 +105,8 @@
   `| Tid | Hva |` når noe faktisk skjer, ikke i etterkant. Hent klokkeslett med `date "+%H:%M"`;
   gjett aldri. Etterførte rader merkes `~` (omtrentlig). Blindveier og forkastede spor skal stå der.
   Aldri hemmeligheter. Ikke force-add WAL eller kopier rånotatene inn i PR-er. Se [loggrutinen](docs/prosess/loggrutine.md).
-- Ved dagens slutt: destiller WAL til [arbeidsloggen](docs/prosess/arbeidslogg-max-og-emil.md) (én oppføring per dag, jeg-form som OS-praksisloggen, bare utført arbeid)
-  og [timelisten](docs/prosess/timeliste.md) (én rad per dag med kort punkt om hva som ble gjort). Timer kan
+- Ved dagens slutt: destiller WAL til arbeidsloggen `wal/arbeidslogg.md` (én oppføring per dag, jeg-form som OS-praksisloggen, bare utført arbeid)
+  og timelisten `wal/timeliste.md` (én rad per dag med kort punkt om hva som ble gjort). Begge er lokale og Git-ignorerte (Max 02.11). Timer kan
   foreslås som anslag fra WAL og commits, merket «anslag», og gjelder først når Max har godkjent dem.
   Ukjent tid er ikke null.
 

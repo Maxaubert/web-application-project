@@ -5,7 +5,7 @@
 Aktive oppgaver ligger på [Kanban-boardet](https://github.com/users/Maxaubert/projects/1).
 
 Arbeidsliste opprettet 16.09.2026, status oppdatert 19.09.2026. Helhetspunktene
-nedenfor er fortsatt åpne; utført arbeid står i [arbeidsloggen](../prosess/arbeidslogg-max-og-emil.md).
+nedenfor er fortsatt åpne; utført arbeid står i arbeidsloggen (nå lokal, se [loggrutinen](../prosess/loggrutine.md)).
 Avklart av Max 19.09: salg, gratis lån og betalt leie inngår i MVP, med forespørsler og
 motforslag. Henting/retur avtales i forespørselen. Chat kommer senere, og hjelp/opplæring
 er fortsatt åpent. Se [gjeldende kravspesifikasjon](../krav/kravspesifikasjon.md).

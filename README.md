@@ -32,7 +32,7 @@ All dokumentasjon ligger i [`docs/`](docs/README.md), sortert i mapper:
 | [Krav](docs/krav/kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav og [akseptansekriterier](docs/krav/akseptansekriterier.md) |
 | [App](docs/app/teknisk-plan.md) | Teknisk plan, kodekvalitet, appoppsett, CI og dokumentkontroll |
 | [Design](docs/design/wireframes/README.md) | Wireframes og skjermspesifikasjon |
-| [Prosess](docs/prosess/ki-avtale.md) | KI-avtale, samarbeid og Git, arbeidslogg og timeliste |
+| [Prosess](docs/prosess/ki-avtale.md) | KI-avtale, samarbeid og Git, loggrutine |
 | [Emne](docs/emne/emnekrav.md) | Emnekrav, kilder, lærerens KI-mal og læringskart |
 | [Leveranser](docs/leveranser/README.md) | Sluttrapport, sign-off og leveransekontroll |
 | [Arkiv](docs/arkiv/README.md) | Historiske planer som ikke vedlikeholdes |
