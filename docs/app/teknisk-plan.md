@@ -98,7 +98,7 @@ Kjent grense: alle aktive annonser hentes før Fuse rangerer dem. Det holder for
 **Beslutning oppgitt av Max 19.09.2026:** Feide er ikke riktig løsning for prosjektet
 og velges bort. Undersøkelsen nedenfor er dokumentgrunnlaget, ikke en påstand om
 at Feide er teknisk umulig eller at HiØ har avslått tilgang. Detaljert begrunnelse
-for valget er ikke oppgitt. Se 19.09 i [arbeidsloggen](../prosess/arbeidslogg-max-og-emil.md).
+for valget er ikke oppgitt. Se 19.09 i den lokale arbeidsloggen.
 
 Offisielle kilder undersøkt 19.09.2026:
 

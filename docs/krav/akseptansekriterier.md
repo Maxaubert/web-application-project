@@ -87,4 +87,4 @@ Kriteriene beskriver observerbar oppførsel med **Gitt / Når / Så**. De er for
 - **AK-40:** Gitt en returrapport, når motparten eller en utenforstående prøver å lese den, så skal den ikke vises. Utenfor MVP (Max 01.11: tiden går til kjerneflyten først).
 - **AK-37:** Gitt et lån med ukepris på 100 kr og en periode på 10 dager, når forespørselen vises, så skal prisen være 100 / 7 × 10 kr.
 
-**Før endelig godkjenning:** avklar kategorilisten, bildelagring og hvordan admin leser returrapporter, og gå gjennom kriteriene med Emil. Kriteriene er utkast, ikke ferdige eller beståtte tester.
+**Før endelig godkjenning:** avklar hvordan admin leser returrapporter (kategorilisten beholdes og bildene ligger i R2, Max 02.11), og gå gjennom kriteriene med Emil. Kriteriene er utkast, ikke ferdige eller beståtte tester.

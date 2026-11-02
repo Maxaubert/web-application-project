@@ -6,14 +6,14 @@ rapport og følge opp læringshull. [P02/P04/P05](../emne/emnekrav.md) styrer.
 
 ## Hvor fører vi arbeidet?
 
-- [Felles arbeidslogg for Max og Emil](arbeidslogg-max-og-emil.md): hovedpunkter per
-  arbeidsdag i jeg-form.
-- [Timeliste](timeliste.md): én rad per person og økt; ukjent tid føres ikke som null.
+- Arbeidslogg `wal/arbeidslogg.md`: hovedpunkter per arbeidsdag i jeg-form.
+- Timeliste `wal/timeliste.md`: én rad per person og økt; ukjent tid føres ikke som null.
+- Begge ligger bare lokalt i den Git-ignorerte `wal/`-mappen (Max 02.11.2026), ikke på GitHub.
 - [Kanban-board](https://github.com/users/Maxaubert/projects/1): oppgavene som GitHub Issues.
 - [Verifikasjon](../app/dokumentkontroll.md): tekniske kontrollresultater og begrensninger.
 
 Denne filen er veiledning og mal, ikke en parallell fremdriftslogg. Den første
-registreringen fra 14.09 er bevart i den felles loggen med lenke til verifikasjonen.
+registreringen fra 14.09 er bevart i den lokale arbeidsloggen.
 
 ## Lokal WAL → arbeidslogg og timeliste
 
@@ -33,8 +33,8 @@ Løpende arbeidslogg med tidsstempler. Skrives underveis, ikke i etterkant.
 1. Ved øktstart: opprett dagens fil hvis den mangler, og les forrige fil for åpne punkter.
 2. Underveis: skriv en rad når noe skjer. Klokkeslett hentes med `date "+%H:%M"`, aldri gjettet.
    Etterførte rader merkes med `~` foran klokkeslettet. Blindveier og forkastede spor skal stå.
-3. Ved dagens slutt: destiller WAL til [arbeidsloggen](arbeidslogg-max-og-emil.md) som én
-   oppføring per dag (`## dd.mm.åååå – Tittel (x t)`), og til [timelisten](timeliste.md) med
+3. Ved dagens slutt: destiller WAL til arbeidsloggen `wal/arbeidslogg.md` som én
+   oppføring per dag (`## dd.mm.åååå – Tittel (x t)`), og til timelisten `wal/timeliste.md` med
    én rad per person og dag: dato, kort punkt om hva som ble gjort, timer og grunnlag.
    Arbeidsloggen skrives som Max' OS-praksislogg: jeg-form med verb først («Satte opp», «Skrev»),
    korte konkrete punkter, bare utført arbeid, ingen blindveier eller sidespor. Aldri «Max gjorde».
@@ -45,7 +45,7 @@ Løpende arbeidslogg med tidsstempler. Skrives underveis, ikke i etterkant.
 WAL-notater skal være korte fakta om arbeidet, ikke rå samtaler eller interne tankerekker.
 Ikke lagre tokens, passord eller personfølsomt materiale selv om mappen er ignorert.
 Git-ignorering er ikke kryptering eller backup, og filene følger ikke med via GitHub.
-Hver maskin har sin egen lokale WAL; det som skal deles, går via arbeidsloggen og timelisten.
+Hver maskin har sin egen lokale WAL, arbeidslogg og timeliste; det som skal deles, går via endringsloggen, issues og PR-ene.
 
 ## Mal ved en meningsfull arbeidsøkt
 

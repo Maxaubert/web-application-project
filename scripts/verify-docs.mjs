@@ -16,7 +16,7 @@ const required = [
   'docs/app/ci-og-deploy.md', 'docs/app/dokumentkontroll.md',
   'docs/design/wireframes/README.md',
   'docs/prosess/ki-avtale.md', 'docs/prosess/samarbeid.md', 'docs/prosess/assistentbruk.md',
-  'docs/prosess/loggrutine.md', 'docs/prosess/arbeidslogg-max-og-emil.md', 'docs/prosess/timeliste.md',
+  'docs/prosess/loggrutine.md',
   'docs/emne/emnekrav.md', 'docs/emne/kilder.md', 'docs/emne/kildemanifest.json',
   'docs/emne/ki-avtale-mal.md', 'docs/emne/laering.md',
   'docs/leveranser/README.md', 'docs/arkiv/README.md',
