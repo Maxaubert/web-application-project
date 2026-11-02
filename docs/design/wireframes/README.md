@@ -108,12 +108,12 @@ endrer ingenting i databasen.
 
 ## Avvik fra tegningene (Max 08.10, #91)
 
-- Selgerboksen viser fullt navn i stedet for fornavn, og navnet blir en lenke til selgerens annonser (FK-13, #93).
+- Selgerboksen viser fullt navn i stedet for fornavn, og navnet skulle bli en lenke til selgerens annonser (FK-13, #93), utenfor MVP (Max 02.11).
 - Solgte annonser vises med «Solgt»-merke i stedet for borte-visningen. Borte-visningen gjelder nedtatte og
   ukjente annonser, med teksten «Den kan være tatt ned, eller lenken er feil.» og uten «Min side» til den siden finnes.
 - Prisen står alene under tittelen; lån skrives «40 kr/uke» som på kortet.
 - Handlingsknappen på annonsesiden står under kategori og tilstand og har fire tilstander for salg (#185, Max 17.10): «Legg inn bud» for andres annonser; «Ditt bud: 220 kr» med «Endre bud» når man har et ventende bud; grået ut «Legg inn bud» på egen og solgt annonse. Lån og gis bort fikk knapper 20.10 (#186a, Max): lån har «Send låneforespørsel» (lenke til lånesiden) og «Din forespørsel: 12.11 – 19.11» når den er sendt; gis bort har «Send forespørsel» (sender direkte) og «Din forespørsel sendt». En sendt forespørsel på lån eller gis bort kan ikke endres. Egen annonse (og en gis bort som er tatt) har knappen grået ut med samme navn.
-- Gis bort er ikke tegnet (#64); inntil videre får eierboksen overskriften «Eier», som ved lån.
+- Gis bort er ikke tegnet (#64, utenfor MVP, Max 02.11); eierboksen får overskriften «Eier», som ved lån.
 
 ## Avvik fra tegningene (Max 10.10, #97)
 
@@ -127,7 +127,7 @@ endrer ingenting i databasen.
   dem åpne. Under 640 px står søkefeltet og «Filtre» på én rad (#164, mockup godkjent av Max 11.10): forstørrelsesglass
   i feltet, etiketten og «Søk»-knappen er bare for skjermlesere og Enter, og tastaturet får søketast. Filterarket har
   ingen hjelpetekst om ukepris (Max 11.10). «Tilgjengelig nå» (#100), sortering (#116) og «Vis flere» (#101)
-  er ikke bygget. Tom visning har «Fjern søk» i stedet for «Fjern filtre».
+  er utenfor MVP (Max 02.11). Tom visning har «Fjern søk» i stedet for «Fjern filtre».
 - Live søkeforslag (#104) er ikke tegnet: fra to tegn vises en hvit liste under feltet med opptil fem treff
   (forsidebilde eller plassholder, tittel, «type · pris») og siste rad «Vis alle treff for «…»». Piltaster, Enter og Escape
   følger combobox-mønsteret; ingen treff gir ingen liste.
