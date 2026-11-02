@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-02
 
+- Retting (#57): hovedknappen i skjemaene (innlogging, bud, lån og forespørsel) er låst til React har lastet. Før kunne et klikk på en treg mobil sende skjemaet uten handlingen, og feilmeldingen for en e-post utenfor @hiof.no kom aldri frem. Ny hook `useHydrated`, og e2e-testen holder igjen JavaScript for å vise det. (Max, #57)
 - Docs (#247): arbeidsloggen og timelisten ligger nå bare lokalt i den Git-ignorerte `wal/`-mappen (`wal/arbeidslogg.md`, `wal/timeliste.md`), ikke på GitHub. Historikken er ikke omskrevet, så eldre versjoner finnes fortsatt i Git. (Max, #247)
 
 ## 2026-11-01
