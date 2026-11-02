@@ -17,9 +17,20 @@ test("innloggingssiden vises med etikett, uten nettleserfeil og med sikkerhetshe
   expect(errors).toEqual([]);
 });
 
-test("en adresse utenfor @hiof.no gir feilmelding", async ({ page }) => {
-  await page.goto("/login");
+// #57: JavaScript holdes igjen, som på en treg mobil. Knappen er låst til React har lastet, og da kommer feilmeldingen
+// frem. Før rettingen kunne et tidlig klikk sende skjemaet uten handlingen. Godkjent av Max 02.11.
+test("en adresse utenfor @hiof.no gir feilmelding, også når siden laster tregt", async ({ page }) => {
+  let releaseScripts = () => {};
+  const scriptsHeld = new Promise<void>((resolve) => (releaseScripts = resolve));
+  await page.route("**/*", async (route) => {
+    if (route.request().resourceType() === "script") await scriptsHeld;
+    await route.continue();
+  });
+  await page.goto("/login", { waitUntil: "commit" });
   await page.getByLabel("HiØ-e-post").fill("ola@gmail.com");
+  await expect(page.getByRole("button", { name: "Fortsett" })).toBeDisabled();
+
+  releaseScripts();
   await page.getByRole("button", { name: "Fortsett" }).click();
 
   await expect(page.getByText("Bruk HiØ-e-posten din (@hiof.no).")).toBeVisible();

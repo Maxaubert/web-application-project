@@ -1,5 +1,6 @@
 // Felles skjemadeler: etikett, felt og feilmelding henger sammen via id-er (DK-03, WCAG).
 import type { InputHTMLAttributes, ReactNode } from "react";
+import { useHydrated } from "./useHydrated";
 
 // Fokus: tekstfelt får fokus også ved klikk, så den tykke blå rammen ble tung (Max 10.10, #113). I stedet blir
 // feltets egen kant mørk og tykkere, som fortsatt er synlig for tastaturbrukere (WCAG 2.4.7). Som klasser
@@ -41,11 +42,13 @@ export function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
+// Låst til React har lastet (#57), ellers går et tidlig klikk forbi skjemahandlingen.
 export function PrimaryButton({ pending, children }: { pending: boolean; children: ReactNode }) {
+  const hydrated = useHydrated();
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={pending || !hydrated}
       aria-busy={pending}
       className="h-12 w-full rounded-md bg-action text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70"
     >
