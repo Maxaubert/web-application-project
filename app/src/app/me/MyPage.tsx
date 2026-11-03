@@ -10,7 +10,7 @@ import type { ListingWithOwner } from "@/app/listings/repository";
 import { db } from "@/db";
 import { parseShow, splitRequests, type Show } from "./my-requests";
 import { ProfileCard } from "./ProfileCard";
-import { getProfile } from "./queries";
+import { createMeRepository } from "./repository";
 import { FavoriteRow } from "./FavoriteRow";
 import { getMyListings, type MyListing } from "./my-listings";
 import { MyListingRow } from "./MyListingRow";
@@ -26,7 +26,7 @@ export async function MyPage({ ctx, request }: RequestInfo) {
   const userId = ctx.session.userId ?? "";
   const params = new URL(request.url).searchParams;
   const tab = parseTab(params.get("tab"));
-  const profile = await getProfile(db, userId);
+  const profile = await createMeRepository(db).findProfile(userId);
 
   return (
     <PageShell title="Min side" wide headerAction={<HeaderActions current="me" />}>
