@@ -5,7 +5,7 @@ import { imageUrl } from "@/app/images/image-url";
 import { formatPrice } from "@/app/listings/format-type-and-price";
 import { typeLabels } from "@/app/listings/labels";
 import { ListingImage } from "@/app/listings/ListingImage";
-import type { ListingWithOwner } from "@/app/listings/queries";
+import type { ListingWithOwner } from "@/app/listings/repository";
 
 export function FavoriteRow({ item }: { item: ListingWithOwner }) {
   const price = formatPrice(item.listing);

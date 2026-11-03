@@ -10,7 +10,7 @@ import { db } from "@/db";
 import { imageUrl } from "@/app/images/image-url";
 import { formatTypeAndPrice } from "@/app/listings/format-type-and-price";
 import { ListingGone } from "@/app/listings/ListingGone";
-import { getListingImages } from "@/app/listings/queries";
+import { createListingRepository } from "@/app/listings/repository";
 import { ListingSummary } from "./ListingSummary";
 import { getContactForParty } from "./contact";
 import { HandoverActions } from "./HandoverActions";
@@ -48,7 +48,7 @@ export async function RequestPage({ params, ctx, response, request: httpRequest 
   // Meldingen rett etter et svar (#203): bare når markøren i adressen stemmer med det som er lagret.
   const marker = new URL(httpRequest.url).searchParams.get("sendt");
   const notice = noticeFor(marker, request.status, latest, userId, listing.type);
-  const [coverKey] = await getListingImages(db, listing.id);
+  const [coverKey] = await createListingRepository(db).findImages(listing.id);
   const contact = await getContactForParty(db, request.id, userId);
   const accepted = request.status === "accepted";
   const waiting = request.status === "waiting_owner" || request.status === "waiting_requester";

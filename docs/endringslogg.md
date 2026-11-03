@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-03
 
+- Struktur (#256, del 2): annonser har repository med interface (ListingRepository, createListingRepository i listings/repository.ts, tidligere queries.ts). Lagring, endring og nedtaking av annonser, og avslag av ventende forespørsler ved nedtaking, ligger nå der; actions.ts, update.ts og unpublish.ts har ingen Drizzle-kall. (Max, #256)
 - Struktur (#256, del 1): favoritter har et repository etter Marius' mønster: interfacet FavoriteRepository og fabrikken createFavoriteRepository(db) i favorites/repository.ts (tidligere queries.ts). Bare repositoryet leser og skriver i databasen; reglene i favorites.ts og sidene bruker det. Max valgte én fil per funksjonsmappe med både lesing og skriving, interface, og vanlige data i stedet for { ok, data }. (Max, #256)
 
 ## 2026-11-02
