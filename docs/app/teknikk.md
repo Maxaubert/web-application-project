@@ -17,12 +17,20 @@ endringen; hele listen er en gjennomgang før milepæl, ikke ritual for hver lin
 - Avklar bindinger og runtime: en Cloudflare Worker er ikke en vanlig Node-server.
   Ikke skjul runtimeproblemer med en testmock og kall det produksjonsverifisert.
 
-## Arkitektur uten unødvendige lag
+## Arkitektur: funksjonsmapper med controller, service og repository
 
-Organiser kode som endres sammen etter funksjon/domene. Én tydelig oppgave per fil.
-Skill presentasjon, validering, tilgang og datatilgang når det gir en forståelig grense.
-Ikke opprett controller/service/repository for hver enkel funksjon bare fordi en historisk
-demo gjorde det. Navn og plassering skal være konsekvente og forklare ansvar.
+Koden ligger i én mappe per funksjon (`listings/`, `requests/`, `favorites/`, `me/`, `auth/`,
+`notifications/`), som Marius' «brødskive» (leksjon 16). Inne i hver mappe er det tre roller
+(Max 03.11, #256):
+
+- **Controller:** server actions (`actions.ts`) og REST-handleren (`listings/api.ts`). Leser økten
+  og skjemaet, kaller reglene og svarer.
+- **Service:** regelfilene (`respond.ts`, `update.ts`, `favorites.ts` og de andre). Avgjør hvem som
+  har lov og hva som skal skje, uten økt eller skjema.
+- **Repository:** `repository.ts`, det eneste stedet som leser og skriver i databasen. Et interface
+  (`ListingRepository` og de andre) og en fabrikk (`createListingRepository(db)`), etter Marius'
+  `task-repository.ts`. Databasen kommer inn som argument, så testene bruker SQLite i minnet.
+  Repositoryet returnerer vanlige data, ikke `{ ok, data }`; feilene håndteres i reglene.
 
 For første hovedflyt tegner begge denne generiske flyten og erstatter boksene med
 ekte fil-/funksjonsnavn. Den er et øvingsbilde, ikke en vedtatt mappestruktur:
