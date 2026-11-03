@@ -1,10 +1,8 @@
 "use server";
 // Serverhandlinger for annonser (FK-03, #131). Alt sjekkes her på serveren: økt, fullført konto og
 // gyldige felt og bilder. Eieren hentes fra økten, aldri fra skjemaet, så ingen kan legge ut i andres navn.
-import { eq } from "drizzle-orm";
 import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
-import { listing, listingImage } from "@/db/schema";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
 import { imageBucket } from "@/app/images/bucket";
 import { checkImages, checkThumbs } from "@/app/images/image-files";
@@ -12,6 +10,7 @@ import { storeImages, withThumbs } from "@/app/images/storage";
 import { log } from "@/app/shared/log";
 import { validateListing, type ListingFormValues } from "./listing-schema";
 import { unpublishListing } from "./unpublish";
+import { createListingRepository } from "./repository";
 import { updateListingFields } from "./update";
 
 const FIELDS = ["title", "description", "category", "type", "condition", "price"] as const;
@@ -38,11 +37,11 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
   // og filene igjen, så det aldri blir liggende bilder uten annonse eller en annonse med halve bildene.
   const listingId = crypto.randomUUID();
   const keys = await storeImages(imageBucket, listingId, images.images, thumbs.thumbs);
+  const repository = createListingRepository(db);
   try {
-    await db.insert(listing).values({ ...result.data, id: listingId, ownerId: ctx.session.userId });
-    if (keys.length > 0) await db.insert(listingImage).values(keys.map((key, position) => ({ listingId, key, position })));
+    await repository.create({ ...result.data, id: listingId, ownerId: ctx.session.userId }, keys);
   } catch (error) {
-    await db.delete(listing).where(eq(listing.id, listingId));
+    await repository.remove(listingId);
     if (keys.length > 0) await imageBucket.delete(withThumbs(keys));
     throw error;
   }

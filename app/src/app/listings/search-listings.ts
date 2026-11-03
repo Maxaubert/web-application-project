@@ -2,7 +2,7 @@
 // uten forskjell på store og små bokstaver (også æøå), og med plass til skrivefeil og delord.
 // Kjører i Workeren på aktive annonser fra databasen; det holder for omtrent tusen annonser (KK-02).
 import Fuse from "fuse.js";
-import type { ListingWithOwner } from "./queries";
+import type { ListingWithOwner } from "./repository";
 
 const fuseOptions = {
   // Treff i tittelen teller dobbelt så mye som i beskrivelsen og navnet. Fuse lar i tillegg

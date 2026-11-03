@@ -7,7 +7,7 @@ import { Filters } from "@/app/listings/Filters";
 import { imageUrl } from "@/app/images/image-url";
 import { ListingCard } from "@/app/listings/ListingCard";
 import { createFavoriteRepository } from "@/app/favorites/repository";
-import { getActiveListings, type ListingWithOwner } from "@/app/listings/queries";
+import { createListingRepository, type ListingWithOwner } from "@/app/listings/repository";
 import { countActiveFilters, parseSearch, type ListingFilters } from "@/app/listings/search-params";
 import { searchListings } from "@/app/listings/search-listings";
 import { SearchField } from "@/app/listings/SearchField";
@@ -22,7 +22,7 @@ export async function HomePage({ request, response, ctx }: RequestInfo) {
   // Ugyldig adresse: siden vises med tomme felt og «Ugyldig søk».
   const { q, ...filters } = search.success ? search.data : { q: "", ...NO_FILTERS };
   // Søket først, så filtrene: opsjonene som fortsatt gir treff regnes ut fra søketreffene (#122).
-  const hits = search.success ? searchListings(await getActiveListings(db), q) : [];
+  const hits = search.success ? searchListings(await createListingRepository(db).findActive(), q) : [];
   const listings = hits.filter(({ listing }) => matchesFilters(listing, filters));
   const available = availableOptions(
     hits.map((h) => h.listing),

@@ -6,7 +6,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { imageUrl } from "@/app/images/image-url";
 import { matchesFilters } from "./filter-listings";
-import { getActiveListings, type ListingWithOwner } from "./queries";
+import { createListingRepository, type ListingWithOwner } from "./repository";
 import { pricesInOrder, searchFields, searchInput } from "./search-params";
 import { searchListings } from "./search-listings";
 
@@ -26,7 +26,7 @@ export async function getListings({ request }: RequestInfo) {
   const parsed = apiSchema.safeParse({ ...searchInput(url), limit: url.searchParams.get("limit") ?? undefined });
   if (!parsed.success) return Response.json({ error: "Ugyldig søk." }, { status: 400 });
   const { q, limit, ...filters } = parsed.data;
-  const hits = searchListings(await getActiveListings(db), q)
+  const hits = searchListings(await createListingRepository(db).findActive(), q)
     .filter(({ listing }) => matchesFilters(listing, filters))
     .slice(0, limit);
   return Response.json({ listings: hits.map(toJson) });

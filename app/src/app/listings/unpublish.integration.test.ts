@@ -5,7 +5,7 @@ import { listing, request, user } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
-import { getActiveListings } from "./queries";
+import { createListingRepository } from "./repository";
 import { unpublishListing } from "./unpublish";
 
 let db: Db;
@@ -28,7 +28,7 @@ describe("unpublishListing", () => {
   it("tar eierens aktive annonse ut av søket", async () => {
     expect(await unpublishListing(db, { userId: OWNER_ID, listingId: "calc" })).toEqual({ ok: true });
     expect(await statusOf("calc")).toBe("unpublished");
-    expect((await getActiveListings(db)).map((row) => row.listing.id)).not.toContain("calc");
+    expect((await createListingRepository(db).findActive()).map((row) => row.listing.id)).not.toContain("calc");
   });
 
   it("avviser en annen brukers forsøk uten å endre noe (TK-03)", async () => {

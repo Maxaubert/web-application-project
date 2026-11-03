@@ -2,7 +2,7 @@
 // Godkjent av Max 10.10.
 import { describe, expect, it } from "vitest";
 import type { Listing } from "@/db/schema";
-import type { ListingWithOwner } from "./queries";
+import type { ListingWithOwner } from "./repository";
 import { searchListings } from "./search-listings";
 
 function row(id: string, title: string, description: string, ownerName: string): ListingWithOwner {

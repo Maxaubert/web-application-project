@@ -4,7 +4,7 @@
 import { and, desc, eq } from "drizzle-orm";
 import { favorite, listing, listingImage, user } from "@/db/schema";
 import type { Db } from "@/db/types";
-import type { ListingWithOwner } from "@/app/listings/queries";
+import type { ListingWithOwner } from "@/app/listings/repository";
 
 export interface FavoriteRepository {
   findListing(listingId: string): Promise<{ ownerId: string; status: string } | undefined>;
