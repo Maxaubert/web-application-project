@@ -14,7 +14,7 @@ import { createListingRepository } from "@/app/listings/repository";
 import { ListingSummary } from "./ListingSummary";
 import { getContactForParty } from "./contact";
 import { HandoverActions } from "./HandoverActions";
-import { getRequestForParty } from "./queries";
+import { getRequestForParty } from "./find-requests";
 import { ContactCard, HandoverStatus, OfferCard, StatusBanner } from "./RequestParts";
 import { formatLoanPrice, loanSummary } from "./loan-summary";
 import { bannerFor, formatPeriod, noticeFor, offerLabel } from "./request-view";

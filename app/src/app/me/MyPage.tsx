@@ -4,7 +4,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
 import { PageShell } from "@/app/shared/page-shell";
-import { getRequestsForUser, type MyRequest } from "@/app/requests/queries";
+import { getRequestsForUser, type MyRequest } from "@/app/requests/find-requests";
 import { createFavoriteRepository } from "@/app/favorites/repository";
 import type { ListingWithOwner } from "@/app/listings/repository";
 import { db } from "@/db";

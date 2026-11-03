@@ -1,7 +1,7 @@
 // Tekstene på forespørselssiden (#192): banneret øverst og chipen i Min side. Rene funksjoner uten database,
 // så rollene og statusene kan testes ett for ett.
 import type { Listing, Offer } from "@/db/schema";
-import type { RequestRole } from "./queries";
+import type { RequestRole } from "./find-requests";
 import type { RequestStatus } from "./request-status";
 
 type Names = { ownerName: string; requesterName: string };

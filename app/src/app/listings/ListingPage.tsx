@@ -11,7 +11,7 @@ import { imageUrl } from "@/app/images/image-url";
 import { createListingRepository } from "./repository";
 import { bidState } from "@/app/requests/bid-state";
 import { BidAction } from "@/app/requests/BidAction";
-import { getActiveRequest } from "@/app/requests/queries";
+import { getActiveRequest } from "@/app/requests/find-requests";
 import { FavoriteButton } from "@/app/favorites/FavoriteButton";
 import { createFavoriteRepository } from "@/app/favorites/repository";
 

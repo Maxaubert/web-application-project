@@ -15,7 +15,7 @@ import { withdrawRequest } from "./withdraw";
 import { notifyOtherParty } from "@/app/notifications/notify";
 import type { NotifyEvent } from "@/app/notifications/messages";
 import { getEmailSender } from "@/app/notifications/sender";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 
 // E-postvarsel til motparten (FK-12, #232) etter at handlingen er lagret. waitUntil sender det etter svaret til nettleseren
 // (Max 01.11), så Resend aldri gjør handlingen tregere; en feil logges i notifyOtherParty og angrer ingenting.

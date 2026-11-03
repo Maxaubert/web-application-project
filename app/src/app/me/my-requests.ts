@@ -1,7 +1,7 @@
 // Delingen av forespørslene på Min side (#193): mottatt (på mine annonser) og sendt (mine egne), med «din tur» først.
 // Forespørsler viser bare pågående; alle avsluttede (fullført, avslått, trukket, utløpt, avbestilt) står i Historikk,
 // fra begge roller, nyeste først (#220, Max 01.11).
-import type { MyRequest } from "@/app/requests/queries";
+import type { MyRequest } from "@/app/requests/find-requests";
 import { activeStatuses } from "@/app/requests/request-status";
 import { chipFor } from "@/app/requests/request-view";
 

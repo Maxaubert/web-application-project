@@ -6,7 +6,7 @@ import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
 import { placeBid } from "./place-bid";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 
 const KARI = "kari";
 let db: Db;

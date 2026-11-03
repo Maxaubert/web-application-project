@@ -12,7 +12,7 @@ import { ListingGone } from "@/app/listings/ListingGone";
 import { createListingRepository } from "@/app/listings/repository";
 import { bidState } from "./bid-state";
 import { BidForm } from "./BidForm";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 
 export async function BidPage({ params, ctx, response }: RequestInfo<{ id: string }>) {
   const result = await createListingRepository(db).findWithOwner(params.id);
