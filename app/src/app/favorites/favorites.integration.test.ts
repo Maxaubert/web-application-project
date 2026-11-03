@@ -6,7 +6,7 @@ import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
 import { setFavorite } from "./favorites";
-import { getFavoriteIds, getFavoriteListings } from "./queries";
+import { createFavoriteRepository } from "./repository";
 
 let db: Db;
 
@@ -21,13 +21,13 @@ beforeEach(async () => {
 });
 
 const rowsFor = (userId: string) => db.select().from(favorite).where(eq(favorite.userId, userId));
-const listedIds = async (userId: string) => (await getFavoriteListings(db, userId)).map((row) => row.listing.id);
+const listedIds = async (userId: string) => (await createFavoriteRepository(db).findListings(userId)).map((row) => row.listing.id);
 
 describe("setFavorite", () => {
   it("lagrer en annen students aktive annonse, og den vises i Mine favoritter (AK-42)", async () => {
     expect(await setFavorite(db, { userId: "kari", listingId: "calc", on: true })).toEqual({ ok: true });
     expect(await listedIds("kari")).toEqual(["calc"]);
-    expect(await getFavoriteIds(db, "kari")).toEqual(new Set(["calc"]));
+    expect(await createFavoriteRepository(db).findIds("kari")).toEqual(new Set(["calc"]));
   });
 
   it("avviser egen annonse uten å lagre noe (AK-44)", async () => {
@@ -61,7 +61,7 @@ describe("setFavorite", () => {
   });
 });
 
-describe("getFavoriteListings", () => {
+describe("findListings", () => {
   it("skjuler en annonse som blir solgt, og viser den igjen når den legges ut på nytt (AK-43)", async () => {
     await setFavorite(db, { userId: "kari", listingId: "calc", on: true });
 
@@ -80,5 +80,20 @@ describe("getFavoriteListings", () => {
     await db.insert(request).values({ listingId: "drill", requesterId: "per", status: "in_use" });
 
     expect(await listedIds("kari")).toEqual(["drill"]);
+  });
+});
+
+// Repositoryet (#256): fabrikken gir alle funksjonene i interfacet, og de leser og skriver i favoritt-tabellen. Godkjent av Max 03.11.
+describe("createFavoriteRepository", () => {
+  it("legger til, finner og fjerner en favoritt i databasen", async () => {
+    const repository = createFavoriteRepository(db);
+
+    await repository.add("kari", "calc");
+    expect(await repository.findIds("kari")).toEqual(new Set(["calc"]));
+    expect(await rowsFor("kari")).toHaveLength(1);
+
+    await repository.remove("kari", "calc");
+    expect(await rowsFor("kari")).toEqual([]);
+    expect(await repository.findListing("calc")).toEqual({ ownerId: OWNER_ID, status: "active" });
   });
 });
