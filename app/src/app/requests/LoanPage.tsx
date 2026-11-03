@@ -13,7 +13,7 @@ import { createListingRepository } from "@/app/listings/repository";
 import { bidState } from "./bid-state";
 import { LoanForm } from "./LoanForm";
 import { getOccupiedPeriods } from "./occupied";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 
 export async function LoanPage({ params, ctx, response }: RequestInfo<{ id: string }>) {
   const result = await createListingRepository(db).findWithOwner(params.id);

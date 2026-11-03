@@ -5,7 +5,7 @@ import { listing, listingImage, offer, request, requestStatuses, user } from "@/
 import type { Db } from "@/db/types";
 import { createTestDb } from "@/test/test-db";
 import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
-import { getActiveRequest, getRequestForParty, getRequestsForUser } from "./queries";
+import { getActiveRequest, getRequestForParty, getRequestsForUser } from "./find-requests";
 
 let db: Db;
 // Litt etter budene som er lagret under (1 700 000 000 000 ms), så ingenting er utløpt med mindre testen sier det.

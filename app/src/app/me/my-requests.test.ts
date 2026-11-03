@@ -1,7 +1,7 @@
 // Delingen og sorteringen av forespørslene på Min side (#193).
 import { describe, expect, it } from "vitest";
 import type { Listing } from "@/db/schema";
-import type { MyRequest } from "@/app/requests/queries";
+import type { MyRequest } from "@/app/requests/find-requests";
 import { parseShow, splitRequests } from "./my-requests";
 
 function item(id: string, overrides: Partial<MyRequest> = {}): MyRequest {

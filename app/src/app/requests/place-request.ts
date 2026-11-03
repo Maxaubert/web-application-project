@@ -7,7 +7,7 @@ import { listing, offer, request, type Listing } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { getOccupiedPeriods, overlaps } from "./occupied";
 import { validateOffer, type OfferValues } from "./offer-rules";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 import { expireOverdueRequest } from "./request-expiry";
 
 export type PlaceRequestInput = OfferValues & { userId: string; listingId: string; now?: Date };

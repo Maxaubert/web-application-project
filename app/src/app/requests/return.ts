@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { settleHandover } from "./auto-confirm";
-import { getRequestForParty } from "./queries";
+import { getRequestForParty } from "./find-requests";
 import { nextStatus } from "./request-status";
 import type { HandoverResult } from "./handover";
 

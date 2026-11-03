@@ -1,6 +1,6 @@
 // Hva annonsesiden viser som knapp (A til D i mockupen, #185; lån og gis bort #186). Én verdi i stedet for flere if-er i komponenten.
 import type { Listing } from "@/db/schema";
-import type { ActiveRequest } from "./queries";
+import type { ActiveRequest } from "./find-requests";
 
 export type BidState =
   | { kind: "can_bid" }

@@ -7,7 +7,7 @@ import { listing, offer, request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { getOccupiedPeriods, getWaitingPeriods, overlaps, type Period } from "./occupied";
 import { validateOffer } from "./offer-rules";
-import { getRequestForParty } from "./queries";
+import { getRequestForParty } from "./find-requests";
 import { expireIfDue } from "./request-expiry";
 import { nextStatus } from "./request-status";
 

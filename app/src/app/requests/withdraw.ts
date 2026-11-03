@@ -3,7 +3,7 @@
 import { and, eq } from "drizzle-orm";
 import { request } from "@/db/schema";
 import type { Db } from "@/db/types";
-import { getRequestForParty } from "./queries";
+import { getRequestForParty } from "./find-requests";
 import { expireIfDue } from "./request-expiry";
 import { nextStatus } from "./request-status";
 import type { HandoverResult } from "./handover";
