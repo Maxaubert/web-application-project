@@ -8,6 +8,10 @@ den lokale arbeidsloggen (se [loggrutinen](prosess/loggrutine.md)). Én linje pe
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-11-03
+
+- Struktur (#256, del 1): favoritter har et repository etter Marius' mønster: interfacet FavoriteRepository og fabrikken createFavoriteRepository(db) i favorites/repository.ts (tidligere queries.ts). Bare repositoryet leser og skriver i databasen; reglene i favorites.ts og sidene bruker det. Max valgte én fil per funksjonsmappe med både lesing og skriving, interface, og vanlige data i stedet for { ok, data }. (Max, #256)
+
 ## 2026-11-02
 
 - UI (#253): fra UI-reviewen 02.11. Fanene på Min side ruller sidelengs på mobil i stedet for å gjøre siden 462 px bred, knappen som fjerner et bilde er 44 px, og «Avbestill» og «Trekk tilbake» har rød kant som andre destruktive handlinger. (Max, #253)

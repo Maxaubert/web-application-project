@@ -6,7 +6,7 @@ import { availableOptions, matchesFilters } from "@/app/listings/filter-listings
 import { Filters } from "@/app/listings/Filters";
 import { imageUrl } from "@/app/images/image-url";
 import { ListingCard } from "@/app/listings/ListingCard";
-import { getFavoriteIds } from "@/app/favorites/queries";
+import { createFavoriteRepository } from "@/app/favorites/repository";
 import { getActiveListings, type ListingWithOwner } from "@/app/listings/queries";
 import { countActiveFilters, parseSearch, type ListingFilters } from "@/app/listings/search-params";
 import { searchListings } from "@/app/listings/search-listings";
@@ -30,7 +30,7 @@ export async function HomePage({ request, response, ctx }: RequestInfo) {
   );
   const active = countActiveFilters(filters);
   const userId = ctx.session.userId ?? "";
-  const favorites = await getFavoriteIds(db, userId);
+  const favorites = await createFavoriteRepository(db).findIds(userId);
 
   return (
     <PageShell title="Annonser" wide headerAction={<HeaderActions />}>

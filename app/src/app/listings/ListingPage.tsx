@@ -13,7 +13,7 @@ import { bidState } from "@/app/requests/bid-state";
 import { BidAction } from "@/app/requests/BidAction";
 import { getActiveRequest } from "@/app/requests/queries";
 import { FavoriteButton } from "@/app/favorites/FavoriteButton";
-import { getFavoriteIds } from "@/app/favorites/queries";
+import { createFavoriteRepository } from "@/app/favorites/repository";
 
 export async function ListingPage({ params, request, response, ctx }: RequestInfo<{ id: string }>) {
   const result = await getListingWithOwner(db, params.id);
@@ -29,7 +29,7 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
   const bid = visible ? bidState(result.listing, userId, await getActiveRequest(db, params.id, userId)) : ({ kind: "none" } as const);
   // Hjertet (#224): bare på andres aktive annonser; serveren avviser egne, solgte og nedtatte uansett.
   const canFavorite = visible ? result.listing.status === "active" && result.listing.ownerId !== userId : false;
-  const saved = canFavorite && (await getFavoriteIds(db, userId)).has(params.id);
+  const saved = canFavorite && (await createFavoriteRepository(db).findIds(userId)).has(params.id);
 
   return (
     <PageShell title={visible ? result.listing.title : "Annonsen er borte"} wide headerAction={<HeaderActions />}>

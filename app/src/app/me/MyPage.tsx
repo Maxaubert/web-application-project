@@ -5,7 +5,7 @@ import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
 import { PageShell } from "@/app/shared/page-shell";
 import { getRequestsForUser, type MyRequest } from "@/app/requests/queries";
-import { getFavoriteListings } from "@/app/favorites/queries";
+import { createFavoriteRepository } from "@/app/favorites/repository";
 import type { ListingWithOwner } from "@/app/listings/queries";
 import { db } from "@/db";
 import { parseShow, splitRequests, type Show } from "./my-requests";
@@ -45,7 +45,7 @@ export async function MyPage({ ctx, request }: RequestInfo) {
         {tab === "requests" && <Requests lists={splitRequests(await getRequestsForUser(db, userId))} show={parseShow(params.get("show"))} />}
         {tab === "listings" && <MyListings items={await getMyListings(db, userId)} />}
         {tab === "history" && <History items={splitRequests(await getRequestsForUser(db, userId)).history} />}
-        {tab === "favorites" && <Favorites items={await getFavoriteListings(db, userId)} />}
+        {tab === "favorites" && <Favorites items={await createFavoriteRepository(db).findListings(userId)} />}
       </div>
     </PageShell>
   );
@@ -97,7 +97,7 @@ function MyListings({ items }: { items: MyListing[] }) {
   );
 }
 
-// Mine favoritter (#224): bare aktive annonser, sist lagret først (getFavoriteListings). Fjernes hjertet, tegnes siden på nytt uten raden.
+// Mine favoritter (#224): bare aktive annonser, sist lagret først (findListings i favorites/repository.ts). Fjernes hjertet, tegnes siden på nytt uten raden.
 function Favorites({ items }: { items: ListingWithOwner[] }) {
   if (items.length === 0) return <Empty text="Du har ingen favoritter" />;
   return (
