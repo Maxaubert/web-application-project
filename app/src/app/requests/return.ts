@@ -1,12 +1,11 @@
 // Bekreftet retur ved lån (FK-07, #214): bare eieren, bare mens lånet er i bruk, når som helst (Max 21.10). Bekreftelsen
 // fullfører lånet, og perioden blir ledig av at forespørselen ikke lenger er i bruk. Samme rolle som handover.ts:
 // serverhandlingen updateRequest i actions.ts henter brukeren fra økten og kaller hit.
-import { and, eq } from "drizzle-orm";
-import { request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { settleHandover } from "./auto-confirm";
 import { getRequestForParty } from "./find-requests";
 import { nextStatus } from "./request-status";
+import { createRequestRepository } from "./repository";
 import type { HandoverResult } from "./handover";
 
 const NOT_FOUND = "Forespørselen finnes ikke";
@@ -27,10 +26,6 @@ export async function confirmReturn(
   const next = nextStatus(details.request.status, "confirm_return", details.role);
   if (!next) return { ok: false, error: NOT_NOW };
 
-  const changed = await db
-    .update(request)
-    .set({ status: next, updatedAt: now })
-    .where(and(eq(request.id, requestId), eq(request.status, "in_use")))
-    .returning({ id: request.id });
-  return changed.length > 0 ? { ok: true } : { ok: false, error: CHANGED };
+  const changed = await createRequestRepository(db).moveStatus(requestId, "in_use", next, now);
+  return changed ? { ok: true } : { ok: false, error: CHANGED };
 }
