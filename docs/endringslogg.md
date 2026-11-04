@@ -8,6 +8,10 @@ den lokale arbeidsloggen (se [loggrutinen](prosess/loggrutine.md)). Én linje pe
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-11-04
+
+- Innlogging (#263): `/dev/login` og innloggingskoden i nettleserkonsollen er fjernet for å gjøre koden enklere. Lokalt logger man inn med testbrukerens adresse og leser koden i terminalen. (Max, #263)
+
 ## 2026-11-03
 
 - Struktur (#256, del 3): Min side har repository med interface (MeRepository i me/repository.ts, tidligere queries.ts). my-listings.ts regner ut statuslinjen og henter dataene gjennom repositoryet. (Max, #256)

@@ -1,4 +1,4 @@
--- Testbrukeren for /dev/login lokalt (#79, #106). Kjøres av `npm run db:seed:local`, aldri mot skyen.
+-- Testbrukeren for lokal innlogging (#79). Kjøres av `npm run db:seed:local`, aldri mot skyen.
 -- Testannonsene er demoannonsene i seed-listings.json, lagt inn av seed.mjs (#152).
 -- Kan kjøres flere ganger: testradene slettes og legges inn på nytt.
 

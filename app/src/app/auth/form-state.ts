@@ -5,8 +5,6 @@ export type FormState = {
   error?: string;
   fieldErrors?: Record<string, string>;
   values?: Record<string, string>;
-  // Bare lokal utvikling: ny kode etter «Send ny kode», vist i nettleserkonsollen.
-  devCode?: string;
 };
 export type ActionResult = FormState | Response;
 

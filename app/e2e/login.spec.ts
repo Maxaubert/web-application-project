@@ -1,7 +1,6 @@
 // Nettlesertester for innloggingen, mot produksjonsbygget. Godkjent av Max 05.10.
 // Hele kodeflyten testes i integrasjonstestene; innloggede sider testes i listings.spec.ts med en
-// testøkt fra global-setup.ts (#94). Den lokale snarveien /dev/login (#106) finnes bare
-// under utviklingsserveren; testen nederst beviser at den ikke finnes i produksjonsbygget.
+// testøkt fra global-setup.ts (#94).
 import { expect, test } from "@playwright/test";
 import { TEST_IMAGE_PATH } from "./global-setup";
 
@@ -57,15 +56,6 @@ test("Min side uten innlogging sender til innloggingen", async ({ page }) => {
 test("ukjente adresser gir HTTP 404", async ({ request }) => {
   const response = await request.get("/finnes-ikke");
   expect(response.status()).toBe(404);
-});
-
-test("/dev/login finnes ikke i produksjonsbygget", async ({ page }) => {
-  const response = await page.goto("/dev/login");
-
-  expect(response?.status()).toBe(404);
-  expect(await page.context().cookies()).toEqual([]);
-  await page.goto("/");
-  await expect(page).toHaveURL(/\/login$/);
 });
 
 // Bilder bare for innloggede (#138). Godkjent av Max 11.10.

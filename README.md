@@ -88,7 +88,7 @@ Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
 | Legg inn testbrukeren og demoannonsene lokalt (tar ca. 3–4 min) | `npm run db:seed:local` |
 
 Migrasjonene ligger i `app/drizzle/`: `0000_auth.sql` har innloggingstabellene, `0001_listing.sql` annonsetabellen.
-Testdataene er testbrukeren for `/dev/login` (`app/scripts/seed-local.sql`) og 34 demoannonser med bilder
+Testdataene er testbrukeren `test.testesen@hiof.no` (`app/scripts/seed-local.sql`) og 34 demoannonser med bilder
 (`app/scripts/seed-listings.json` og `app/scripts/seed-images/`, med `NN.thumb.jpg` som miniatyr til `NN.jpg`), lagt inn av `scripts/seed.mjs` (#152, #155). Demobrukerne har
 `@studentmarkedet.invalid`-adresser og kan ikke logge inn. Skriptet rører bare det demobrukerne eier;
 `node scripts/seed.mjs --remove` fjerner alt igjen.
