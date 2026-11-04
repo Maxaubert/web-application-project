@@ -27,7 +27,7 @@ export function CodeForm() {
           autoComplete="one-time-code"
           inputMode="numeric"
           pattern="[0-9]*"
-          maxLength={CODE_LENGTH + 2}
+          maxLength={CODE_LENGTH}
           required
           className={`${inputClass} h-14 text-center text-2xl tracking-[0.4em] tabular-nums`}
           error={state.fieldErrors?.code}
