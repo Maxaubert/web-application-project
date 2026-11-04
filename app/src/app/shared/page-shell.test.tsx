@@ -10,4 +10,11 @@ describe("PageShell", () => {
     expect(html).toMatch(/<a href="\/"[^>]*>[\s\S]*Studentmarkedet[\s\S]*<\/a>/);
     expect(html).toContain("<title>Logg inn – Studentmarkedet</title>");
   });
+
+  // Godkjent av Max 04.11 (#222).
+  it("logobildet står inne i lenken til forsiden", () => {
+    const html = renderToStaticMarkup(<PageShell title="Logg inn">innhold</PageShell>);
+
+    expect(html).toMatch(/<a href="\/"[^>]*>\s*<img[^>]*src="\/logo\.png"/);
+  });
 });

@@ -23,7 +23,7 @@ export function PageShell({ title, children, wide = false, fill = false, headerA
         <div className="flex h-16 items-center gap-3 px-4 sm:h-[4.5rem] sm:px-12">
           {/* Logo og navn går til forsiden, som på de fleste nettsteder (#113). */}
           <a href="/" className="flex min-h-11 items-center gap-3 rounded-md transition-opacity hover:opacity-80">
-            <span aria-hidden="true" className="size-9 rounded-md border-2 border-line bg-paper sm:size-10" />
+            <img src="/logo.png" alt="" width={197} height={96} className="h-9 w-auto sm:h-10" />
             {/* På smale mobiler er det ikke plass til navnet ved siden av to knapper; da vises bare logoen,
                 og navnet står igjen for skjermlesere (#133). */}
             <span className="text-lg font-bold max-[26rem]:sr-only">{APP_NAME}</span>
