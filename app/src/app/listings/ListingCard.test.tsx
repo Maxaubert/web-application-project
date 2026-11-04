@@ -26,7 +26,8 @@ describe("ListingCard", () => {
     const html = renderToStaticMarkup(<ListingCard listing={tent} cover={null} />);
 
     expect(html).toMatch(/<h2[^>]*>Telt for to<\/h2>/);
-    expect(html).toContain("Lån · 40 kr/uke");
+    expect(html).toContain(">Lån</span>");
+    expect(html).toContain("40 kr/uke");
     expect(html).not.toContain("Lett telt");
   });
 
