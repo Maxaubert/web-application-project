@@ -16,11 +16,12 @@ import { FavoriteButton } from "@/app/favorites/FavoriteButton";
 import { createFavoriteRepository } from "@/app/favorites/repository";
 
 export async function ListingPage({ params, request, response, ctx }: RequestInfo<{ id: string }>) {
-  const result = await createListingRepository(db).findWithOwner(params.id);
+  const listings = createListingRepository(db);
+  const result = await listings.findWithOwner(params.id);
   const visible = result && result.listing.status !== "unpublished";
 
   if (!visible) response.status = 404;
-  const images = visible ? (await createListingRepository(db).findImages(params.id)).map((key) => ({ src: imageUrl(key), thumb: imageUrl(key, "thumb") })) : [];
+  const images = visible ? (await listings.findImages(params.id)).map((key) => ({ src: imageUrl(key), thumb: imageUrl(key, "thumb") })) : [];
   const published =
     visible && new URL(request.url).searchParams.get("publisert") === "1" && result.listing.ownerId === ctx.session.userId;
 

@@ -95,7 +95,7 @@ export async function respondToOffer(
   if (!(await repository.moveStatus(requestId, found.status, next, now))) {
     if (counterId) await repository.removeOffer(counterId);
     // Svaret tapte, så annonsen vi nettopp tok, gis tilbake.
-    if (takesListing) await repository.setListingActive(ad.id, now);
+    if (takesListing) await repository.relistIfSold(ad.id, now);
     return { ok: false, error: CHANGED };
   }
 

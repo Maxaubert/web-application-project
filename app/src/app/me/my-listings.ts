@@ -4,6 +4,7 @@ import type { Listing } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { handoverEffective } from "@/app/requests/auto-confirm";
 import { effectiveStatus } from "@/app/requests/request-expiry";
+import { waitingStatuses } from "@/app/requests/request-status";
 import { createMeRepository } from "./repository";
 
 // pending: ventende forespørsler som ikke er utløpt. loanedUntil: siste dag i et lån i bruk (YYYY-MM-DD), ellers null.
@@ -23,7 +24,7 @@ export async function getMyListings(db: Db, userId: string, now = new Date()): P
     for (const r of requests.filter((r) => r.listingId === ad.id)) {
       const last = latest.get(r.id);
       const status = effectiveStatus(handoverEffective(r, ad.type, now).status, last?.createdAt ?? r.createdAt, now);
-      if (status === "waiting_owner" || status === "waiting_requester") pending++;
+      if (waitingStatuses.includes(status)) pending++;
       if (status === "in_use") loanedUntil = last?.endDate ?? null;
     }
     return { listing: ad, coverKey, pending, loanedUntil };

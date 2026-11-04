@@ -2,12 +2,11 @@
 // at en forespørsel er utløpt (effectiveStatus), og skriving lagrer det (expireIfDue) før den gjør noe annet.
 // Da trenger ingen cron, og en GET endrer aldri databasen.
 import type { Db } from "@/db/types";
-import type { RequestStatus } from "./request-status";
+import { waitingStatuses, type RequestStatus } from "./request-status";
 import { createRequestRepository } from "./repository";
 
 export const EXPIRY_DAYS = 7;
 const DAY_MS = 86_400_000;
-const waitingStatuses: RequestStatus[] = ["waiting_owner", "waiting_requester"];
 
 // Klokken regnes fra siste forslag: et nytt bud eller motbud starter 7 nye dager.
 export function effectiveStatus(status: RequestStatus, lastOfferAt: Date, now: Date): RequestStatus {
