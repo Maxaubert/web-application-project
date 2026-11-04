@@ -9,9 +9,8 @@ import { and, asc, desc, eq, inArray, ne, or, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/sqlite-core";
 import { listing, listingImage, offer, request, user, type Listing, type Offer, type Request } from "@/db/schema";
 import type { Db } from "@/db/types";
-import { activeStatuses, type RequestStatus } from "./request-status";
+import { activeStatuses, waitingStatuses, type RequestStatus } from "./request-status";
 
-const waitingStatuses: RequestStatus[] = ["waiting_owner", "waiting_requester"];
 
 // Rader med begge parters navn, slik databasen gir dem. Statusen regnes ut i find-requests.ts.
 export type PartyRow = { request: Request; listing: Listing; ownerName: string; requesterName: string };
@@ -45,7 +44,6 @@ export interface RequestRepository {
   declineWaiting(requestIds: string[], now: Date): Promise<void>;
   declineOtherWaiting(listingId: string, exceptRequestId: string, now: Date): Promise<void>;
   markListingSold(listingId: string, now: Date): Promise<boolean>;
-  setListingActive(listingId: string, now: Date): Promise<void>;
   relistIfSold(listingId: string, now: Date): Promise<void>;
 }
 
@@ -239,10 +237,6 @@ export function createRequestRepository(db: Db): RequestRepository {
         .where(and(eq(listing.id, listingId), eq(listing.status, "active")))
         .returning({ id: listing.id });
       return taken.length > 0;
-    },
-
-    async setListingActive(listingId, now) {
-      await db.update(listing).set({ status: "active", updatedAt: now }).where(eq(listing.id, listingId));
     },
 
     // Legger ut igjen bare en annonse som er solgt. Har eieren tatt den ned i mellomtiden, forblir den nede.

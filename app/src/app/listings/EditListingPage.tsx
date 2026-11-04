@@ -12,7 +12,8 @@ import { ListingGone } from "./ListingGone";
 import { createListingRepository } from "./repository";
 
 export async function EditListingPage({ params, response, ctx }: RequestInfo<{ id: string }>) {
-  const found = await createListingRepository(db).findWithOwner(params.id);
+  const listings = createListingRepository(db);
+  const found = await listings.findWithOwner(params.id);
   if (!found || found.listing.ownerId !== ctx.session.userId || found.listing.status !== "active") {
     response.status = 404;
     return (
@@ -23,7 +24,7 @@ export async function EditListingPage({ params, response, ctx }: RequestInfo<{ i
   }
 
   const { listing, ownerName } = found;
-  const keys = await createListingRepository(db).findImages(listing.id);
+  const keys = await listings.findImages(listing.id);
   const edit = {
     listingId: listing.id,
     values: {

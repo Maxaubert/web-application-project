@@ -16,7 +16,8 @@ import { getOccupiedPeriods } from "./occupied";
 import { getActiveRequest } from "./find-requests";
 
 export async function LoanPage({ params, ctx, response }: RequestInfo<{ id: string }>) {
-  const result = await createListingRepository(db).findWithOwner(params.id);
+  const listings = createListingRepository(db);
+  const result = await listings.findWithOwner(params.id);
   const found = result?.listing;
 
   if (!found || found.status === "unpublished" || found.type !== "loan") {
@@ -32,7 +33,7 @@ export async function LoanPage({ params, ctx, response }: RequestInfo<{ id: stri
   const state = bidState(found, userId, await getActiveRequest(db, found.id, userId));
   if (state.kind !== "can_request") return redirectTo(`/listings/${found.id}`);
 
-  const [coverKey] = await createListingRepository(db).findImages(found.id);
+  const [coverKey] = await listings.findImages(found.id);
 
   return (
     <PageShell title="Send låneforespørsel" wide headerAction={<HeaderActions />}>

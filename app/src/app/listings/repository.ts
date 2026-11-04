@@ -4,6 +4,7 @@
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { listing, listingImage, request, user, type Listing } from "@/db/schema";
 import type { Db } from "@/db/types";
+import { waitingStatuses } from "@/app/requests/request-status";
 
 // coverKey: forsidebildets nøkkel i R2 (posisjon 0), eller null for annonser uten bilde (#150).
 export type ListingWithOwner = { listing: Listing; ownerName: string; coverKey: string | null };
@@ -85,7 +86,7 @@ export function createListingRepository(db: Db): ListingRepository {
       await db
         .update(request)
         .set({ status: "declined", updatedAt: now })
-        .where(and(eq(request.listingId, listingId), inArray(request.status, ["waiting_owner", "waiting_requester"])));
+        .where(and(eq(request.listingId, listingId), inArray(request.status, waitingStatuses)));
     },
   };
 }

@@ -1,7 +1,7 @@
 // Låneperioder på en annonse (TK-06, #186, #208). En periode er opptatt når forespørselen er godtatt eller lånet er i bruk.
 // Perioden hentes fra siste forslag, for et motforslag kan ha endret den.
 import type { Db } from "@/db/types";
-import type { RequestStatus } from "./request-status";
+import { waitingStatuses, type RequestStatus } from "./request-status";
 import { createRequestRepository } from "./repository";
 
 export type Period = { startDate: string; endDate: string };
@@ -33,5 +33,5 @@ export async function getOccupiedPeriods(db: Db, listingId: string, excludeId?: 
 // Forespørslene som venter på svar, med perioden de ber om. Brukes når et lån godtas (#208); den som nettopp er
 // godtatt, venter ikke lenger og er ikke med.
 export function getWaitingPeriods(db: Db, listingId: string): Promise<RequestPeriod[]> {
-  return latestPeriods(db, listingId, ["waiting_owner", "waiting_requester"]);
+  return latestPeriods(db, listingId, waitingStatuses);
 }
