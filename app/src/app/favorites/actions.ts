@@ -3,22 +3,23 @@
 // skjemaet, og gir jobben videre til setFavorite, der reglene ligger. Hjertet kommer i neste PR.
 import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
-import { redirect, type ActionResult } from "@/app/auth/form-state";
+import type { ActionResult } from "@/app/auth/form-state";
+import { requireSessionUser } from "@/app/auth/guards";
 import { log } from "@/app/shared/log";
 import { setFavorite } from "./favorites";
 
 export async function toggleFavorite(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const listingId = String(formData.get("listingId") ?? "");
   const intent = String(formData.get("intent") ?? "");
   if (intent !== "on" && intent !== "off") return { error: "Ukjent handling" };
 
-  const result = await setFavorite(db, { userId: ctx.session.userId, listingId, on: intent === "on" });
+  const result = await setFavorite(db, { userId: userId, listingId, on: intent === "on" });
   if (!result.ok) return { error: result.error };
 
-  log.info("favorite_toggled", { userId: ctx.session.userId, listingId, intent });
+  log.info("favorite_toggled", { userId: userId, listingId, intent });
   return {};
 }
