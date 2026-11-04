@@ -18,6 +18,10 @@
   --color-plum-ink: #2a0e3f;
   --color-mint: #8debcf;
   --color-mint-hover: #ddf7ee;
+  --color-mint-ink: #0b5a45;
+  --color-loan: #e8e0f7;
+  --color-gift: #ffe9c7;
+  --color-gift-ink: #6b3a00;
 }
 
 @layer base {

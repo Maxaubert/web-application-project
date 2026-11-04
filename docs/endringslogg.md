@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-04
 
+- Annonsekort (#289): handelstypen står som merke på bildet, og prisen er tydeligere. (Max, #289)
 - Utseende (#287): plomme og mint og skrifttypen Figtree på alle sider, plommefarget topp med lys logo og myk kant. Valgt av Max fra mockup 13 Torget. (Max, #287)
 - Logo (#222): hender som gir en bok, i plomme og mint, står i toppen og som favicon i stedet for den grå firkanten og starterens ikoner. (Max, #222)
 - README (#276): skrevet helt om etter Canvas 02.11: kort om appen, flytdiagram, oversikt over koden, start og tester, og en kort endringslogg. Øvrig innhold ligger i docs/. (Max, #276)
