@@ -1,27 +1,21 @@
 "use client";
 // Steg 2: koden fra e-posten. «Send ny kode» og «Endre e-post» som i wireframes.
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { FieldError, inputClass, PrimaryButton, TextField } from "@/app/shared/form-controls";
 import { resendCode, verifyCode } from "./actions";
 import { CODE_LENGTH } from "./constants";
 import { asFormState, type ActionResult, type FormState } from "./form-state";
 
-export function CodeForm({ devCode }: { devCode?: string }) {
+export function CodeForm() {
   const [result, action, pending] = useActionState<ActionResult, FormData>(verifyCode, {});
   const state = asFormState(result);
   const [resend, resendAction, resending] = useActionState<FormState & { sent?: boolean }, FormData>(
     async () => {
       const sent = asFormState(await resendCode());
-      return sent.error ? sent : { sent: true, devCode: sent.devCode };
+      return sent.error ? sent : { sent: true };
     },
     {},
   );
-
-  // Bare lokal utvikling: koden sendes hit bare når den skrives til terminalen (LOGIN_CODE_DELIVERY=log).
-  const latestDevCode = resend.devCode ?? devCode;
-  useEffect(() => {
-    if (latestDevCode) console.info(`Innloggingskode (bare lokal utvikling): ${latestDevCode}`);
-  }, [latestDevCode]);
 
   return (
     <div className="space-y-6">

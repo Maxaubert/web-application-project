@@ -8,7 +8,6 @@ import { getAuth } from "./instance";
 import { createAuthRepository } from "./repository";
 import { clearPendingEmailCookie, readPendingEmail, setPendingEmailCookie } from "./pending-email";
 import { accountSchema, codeSchema, emailSchema, fieldErrors } from "./schemas";
-import { getDevCode } from "./send-login-code";
 import { redirect, type ActionResult } from "./form-state";
 
 function errorMessage(error: unknown, fallback: string): string {
@@ -58,7 +57,7 @@ export async function resendCode(): Promise<ActionResult> {
     return redirect("/login");
   }
   const error = await sendCode(email);
-  return error ? { error } : { devCode: getDevCode(email) };
+  return error ? { error } : {};
 }
 
 export async function verifyCode(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
