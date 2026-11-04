@@ -15,6 +15,6 @@ describe("PageShell", () => {
   it("logobildet står inne i lenken til forsiden", () => {
     const html = renderToStaticMarkup(<PageShell title="Logg inn">innhold</PageShell>);
 
-    expect(html).toMatch(/<a href="\/"[^>]*>\s*<img[^>]*src="\/logo\.png"/);
+    expect(html).toMatch(/<a href="\/"[^>]*>\s*<img[^>]*src="\/logo-lys\.png"/);
   });
 });

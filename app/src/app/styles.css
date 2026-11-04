@@ -2,17 +2,22 @@
 
 /* Fargene og typografien fra wireframes: varm, lys bakgrunn, nesten svart tekst, mørke knapper. */
 @theme {
-  --font-sans: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
-  --color-paper: #f5f3ee;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f8f5fb;
   --color-surface: #ffffff;
-  --color-ink: #1d1b18;
-  --color-muted: #57534c;
-  --color-line: #6f6a62;
-  --color-hairline: #d9d5cc;
-  --color-action: #2a2826;
-  --color-action-hover: #000000;
+  --color-ink: #1f1230;
+  --color-muted: #5b4a6d;
+  --color-line: #8f7fa3;
+  --color-hairline: #e2daea;
+  --color-action: #4c1d6b;
+  --color-action-hover: #612a85;
   --color-danger: #a32116;
-  --color-focus: #1f5fbf;
+  --color-focus: #0f7a5f;
+  --color-plum: #3b1556;
+  --color-plum-hover: #612a85;
+  --color-plum-ink: #2a0e3f;
+  --color-mint: #8debcf;
+  --color-mint-hover: #ddf7ee;
 }
 
 @layer base {
@@ -48,5 +53,26 @@
   }
   a {
     text-underline-offset: 3px;
+  }
+}
+
+/* Plommebåndet øverst (Torget, #287). Den myke kanten gjør at toppen flyter over i siden. */
+@layer components {
+  .band {
+    position: relative;
+    margin-bottom: 1.125rem;
+    background: var(--color-plum);
+    color: #fff;
+  }
+  .band::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -1.0625rem;
+    height: 1.125rem;
+    background: var(--color-plum);
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  }
+  .band :focus-visible {
+    outline-color: var(--color-mint);
   }
 }
