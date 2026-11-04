@@ -4,11 +4,11 @@ Arbeidsgrunnlag for **Max og Emil**, Høgskolen i Østfold, høsten 2026.
 Målet er å bygge en egen fullstack-app og forstå hele løsningen godt nok til å
 forklare, vurdere og endre den uten KI på individuell muntlig vurdering.
 
-**Status 05.10.2026:** prosjektet er et studentmarked med kjøp/salg, gratis lån og
-betalt utleie fra første versjon. Forespørsler og motforslag håndterer avtalene;
-eieren alene bekrefter retur og fullfører lån/leie. Chat kommer etter MVP.
-RedwoodSDK, TypeScript, lokal D1/Drizzle, Tailwind og testverktøy er satt opp i `app/`, med
-innlogging med engangskode på e-post og en enkel prisberegning. Ingen markedsplassfunksjoner er implementert.
+**Status 04.11.2026:** Studentmarkedet er et studentmarked for salg, lån og gis bort. Bygget er
+innlogging med engangskode på e-post, annonser med bilder (R2), søk (REST), forespørsler med bud,
+låneperiode og motforslag, overlevering og retur, favoritter, Min side og e-postvarsler.
+Omfanget ble avgrenset til MVP 02.11 (#223); chat og resten av de kuttede kravene kommer ikke før
+leveransen 05.11.
 Se [oppsettsnotatet](docs/app/oppsett.md). Dokumentasjonen er laget med KI (Codex og
 Claude Code) etter våre valg og er ikke dokumentasjon på studentenes læring.
 

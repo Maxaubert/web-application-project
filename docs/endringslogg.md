@@ -11,6 +11,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 ## 2026-11-04
 
 - Innlogging (#263): `/dev/login` og innloggingskoden i nettleserkonsollen er fjernet for å gjøre koden enklere. Lokalt logger man inn med testbrukerens adresse og leser koden i terminalen. (Max, #263)
+- Docs: statuslinjene i README, AGENTS og emnekrav beskriver det som er bygget per 04.11. Nøytral ordlyd om gruppemedlemmer i CLAUDE.md og komponenter.md, og kursreferanser i komponenter.md bare med leksjonsnummer. (Max, #270)
 
 ## 2026-11-03
 

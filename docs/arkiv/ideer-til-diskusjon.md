@@ -121,7 +121,7 @@ beviser ikke at kravene er oppfylt. Endelig valg, omfang og begrunnelse føres i
 | Plan B | Likte ikke ideen; tas ikke videre |
 | Build Journal | Avvist som kjent funksjonalitet som populære produkter allerede dekker godt |
 | Watch Club | Avvist av samme grunn: kjent funksjonalitet som allerede er godt dekket |
-| Selvstendig generisk kryptert messenger | Emils tidligere forslag; Max opplevde konseptet som kjent og lite interessant. Ikke en beholdt kandidat, og ingen vurdering av Emil som person |
+| Selvstendig generisk kryptert messenger | Tidligere forslag i gruppen; konseptet ble opplevd som kjent og lite interessant. Ikke en beholdt kandidat |
 
 | Idé | Max' tilbakemelding fra runde 2 |
 |---|---|
