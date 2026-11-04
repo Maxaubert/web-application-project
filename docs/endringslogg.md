@@ -10,6 +10,10 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-03
 
+- Struktur (#256, del 3): Min side har repository med interface (MeRepository i me/repository.ts, tidligere queries.ts). my-listings.ts regner ut statuslinjen og henter dataene gjennom repositoryet. (Max, #256)
+- Struktur (#256, del 4): forespørsler har repository med interface (RequestRepository i requests/repository.ts). queries.ts heter nå find-requests.ts og regner ut status fra dataene repositoryet gir; occupied.ts, contact.ts, place-bid.ts, auto-confirm.ts og request-expiry.ts leser gjennom repositoryet. (Max, #256)
+- Struktur (#256, del 5): reglene som skriver forespørsler (place-request, respond, handover, return, withdraw) bruker repositoryet. De betingede skrivingene som hindrer to samtidige aksepter, står nå i repositoryet (moveStatus, markListingSold) og testes direkte. (Max, #256)
+- Struktur (#256, del 6): innlogging og varsler har repository (auth/repository.ts, notifications/repository.ts). Ingen fil utenfor repository.ts bruker Drizzle lenger. teknikk.md beskriver den nye inndelingen. (Max, #256)
 - Struktur (#256, del 2): annonser har repository med interface (ListingRepository, createListingRepository i listings/repository.ts, tidligere queries.ts). Lagring, endring og nedtaking av annonser, og avslag av ventende forespørsler ved nedtaking, ligger nå der; actions.ts, update.ts og unpublish.ts har ingen Drizzle-kall. (Max, #256)
 - Struktur (#256, del 1): favoritter har et repository etter Marius' mønster: interfacet FavoriteRepository og fabrikken createFavoriteRepository(db) i favorites/repository.ts (tidligere queries.ts). Bare repositoryet leser og skriver i databasen; reglene i favorites.ts og sidene bruker det. Max valgte én fil per funksjonsmappe med både lesing og skriving, interface, og vanlige data i stedet for { ok, data }. (Max, #256)
 
