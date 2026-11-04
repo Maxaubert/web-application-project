@@ -30,9 +30,9 @@ Alle må kunne forklare hele appen og gjøre en liten endring på stedet, ikke b
 
 ## Teknisk minimum og hvordan det skal kunne bevises
 
-**Oppsettsstatus 20.09.2026:** RedwoodSDK-starter og lokale verktøy finnes, se
-[appoppsettet](../app/oppsett.md). Ingen T-rad er ferdig dokumentert/godkjent for produktet.
-Eget skjema, API, auth, hovedflyt og integrasjon/dekning gjenstår. Fyll inn reelle bevis underveis.
+**Status 04.11.2026:** eget skjema, REST-søk, innlogging, hovedflyten og integrasjons- og
+nettlesertester er bygget, se [appoppsettet](../app/oppsett.md). Bevisene per T-rad fylles inn i
+rapporten av studentene; ingen rad er godkjent av faglærer ennå.
 
 | ID | Verifisert krav | Forventet evidens, foreløpig plan | Kilde |
 |---|---|---|---|
