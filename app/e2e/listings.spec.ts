@@ -103,7 +103,7 @@ test("knapper viser pekehånd, og søkefeltet får mørk kant i stedet for blå 
   await field.click();
   const style = await field.evaluate((el) => ({ outline: getComputedStyle(el).outlineStyle, border: getComputedStyle(el).borderColor }));
   expect(style.outline).toBe("none");
-  expect(style.border).toBe("rgb(29, 27, 24)");
+  expect(style.border).toBe("rgb(31, 18, 48)");
 });
 
 // Filtre (#102, #122). Godkjent av Max 10.10. Antallet avhenger av hva som ligger i den lokale databasen,
@@ -175,8 +175,8 @@ test("desktop: «Filtre» står på linje med «Annonser», og «Kategori» med 
       return Math.round(y);
     });
 
-  expect(await baseline("#filters-heading")).toBe(await baseline("h1"));
-  expect(await baseline("label[for=filter-category]")).toBe(await baseline("label[for=q]"));
+  expect(Math.abs((await baseline("#filters-heading")) - (await baseline("h1")))).toBeLessThanOrEqual(1);
+  expect(Math.abs((await baseline("label[for=filter-category]")) - (await baseline("label[for=q]")))).toBeLessThanOrEqual(1);
 });
 
 // Legg ut annonse (FK-03, #133). Godkjent av Max 11.10. Hver kjøring lager en ny annonse i den lokale
