@@ -11,6 +11,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 ## 2026-11-04
 
 - Struktur (#264): forenklinger etter reviewen av #256. RequestRepository har én metode mindre (respond.ts bruker relistIfSold), listen over ventende statuser står ett sted (waitingStatuses i request-status.ts), og sidene lager repositoryet én gang øverst. (Max, #264)
+- Leveranse (#272): presentasjonsplanen følger Canvas 02.11 (W-13 tirsdag 17.11 kl. 12:40, demo med hard stopp, eierkolonne per del), og ny sjekkliste for innleveringen i Canvas 05.11. (Max, #272)
 - Innlogging (#263): `/dev/login` og innloggingskoden i nettleserkonsollen er fjernet for å gjøre koden enklere. Lokalt logger man inn med testbrukerens adresse og leser koden i terminalen. (Max, #263)
 - Docs: statuslinjene i README, AGENTS og emnekrav beskriver det som er bygget per 04.11. Nøytral ordlyd om gruppemedlemmer i CLAUDE.md og komponenter.md, og kursreferanser i komponenter.md bare med leksjonsnummer. (Max, #270)
 
