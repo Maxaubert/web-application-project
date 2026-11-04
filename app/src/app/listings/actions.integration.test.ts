@@ -158,3 +158,28 @@ describe("createListing", () => {
     expect(holder.bucket.objects.size).toBe(0);
   });
 });
+
+// Fiendtlig input (#265, KI-kurset 8a). Drizzle sender tittelen som en parameter, aldri som en del av SQL-en.
+// Godkjent av Max 04.11.
+describe("createListing med fiendtlig input", () => {
+  it("lagrer SQL-tekst i tittelen som ren tekst, og tabellen er urørt", async () => {
+    await holder.db.insert(listing).values({
+      id: "eksisterende",
+      ownerId: "ola",
+      type: "sale",
+      title: "Sykkel",
+      description: "Lite brukt.",
+      category: "sports",
+      condition: "used",
+      price: 500,
+    });
+    const hostile = "'); DROP TABLE listing; --";
+
+    await createListing({}, formData({ ...VALID, title: hostile }));
+
+    const rows = await holder.db.select().from(listing);
+    expect(rows).toHaveLength(2);
+    expect(rows.find((r) => r.ownerId === "kari")?.title).toBe(hostile);
+    expect(rows.find((r) => r.id === "eksisterende")?.title).toBe("Sykkel");
+  });
+});

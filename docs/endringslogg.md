@@ -11,6 +11,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 ## 2026-11-04
 
 - Tilgang (#273, #267): serverhandlingene bruker én felles sjekk, requireSessionUser i auth/guards.ts, i stedet for to kopierte linjer hver. Én test kaller alle eksporterte handlinger uten økt og uten fullført oppsett, og beviser videresending og uendret database. (Max, #273)
+- Tester (#265): fiendtlig input. En tittel med SQL-tekst lagres og leses tilbake som ren tekst uten å røre tabellen, og en tittel med <script> vises som tekst i annonsekortet. (Max, #265)
 - Struktur (#264): forenklinger etter reviewen av #256. RequestRepository har én metode mindre (respond.ts bruker relistIfSold), listen over ventende statuser står ett sted (waitingStatuses i request-status.ts), og sidene lager repositoryet én gang øverst. (Max, #264)
 - Leveranse (#272): presentasjonsplanen følger Canvas 02.11 (W-13 tirsdag 17.11 kl. 12:40, demo med hard stopp, eierkolonne per del), og ny sjekkliste for innleveringen i Canvas 05.11. (Max, #272)
 - Innlogging (#263): `/dev/login` og innloggingskoden i nettleserkonsollen er fjernet for å gjøre koden enklere. Lokalt logger man inn med testbrukerens adresse og leser koden i terminalen. (Max, #263)
