@@ -30,6 +30,14 @@ describe("starter response headers", () => {
     expect(csp).toMatch(/^default-src 'self';/);
   });
 
+  // Rydd CSP (#275). Godkjent av Max 04.11.
+  it("allows no eval and no Turnstile in production, and eval only on the dev server", () => {
+    const production = headersFor(false).get("Content-Security-Policy")!;
+    expect(production).not.toContain("'unsafe-eval'");
+    expect(production).not.toContain("challenges.cloudflare.com");
+    expect(headersFor(true).get("Content-Security-Policy")).toContain("'unsafe-eval'");
+  });
+
   it("does not force HTTPS on the local development server", () => {
     expect(headersFor(true).has("Strict-Transport-Security")).toBe(false);
   });
