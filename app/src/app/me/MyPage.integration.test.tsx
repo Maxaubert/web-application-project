@@ -86,7 +86,7 @@ describe("Min side, selgeren (Mottatt)", () => {
     expect(await visit(OWNER_ID)).toMatch(/<img src="\/images\/listings\/calc\/a\.thumb\.jpg"/);
 
     await holder.db.delete(listingImage);
-    expect(await visit(OWNER_ID)).not.toContain("<img");
+    expect(await visit(OWNER_ID)).not.toContain('<img src="/images/listings');
   });
 
   it("tellerne viser antall mottatt og sendt, og Mottatt er valgt som standard", async () => {

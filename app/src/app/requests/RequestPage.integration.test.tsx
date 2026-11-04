@@ -464,7 +464,7 @@ describe("RequestPage, ingen Historikk (#205)", () => {
 
     for (const userId of [OWNER_ID, "kari"]) {
       const { html } = await visit("r1", userId);
-      expect(html).not.toMatch(/Historikk|<h2|<ul|<li/);
+      expect(html).not.toMatch(/Historikk|<h2|<ul|<li[ >]/);
       expect(html).not.toMatch(/bød \d|foreslo \d/);
     }
   });

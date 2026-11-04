@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-04
 
+- Logo (#222): hender som gir en bok, i plomme og mint, står i toppen og som favicon i stedet for den grå firkanten og starterens ikoner. (Max, #222)
 - README (#276): skrevet helt om etter Canvas 02.11: kort om appen, flytdiagram, oversikt over koden, start og tester, og en kort endringslogg. Øvrig innhold ligger i docs/. (Max, #276)
 - Innlogging (#284): kodefeltet tar bare seks tegn, som koden har. (Max, #284)
 - Sikkerhet (#275): CSP uten Turnstile-adressene fra malen, og 'unsafe-eval' bare på utviklingsserveren. heic-to importeres som CSP-utgaven, så HEIC-konverteringen virker uten eval i produksjon. (Max, #275)
