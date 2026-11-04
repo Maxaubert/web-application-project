@@ -44,22 +44,54 @@ Beskriv manglende deltakelse ærlig, uten unødvendige private detaljer.
 
 ## Prosjektpresentasjon, A4
 
-10–15 minutter **inkludert spørsmål**. Alle har aktiv rolle og kan svare om hele appen.
-Dato er uavklart på grunn av konflikt etter uke 42/45, se emnekrav.
-K01 gir denne anbefalte kjøreplanen; det er en fordeling, ikke seks separate krav:
+Kilde: Canvas-siden «Presentasjon av prosjekt og prosjekt», oppdatert 02.11.2026. Den erstatter den eldre
+kjøreplanen fra K01. Presentasjonen er godkjent eller ikke godkjent, ikke en karakter.
 
-| Tid | Innhold |
-|---|---|
-| 0–1 min | Problem, app og mål |
-| 1–5 min | Én hovedflyt hele veien |
-| 5–9 min | To eller tre valg og begrunnelser |
-| 9–10,5 min | Noe som fungerte og noe dere ville endret |
-| 10,5–12 min | KI: verktøy, god og dårlig erfaring, egen forståelse |
-| 12–15 min | Spørsmål og mulig liten kodeendring |
+**Gruppe W-13: tirsdag 17. november kl. 12:40**, 15 minutter inkludert spørsmål. Møt ti minutter før.
+Datoen er absolutt; reserven 19.11 er bare ved behov og må avtales i god tid.
 
-Planlegg 12 minutter innhold. Test skjerm/demo på forhånd, ha syntetiske data,
-app og editor klare. Lysbilder er valgfrie; U26 anbefaler fire/fem hvis brukt, ikke
-lyntalens maks tre. Ikke les rapporten høyt. Ingen ny sjanse automatisk ved fravær.
+| Tid | Innhold | Eier |
+|---|---|---|
+| 0:00–1:00 | Hva appen er, og hvilket problem den løser | |
+| 1:00–4:00 | Demo av én flyt ende til ende, hard stopp 4:00 | |
+| 4:00–7:30 | Koden: to eller tre valg og hvorfor | |
+| 7:30–9:00 | KI-bruken, med en konkret fil å vise til | |
+| 9:00–10:00 | Én ting som fungerte, én ting vi ville gjort annerledes | |
+| 10:00–15:00 | Spørsmål og en liten endring i koden | |
+
+Eierkolonnen fylles inn av Max og Emil. Begge skal ha en synlig rolle, og spørsmål stilles også enkeltvis.
+
+**Demoen:** én flyt hele veien (logg inn, lag noe, se det igjen). Appen kjører med data og en innlogget
+bruker før vi starter. Si hva som skjer bak (hvilket kall, hvor det lander, hva som lagres), ikke hva
+som vises. Editoren er åpen når demoen er ferdig; resten foregår i koden.
+
+**Det som avgjør:** vi finner frem i koden uten å lete, vi forklarer et valg med alternativet vi valgte
+bort, alle har en synlig rolle, og vi kan gjøre en liten endring på stedet.
+
+**Spørsmålstypene** (to eller tre velges ut for appen): vis meg koden bak; hvorfor akkurat sånn; hva skjer
+hvis (feil, tom liste, ingen tilgang); hva skjer når det blir mye; hvem har lov, og hvor håndheves det;
+hva skrev dere ikke selv (KI-kode og hva vi rettet); hvor har dere dette fra (leksjon, dokumentasjon, versjon).
+
+**KI-delen (1,5 min):** verktøyene og hva de ble brukt til, ett sted det fungerte og hva det sparte, ett sted
+det ikke fungerte og hvordan vi oppdaget det, og hva vi lærte om egen forståelse. Pek på en fil som viser
+hvor mye, til hva og hvordan KI ble brukt (#277).
+
+Ta med egen maskin og test skjermen i rommet. Rapporten trenger ikke deles ut.
+
+## Innlevering i Canvas, frist torsdag 5. november kl. 23:59
+
+Samme kilde. Bare én i gruppen leverer, merket med gruppenavn og navnet på begge.
+
+- [ ] Prosjektrapporten, 3 sider ± 10 %.
+- [ ] Lenke til repoet på GitHub med public tilgang, også i rapporten.
+- [ ] Zip av prosjektet uten `node_modules`, men med `.git`-mappen.
+- [ ] Det som var relevant for sign-off i uke 40, som vedlegg eller kort beskrevet i rapporten.
+- [ ] Ujevn arbeidsfordeling kommentert i rapporten. Timelister eller individuelle rapporter sendes
+  faglærer på e-post bare ved store avvik.
+- [ ] README forklarer start, tester og koden overordnet: hva appen gjør, hovedflyten, hvor ruter,
+  datalag og komponenter ligger, og valgene som preger koden (#276).
+
+Å endre git-historikken eller datere commits tilbake behandles som fusk.
 
 ## Før kodepakken sendes, A0/P01
 

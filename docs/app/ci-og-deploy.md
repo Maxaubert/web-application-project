@@ -11,7 +11,7 @@ Oppdatert 05.10.2026. Dette er den konkrete driftsveiledningen. Den opprinnelige
 | Node/npm | Node 24.19.0 fra `.node-version`, npm 11.17.0. Samme versjoner lokalt og i CI. |
 | Avhengighetsoppdatering | Dependabot for Actions og npm i `/app`, ukentlig, med PR-er mot `develop`. Ingen automatisk merge. |
 | PR-beskyttelse | **Full på main** (kontrollert 05.10.2026): PR, bestått `Repository checks`, oppdatert branch og løste tråder kreves, også for admin. Review er frivillig. **Lett på develop** (Max 07.10.2026): bare sletting og force-push blokkeres. Repoet er offentlig. |
-| Testomfang | Starterens headere, render/hydrering/404 og lokal SQL. Produktets hovedflytintegrasjon og 50 % dekning gjenstår. Ingen skjulte eller tillatte testfeil. |
+| Testomfang | Enhets-, integrasjons- og komponenttester i Vitest mot SQLite i minnet, og Playwright for hovedflyten. `test:coverage` feiler under 50 % (T07, #274); målt 04.11.2026: linjer 75,2 %, grener 74,2 %, funksjoner 66,8 %. Ingen skjulte eller tillatte testfeil. |
 | Deploy og release | Cloudflare Worker `webapp` med D1 `webapp-db` i skyen (gratisplan, Max' konto, 07.10.2026): https://studentmarkedet.org (eget domene; workers.dev er slått av). Deployes automatisk fra `main` etter grønn CI (`deploy.yml`, #82). |
 
 CI-workflowen bruker GitHub-hostet Linux-runner, lesetilgang til innhold, Actions låst
@@ -105,10 +105,8 @@ Gaten kjører i én jobb og stopper ved feil. Ingen test bruker produksjonsdata,
 Cloudflare-konto eller hemmeligheter. `npm run generate` bruker bare lokal Wrangler-konfigurasjon.
 For konkrete versjoner, opphav og begrensninger, se [appoppsettet](oppsett.md).
 
-Ved produktutvikling: utvid med reelle enhets-/integrasjonstester, hovedflyt-E2E,
-syntetiske aktører og minst 50 % dekning etter T07. Bevis at tilgangsfeil ikke endrer
-lagret data. Oppsettets tre enhetstester og to browser-smoke-tester oppfyller ikke
-kursets produktkrav. Innfør dekningsgate med avtalt målegrunnlag sammen med produktets tester.
+Dekningsgaten er terskelen i `app/vitest.config.ts` (50 % for linjer, setninger, grener og funksjoner,
+#274). Tester skal bevise at tilgangsfeil ikke endrer lagret data.
 Ikke ekskluder vanskelig kode for å få grønt resultat.
 
 Behold sjekknavnet `Repository checks` som samlet gate dersom arbeidet senere deles

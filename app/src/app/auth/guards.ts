@@ -30,6 +30,15 @@ export function requireUser({ ctx }: GuardInput) {
   if (ctx.session.needsSetup) return redirectTo("/account-setup");
 }
 
+// For serverhandlinger (#273): én regel for hvem som får skrive. Gir bruker-id-en fra økten, eller videresendingen
+// når brukeren ikke er logget inn eller ikke har fullført kontooppsettet. Rutevakten beskytter bare sidene; hver
+// handling må spørre selv, fordi en handling kan kalles direkte uten å gå via siden.
+export function requireSessionUser(session: AppSession): string | Response {
+  if (!session.isAuthenticated || !session.userId) return redirectTo("/login");
+  if (session.needsSetup) return redirectTo("/account-setup");
+  return session.userId;
+}
+
 // For API-ruter (#98): JSON med statuskode i stedet for videresending, siden en fetch fra
 // nettleseren ikke skal havne på innloggingssiden. 401 er ukjent bruker, 403 er kjent bruker
 // som ikke har lov ennå.
