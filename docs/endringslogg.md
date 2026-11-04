@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-04
 
+- Tester (#274): dekningsterskel på 50 % i vitest.config.ts, så CI feiler under kurskravet. Målt dekning med dato i README og ci-og-deploy.md, og de utdaterte linjene om at dekning og deploy gjenstår er borte. (Max, #274)
 - Tilgang (#273, #267): serverhandlingene bruker én felles sjekk, requireSessionUser i auth/guards.ts, i stedet for to kopierte linjer hver. Én test kaller alle eksporterte handlinger uten økt og uten fullført oppsett, og beviser videresending og uendret database. (Max, #273)
 - Tester (#265): fiendtlig input. En tittel med SQL-tekst lagres og leses tilbake som ren tekst uten å røre tabellen, og en tittel med <script> vises som tekst i annonsekortet. (Max, #265)
 - Struktur (#264): forenklinger etter reviewen av #256. RequestRepository har én metode mindre (respond.ts bruker relistIfSold), listen over ventende statuser står ett sted (waitingStatuses i request-status.ts), og sidene lager repositoryet én gang øverst. (Max, #264)

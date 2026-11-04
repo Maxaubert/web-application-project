@@ -94,9 +94,9 @@ Testdataene er testbrukeren `test.testesen@hiof.no` (`app/scripts/seed-local.sql
 `node scripts/seed.mjs --remove` fjerner alt igjen.
 Playwright starter og stopper sin egen preview på port 4173; porten må være ledig.
 På Linux installeres browseravhengighetene med `npx playwright install --with-deps chromium`.
-CI utfører installasjon og hele kontrollrekken. Startertester er ikke bevis på at
-hovedflyten, auth eller kursets dekningskrav er oppfylt. Se [begrensninger og kjente
-avhengighetsfunn](docs/app/oppsett.md). Deploy/release er ikke konfigurert.
+CI utfører installasjon og hele kontrollrekken. `npm run test:coverage` feiler under 50 % dekning
+(kurskravet T07). Målt 04.11.2026: linjer 75,2 %, setninger 74,3 %, grener 74,2 %, funksjoner 66,8 %.
+Deploy skjer automatisk fra `main` etter grønn CI, se [CI og deploy](docs/app/ci-og-deploy.md).
 
 ## Appen på nett
 
