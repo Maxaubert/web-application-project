@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-04
 
+- Sikkerhet (#275): CSP uten Turnstile-adressene fra malen, og 'unsafe-eval' bare på utviklingsserveren. heic-to importeres som CSP-utgaven, så HEIC-konverteringen virker uten eval i produksjon. (Max, #275)
 - Tester (#274): dekningsterskel på 50 % i vitest.config.ts, så CI feiler under kurskravet. Målt dekning med dato i README og ci-og-deploy.md, og de utdaterte linjene om at dekning og deploy gjenstår er borte. (Max, #274)
 - Tilgang (#273, #267): serverhandlingene bruker én felles sjekk, requireSessionUser i auth/guards.ts, i stedet for to kopierte linjer hver. Én test kaller alle eksporterte handlinger uten økt og uten fullført oppsett, og beviser videresending og uendret database. (Max, #273)
 - Tester (#265): fiendtlig input. En tittel med SQL-tekst lagres og leses tilbake som ren tekst uten å røre tabellen, og en tittel med <script> vises som tekst i annonsekortet. (Max, #265)
