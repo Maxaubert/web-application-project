@@ -46,6 +46,13 @@ beforeEach(async () => {
 });
 
 describe("HomePage", () => {
+  // Godkjent av Max 04.11 (#288).
+  it("søket står i toppen", async () => {
+    const { html } = await renderPage("");
+
+    expect(html).toMatch(/<header[^>]*>(?:(?!<\/header>)[\s\S])*role="search"/);
+  });
+
   it("viser bare annonser som passer søket, og feltet beholder søkeordet", async () => {
     const { html, status } = await renderPage("?q=kalk");
 

@@ -13,23 +13,28 @@ type PageShellProps = {
   // Bredt oppsett der innholdet fyller resten av skjermhøyden, for et kort som skal gå helt ned (#135).
   fill?: boolean;
   headerAction?: ReactNode;
+  // Søket i båndet og raden under, bare på forsiden (Torget, #288).
+  headerSearch?: ReactNode;
+  headerBelow?: ReactNode;
 };
 
-export function PageShell({ title, children, wide = false, fill = false, headerAction }: PageShellProps) {
+export function PageShell({ title, children, wide = false, fill = false, headerAction, headerSearch, headerBelow }: PageShellProps) {
   return (
     <div className={fill ? "flex min-h-dvh flex-col" : undefined}>
       <title>{`${title} – ${APP_NAME}`}</title>
       <header className="band">
-        <div className="flex h-16 items-center gap-3 px-4 sm:h-[4.5rem] sm:px-12">
+        <div className="flex min-h-16 flex-wrap items-center gap-x-6 gap-y-2 px-4 py-2 sm:min-h-[4.5rem] sm:px-12">
           {/* Logo og navn går til forsiden, som på de fleste nettsteder (#113). */}
           <a href="/" className="flex min-h-11 items-center gap-3 rounded-md transition-opacity hover:opacity-80">
             <img src="/logo-lys.png" alt="" width={197} height={96} className="h-9 w-auto sm:h-10" />
             {/* På smale mobiler er det ikke plass til navnet ved siden av to knapper; da vises bare logoen,
                 og navnet står igjen for skjermlesere (#133). */}
-            <span className="text-lg font-bold max-[26rem]:sr-only">{APP_NAME}</span>
+            <span className="text-lg font-bold max-[48rem]:sr-only">{APP_NAME}</span>
           </a>
-          {headerAction && <div className="ml-auto">{headerAction}</div>}
+          {headerSearch && <div className="order-last w-full min-w-0 lg:order-none lg:w-auto lg:flex-1">{headerSearch}</div>}
+          {headerAction && <div className={headerSearch ? "ml-auto lg:ml-0" : "ml-auto"}>{headerAction}</div>}
         </div>
+        {headerBelow}
       </header>
       {fill ? (
         <main className="flex flex-1 flex-col px-4 pt-6 pb-10 sm:px-12 sm:pt-10 sm:pb-12">{children}</main>

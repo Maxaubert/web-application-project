@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-04
 
+- Forsiden (#288): søket står i plommebåndet, med en kategorirad under som bruker det samme kategorifilteret, og rutenettet har fire kolonner på brede skjermer. Overskriften Annonser er bare for skjermlesere. Søkeforslag velges bare med piltastene, så Enter søker selv om musen står over listen. (Max, #288)
 - Annonsekort (#289): handelstypen står som merke på bildet, og prisen er tydeligere. (Max, #289)
 - Utseende (#287): plomme og mint og skrifttypen Figtree på alle sider, plommefarget topp med lys logo og myk kant. Valgt av Max fra mockup 13 Torget. (Max, #287)
 - Logo (#222): hender som gir en bok, i plomme og mint, står i toppen og som favicon i stedet for den grå firkanten og starterens ikoner. (Max, #222)

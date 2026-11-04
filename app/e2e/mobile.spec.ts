@@ -16,24 +16,19 @@ test.describe("mobil (375 px)", () => {
     await expect(page.getByRole("link", { name: "Legg ut annonse" })).toBeVisible();
     expect(await size(page.getByRole("link", { name: "Legg ut annonse" }))).toEqual({ width: 44, height: 44 });
     expect(await size(page.getByRole("button", { name: "Logg ut" }))).toEqual({ width: 44, height: 44 });
-    expect(await fontSize(page.getByRole("heading", { name: "Annonser", level: 1 }))).toBe("24px");
     // Ingen sidelengs rulling.
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
 
-  test("søkefeltet og «Filtre» står på én rad, og Enter søker uten synlig knapp", async ({ page }) => {
+  test("søkefeltet står i toppen, og Enter søker uten synlig knapp", async ({ page }) => {
     await page.goto("/", { waitUntil: "networkidle" });
     const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
-    const filters = page.getByRole("button", { name: "Filtre" });
-
-    const [f, b] = [await field.boundingBox(), await filters.boundingBox()];
-    expect(Math.abs(f!.y - b!.y)).toBeLessThan(2);
-    expect(f!.x + f!.width).toBeLessThanOrEqual(b!.x);
+    await expect(page.locator("header").getByRole("search")).toBeVisible();
     // Skjult for øyet, men i tilgjengelighetstreet: skjermleserbokser er 1 × 1 px.
     expect((await size(page.getByText("Søk i tittel, beskrivelse og selger"))).width).toBeLessThanOrEqual(1);
     expect((await size(page.getByRole("button", { name: "Søk" }))).width).toBeLessThanOrEqual(1);
     expect(await field.evaluate((el) => getComputedStyle(el).paddingLeft)).toBe("44px");
-    await expect(field).toHaveAttribute("placeholder", "Søk");
+    await expect(field).toHaveAttribute("placeholder", "Søk i annonser");
 
     await field.fill("casio");
     await field.press("Enter");
@@ -106,18 +101,15 @@ test.describe("desktop (1280 px)", () => {
 
     expect((await size(page.getByRole("link", { name: "Legg ut annonse" }))).width).toBeGreaterThan(100);
     expect((await size(page.getByRole("button", { name: "Logg ut" }))).width).toBeGreaterThan(70);
-    expect(await fontSize(page.getByRole("heading", { name: "Annonser", level: 1 }))).toBe("36px");
   });
 
-  test("søkefeltet har synlig etikett og «Søk»-knapp, og «Filtre» ligger i kolonnen til venstre", async ({ page }) => {
+  test("søkefeltet har plassholder og «Søk»-knapp, og «Filtre» ligger i kolonnen til venstre", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.getByText("Søk i tittel, beskrivelse og selger")).toBeVisible();
     await expect(page.getByRole("button", { name: "Søk" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Filtre" })).toBeHidden();
     const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
-    expect(await field.evaluate((el) => getComputedStyle(el).paddingLeft)).toBe("16px");
-    expect(await field.evaluate((el) => getComputedStyle(el, "::placeholder").color)).toBe("rgba(0, 0, 0, 0)");
+    await expect(field).toHaveAttribute("placeholder", "Søk i annonser");
   });
 
   test("annonsesiden har stor tittel, og miniatyrene brytes over flere linjer", async ({ page }) => {
