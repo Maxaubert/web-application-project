@@ -3,8 +3,11 @@ import { describe, expect, it } from "vitest";
 import { loanPrice } from "@/app/shared/loanPrice";
 import { loanDays, validateOffer } from "./offer-rules";
 
+// Fast «nå», så testene ikke endrer utfall når datoene i dem passerer.
+const BEFORE = new Date("2026-10-01T12:00:00Z");
+
 function errorsFor(type: "sale" | "loan" | "giveaway", values: Parameters<typeof validateOffer>[1]) {
-  const result = validateOffer(type, values);
+  const result = validateOffer(type, values, BEFORE);
   if (result.success) throw new Error("Ventet avvisning");
   return result.fieldErrors;
 }
@@ -42,7 +45,7 @@ describe("bud på salg", () => {
 
 describe("periode for lån", () => {
   it("godtar en uke, og lagrer ingen pris", () => {
-    expect(validateOffer("loan", { startDate: "2026-11-01", endDate: "2026-11-07" })).toEqual({
+    expect(validateOffer("loan", { startDate: "2026-11-01", endDate: "2026-11-07" }, BEFORE)).toEqual({
       success: true,
       data: { price: null, startDate: "2026-11-01", endDate: "2026-11-07" },
     });
@@ -52,7 +55,7 @@ describe("periode for lån", () => {
     expect(errorsFor("loan", { startDate: "2026-11-01", endDate: "2026-11-06" }).endDate).toBe(
       "Lånet må vare minst én uke",
     );
-    expect(validateOffer("loan", { startDate: "2026-11-01", endDate: "2026-11-07" }).success).toBe(true);
+    expect(validateOffer("loan", { startDate: "2026-11-01", endDate: "2026-11-07" }, BEFORE).success).toBe(true);
   });
 
   it("avviser til-dato før fra-dato", () => {
@@ -66,13 +69,13 @@ describe("periode for lån", () => {
 
   it("avviser manglende og ugyldige datoer uten å krasje", () => {
     expect(errorsFor("loan", {})).toEqual({ startDate: "Velg fra-dato", endDate: "Velg til-dato" });
-    expect(errorsFor("loan", { startDate: "2026-02-31", endDate: "2026-03-10" }).startDate).toContain("ÅÅÅÅ-MM-DD");
-    expect(errorsFor("loan", { startDate: "01.11.2026", endDate: "2026-11-10" }).startDate).toContain("ÅÅÅÅ-MM-DD");
-    expect(errorsFor("loan", { startDate: "12026-11-01", endDate: "2026-11-10" }).startDate).toContain("ÅÅÅÅ-MM-DD");
+    expect(errorsFor("loan", { startDate: "2026-02-31", endDate: "2026-03-10" }).startDate).toContain("Skriv en gyldig dato");
+    expect(errorsFor("loan", { startDate: "01.11.2026", endDate: "2026-11-10" }).startDate).toContain("Skriv en gyldig dato");
+    expect(errorsFor("loan", { startDate: "12026-11-01", endDate: "2026-11-10" }).startDate).toContain("Skriv en gyldig dato");
   });
 
-  it("godtar en lang periode, siden kravene bare har en nedre grense", () => {
-    expect(validateOffer("loan", { startDate: "2026-11-01", endDate: "2028-01-01" }).success).toBe(true);
+  it("godtar en lang periode innenfor grensen", () => {
+    expect(validateOffer("loan", { startDate: "2026-11-01", endDate: "2027-12-31" }, BEFORE).success).toBe(true);
   });
 
   it("avviser pris", () => {
@@ -102,5 +105,34 @@ describe("forespørsel om å få gratis", () => {
   it("avviser bud og datoer", () => {
     expect(errorsFor("giveaway", { price: "10" }).price).toBeDefined();
     expect(errorsFor("giveaway", { startDate: "2026-11-01", endDate: "2026-11-08" })).toHaveProperty("startDate");
+  });
+});
+
+// Godkjent av Max 05.11 (#302): en bruker valgte 1800-tallet, og prisen ble 882 586 kr.
+describe("hvilke datoer en låneperiode kan ha", () => {
+  const now = new Date("2026-11-05T12:00:00Z");
+  const check = (startDate: string, endDate: string) => validateOffer("loan", { startDate, endDate }, now);
+
+  it("fra-dato i går avvises, og i dag godtas", () => {
+    expect(check("2026-11-04", "2026-11-20")).toEqual({
+      success: false,
+      fieldErrors: { startDate: "Fra-dato kan ikke være tilbake i tid" },
+    });
+    expect(check("1857-10-13", "2026-12-06").success).toBe(false);
+    expect(check("2026-11-05", "2026-11-20").success).toBe(true);
+  });
+
+  it("«i dag» er norsk tid, også like etter midnatt", () => {
+    const justAfterMidnight = new Date("2026-11-05T23:30:00Z");
+    expect(validateOffer("loan", { startDate: "2026-11-05", endDate: "2026-11-20" }, justAfterMidnight).success).toBe(false);
+    expect(validateOffer("loan", { startDate: "2026-11-06", endDate: "2026-11-20" }, justAfterMidnight).success).toBe(true);
+  });
+
+  it("neste år godtas, året etter avvises", () => {
+    expect(check("2027-12-20", "2027-12-31").success).toBe(true);
+    expect(check("2027-12-20", "2028-01-01")).toEqual({
+      success: false,
+      fieldErrors: { endDate: "Til-dato kan være høyst 31.12.2027" },
+    });
   });
 });

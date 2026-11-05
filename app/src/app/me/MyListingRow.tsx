@@ -25,7 +25,7 @@ export function MyListingRow({ item }: { item: MyListing }) {
       />
       <div className="min-w-0">
         <h2 className="text-lg font-bold [overflow-wrap:anywhere] sm:text-xl">
-          <a href={`/listings/${item.listing.id}`} className="after:absolute after:inset-0">
+          <a href={`/listings/${item.listing.id}?fra=listings`} className="after:absolute after:inset-0">
             {item.listing.title}
           </a>
         </h2>

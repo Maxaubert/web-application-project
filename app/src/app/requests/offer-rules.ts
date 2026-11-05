@@ -5,6 +5,7 @@ import { z } from "zod";
 import { fieldErrors } from "@/app/auth/schemas";
 import { PRICE_MAX } from "@/app/listings/search-limits";
 import type { Listing } from "@/db/schema";
+import { periodLimits } from "./period-limits";
 
 // Fra- og til-dato teller begge, så 1. til 7. er en uke.
 export const MIN_LOAN_DAYS = 7;
@@ -45,7 +46,7 @@ const day = (missing: string) =>
     .string()
     .trim()
     .min(1, missing)
-    .refine((value) => parseDay(value) !== null, "Skriv datoen som ÅÅÅÅ-MM-DD");
+    .refine((value) => parseDay(value) !== null, "Skriv en gyldig dato");
 
 // Zod kjører en refine også når en dato er ugyldig, så periodekontrollene hopper over det tilfellet
 // selv (da har feltet allerede fått sin egen feil).
@@ -55,11 +56,15 @@ function periodDays(p: { startDate: string; endDate: string }): number | null {
   return start === null || end === null ? null : loanDays(p.startDate, p.endDate);
 }
 
-const periodSchema = z
-  .object({ startDate: day("Velg fra-dato"), endDate: day("Velg til-dato") })
-  .superRefine((p, ctx) => {
+const periodSchema = (now: Date) =>
+  z.object({ startDate: day("Velg fra-dato"), endDate: day("Velg til-dato") }).superRefine((p, ctx) => {
     const days = periodDays(p);
     if (days === null) return;
+    const { min, max } = periodLimits(now);
+    if (p.startDate < min) ctx.addIssue({ code: "custom", message: "Fra-dato kan ikke være tilbake i tid", path: ["startDate"] });
+    if (p.endDate > max) {
+      ctx.addIssue({ code: "custom", message: `Til-dato kan være høyst 31.12.${max.slice(0, 4)}`, path: ["endDate"] });
+    }
     if (days < 1) ctx.addIssue({ code: "custom", message: "Til-dato kan ikke være før fra-dato", path: ["endDate"] });
     else if (days < MIN_LOAN_DAYS) ctx.addIssue({ code: "custom", message: "Lånet må vare minst én uke", path: ["endDate"] });
   });
@@ -73,7 +78,7 @@ function unusedFields(values: OfferValues, keys: (keyof OfferValues)[]): Record<
   return errors;
 }
 
-export function validateOffer(type: Listing["type"], values: OfferValues): Validation {
+export function validateOffer(type: Listing["type"], values: OfferValues, now = new Date()): Validation {
   if (type === "sale") {
     const errors = unusedFields(values, ["startDate", "endDate"]);
     const parsed = bidSchema.safeParse({ price: values.price ?? "" });
@@ -84,7 +89,7 @@ export function validateOffer(type: Listing["type"], values: OfferValues): Valid
 
   if (type === "loan") {
     const errors = unusedFields(values, ["price"]);
-    const parsed = periodSchema.safeParse({ startDate: values.startDate ?? "", endDate: values.endDate ?? "" });
+    const parsed = periodSchema(now).safeParse({ startDate: values.startDate ?? "", endDate: values.endDate ?? "" });
     if (!parsed.success) Object.assign(errors, fieldErrors(parsed.error));
     if (!parsed.success || Object.keys(errors).length > 0) return { success: false, fieldErrors: errors };
     return { success: true, data: { price: null, ...parsed.data } };
