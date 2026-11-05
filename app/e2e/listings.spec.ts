@@ -19,7 +19,7 @@ test("innlogget bruker ser annonsene og kan åpne en annonse fra kortet", async 
 });
 
 test("søkeskjemaet viser treffene og beholder søkeordet", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "networkidle" });
   const field = page.getByLabel("Søk i tittel, beskrivelse og selger");
 
   await field.fill("casio");
