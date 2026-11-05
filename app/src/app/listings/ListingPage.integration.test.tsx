@@ -38,6 +38,30 @@ beforeEach(async () => {
   await holder.db.insert(user).values({ id: OWNER_ID, name: "Kari Nordmann", email: "kari@hiof.no" });
 });
 
+// Godkjent av Max 05.11 (#304).
+describe("tilbakelenken", () => {
+  beforeEach(async () => {
+    await holder.db.insert(listing).values(validListing({ id: "calc", title: "Kalkulator", price: 250 }));
+  });
+
+  it("går til samme fane på Min side når man kom derfra", async () => {
+    const { html } = await renderPage("calc", "?fra=favorites");
+
+    expect(html).toContain('href="/me?tab=favorites"');
+    expect(html).toContain("Tilbake til Min side");
+    expect(html).not.toContain("Tilbake til annonser");
+  });
+
+  it("går til forsiden uten fra, og med en ukjent verdi", async () => {
+    for (const query of ["", "?fra=https://evil.example"]) {
+      const { html } = await renderPage("calc", query);
+
+      expect(html, query).toContain("Tilbake til annonser");
+      expect(html, query).not.toContain("Tilbake til Min side");
+    }
+  });
+});
+
 describe("ListingPage", () => {
   it("viser alle feltene for en aktiv annonse, uten Solgt-merke", async () => {
     await holder.db.insert(listing).values(

@@ -19,7 +19,7 @@ export function FavoriteRow({ item }: { item: ListingWithOwner }) {
       />
       <div className="min-w-0">
         <h2 className="text-lg font-bold [overflow-wrap:anywhere] sm:text-xl">
-          <a href={`/listings/${item.listing.id}`} className="after:absolute after:inset-0">
+          <a href={`/listings/${item.listing.id}?fra=favorites`} className="after:absolute after:inset-0">
             {item.listing.title}
           </a>
         </h2>
