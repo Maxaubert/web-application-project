@@ -111,7 +111,7 @@ const guards = [
   ['AGENTS.md', 'egen arkitekturbegrunnelse', 'Egen vurderingstekst'],
   ['AGENTS.md', 'Ikke dikt bidrag', 'Autentisk dokumentasjon'],
   ['AGENTS.md', "Bare Max' eksplisitte godkjenning", 'Mergegate'],
-  ['README.md', 'Ingen markedsplassfunksjoner er implementert', 'Ærlig appstatus'],
+  ['README.md', 'Omfanget ble avgrenset til MVP', 'Ærlig appstatus'],
   ['docs/prosess/ki-avtale.md', 'Godtatt av Max og Emil', 'Avtalestatus'],
   ['docs/emne/emnekrav.md', 'etter uke 42', 'Datokonflikt'],
   ['docs/emne/emnekrav.md', 'fremtidig pensum', 'Retrospektpresisering'],

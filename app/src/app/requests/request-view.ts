@@ -1,8 +1,8 @@
 // Tekstene på forespørselssiden (#192): banneret øverst og chipen i Min side. Rene funksjoner uten database,
 // så rollene og statusene kan testes ett for ett.
 import type { Listing, Offer } from "@/db/schema";
-import type { RequestRole } from "./queries";
-import type { RequestStatus } from "./request-status";
+import type { RequestRole } from "./find-requests";
+import { waitingStatuses, type RequestStatus } from "./request-status";
 
 type Names = { ownerName: string; requesterName: string };
 
@@ -98,7 +98,7 @@ export function noticeFor(
   type: Listing["type"] = "sale",
 ): string | null {
   if (marker === noticeMarkers.counter) {
-    const waiting = status === "waiting_owner" || status === "waiting_requester";
+    const waiting = waitingStatuses.includes(status);
     if (!waiting || !latest || latest.senderId !== viewerId) return null;
     // Et lånemotbud har en periode, et salgsmotbud en pris (#208).
     if (type === "loan") return latest.startDate && latest.endDate ? `Motbud sendt: ${formatPeriod(latest.startDate, latest.endDate)}` : null;

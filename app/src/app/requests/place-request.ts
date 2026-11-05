@@ -2,13 +2,13 @@
 // gis bort. Tar databasen som argument og vet ingenting om økt eller nettforespørsel; serverhandlingene i
 // actions.ts henter brukeren fra økten og kaller hit. All autorisasjon ligger her, så en skjult eller grået knapp
 // aldri er det eneste som stopper en ulovlig forespørsel.
-import { eq } from "drizzle-orm";
-import { listing, offer, request, type Listing } from "@/db/schema";
+import type { Listing } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { getOccupiedPeriods, overlaps } from "./occupied";
 import { validateOffer, type OfferValues } from "./offer-rules";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 import { expireOverdueRequest } from "./request-expiry";
+import { createRequestRepository } from "./repository";
 
 export type PlaceRequestInput = OfferValues & { userId: string; listingId: string; now?: Date };
 export type PlaceRequestResult = { ok: true } | { ok: false; error?: string; fieldErrors?: Record<string, string> };
@@ -18,8 +18,8 @@ const notAvailable = (type: Listing["type"]) =>
   type === "sale" ? "Du kan ikke legge inn bud på denne annonsen" : "Du kan ikke sende forespørsel på denne annonsen";
 
 export async function placeRequest(db: Db, { userId, listingId, now = new Date(), ...values }: PlaceRequestInput): Promise<PlaceRequestResult> {
-  const rows = await db.select().from(listing).where(eq(listing.id, listingId)).limit(1);
-  const found = rows[0];
+  const repository = createRequestRepository(db);
+  const found = await repository.findListing(listingId);
   if (!found || found.status !== "active") return { ok: false, error: notAvailable(found?.type ?? "sale") };
   if (found.ownerId === userId) {
     return { ok: false, error: found.type === "sale" ? "Du kan ikke by på din egen annonse" : "Du kan ikke sende forespørsel på din egen annonse" };
@@ -45,7 +45,7 @@ export async function placeRequest(db: Db, { userId, listingId, now = new Date()
     if (found.type !== "sale" || existing.status !== "waiting_owner") {
       return { ok: false, error: "Du har allerede en forespørsel på denne annonsen" };
     }
-    await db.insert(offer).values({ requestId: existing.id, senderId: userId, price, startDate, endDate });
+    await repository.addOffer({ requestId: existing.id, senderId: userId, price, startDate, endDate });
     return { ok: true };
   }
 
@@ -53,10 +53,10 @@ export async function placeRequest(db: Db, { userId, listingId, now = new Date()
   // (cascade rydder offer), så det aldri blir en forespørsel uten forslag.
   const requestId = crypto.randomUUID();
   try {
-    await db.insert(request).values({ id: requestId, listingId, requesterId: userId });
-    await db.insert(offer).values({ requestId, senderId: userId, price, startDate, endDate });
+    await repository.create(requestId, listingId, userId);
+    await repository.addOffer({ requestId, senderId: userId, price, startDate, endDate });
   } catch (error) {
-    await db.delete(request).where(eq(request.id, requestId));
+    await repository.remove(requestId);
     throw error;
   }
   return { ok: true };

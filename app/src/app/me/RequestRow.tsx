@@ -4,7 +4,7 @@
 import { imageUrl } from "@/app/images/image-url";
 import { typeLabels } from "@/app/listings/labels";
 import { ListingImage } from "@/app/listings/ListingImage";
-import type { MyRequest } from "@/app/requests/queries";
+import type { MyRequest } from "@/app/requests/find-requests";
 import { chipFor, formatWhen } from "@/app/requests/request-view";
 
 export function RequestRow({ item }: { item: MyRequest }) {

@@ -11,7 +11,7 @@ export function HeaderActions({ current }: { current?: "new-listing" | "me" }) {
       <a
         href="/me"
         aria-current={current === "me" ? "page" : undefined}
-        className="inline-flex size-11 items-center justify-center rounded-md font-semibold whitespace-nowrap transition-colors hover:bg-paper sm:w-auto sm:px-3"
+        className="inline-flex size-11 items-center justify-center rounded-md font-semibold whitespace-nowrap transition-colors hover:bg-plum-hover sm:w-auto sm:px-3"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" className="size-6 fill-none stroke-current stroke-2 sm:hidden">
           <circle cx="12" cy="8" r="4" />
@@ -22,7 +22,7 @@ export function HeaderActions({ current }: { current?: "new-listing" | "me" }) {
       <a
         href="/listings/new"
         aria-current={active ? "page" : undefined}
-        className="inline-flex size-11 items-center justify-center rounded-md bg-action font-semibold whitespace-nowrap text-white transition-colors hover:bg-action-hover sm:w-auto sm:px-4"
+        className="inline-flex size-11 items-center justify-center rounded-md bg-mint font-semibold whitespace-nowrap text-plum-ink transition-colors hover:bg-mint-hover sm:w-auto sm:px-4"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" className="size-6 fill-none stroke-current stroke-2 sm:hidden">
           <path d="M12 5v14M5 12h14" strokeLinecap="round" />

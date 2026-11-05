@@ -9,13 +9,14 @@ import { db } from "@/db";
 import { imageUrl } from "@/app/images/image-url";
 import { formatTypeAndPrice } from "@/app/listings/format-type-and-price";
 import { ListingGone } from "@/app/listings/ListingGone";
-import { getListingImages, getListingWithOwner } from "@/app/listings/queries";
+import { createListingRepository } from "@/app/listings/repository";
 import { bidState } from "./bid-state";
 import { BidForm } from "./BidForm";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 
 export async function BidPage({ params, ctx, response }: RequestInfo<{ id: string }>) {
-  const result = await getListingWithOwner(db, params.id);
+  const listings = createListingRepository(db);
+  const result = await listings.findWithOwner(params.id);
   const found = result?.listing;
 
   if (!found || found.status === "unpublished" || found.type !== "sale") {
@@ -33,7 +34,7 @@ export async function BidPage({ params, ctx, response }: RequestInfo<{ id: strin
   const canBid = state.kind === "can_bid" || (state.kind === "has_bid" && state.canChange);
   if (!canBid) return redirectTo(`/listings/${found.id}`);
 
-  const [coverKey] = await getListingImages(db, found.id);
+  const [coverKey] = await listings.findImages(found.id);
   const editing = state.kind === "has_bid";
 
   return (

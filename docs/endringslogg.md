@@ -8,6 +8,36 @@ den lokale arbeidsloggen (se [loggrutinen](prosess/loggrutine.md)). Én linje pe
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-11-05
+
+- Tester (#295): søkeskjema-testen venter til siden er ferdig lastet, så den ikke feiler tilfeldig i CI. (Max, #295)
+
+## 2026-11-04
+
+- Forsiden (#288): søket står i plommebåndet, med en kategorirad under som bruker det samme kategorifilteret, og rutenettet har fire kolonner på brede skjermer. Overskriften Annonser er bare for skjermlesere. Søkeforslag velges bare med piltastene, så Enter søker selv om musen står over listen. (Max, #288)
+- Annonsekort (#289): handelstypen står som merke på bildet, og prisen er tydeligere. (Max, #289)
+- Utseende (#287): plomme og mint og skrifttypen Figtree på alle sider, plommefarget topp med lys logo og myk kant. Valgt av Max fra mockup 13 Torget. (Max, #287)
+- Logo (#222): hender som gir en bok, i plomme og mint, står i toppen og som favicon i stedet for den grå firkanten og starterens ikoner. (Max, #222)
+- README (#276): skrevet helt om etter Canvas 02.11: kort om appen, flytdiagram, oversikt over koden, start og tester, og en kort endringslogg. Øvrig innhold ligger i docs/. (Max, #276)
+- Innlogging (#284): kodefeltet tar bare seks tegn, som koden har. (Max, #284)
+- Sikkerhet (#275): CSP uten Turnstile-adressene fra malen, og 'unsafe-eval' bare på utviklingsserveren. heic-to importeres som CSP-utgaven, så HEIC-konverteringen virker uten eval i produksjon. (Max, #275)
+- Tester (#274): dekningsterskel på 50 % i vitest.config.ts, så CI feiler under kurskravet. Målt dekning med dato i README og ci-og-deploy.md, og de utdaterte linjene om at dekning og deploy gjenstår er borte. (Max, #274)
+- Tilgang (#273, #267): serverhandlingene bruker én felles sjekk, requireSessionUser i auth/guards.ts, i stedet for to kopierte linjer hver. Én test kaller alle eksporterte handlinger uten økt og uten fullført oppsett, og beviser videresending og uendret database. (Max, #273)
+- Tester (#265): fiendtlig input. En tittel med SQL-tekst lagres og leses tilbake som ren tekst uten å røre tabellen, og en tittel med <script> vises som tekst i annonsekortet. (Max, #265)
+- Struktur (#264): forenklinger etter reviewen av #256. RequestRepository har én metode mindre (respond.ts bruker relistIfSold), listen over ventende statuser står ett sted (waitingStatuses i request-status.ts), og sidene lager repositoryet én gang øverst. (Max, #264)
+- Leveranse (#272): presentasjonsplanen følger Canvas 02.11 (W-13 tirsdag 17.11 kl. 12:40, demo med hard stopp, eierkolonne per del), og ny sjekkliste for innleveringen i Canvas 05.11. (Max, #272)
+- Innlogging (#263): `/dev/login` og innloggingskoden i nettleserkonsollen er fjernet for å gjøre koden enklere. Lokalt logger man inn med testbrukerens adresse og leser koden i terminalen. (Max, #263)
+- Docs: statuslinjene i README, AGENTS og emnekrav beskriver det som er bygget per 04.11. Nøytral ordlyd om gruppemedlemmer i CLAUDE.md og komponenter.md, og kursreferanser i komponenter.md bare med leksjonsnummer. (Max, #270)
+
+## 2026-11-03
+
+- Struktur (#256, del 3): Min side har repository med interface (MeRepository i me/repository.ts, tidligere queries.ts). my-listings.ts regner ut statuslinjen og henter dataene gjennom repositoryet. (Max, #256)
+- Struktur (#256, del 4): forespørsler har repository med interface (RequestRepository i requests/repository.ts). queries.ts heter nå find-requests.ts og regner ut status fra dataene repositoryet gir; occupied.ts, contact.ts, place-bid.ts, auto-confirm.ts og request-expiry.ts leser gjennom repositoryet. (Max, #256)
+- Struktur (#256, del 5): reglene som skriver forespørsler (place-request, respond, handover, return, withdraw) bruker repositoryet. De betingede skrivingene som hindrer to samtidige aksepter, står nå i repositoryet (moveStatus, markListingSold) og testes direkte. (Max, #256)
+- Struktur (#256, del 6): innlogging og varsler har repository (auth/repository.ts, notifications/repository.ts). Ingen fil utenfor repository.ts bruker Drizzle lenger. teknikk.md beskriver den nye inndelingen. (Max, #256)
+- Struktur (#256, del 2): annonser har repository med interface (ListingRepository, createListingRepository i listings/repository.ts, tidligere queries.ts). Lagring, endring og nedtaking av annonser, og avslag av ventende forespørsler ved nedtaking, ligger nå der; actions.ts, update.ts og unpublish.ts har ingen Drizzle-kall. (Max, #256)
+- Struktur (#256, del 1): favoritter har et repository etter Marius' mønster: interfacet FavoriteRepository og fabrikken createFavoriteRepository(db) i favorites/repository.ts (tidligere queries.ts). Bare repositoryet leser og skriver i databasen; reglene i favorites.ts og sidene bruker det. Max valgte én fil per funksjonsmappe med både lesing og skriving, interface, og vanlige data i stedet for { ok, data }. (Max, #256)
+
 ## 2026-11-02
 
 - UI (#253): fra UI-reviewen 02.11. Fanene på Min side ruller sidelengs på mobil i stedet for å gjøre siden 462 px bred, knappen som fjerner et bilde er 44 px, og «Avbestill» og «Trekk tilbake» har rød kant som andre destruktive handlinger. (Max, #253)

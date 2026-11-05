@@ -9,7 +9,7 @@ import { insertOwner, OWNER_ID, validListing } from "@/test/test-listings";
 import { settleHandover } from "./auto-confirm";
 import { getContactForParty } from "./contact";
 import { cancelRequest, confirmHandover } from "./handover";
-import { getRequestForParty } from "./queries";
+import { getRequestForParty } from "./find-requests";
 
 const CONFIRMED_AT = new Date("2026-10-20T12:00:00Z");
 const DAY = 86_400_000;

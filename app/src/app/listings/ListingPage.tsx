@@ -8,19 +8,20 @@ import { db } from "@/db";
 import { ListingDetails } from "./ListingDetails";
 import { ListingGone } from "./ListingGone";
 import { imageUrl } from "@/app/images/image-url";
-import { getListingImages, getListingWithOwner } from "./queries";
+import { createListingRepository } from "./repository";
 import { bidState } from "@/app/requests/bid-state";
 import { BidAction } from "@/app/requests/BidAction";
-import { getActiveRequest } from "@/app/requests/queries";
+import { getActiveRequest } from "@/app/requests/find-requests";
 import { FavoriteButton } from "@/app/favorites/FavoriteButton";
-import { getFavoriteIds } from "@/app/favorites/queries";
+import { createFavoriteRepository } from "@/app/favorites/repository";
 
 export async function ListingPage({ params, request, response, ctx }: RequestInfo<{ id: string }>) {
-  const result = await getListingWithOwner(db, params.id);
+  const listings = createListingRepository(db);
+  const result = await listings.findWithOwner(params.id);
   const visible = result && result.listing.status !== "unpublished";
 
   if (!visible) response.status = 404;
-  const images = visible ? (await getListingImages(db, params.id)).map((key) => ({ src: imageUrl(key), thumb: imageUrl(key, "thumb") })) : [];
+  const images = visible ? (await listings.findImages(params.id)).map((key) => ({ src: imageUrl(key), thumb: imageUrl(key, "thumb") })) : [];
   const published =
     visible && new URL(request.url).searchParams.get("publisert") === "1" && result.listing.ownerId === ctx.session.userId;
 
@@ -29,7 +30,7 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
   const bid = visible ? bidState(result.listing, userId, await getActiveRequest(db, params.id, userId)) : ({ kind: "none" } as const);
   // Hjertet (#224): bare på andres aktive annonser; serveren avviser egne, solgte og nedtatte uansett.
   const canFavorite = visible ? result.listing.status === "active" && result.listing.ownerId !== userId : false;
-  const saved = canFavorite && (await getFavoriteIds(db, userId)).has(params.id);
+  const saved = canFavorite && (await createFavoriteRepository(db).findIds(userId)).has(params.id);
 
   return (
     <PageShell title={visible ? result.listing.title : "Annonsen er borte"} wide headerAction={<HeaderActions />}>

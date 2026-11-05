@@ -65,18 +65,18 @@ export function SearchField({ q }: { q: string }) {
         event.preventDefault();
         void navigate(searchPageUrl(new FormData(event.currentTarget)), { info: { scrollToTop: false } });
       }}
-      className="mt-4 max-w-3xl sm:mt-6"
     >
-      {/* På mobil er etiketten bare for skjermlesere og søkeknappen bare for Enter og tastaturet (#164). */}
-      <label htmlFor="q" className="block text-base font-semibold max-sm:sr-only">
+      {/* Etiketten er for skjermlesere; søkefeltet viser det samme som plassholder (#288). På mobil er søkeknappen
+          bare for Enter og tastaturet (#164). */}
+      <label htmlFor="q" className="sr-only">
         Søk i tittel, beskrivelse og selger
       </label>
-      <div className="flex gap-3 sm:mt-2">
+      <div className="flex gap-3">
         <div className="relative min-w-0 flex-1">
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-3 size-6 -translate-y-1/2 fill-none stroke-ink stroke-2 sm:hidden"
+            className="pointer-events-none absolute top-1/2 left-3 size-6 -translate-y-1/2 fill-none stroke-ink stroke-2"
           >
             <circle cx="11" cy="11" r="7" />
             <path d="m20 20-3.5-3.5" strokeLinecap="round" />
@@ -89,7 +89,7 @@ export function SearchField({ q }: { q: string }) {
             maxLength={SEARCH_MAX_LENGTH}
             autoComplete="off"
             enterKeyHint="search"
-            placeholder="Søk"
+            placeholder="Søk i annonser"
             role="combobox"
             aria-autocomplete="list"
             aria-expanded={showList}
@@ -102,14 +102,14 @@ export function SearchField({ q }: { q: string }) {
             }}
             onKeyDown={onKeyDown}
             onBlur={close}
-            className={`${inputClass} pl-11 sm:pl-4 sm:placeholder:text-transparent`}
+            className={`${inputClass} pl-11`}
           />
           <ul
             id={listId}
             role="listbox"
             aria-label="Søkeforslag"
             hidden={!showList}
-            className="absolute inset-x-0 top-full z-10 mt-2 overflow-hidden rounded-xl border border-hairline bg-surface shadow-[0_12px_32px_-12px_rgb(29_27_24/0.35)] transition-opacity duration-150 ease-out starting:opacity-0"
+            className="absolute inset-x-0 top-full z-10 mt-2 overflow-hidden rounded-xl border border-hairline bg-surface text-ink shadow-[0_12px_32px_-12px_rgb(29_27_24/0.35)] transition-opacity duration-150 ease-out starting:opacity-0"
           >
             {hits.map((hit, index) => (
               <li
@@ -119,9 +119,8 @@ export function SearchField({ q }: { q: string }) {
                 aria-selected={index === active}
                 // Beholder fokus i feltet, så klikket ikke lukker listen før det er registrert.
                 onMouseDown={(event) => event.preventDefault()}
-                onMouseEnter={() => setActive(index)}
                 onClick={() => choose(index)}
-                className="flex min-h-14 items-center gap-3 px-3 py-2 aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
+                className="flex min-h-14 items-center gap-3 px-3 py-2 hover:bg-hairline/60 aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
               >
                 <ListingImage src={hit.coverUrl} className="size-11 shrink-0 rounded-md" iconClassName="size-5" />
                 <span className="min-w-0">
@@ -135,9 +134,8 @@ export function SearchField({ q }: { q: string }) {
               role="option"
               aria-selected={active === hits.length}
               onMouseDown={(event) => event.preventDefault()}
-              onMouseEnter={() => setActive(hits.length)}
               onClick={() => choose(hits.length)}
-              className="flex min-h-12 items-center justify-between gap-3 border-t border-hairline px-4 font-semibold aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
+              className="flex min-h-12 items-center justify-between gap-3 border-t border-hairline px-4 font-semibold hover:bg-hairline/60 aria-selected:bg-hairline/60 aria-selected:shadow-[inset_4px_0_0_var(--color-ink)]"
             >
               <span className="min-w-0 truncate">Vis alle treff for «{term}»</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" className="size-5 shrink-0 fill-none stroke-ink stroke-2">
@@ -148,7 +146,7 @@ export function SearchField({ q }: { q: string }) {
         </div>
         <button
           type="submit"
-          className="h-12 shrink-0 rounded-md bg-action px-6 text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover max-sm:sr-only"
+          className="h-12 shrink-0 rounded-md bg-mint px-6 text-lg font-semibold text-plum-ink transition-colors enabled:hover:bg-mint-hover max-sm:sr-only"
         >
           Søk
         </button>

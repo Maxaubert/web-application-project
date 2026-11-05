@@ -2,14 +2,13 @@
 // Tar databasen som argument og vet ingenting om økt eller nettforespørsel; serverhandlingen respondToRequest i
 // actions.ts henter brukeren fra økten og kaller hit. All autorisasjon ligger her, så en skjult knapp aldri er
 // det eneste som stopper et ulovlig svar.
-import { and, eq, inArray, ne } from "drizzle-orm";
-import { listing, offer, request } from "@/db/schema";
 import type { Db } from "@/db/types";
 import { getOccupiedPeriods, getWaitingPeriods, overlaps, type Period } from "./occupied";
 import { validateOffer } from "./offer-rules";
-import { getRequestForParty } from "./queries";
+import { getRequestForParty } from "./find-requests";
 import { expireIfDue } from "./request-expiry";
 import { nextStatus } from "./request-status";
+import { createRequestRepository } from "./repository";
 
 export const respondActions = ["accept", "decline", "counter"] as const;
 export type RespondAction = (typeof respondActions)[number];
@@ -47,6 +46,7 @@ export async function respondToOffer(
   { userId, requestId, offerId, action, price = "", startDate = "", endDate = "", now = new Date() }: RespondInput,
 ): Promise<RespondResult> {
   if (!isRespondAction(action)) return { ok: false, error: "Ukjent handling" };
+  const repository = createRequestRepository(db);
 
   // Bare de to partene finner forespørselen; alle andre får samme svar som for en ukjent id.
   const details = await getRequestForParty(db, requestId, userId, now);
@@ -70,14 +70,7 @@ export async function respondToOffer(
   // kreves først med en betinget oppdatering, så to aksepter på samme annonse aldri begge lykkes: den andre finner
   // den allerede solgt. (En vanlig sjekk før skriving ville latt begge passere når de kommer samtidig.)
   const takesListing = action === "accept" && ad.type !== "loan";
-  if (takesListing) {
-    const taken = await db
-      .update(listing)
-      .set({ status: "sold", updatedAt: now })
-      .where(and(eq(listing.id, ad.id), eq(listing.status, "active")))
-      .returning({ id: listing.id });
-    if (taken.length === 0) return { ok: false, error: UNAVAILABLE };
-  }
+  if (takesListing && !(await repository.markListingSold(ad.id, now))) return { ok: false, error: UNAVAILABLE };
 
   // Et godtatt lån gjør perioden opptatt (#208). Er den allerede opptatt, avvises svaret før noe skrives.
   const period = action === "accept" && ad.type === "loan" && latest.startDate && latest.endDate ? { startDate: latest.startDate, endDate: latest.endDate } : null;
@@ -94,20 +87,15 @@ export async function respondToOffer(
     // Forslaget lagres før statusen flyttes. Motparten har ikke tur før statusen er flyttet, så hen kan ikke
     // godta det gamle forslaget i mellomtiden. Motsatt rekkefølge ville gitt akkurat det vinduet.
     counterId = crypto.randomUUID();
-    await db.insert(offer).values({ id: counterId, requestId, senderId: userId, ...validated.data });
+    await repository.addOffer({ id: counterId, requestId, senderId: userId, ...validated.data });
   }
 
   // D1 har ingen transaksjoner. Statusen flyttes bare hvis den fortsatt er den vi leste, og én rad må ha endret
   // seg: to samtidige svar kan aldri begge vinne.
-  const changed = await db
-    .update(request)
-    .set({ status: next, updatedAt: now })
-    .where(and(eq(request.id, requestId), eq(request.status, found.status)))
-    .returning({ id: request.id });
-  if (changed.length === 0) {
-    if (counterId) await db.delete(offer).where(eq(offer.id, counterId));
+  if (!(await repository.moveStatus(requestId, found.status, next, now))) {
+    if (counterId) await repository.removeOffer(counterId);
     // Svaret tapte, så annonsen vi nettopp tok, gis tilbake.
-    if (takesListing) await db.update(listing).set({ status: "active", updatedAt: now }).where(eq(listing.id, ad.id));
+    if (takesListing) await repository.relistIfSold(ad.id, now);
     return { ok: false, error: CHANGED };
   }
 
@@ -115,28 +103,15 @@ export async function respondToOffer(
     // To overlappende aksepter kan ha passert sjekken over samtidig (D1 har ingen transaksjon). Nå som statusen er
     // flyttet, ser hver av dem den andre; ser en overlapp, rulles svaret tilbake. Verst kan begge feile, aldri begge lykkes.
     if (await isTaken(db, ad.id, requestId, period)) {
-      await db
-        .update(request)
-        .set({ status: found.status, updatedAt: found.updatedAt })
-        .where(and(eq(request.id, requestId), eq(request.status, next)));
+      await repository.moveStatus(requestId, next, found.status, found.updatedAt);
       return { ok: false, error: OVERLAP };
     }
     // Ventende forespørsler på samme periode får avslag. Andre perioder, og avsluttede, røres ikke.
     const clashing = (await getWaitingPeriods(db, ad.id)).filter((other) => overlaps(other, period)).map((other) => other.requestId);
-    if (clashing.length > 0) {
-      await db
-        .update(request)
-        .set({ status: "declined", updatedAt: now })
-        .where(and(inArray(request.id, clashing), inArray(request.status, ["waiting_owner", "waiting_requester"])));
-    }
+    await repository.declineWaiting(clashing, now);
   }
 
   // De andre som venter på samme annonse får avslag. Allerede avsluttede og godtatte røres ikke.
-  if (takesListing) {
-    await db
-      .update(request)
-      .set({ status: "declined", updatedAt: now })
-      .where(and(eq(request.listingId, ad.id), ne(request.id, requestId), inArray(request.status, ["waiting_owner", "waiting_requester"])));
-  }
+  if (takesListing) await repository.declineOtherWaiting(ad.id, requestId, now);
   return { ok: true };
 }

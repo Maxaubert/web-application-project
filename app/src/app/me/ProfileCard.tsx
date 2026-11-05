@@ -1,7 +1,7 @@
 // Profilen øverst på Min side (#193): avatar, navn, e-post og telefon. Bare eieren selv ser denne siden,
 // så kontaktinfoen vises her uten å lekke til andre. Rediger profil kommer senere.
 import { formatPhone } from "@/app/auth/phone";
-import type { Profile } from "./queries";
+import type { Profile } from "./repository";
 
 export function ProfileCard({ profile }: { profile: Profile }) {
   return (

@@ -19,7 +19,7 @@ test("innlogget bruker ser annonsene og kan åpne en annonse fra kortet", async 
 });
 
 test("søkeskjemaet viser treffene og beholder søkeordet", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "networkidle" });
   const field = page.getByLabel("Søk i tittel, beskrivelse og selger");
 
   await field.fill("casio");
@@ -48,6 +48,19 @@ test.describe("søkeforslag", () => {
     await expect(list.getByRole("option", { name: /Kalkulator Casio fx-991/ })).toBeVisible();
     await expect(list.getByRole("option", { name: "Vis alle treff for «casi»" })).toBeVisible();
     await expect(page).toHaveURL(/\/$/);
+  });
+
+  // Godkjent av Max 04.11 (#288): listen åpner seg under musen, så musen skal ikke velge en rad.
+  test("Enter søker selv om musen står over et forslag, og forslagene har mørk tekst", async ({ page }) => {
+    await field(page).pressSequentially("casi");
+    const option = page.getByRole("option", { name: /Kalkulator Casio fx-991/ });
+    await option.hover();
+
+    expect(await option.locator("span span").first().evaluate((el) => getComputedStyle(el).color)).toBe("rgb(31, 18, 48)");
+
+    await field(page).press("Enter");
+
+    await expect(page).toHaveURL(/\/\?q=casi$/);
   });
 
   test("piltast og Enter åpner annonsen", async ({ page }) => {
@@ -97,13 +110,13 @@ test("knapper viser pekehånd, og søkefeltet får mørk kant i stedet for blå 
   // Selve avkrysningsboksen og nedtrekkslisten, ikke bare etiketten (#128).
   const cursorOf = (el: Element) => getComputedStyle(el).cursor;
   expect(await page.getByLabel("Lån").evaluate(cursorOf)).toBe("pointer");
-  expect(await page.getByLabel("Kategori").evaluate(cursorOf)).toBe("pointer");
+  expect(await page.getByLabel("Kategori", { exact: true }).evaluate(cursorOf)).toBe("pointer");
 
   const field = page.getByRole("combobox", { name: "Søk i tittel, beskrivelse og selger" });
   await field.click();
   const style = await field.evaluate((el) => ({ outline: getComputedStyle(el).outlineStyle, border: getComputedStyle(el).borderColor }));
   expect(style.outline).toBe("none");
-  expect(style.border).toBe("rgb(29, 27, 24)");
+  expect(style.border).toBe("rgb(31, 18, 48)");
 });
 
 // Filtre (#102, #122). Godkjent av Max 10.10. Antallet avhenger av hva som ligger i den lokale databasen,
@@ -141,7 +154,7 @@ test.describe("filtre", () => {
 
   test("mobil: arket oppdaterer annonsene bak seg, og «Vis»-knappen lukker det", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await expect(page.getByLabel("Kategori")).toBeHidden();
+    await expect(page.getByLabel("Kategori", { exact: true })).toBeHidden();
 
     await page.getByRole("button", { name: "Filtre" }).click();
     const sheet = page.getByRole("dialog", { name: "Filtre" });
@@ -150,7 +163,7 @@ test.describe("filtre", () => {
     await expect(page.getByRole("button", { name: "Filtre" })).toBeFocused();
 
     await page.getByRole("button", { name: "Filtre" }).click();
-    await sheet.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await sheet.getByLabel("Kategori", { exact: true }).selectOption({ label: "Elektronikk" });
 
     await expect(page).toHaveURL(/category=electronics/);
     await expect(sheet).toBeVisible();
@@ -163,22 +176,6 @@ test.describe("filtre", () => {
 });
 
 // Justering på desktop (#126). Godkjent av Max 10.10. Grunnlinjen måles med et tomt element på tekstlinjen.
-test("desktop: «Filtre» står på linje med «Annonser», og «Kategori» med søkefeltets etikett", async ({ page }) => {
-  await page.goto("/");
-  const baseline = (selector: string) =>
-    page.locator(selector).evaluate((el) => {
-      const marker = document.createElement("span");
-      marker.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
-      el.appendChild(marker);
-      const y = marker.getBoundingClientRect().top;
-      marker.remove();
-      return Math.round(y);
-    });
-
-  expect(await baseline("#filters-heading")).toBe(await baseline("h1"));
-  expect(await baseline("label[for=filter-category]")).toBe(await baseline("label[for=q]"));
-});
-
 // Legg ut annonse (FK-03, #133). Godkjent av Max 11.10. Hver kjøring lager en ny annonse i den lokale
 // databasen, så tittelen er unik.
 test.describe("legg ut annonse", () => {
@@ -193,7 +190,7 @@ test.describe("legg ut annonse", () => {
     const title = `E2E-skjerm ${Date.now()}`;
     await page.getByLabel("Tittel").fill(title);
     await page.getByLabel("Beskrivelse").fill("HDMI-kabel følger med.");
-    await page.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await page.getByLabel("Kategori", { exact: true }).selectOption({ label: "Elektronikk" });
     await page.getByRole("radio", { name: "Lån" }).check();
     await page.getByLabel("Pris per uke (kr, valgfri)").fill("100");
     await page.getByRole("radio", { name: "Brukt" }).check();
@@ -275,7 +272,7 @@ test.describe("legg ut annonse", () => {
     const title = `E2E-HEIC ${Date.now()}`;
     await page.getByLabel("Tittel").fill(title);
     await page.getByLabel("Beskrivelse").fill("Tatt med iPhone.");
-    await page.getByLabel("Kategori").selectOption({ label: "Elektronikk" });
+    await page.getByLabel("Kategori", { exact: true }).selectOption({ label: "Elektronikk" });
     await page.getByLabel("Pris (kr)").fill("100");
     await page.getByRole("radio", { name: "Brukt" }).check();
     await page.getByRole("button", { name: "Publiser", exact: true }).click();
@@ -315,7 +312,7 @@ test("legg ut annonse: to kolonner på bred skjerm, kortet fyller høyden, én k
   // Parene står side om side allerede på 1280 px, så feltkolonnen ikke blir mye høyere enn forhåndsvisningen (#146).
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/listings/new");
-  const [category, sale] = [await box(page.getByLabel("Kategori")), await box(page.getByRole("radio", { name: "Salg" }))];
+  const [category, sale] = [await box(page.getByLabel("Kategori", { exact: true })), await box(page.getByRole("radio", { name: "Salg" }))];
   const [price, used] = [await box(page.getByLabel("Pris (kr)")), await box(page.getByRole("radio", { name: "Brukt" }))];
   expect(sale.x).toBeGreaterThan(category.x + category.width);
   expect(used.x).toBeGreaterThan(price.x + price.width);

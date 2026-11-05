@@ -34,4 +34,4 @@ på svakheter og spør videre til begrunnelsen holder. Noter valget og begrunnel
 dokument eller i endringsloggen. Opplagt betyr at det følger direkte av krav, kurs eller
 eksisterende kode og ikke har reelle alternativer.
 
-Emil bruker ikke Claude; valg som tas her, tas av Max.
+Claude Code brukes av Max; valg som tas i disse øktene, tas av Max.

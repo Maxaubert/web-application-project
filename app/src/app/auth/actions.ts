@@ -1,15 +1,13 @@
 "use server";
 // Serverhandlingene for innlogging (React-kurset leksjon 19 og 20). Alt valideres her på
 // serveren; skjemaene i nettleseren er bare til hjelp.
-import { eq } from "drizzle-orm";
 import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
-import { user } from "@/db/schema";
 import { log, maskEmail, requestIdFrom } from "@/app/shared/log";
 import { getAuth } from "./instance";
+import { createAuthRepository } from "./repository";
 import { clearPendingEmailCookie, readPendingEmail, setPendingEmailCookie } from "./pending-email";
 import { accountSchema, codeSchema, emailSchema, fieldErrors } from "./schemas";
-import { getDevCode } from "./send-login-code";
 import { redirect, type ActionResult } from "./form-state";
 
 function errorMessage(error: unknown, fallback: string): string {
@@ -59,7 +57,7 @@ export async function resendCode(): Promise<ActionResult> {
     return redirect("/login");
   }
   const error = await sendCode(email);
-  return error ? { error } : { devCode: getDevCode(email) };
+  return error ? { error } : {};
 }
 
 export async function verifyCode(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
@@ -106,10 +104,7 @@ export async function completeAccount(_prev: ActionResult, formData: FormData): 
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error), values };
 
   // Brukeren kan bare endre sin egen konto: ID-en kommer fra økten, aldri fra skjemaet.
-  await db
-    .update(user)
-    .set({ name: parsed.data.name, phone: parsed.data.phone, updatedAt: new Date() })
-    .where(eq(user.id, ctx.session.userId));
+  await createAuthRepository(db).completeAccount(ctx.session.userId, parsed.data.name, parsed.data.phone, new Date());
   log.info("account_completed", { userId: ctx.session.userId });
   return redirect("/");
 }

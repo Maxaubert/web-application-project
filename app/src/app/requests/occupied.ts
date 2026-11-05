@@ -1,9 +1,8 @@
 // Låneperioder på en annonse (TK-06, #186, #208). En periode er opptatt når forespørselen er godtatt eller lånet er i bruk.
 // Perioden hentes fra siste forslag, for et motforslag kan ha endret den.
-import { and, asc, eq, inArray, ne, sql } from "drizzle-orm";
-import { offer, request } from "@/db/schema";
 import type { Db } from "@/db/types";
-import type { RequestStatus } from "./request-status";
+import { waitingStatuses, type RequestStatus } from "./request-status";
+import { createRequestRepository } from "./repository";
 
 export type Period = { startDate: string; endDate: string };
 export type RequestPeriod = Period & { requestId: string };
@@ -16,16 +15,7 @@ export function overlaps(a: Period, b: Period): boolean {
 
 // Siste periode per forespørsel med en av statusene, uten forespørselen excludeId (den som svares på nå).
 async function latestPeriods(db: Db, listingId: string, statuses: RequestStatus[], excludeId?: string): Promise<RequestPeriod[]> {
-  const rows = await db
-    .select({ requestId: offer.requestId, startDate: offer.startDate, endDate: offer.endDate })
-    .from(offer)
-    .innerJoin(request, eq(offer.requestId, request.id))
-    .where(
-      and(eq(request.listingId, listingId), inArray(request.status, statuses), excludeId ? ne(request.id, excludeId) : undefined),
-    )
-    // rowid, ikke created_at: tidspunktet har bare hele sekunder.
-    .orderBy(asc(sql`${offer}.rowid`));
-
+  const rows = await createRequestRepository(db).findPeriods(listingId, statuses, excludeId);
   const latest = new Map<string, Period | null>();
   for (const row of rows) {
     latest.set(row.requestId, row.startDate && row.endDate ? { startDate: row.startDate, endDate: row.endDate } : null);
@@ -43,5 +33,5 @@ export async function getOccupiedPeriods(db: Db, listingId: string, excludeId?: 
 // Forespørslene som venter på svar, med perioden de ber om. Brukes når et lån godtas (#208); den som nettopp er
 // godtatt, venter ikke lenger og er ikke med.
 export function getWaitingPeriods(db: Db, listingId: string): Promise<RequestPeriod[]> {
-  return latestPeriods(db, listingId, ["waiting_owner", "waiting_requester"]);
+  return latestPeriods(db, listingId, waitingStatuses);
 }

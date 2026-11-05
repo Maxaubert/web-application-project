@@ -24,10 +24,14 @@ export const setCommonHeaders =
     );
 
     // Defines trusted sources for content loading and script execution:
+    // 'unsafe-eval' only on the dev server (#275), where React's development build evaluates code for its error
+    // stacks. Production has none: heic-to is imported as its CSP build. 'unsafe-inline' for styles is kept because
+    // ImageField sets background images with style attributes. Google Fonts serves Noto Sans (document.tsx).
     // blob: for img-src, worker-src and connect-src (#141): previews of chosen images are blob URLs, and heic-to converts
     // iPhone photos in a worker it starts and loads from a blob. All are created by our own (nonce-checked) scripts.
+    const devEval = import.meta.env.VITE_IS_DEV_SERVER ? " 'unsafe-eval'" : "";
     response.headers.set(
       "Content-Security-Policy",
-      `default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob:; frame-ancestors 'self'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none';`,
+      `default-src 'self'; script-src 'self'${devEval} 'nonce-${nonce}'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob:; frame-ancestors 'self'; frame-src 'self'; object-src 'none';`,
     );
   };

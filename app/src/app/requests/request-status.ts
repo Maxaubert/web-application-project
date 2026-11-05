@@ -18,6 +18,9 @@ export type RequestAction =
 // Samme liste står i den delvis unike indeksen på request-tabellen.
 export const activeStatuses: RequestStatus[] = ["waiting_owner", "waiting_requester", "accepted", "in_use"];
 
+// Forespørsler som venter på et svar fra en av partene.
+export const waitingStatuses: RequestStatus[] = ["waiting_owner", "waiting_requester"];
+
 type Transitions =Partial<Record<RequestStatus, Partial<Record<Actor, RequestStatus>>>>;
 
 // Den som har tur, svarer på siste forslag: eieren i waiting_owner, forespørreren i waiting_requester.

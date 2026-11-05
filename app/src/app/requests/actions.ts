@@ -4,6 +4,7 @@
 import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
+import { requireSessionUser } from "@/app/auth/guards";
 import { log } from "@/app/shared/log";
 import { cancelRequest, confirmHandover } from "./handover";
 import { placeBid } from "./place-bid";
@@ -15,7 +16,7 @@ import { withdrawRequest } from "./withdraw";
 import { notifyOtherParty } from "@/app/notifications/notify";
 import type { NotifyEvent } from "@/app/notifications/messages";
 import { getEmailSender } from "@/app/notifications/sender";
-import { getActiveRequest } from "./queries";
+import { getActiveRequest } from "./find-requests";
 
 // E-postvarsel til motparten (FK-12, #232) etter at handlingen er lagret. waitUntil sender det etter svaret til nettleseren
 // (Max 01.11), så Resend aldri gjør handlingen tregere; en feil logges i notifyOtherParty og angrer ingenting.
@@ -32,18 +33,17 @@ const notifyOnRespond: Record<string, NotifyEvent> = { accept: "accepted", decli
 
 export async function sendBid(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const listingId = String(formData.get("listingId") ?? "");
   const price = String(formData.get("price") ?? "");
 
-  const result = await placeBid(db, { userId: ctx.session.userId, listingId, price });
+  const result = await placeBid(db, { userId: userId, listingId, price });
   // values sendes tilbake, for React 19 tømmer skjemaet etter hver innsending.
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price } };
 
-  log.info("bid_sent", { userId: ctx.session.userId, listingId });
-  const userId = ctx.session.userId;
+  log.info("bid_sent", { userId: userId, listingId });
   notifyLater(userId, "new", async () => (await getActiveRequest(db, listingId, userId))?.id);
   return redirect(`/listings/${listingId}`);
 }
@@ -52,18 +52,17 @@ export async function sendBid(_prev: ActionResult, formData: FormData): Promise<
 // er det bare listingId som gjelder; felt som ikke hører til handelstypen avvises i placeRequest.
 export async function sendRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const listingId = String(formData.get("listingId") ?? "");
   const startDate = String(formData.get("startDate") ?? "");
   const endDate = String(formData.get("endDate") ?? "");
 
-  const result = await placeRequest(db, { userId: ctx.session.userId, listingId, startDate, endDate });
+  const result = await placeRequest(db, { userId: userId, listingId, startDate, endDate });
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { startDate, endDate } };
 
-  log.info("request_sent", { userId: ctx.session.userId, listingId });
-  const userId = ctx.session.userId;
+  log.info("request_sent", { userId: userId, listingId });
   notifyLater(userId, "new", async () => (await getActiveRequest(db, listingId, userId))?.id);
   return redirect(`/listings/${listingId}`);
 }
@@ -71,8 +70,8 @@ export async function sendRequest(_prev: ActionResult, formData: FormData): Prom
 // Godta, avslå eller motbud på forespørselssiden (#187). Samme rolle som sendBid: bare nettforespørselen her, reglene i respondToOffer.
 export async function respondToRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const requestId = String(formData.get("requestId") ?? "");
   const price = String(formData.get("price") ?? "");
@@ -81,7 +80,7 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   const action = String(formData.get("intent") ?? "");
 
   const result = await respondToOffer(db, {
-    userId: ctx.session.userId,
+    userId: userId,
     requestId,
     offerId: String(formData.get("offerId") ?? ""),
     action,
@@ -91,8 +90,8 @@ export async function respondToRequest(_prev: ActionResult, formData: FormData):
   });
   if (!result.ok) return { error: result.error, fieldErrors: result.fieldErrors, values: { price, startDate, endDate } };
 
-  log.info("request_answered", { userId: ctx.session.userId, requestId, action });
-  if (Object.hasOwn(notifyOnRespond, action)) notifyLater(ctx.session.userId, notifyOnRespond[action], async () => requestId);
+  log.info("request_answered", { userId: userId, requestId, action });
+  if (Object.hasOwn(notifyOnRespond, action)) notifyLater(userId, notifyOnRespond[action], async () => requestId);
   // Markøren får siden til å vise «Motbud sendt» og lignende (#203).
   return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as RespondAction]}`);
 }
@@ -104,17 +103,17 @@ type UpdateAction = keyof typeof updateActions;
 // som respondToRequest. Reglene ligger i confirmHandover, cancelRequest, withdrawRequest og confirmReturn.
 export async function updateRequest(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const requestId = String(formData.get("requestId") ?? "");
   const action = String(formData.get("intent") ?? "");
   if (!Object.hasOwn(updateActions, action)) return { error: "Ukjent handling" };
 
-  const result = await updateActions[action as UpdateAction](db, { userId: ctx.session.userId, requestId });
+  const result = await updateActions[action as UpdateAction](db, { userId: userId, requestId });
   if (!result.ok) return { error: result.error };
 
-  log.info("request_updated", { userId: ctx.session.userId, requestId, action });
-  if (action === "cancel") notifyLater(ctx.session.userId, "cancelled", async () => requestId);
+  log.info("request_updated", { userId: userId, requestId, action });
+  if (action === "cancel") notifyLater(userId, "cancelled", async () => requestId);
   return redirect(`/requests/${requestId}?sendt=${noticeMarkers[action as UpdateAction]}`);
 }

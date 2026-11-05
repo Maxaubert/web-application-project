@@ -1,61 +1,58 @@
-# Webapplikasjonsprosjekt · ITF31619 26H
+# Studentmarkedet
 
-Arbeidsgrunnlag for **Max og Emil**, Høgskolen i Østfold, høsten 2026.
-Målet er å bygge en egen fullstack-app og forstå hele løsningen godt nok til å
-forklare, vurdere og endre den uten KI på individuell muntlig vurdering.
+Studentmarkedet er en markedsplass der studenter kan kjøpe, selge, låne og gi bort ting som bøker,
+PC-er og annet utstyr. Den fungerer som Finn.no, men bare for studenter ved samme skole, og i dag er
+den åpen for Høgskolen i Østfold. Appen kjører på https://studentmarkedet.org.
 
-**Status 05.10.2026:** prosjektet er et studentmarked med kjøp/salg, gratis lån og
-betalt utleie fra første versjon. Forespørsler og motforslag håndterer avtalene;
-eieren alene bekrefter retur og fullfører lån/leie. Chat kommer etter MVP.
-RedwoodSDK, TypeScript, lokal D1/Drizzle, Tailwind og testverktøy er satt opp i `app/`, med
-innlogging med engangskode på e-post og en enkel prisberegning. Ingen markedsplassfunksjoner er implementert.
-Se [oppsettsnotatet](docs/app/oppsett.md). Dokumentasjonen er laget med KI (Codex og
-Claude Code) etter våre valg og er ikke dokumentasjon på studentenes læring.
+Prosjekt i ITF31619 Webapplikasjoner 26H, gruppe W-13: Max og Emil.
 
-## Hent prosjektet
+## Slik fungerer det
 
-```powershell
-gh repo clone Maxaubert/web-application-project
+```mermaid
+flowchart TD
+    A["Logg inn med en kode på e-post"] --> B["Eieren legger ut en annonse: salg, lån eller gis bort"]
+    B --> C["En annen student svarer: bud, låneperiode eller forespørsel"]
+    C --> D{"Eieren svarer"}
+    D -->|Avslår| E["Forespørselen er avsluttet"]
+    D -->|Motforslag ved bud og lån| F["Partene svarer på omgang"]
+    F --> D
+    D -->|Godtar| G["Partene ser hverandres kontaktinfo og møtes"]
+    G --> H["Begge bekrefter overleveringen"]
+    H --> I["Ved lån bekrefter eieren returen"]
 ```
 
-Har du allerede klonet prosjektet, bevar eventuelle lokale endringer, bytt til `main`
-og hent med `git pull --ff-only`. Ikke overskriv eget eller Emils arbeid ved synkronisering.
-Ingen nøkler eller installerte programmer overføres via Git. Installer avhengighetene fra
-låsefilen som beskrevet nedenfor.
+Partene får varsel på e-post underveis.
 
-## Dokumentasjon
+## Oversikt over koden
 
-All dokumentasjon ligger i [`docs/`](docs/README.md), sortert i mapper:
+Koden ligger i `app/src/`. Hver funksjon har sin egen mappe under `app/src/app/`, med sider,
+komponenter, regler og datalag samlet.
 
-| Mappe | Hva den svarer på |
+| Hva | Hvor |
 |---|---|
-| [Krav](docs/krav/kravspesifikasjon.md) | Hva appen skal gjøre: MVP, regler, funksjonelle krav og [akseptansekriterier](docs/krav/akseptansekriterier.md) |
-| [App](docs/app/teknisk-plan.md) | Teknisk plan, kodekvalitet, appoppsett, CI og dokumentkontroll |
-| [Design](docs/design/wireframes/README.md) | Wireframes og skjermspesifikasjon |
-| [Prosess](docs/prosess/ki-avtale.md) | KI-avtale, samarbeid og Git, loggrutine |
-| [Emne](docs/emne/emnekrav.md) | Emnekrav, kilder, lærerens KI-mal og læringskart |
-| [Leveranser](docs/leveranser/README.md) | Sluttrapport, sign-off og leveransekontroll |
-| [Arkiv](docs/arkiv/README.md) | Historiske planer som ikke vedlikeholdes |
+| Ruter og middleware | `app/src/worker.tsx` (alle rutene) |
+| Tilgang | `app/src/app/auth/guards.ts` og `session.ts` |
+| Funksjonene | `auth`, `listings`, `requests`, `favorites`, `me`, `home`, `images`, `notifications` |
+| Sider og komponenter | `.tsx`-filene i funksjonsmappen, delte komponenter i `shared/` |
+| Server actions (skriving) | `actions.ts` i funksjonsmappen |
+| REST-endepunkt (søk) | `GET /api/listings` i `listings/api.ts` |
+| Regler (service) | Egne filer i funksjonsmappen, for eksempel `requests/place-bid.ts` og `respond.ts` |
+| Datalag (repository) | `repository.ts` i funksjonsmappen, det eneste som snakker med databasen |
+| Databaseskjema | `app/src/db/schema.ts`, migrasjoner i `app/drizzle/` |
+| Tester | `*.test.ts(x)` ved siden av koden, nettlesertester i `app/e2e/` |
 
-**[Kanban-boardet](https://github.com/users/Maxaubert/projects/1)** har oppgavene som GitHub Issues.
-[Endringsloggen](docs/endringslogg.md) viser vesentlige endringer over tid.
+Tre valg preger koden:
 
-## Kjør kontroll av dokumentasjonen
+- **Feature-mapper:** vi jobber ofte med én funksjon om gangen, så alle filene som hører til en
+  funksjon ligger samlet, i stedet for å dele etter type.
+- **Server actions og REST:** vi bruker server actions for det som ellers kunne blitt gjort med POST,
+  og REST når vi skal hente ting dynamisk uten å laste siden på nytt, for eksempel ved søk.
+- **Tilgang på tre steder:** rutevakten sjekker sidebesøk, hver server action sjekker innloggingen på
+  nytt, og repositoryet finner bare det som er knyttet til brukerens id.
 
-Fra denne repo-roten, med Node.js 24.19.0 (CI bruker samme versjon fra `.node-version`):
+## Kom i gang
 
-```powershell
-node scripts/verify-docs.mjs
-git diff --check
-```
-
-Ingen pakkeinstallasjon kreves. Kontrollen sjekker lokale lenker, noen kritiske
-veiledningspunkter, filstruktur og en begrenset personvernkontroll. Den vurderer
-ikke studentenes forståelse eller om emnet er bestått. Se [begrensningene](docs/app/dokumentkontroll.md).
-
-## Installer og kjør appgrunnlaget
-
-Bruk Node **24.19.0** og npm **11.17.0**. Fra repo-roten:
+Bruk Node **24.19.0** og npm **11.17.0**. Kjør fra repo-roten:
 
 ```powershell
 cd app
@@ -66,49 +63,34 @@ npm run db:seed:local
 npm run dev
 ```
 
-Åpne adressen Vite viser, normalt `http://127.0.0.1:5173`, og logg inn med en `@hiof.no`-adresse.
-Lokalt sendes ingen e-post: **innloggingskoden skrives i terminalen** der `npm run dev` kjører,
-og i nettleserens utviklerkonsoll (F12, Console) på kodesiden.
-Første `npm run dev` lager `app/.dev.vars` med en tilfeldig lokal hemmelighet (Git-ignorert).
-Ingen Cloudflare-innlogging trengs lokalt.
-Stopp med Ctrl+C. Alle kommandoer nedenfor kjøres fra `app/`:
+Logg inn med testbrukeren `test.testesen@hiof.no`. Innloggingskoden kommer i terminalen der
+`npm run dev` kjører, for eksempel i VS Code.
+
+Testene kjøres fra `app/`:
 
 | Oppgave | Kommando |
 |---|---|
-| Hele lokale kontrollrekken | `npm run check` |
-| Generer bindingstyper og kontroller TypeScript | `npm run typecheck` |
-| Lint | `npm run lint` |
-| Vitest / dekning | `npm test` / `npm run test:coverage` |
-| Produksjonsbygg | `npm run build` |
-| Test produksjonsbygget i Chromium | `npm run test:e2e` (bygg først) |
-| Lokal forhåndsvisning av bygget | `npm run preview` |
-| Prøv lokal D1 | `npm run db:check` |
-| Generer migrasjon fra eget skjema | `npm run db:generate` |
-| Kjør migrasjoner lokalt | `npm run db:migrate:local` |
-| Legg inn testbrukeren og demoannonsene lokalt (tar ca. 3–4 min) | `npm run db:seed:local` |
+| Enhets- og integrasjonstester | `npm test` |
+| Dekning (feiler under 50 %) | `npm run test:coverage` |
+| Nettlesertester (bygg først med `npm run build`) | `npm run test:e2e` |
+| Hele kontrollrekken, som i CI | `npm run check` |
 
-Migrasjonene ligger i `app/drizzle/`: `0000_auth.sql` har innloggingstabellene, `0001_listing.sql` annonsetabellen.
-Testdataene er testbrukeren for `/dev/login` (`app/scripts/seed-local.sql`) og 34 demoannonser med bilder
-(`app/scripts/seed-listings.json` og `app/scripts/seed-images/`, med `NN.thumb.jpg` som miniatyr til `NN.jpg`), lagt inn av `scripts/seed.mjs` (#152, #155). Demobrukerne har
-`@studentmarkedet.invalid`-adresser og kan ikke logge inn. Skriptet rører bare det demobrukerne eier;
-`node scripts/seed.mjs --remove` fjerner alt igjen.
-Playwright starter og stopper sin egen preview på port 4173; porten må være ledig.
-På Linux installeres browseravhengighetene med `npx playwright install --with-deps chromium`.
-CI utfører installasjon og hele kontrollrekken. Startertester er ikke bevis på at
-hovedflyten, auth eller kursets dekningskrav er oppfylt. Se [begrensninger og kjente
-avhengighetsfunn](docs/app/oppsett.md). Deploy/release er ikke konfigurert.
+Målt dekning 04.11.2026: linjer 75,2 %, setninger 74,3 %, grener 74,2 %, funksjoner 66,8 %.
 
-## Appen på nett
+## Endringslogg
 
-https://studentmarkedet.org (Cloudflare, deployes automatisk fra `main` etter grønn CI).
-Koden sendes på e-post fra `noreply@mail.studentmarkedet.org` (Resend). Se [CI og deploy](docs/app/ci-og-deploy.md).
+| Dato | Hva |
+|---|---|
+| 04.11 | Felles sesjonsvakt for alle server actions, dekningsterskel på 50 % og strammere CSP |
+| 03.11 | Repository i hver funksjonsmappe: bare repositoryet snakker med databasen |
+| 02.11 | Omfanget ble avgrenset til MVP (#223); chat og tjenester kommer ikke i denne versjonen |
+| 01.11 | E-postvarsler til motparten |
+| 24.10 | Favoritter og Mine annonser |
+| 16.10 til 21.10 | Bud, lån, gis bort, motforslag, overlevering og retur |
+| 11.10 | Bilder i R2 |
+| 10.10 | Søk og REST-endepunktet |
+| 07.10 til 08.10 | Appen på nett på eget domene, med automatisk deploy fra `main` |
+| 05.10 | Innlogging med engangskode på e-post |
 
-## Publisering og rettigheter
-
-Repoet er offentlig på GitHub. Alle endringer gjøres på branch og gjennom PR. GitHub
-krever PR og grønn `Repository checks` før merge til main; review er frivillig. Se
-[CI og PR-regler](docs/app/ci-og-deploy.md). Ingen merge uten Max' godkjenning av den konkrete PR-en.
-
-Ikke legg inn Canvas-token, rå kursarkiv, persondata om andre studenter eller interne
-bedriftsdokumenter. Lisensvalg står åpent; dette grunnlaget gir ingen lisens til
-å republisere lærerens materiale. [Kildeindeksen](docs/emne/kilder.md) peker til det som er lest.
+Hele loggen står i [`docs/endringslogg.md`](docs/endringslogg.md), og resten av dokumentasjonen i
+[`docs/`](docs/README.md). KI-bruken følger [KI-avtalen](docs/prosess/ki-avtale.md).

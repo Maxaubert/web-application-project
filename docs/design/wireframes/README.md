@@ -117,15 +117,15 @@ endrer ingenting i databasen.
 
 ## Avvik fra tegningene (Max 10.10, #97)
 
-- Søkefeltet heter «Søk i tittel, beskrivelse og selger», fordi søket også finner selgerens navn.
+- Søkefeltet heter «Søk i tittel, beskrivelse og selger» for skjermlesere, fordi søket også finner selgerens navn. Det står i plommebåndet med plassholderen «Søk i annonser», og en kategorirad med lenker står under (mockup 13 Torget, valgt av Max 04.11, #288).
 - Filtrene (#102, Max 10.10, avklart med mockup): Kategori (liste), Handelstype og Tilstand (avkrysning, flere valg) og
   Pris fra/til kr. Tilstand og pris er nye. Prisglideren fra mockupen er valgt bort; tallfeltene holder (Max 10.10).
   Valgene virker med én gang uten knapp (#122): avkrysning og kategori straks, pris når man forlater feltet eller
   trykker Enter. Opsjoner som ikke gir treff sammen med de andre valgene er grå og låst, uten tall; en avkrysset
   opsjon kan alltid fjernes. «Nullstill filtre» fjerner filtrene men beholder søket. På mobil ligger filtrene bak
   en «Filtre»-knapp med antall aktive filtre, i et ark nedenfra; «Vis X annonser» lukker arket. Wireframen viser
-  dem åpne. Under 640 px står søkefeltet og «Filtre» på én rad (#164, mockup godkjent av Max 11.10): forstørrelsesglass
-  i feltet, etiketten og «Søk»-knappen er bare for skjermlesere og Enter, og tastaturet får søketast. Filterarket har
+  dem åpne. Under 640 px har søkefeltet forstørrelsesglass (#164, mockup godkjent av Max 11.10),
+  «Søk»-knappen er bare for skjermlesere og Enter, og tastaturet får søketast. «Filtre» står under båndet (#288). Filterarket har
   ingen hjelpetekst om ukepris (Max 11.10). «Tilgjengelig nå» (#100), sortering (#116) og «Vis flere» (#101)
   er utenfor MVP (Max 02.11). Tom visning har «Fjern søk» i stedet for «Fjern filtre».
 - Live søkeforslag (#104) er ikke tegnet: fra to tegn vises en hvit liste under feltet med opptil fem treff
@@ -159,8 +159,8 @@ Legg ut annonse er bygget etter mockup 13, valgt blant tolv helsidemockups:
 - Tilstand heter «Brukt», som i dataene og filtrene, ikke «Brukt, fullt fungerende».
 - Etter publisering havner man på den nye annonsesiden med «Annonsen er publisert og synlig i søket» (bare for eieren).
 - «Legg ut annonse» og «Logg ut» står i toppen på forsiden og annonsesidene. På mobil (under 640 px) er de ikonknapper på
-  44 px (pluss og utlogging, #162; mockup godkjent av Max 11.10), og sidetitlene «Annonser» og «Legg ut annonse» er 24 px
-  i stedet for 36 px. Navnene står igjen for skjermlesere. På smale mobiler under 416 px vises bare logoen; navnet står
+  44 px (pluss og utlogging, #162; mockup godkjent av Max 11.10), og sidetittelen «Legg ut annonse» er 24 px
+  i stedet for 36 px. Forsidens «Annonser» er bare for skjermlesere (#288). Navnene står igjen for skjermlesere. Under 768 px vises bare logoen; navnet står
   igjen for skjermlesere.
 - Annonsesiden på mobil (#167): tittelen er 24 px, det er lite luft over bildet, og miniatyrene ligger på én rad som rulles
   sidelengs (opptil 10 bilder). Fra 640 px brytes miniatyrene over flere linjer som før.

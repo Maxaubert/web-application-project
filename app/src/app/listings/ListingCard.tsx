@@ -3,8 +3,16 @@
 // Hjertet (#224) står ved siden av lenken, ikke inni den, så det aldri blir en knapp inne i en lenke.
 import type { Listing } from "@/db/schema";
 import { FavoriteButton } from "@/app/favorites/FavoriteButton";
-import { formatTypeAndPrice } from "./format-type-and-price";
+import { formatPrice } from "./format-type-and-price";
+import { typeLabels } from "./labels";
 import { ListingImage } from "./ListingImage";
+
+// Handelstypen som merke på bildet (Torget, #289), med en egen farge per type.
+const tagClass: Record<Listing["type"], string> = {
+  sale: "bg-mint-hover text-mint-ink",
+  loan: "bg-loan text-plum",
+  giveaway: "bg-gift text-gift-ink",
+};
 
 // cover: adressen til forsidebildet, eller null for plassholderen (#150).
 // favorite: om brukeren har lagret annonsen. Uten den er det ikke noe hjerte (egne annonser, forhåndsvisningen).
@@ -18,9 +26,10 @@ export function ListingCard({ listing, cover, favorite }: ListingCardProps) {
         <ListingImage src={cover} className="aspect-[4/3] w-full" />
         <div className="px-4 py-3">
           <h2 className="line-clamp-2 text-lg font-bold [overflow-wrap:anywhere]">{listing.title}</h2>
-          <p className="mt-1 font-semibold">{formatTypeAndPrice(listing)}</p>
+          <p className="mt-1 text-xl font-extrabold">{formatPrice(listing) ?? "Gratis"}</p>
         </div>
       </a>
+      <span className={`pointer-events-none absolute top-2 left-2 rounded-md px-2.5 py-0.5 font-bold ${tagClass[listing.type]}`}>{typeLabels[listing.type]}</span>
       {favorite !== undefined && (
         // Nederst til høyre i bildet (Max 24.10). Bildet er 4:3 av kortets bredde (@container), så toppen regnes fra bredden.
         <div className="absolute top-[calc(75cqw-3.25rem)] right-2">

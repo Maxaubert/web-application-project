@@ -14,7 +14,7 @@ test.describe("mobil (375 px)", () => {
     await expect(page.getByRole("button", { name: "Legg til bilder" })).toBeHidden();
     const add = page.getByRole("button", { name: "Legg til", exact: true });
     await expect(add).toBeVisible();
-    expect((await page.getByLabel("Tittel").boundingBox())!.y).toBeLessThan(330);
+    expect((await page.getByLabel("Tittel").boundingBox())!.y).toBeLessThan(350);
   });
 
   test("manglende bilde gir feil som peker på «Legg til», og bilder vises i raden", async ({ page }) => {

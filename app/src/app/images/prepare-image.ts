@@ -1,12 +1,12 @@
 // Gjør et valgt bilde klart for opplasting i nettleseren (#141): HEIC fra iPhone gjøres om, bildet skaleres ned
 // til høyst 2000 px og lagres som JPEG, og det lages en miniatyr på 640 px til kort og søkeforslag (#155). Å tegne
 // bildet på nytt fjerner også EXIF-data som GPS-posisjon, så annonsebildet ikke viser hvor det er tatt.
-// heic-to er stort (3 MB) og lastes bare når det trengs.
+// heic-to er stort (3 MB) og lastes bare når det trengs. CSP-utgaven trenger ikke 'unsafe-eval' (#275).
 import { fitWithin, isHeic, MAX_SIDE, THUMB_SIDE } from "./pick-images";
 
 async function decode(file: File): Promise<ImageBitmap> {
   if (isHeic(file)) {
-    const { heicTo } = await import("heic-to");
+    const { heicTo } = await import("heic-to/csp");
     return heicTo({ blob: file, type: "bitmap" });
   }
   return createImageBitmap(file);

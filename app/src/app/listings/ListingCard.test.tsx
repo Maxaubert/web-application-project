@@ -26,7 +26,8 @@ describe("ListingCard", () => {
     const html = renderToStaticMarkup(<ListingCard listing={tent} cover={null} />);
 
     expect(html).toMatch(/<h2[^>]*>Telt for to<\/h2>/);
-    expect(html).toContain("Lån · 40 kr/uke");
+    expect(html).toContain(">Lån</span>");
+    expect(html).toContain("40 kr/uke");
     expect(html).not.toContain("Lett telt");
   });
 
@@ -56,5 +57,15 @@ describe("ListingCard", () => {
     expect(unsaved).toMatch(/<button[^>]*aria-pressed="false"[^>]*aria-label="Lagre som favoritt"/);
 
     expect(renderToStaticMarkup(<ListingCard listing={tent} cover={null} />)).not.toContain("<button");
+  });
+});
+
+// Fiendtlig input (#265, KI-kurset 5a). React escaper tekst, så en tittel med HTML vises som tekst. Godkjent av Max 04.11.
+describe("ListingCard med fiendtlig input", () => {
+  it("viser en tittel med <script> som tekst, ikke som et skript", () => {
+    const html = renderToStaticMarkup(<ListingCard listing={{ ...tent, title: "<script>alert(1)</script>" }} cover={null} />);
+
+    expect(html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
+    expect(html).not.toContain("<script>");
   });
 });

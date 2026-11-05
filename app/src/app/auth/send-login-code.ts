@@ -4,12 +4,7 @@
 // havner i en produksjonslogg ved et uhell.
 import type { SendLoginCode } from "./auth";
 
-// Bare lokal utvikling (Max 05.10): siste kode per adresse, så kodesiden kan vise den i
-// nettleserkonsollen. Fylles bare av printLoginCode; i produksjon er den alltid tom.
-const devCodes = new Map<string, string>();
-
 export const printLoginCode: SendLoginCode = async (email, code) => {
-  devCodes.set(email.toLowerCase(), code);
   console.log(`\n  Innloggingskode til ${email}: ${code}  (bare lokal utvikling)\n`);
 };
 
@@ -44,11 +39,4 @@ export function createResendSender({ apiKey, from, fetchFn = fetch }: ResendOpti
     // Feilmeldingen har bare statusen, aldri nøkkelen eller koden.
     if (!response.ok) throw new Error(`Resend svarte ${response.status}.`);
   };
-}
-
-// Lås nummer to: koden når nettleseren bare under utviklingsserveren (npm run dev). Vite setter
-// import.meta.env.DEV ved bygging, så et produksjonsbygg kan aldri slå dette på via en innstilling.
-export function getDevCode(email: string): string | undefined {
-  if (!import.meta.env.DEV) return undefined;
-  return devCodes.get(email.toLowerCase());
 }

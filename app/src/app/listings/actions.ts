@@ -1,25 +1,25 @@
 "use server";
 // Serverhandlinger for annonser (FK-03, #131). Alt sjekkes her på serveren: økt, fullført konto og
 // gyldige felt og bilder. Eieren hentes fra økten, aldri fra skjemaet, så ingen kan legge ut i andres navn.
-import { eq } from "drizzle-orm";
 import { getRequestInfo } from "rwsdk/worker";
 import { db } from "@/db";
-import { listing, listingImage } from "@/db/schema";
 import { redirect, type ActionResult } from "@/app/auth/form-state";
+import { requireSessionUser } from "@/app/auth/guards";
 import { imageBucket } from "@/app/images/bucket";
 import { checkImages, checkThumbs } from "@/app/images/image-files";
 import { storeImages, withThumbs } from "@/app/images/storage";
 import { log } from "@/app/shared/log";
 import { validateListing, type ListingFormValues } from "./listing-schema";
 import { unpublishListing } from "./unpublish";
+import { createListingRepository } from "./repository";
 import { updateListingFields } from "./update";
 
 const FIELDS = ["title", "description", "category", "type", "condition", "price"] as const;
 
 export async function createListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const values = Object.fromEntries(FIELDS.map((key) => [key, String(formData.get(key) ?? "")])) as ListingFormValues;
   const result = validateListing(values);
@@ -38,15 +38,15 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
   // og filene igjen, så det aldri blir liggende bilder uten annonse eller en annonse med halve bildene.
   const listingId = crypto.randomUUID();
   const keys = await storeImages(imageBucket, listingId, images.images, thumbs.thumbs);
+  const repository = createListingRepository(db);
   try {
-    await db.insert(listing).values({ ...result.data, id: listingId, ownerId: ctx.session.userId });
-    if (keys.length > 0) await db.insert(listingImage).values(keys.map((key, position) => ({ listingId, key, position })));
+    await repository.create({ ...result.data, id: listingId, ownerId: userId }, keys);
   } catch (error) {
-    await db.delete(listing).where(eq(listing.id, listingId));
+    await repository.remove(listingId);
     if (keys.length > 0) await imageBucket.delete(withThumbs(keys));
     throw error;
   }
-  log.info("listing_created", { userId: ctx.session.userId, listingId, images: keys.length });
+  log.info("listing_created", { userId: userId, listingId, images: keys.length });
   return redirect(`/listings/${listingId}?publisert=1`);
 }
 
@@ -54,14 +54,14 @@ export async function createListing(_prev: ActionResult, formData: FormData): Pr
 // bare det som hører til nettforespørselen. Ved suksess til Mine annonser (Max 24.10).
 export async function takeDownListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const listingId = String(formData.get("listingId") ?? "");
-  const result = await unpublishListing(db, { userId: ctx.session.userId, listingId });
+  const result = await unpublishListing(db, { userId: userId, listingId });
   if (!result.ok) return { error: result.error };
 
-  log.info("listing_unpublished", { userId: ctx.session.userId, listingId });
+  log.info("listing_unpublished", { userId: userId, listingId });
   return redirect("/me?tab=listings");
 }
 
@@ -69,14 +69,14 @@ export async function takeDownListing(_prev: ActionResult, formData: FormData): 
 // leses ikke fra skjemaet. Ved suksess til annonsesiden, ved feil tilbake til skjemaet med det som var fylt inn.
 export async function updateListing(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
   const { ctx } = getRequestInfo();
-  if (!ctx.session.isAuthenticated || !ctx.session.userId) return redirect("/login");
-  if (ctx.session.needsSetup) return redirect("/account-setup");
+  const userId = requireSessionUser(ctx.session);
+  if (userId instanceof Response) return userId;
 
   const listingId = String(formData.get("listingId") ?? "");
   const values = Object.fromEntries(FIELDS.map((key) => [key, String(formData.get(key) ?? "")])) as ListingFormValues;
-  const result = await updateListingFields(db, { userId: ctx.session.userId, listingId, values });
+  const result = await updateListingFields(db, { userId: userId, listingId, values });
   if (!result.ok) return "fieldErrors" in result ? { fieldErrors: result.fieldErrors, values } : { error: result.error };
 
-  log.info("listing_updated", { userId: ctx.session.userId, listingId });
+  log.info("listing_updated", { userId: userId, listingId });
   return redirect(`/listings/${listingId}`);
 }

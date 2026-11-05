@@ -86,7 +86,7 @@ export function Filters({ q, filters, available, activeCount: active, count }: F
   }
 
   return (
-    <div className="mt-4 self-end lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:self-baseline">
+    <div className="lg:self-start">
       <button
         ref={toggleRef}
         type="button"

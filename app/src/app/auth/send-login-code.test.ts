@@ -1,16 +1,10 @@
-// Koden kan bare nå nettleseren via den lokale utskriften. Godkjent av Max 05.10.
 import { describe, expect, it } from "vitest";
-import { createResendSender, emailNotConfigured, getDevCode, printLoginCode } from "./send-login-code";
+import { createResendSender, emailNotConfigured } from "./send-login-code";
 
-describe("getDevCode", () => {
-  it("gir ingen kode når e-postversjonen brukes", async () => {
+// Uten LOGIN_CODE_DELIVERY feiler utsendingen, så en kode aldri havner i en produksjonslogg. Godkjent av Max 05.10.
+describe("emailNotConfigured", () => {
+  it("feiler i stedet for å sende koden", async () => {
     await expect(emailNotConfigured("prod@hiof.no", "123456")).rejects.toThrow();
-    expect(getDevCode("prod@hiof.no")).toBeUndefined();
-  });
-
-  it("gir nøyaktig koden som ble skrevet ut lokalt", async () => {
-    await printLoginCode("Lokal@hiof.no", "654321");
-    expect(getDevCode("lokal@hiof.no")).toBe("654321");
   });
 });
 
