@@ -74,6 +74,16 @@ describe("placeRequest, lån", () => {
     expect(await placeRequest(db, { userId: KARI, listingId: "tent", ...WEEK })).toEqual({ ok: true });
   });
 
+  // Godkjent av Max 05.11 (#302).
+  it("avviser en periode tilbake i tid sendt utenom skjemaet, og lagrer ingenting", async () => {
+    const now = new Date("2026-11-05T12:00:00Z");
+    const result = await placeRequest(db, { userId: KARI, listingId: "tent", startDate: "1857-10-13", endDate: "2026-12-06", now });
+
+    expect(result).toMatchObject({ ok: false });
+    expect(await db.select().from(request)).toHaveLength(0);
+    expect(await db.select().from(offer)).toHaveLength(0);
+  });
+
   it("avviser en periode på 6 dager og lagrer ingenting", async () => {
     const result = await placeRequest(db, { userId: KARI, listingId: "tent", startDate: "2026-11-12", endDate: "2026-11-17" });
 
