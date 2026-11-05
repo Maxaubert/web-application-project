@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-05
 
+- Annonsekort (#309): tittelen har alltid plass til to linjer, så alle kort er like høye. (Max, #309)
 - Lån (#306): feilmeldingen for dato sier Skriv en gyldig dato, siden feltet viser norsk format. (Max, #306)
 - Annonsesiden (#304): kom man fra Mine annonser eller Mine favoritter, går tilbakelenken til samme fane på Min side. (Max, #304)
 - Lån (#302): fra-dato kan ikke være tilbake i tid, og til-dato kan være høyst 31.12 neste år, både på serveren og i datofeltene. En bruker hadde valgt 1800-tallet. (Max, #302)
