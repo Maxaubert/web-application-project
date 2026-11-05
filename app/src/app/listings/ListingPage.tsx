@@ -14,6 +14,7 @@ import { BidAction } from "@/app/requests/BidAction";
 import { getActiveRequest } from "@/app/requests/find-requests";
 import { FavoriteButton } from "@/app/favorites/FavoriteButton";
 import { createFavoriteRepository } from "@/app/favorites/repository";
+import { parseTab } from "@/app/me/tabs";
 
 export async function ListingPage({ params, request, response, ctx }: RequestInfo<{ id: string }>) {
   const listings = createListingRepository(db);
@@ -32,6 +33,15 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
   const canFavorite = visible ? result.listing.status === "active" && result.listing.ownerId !== userId : false;
   const saved = canFavorite && (await createFavoriteRepository(db).findIds(userId)).has(params.id);
 
+  // Kom man fra en fane på Min side, går tilbakelenken dit (#304). Bare kjente faner godtas.
+  const from = new URL(request.url).searchParams.get("fra");
+  const backLink =
+    from !== null && parseTab(from) === from ? (
+      <a href={`/me?tab=${from}`} className="inline-flex min-h-11 items-center gap-1 underline hover:decoration-2">
+        <span aria-hidden="true">‹</span> Tilbake til Min side
+      </a>
+    ) : undefined;
+
   return (
     <PageShell title={visible ? result.listing.title : "Annonsen er borte"} wide headerAction={<HeaderActions />}>
       {published && <PublishedNotice />}
@@ -40,6 +50,7 @@ export async function ListingPage({ params, request, response, ctx }: RequestInf
           listing={result.listing}
           ownerName={result.ownerName}
           images={images}
+          backLink={backLink}
           bidAction={<BidAction listingId={params.id} type={result.listing.type} state={bid} />}
           favoriteAction={canFavorite && <FavoriteButton listingId={params.id} saved={saved} />}
         />
