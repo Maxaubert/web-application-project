@@ -202,7 +202,7 @@ describe("Min side, Mine annonser", () => {
     expect(html).toContain("Publisert · utlånt til 30.10");
     for (const hidden of ["Solgt bok", "Slettet lampe", "Karis sykkel"]) expect(html).not.toContain(hidden);
     // Raden åpner annonsen, og «Administrer» åpner redigeringssiden.
-    expect(html).toContain('href="/listings/calc"');
+    expect(html).toContain('href="/listings/calc?fra=listings"');
     expect(html).toMatch(/<a href="\/listings\/calc\/edit"[^>]*>Administrer<\/a>/);
     expect(html).toMatch(/<a href="\/listings\/drill\/edit"[^>]*>Administrer<\/a>/);
   });

@@ -17,5 +17,9 @@ test("«Administrer» i raden åpner redigeringssiden, og klikk på raden åpner
   await page.goto("/me?tab=listings", { waitUntil: "networkidle" });
   await rowOf(page).getByRole("link", { name: "Kalkulator Casio fx-991" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Kalkulator Casio fx-991" })).toBeVisible();
-  await expect(page).toHaveURL(/\/listings\/e2e-calc$/);
+  await expect(page).toHaveURL(/\/listings\/e2e-calc\?fra=listings$/);
+
+  // Tilbake går til samme fane, ikke forsiden (#304).
+  await page.getByRole("link", { name: "Tilbake til Min side" }).click();
+  await expect(page).toHaveURL(/\/me\?tab=listings$/);
 });
