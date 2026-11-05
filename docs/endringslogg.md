@@ -10,6 +10,7 @@ Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme da
 
 ## 2026-11-05
 
+- Forespørsler (#300): knappen heter Avbryt avtalen i stedet for Avbestill, siden både kjøper og selger har den. (Max, #300)
 - Demodata (#297): 13 nye humorannonser med bilder og egne demoselgere, og rekkefølgen i seed-listings.json er stokket, så annonsene ikke står gruppert. (Max, #297)
 - Tester (#295): søkeskjema-testen venter til siden er ferdig lastet, så den ikke feiler tilfeldig i CI. (Max, #295)
 

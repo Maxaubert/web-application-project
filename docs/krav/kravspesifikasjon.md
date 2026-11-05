@@ -150,7 +150,7 @@ tilstand og hva begge parter ser etterpå.
 | Venter på forespørrer | Godta, avslå eller nytt motforslag | Forespørrer | Godtatt, avslått eller venter på eier |
 | Venter på eier | Trekk forespørselen | Forespørrer | Trukket |
 | Venter på eier eller forespørrer | 7 dager uten svar | Systemet | Utløpt |
-| Godtatt | Avbestill | Begge, før overlevering | Avbestilt |
+| Godtatt | Avbryt avtalen | Begge, før overlevering | Avbestilt |
 | Godtatt | Bekreft overlevering | Hver part for seg | Fullført (salg, gis bort) eller i bruk (lån) når begge har bekreftet |
 | I bruk | Foreslå senere returdato | Begge | Motparten godtar eller avslår |
 | I bruk | Bekreft mottatt retur | Eier | Fullført |
