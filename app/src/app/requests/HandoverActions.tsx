@@ -23,7 +23,9 @@ const questions = {
   withdraw: "Trekke tilbake forespørselen?",
   return: "Bekrefte at lånet er levert tilbake?",
 } as const;
-const confirmLabels = { cancel: "Ja, avbryt", withdraw: "Ja, trekk tilbake", return: "Ja, bekreft retur" } as const;
+const confirmLabels = { cancel: "Ja, avbryt avtalen", withdraw: "Ja, trekk tilbake", return: "Ja, bekreft retur" } as const;
+// «Avbryt» ville betydd to ting i dialogen om å avbryte avtalen, så den har et eget svar (#300).
+const dismissLabels = { cancel: "Nei, behold avtalen", withdraw: "Avbryt", return: "Avbryt" } as const;
 
 export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw, canReturn }: HandoverActionsProps) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(updateRequest, {});
@@ -34,7 +36,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
     <form action={action} noValidate>
       <input type="hidden" name="requestId" value={requestId} />
       <FieldError id="handover-error" message={state.error} />
-      {/* Hver del har egen key, så React lager nye knapper: ellers blir «Avbryt avtalen» til «Ja, avbryt» midt i klikket, og klikket sender skjemaet. */}
+      {/* Hver del har egen key, så React lager nye knapper: ellers blir «Avbryt avtalen» til «Ja, avbryt avtalen» midt i klikket, og klikket sender skjemaet. */}
       {mode === "idle" ? (
         <div key="idle" className="mt-3 space-y-3">
           {canConfirm && (
@@ -66,7 +68,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
               {confirmLabels[mode]}
             </button>
             <button type="button" onClick={() => setMode("idle")} className="min-h-12 px-2 font-semibold underline">
-              Avbryt
+              {dismissLabels[mode]}
             </button>
           </div>
         </div>

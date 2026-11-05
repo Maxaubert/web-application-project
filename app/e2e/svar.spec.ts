@@ -133,12 +133,12 @@ test("Avbryt avtalen krever en bekreftelse, og en avbestilt avtale legger annons
 
   await page.getByRole("button", { name: "Avbryt avtalen" }).click();
   await expect(page.getByText("Avbryte avtalen?")).toBeVisible();
-  await page.getByRole("button", { name: "Avbryt" }).click();
+  await page.getByRole("button", { name: "Nei, behold avtalen" }).click();
   await expect(page.getByText("Avbryte avtalen?")).toHaveCount(0);
   await expect(bannerOf(page)).toHaveText("Avtalt");
 
   await page.getByRole("button", { name: "Avbryt avtalen" }).click();
-  await page.getByRole("button", { name: "Ja, avbryt" }).click();
+  await page.getByRole("button", { name: "Ja, avbryt avtalen" }).click();
 
   await expect(toastOf(page)).toHaveText(/Avtalen er avbestilt/);
   await expect(bannerOf(page)).toHaveText("Avbestilt");
