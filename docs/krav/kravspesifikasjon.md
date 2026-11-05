@@ -47,7 +47,7 @@ Vi vil bygge en webapplikasjon der studenter kan legge ut og finne ting for salg
 | Tilgang | Avklart 28.09 | Innlogging kreves før annonser kan ses eller søkes i. Ingen offentlig annonseoversikt (D-43 til D-45). |
 | Kontooppsett | Avklart 28.09 og 29.09, utvidet 05.10 | Ny bruker fyller inn fullt navn, land og telefon én gang. Nummeret må være gyldig for valgt land og lagres i internasjonal form (+47…). Telefon og e-post deles bare med motparten etter godtatt forespørsel (D-13, D-14). |
 | Forespørsel ved salg | Avklart 29.09 | Bare et bud i kroner. Mottakeren godtar, avslår eller foreslår en annen pris. Erstatter D-50 om at pris ikke kan endres. |
-| Forespørsel ved lån | Avklart 29.09 | Bare en periode (fra og til), minst én uke (D-22). Opptatte datoer kan ikke velges. Motforslag gjelder perioden. |
+| Forespørsel ved lån | Avklart 29.09 | Bare en periode (fra og til), minst én uke (D-22), fra i dag til og med 31.12 neste år (Max 05.11, #302). Opptatte datoer kan ikke velges. Motforslag gjelder perioden. |
 | Gis bort | Avklart 29.09 | Som salg, men uten bud: forespørsel, eier godtar eller avslår, begge bekrefter overlevering. Ingen retur. |
 | Sted og tid | Avklart 29.09 | Ikke i appen. Partene avtaler overlevering og retur på telefon eller e-post etter aksept. Erstatter D-03 til D-12 om møtepunkt og hentetid i forespørselen. |
 | Overlevering | Avklart 28.09 og 29.09 | Begge bekrefter overlevering i appen. Salg og gis bort er fullført etter begge bekreftelsene; lån er da i bruk (D-36, D-37). Har bare én part bekreftet, regnes overleveringen som bekreftet 3 dager senere. |

@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { FieldError, TextField } from "@/app/shared/form-controls";
 import { formatLoanPrice, loanSummary } from "./loan-summary";
+import { periodLimits } from "./period-limits";
 
 type PeriodFieldsProps = {
   idPrefix: string;
@@ -18,6 +19,7 @@ export function PeriodFields({ idPrefix, weeklyPrice, initialStart = "", initial
   const [startDate, setStartDate] = useState(initialStart);
   const [endDate, setEndDate] = useState(initialEnd);
   const summary = loanSummary(startDate, endDate, weeklyPrice);
+  const { min, max } = periodLimits(new Date());
 
   return (
     <>
@@ -27,6 +29,8 @@ export function PeriodFields({ idPrefix, weeklyPrice, initialStart = "", initial
           name="startDate"
           type="date"
           label="Fra"
+          min={min}
+          max={max}
           value={startDate}
           onChange={(event) => setStartDate(event.target.value)}
           error={errors?.startDate}
@@ -36,6 +40,8 @@ export function PeriodFields({ idPrefix, weeklyPrice, initialStart = "", initial
           name="endDate"
           type="date"
           label="Til"
+          min={min}
+          max={max}
           value={endDate}
           onChange={(event) => setEndDate(event.target.value)}
           error={errors?.endDate}
