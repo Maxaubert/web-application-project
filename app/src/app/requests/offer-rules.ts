@@ -46,7 +46,7 @@ const day = (missing: string) =>
     .string()
     .trim()
     .min(1, missing)
-    .refine((value) => parseDay(value) !== null, "Skriv datoen som ÅÅÅÅ-MM-DD");
+    .refine((value) => parseDay(value) !== null, "Skriv en gyldig dato");
 
 // Zod kjører en refine også når en dato er ugyldig, så periodekontrollene hopper over det tilfellet
 // selv (da har feltet allerede fått sin egen feil).

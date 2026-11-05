@@ -69,9 +69,9 @@ describe("periode for lån", () => {
 
   it("avviser manglende og ugyldige datoer uten å krasje", () => {
     expect(errorsFor("loan", {})).toEqual({ startDate: "Velg fra-dato", endDate: "Velg til-dato" });
-    expect(errorsFor("loan", { startDate: "2026-02-31", endDate: "2026-03-10" }).startDate).toContain("ÅÅÅÅ-MM-DD");
-    expect(errorsFor("loan", { startDate: "01.11.2026", endDate: "2026-11-10" }).startDate).toContain("ÅÅÅÅ-MM-DD");
-    expect(errorsFor("loan", { startDate: "12026-11-01", endDate: "2026-11-10" }).startDate).toContain("ÅÅÅÅ-MM-DD");
+    expect(errorsFor("loan", { startDate: "2026-02-31", endDate: "2026-03-10" }).startDate).toContain("Skriv en gyldig dato");
+    expect(errorsFor("loan", { startDate: "01.11.2026", endDate: "2026-11-10" }).startDate).toContain("Skriv en gyldig dato");
+    expect(errorsFor("loan", { startDate: "12026-11-01", endDate: "2026-11-10" }).startDate).toContain("Skriv en gyldig dato");
   });
 
   it("godtar en lang periode innenfor grensen", () => {
