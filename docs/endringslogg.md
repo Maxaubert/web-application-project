@@ -8,6 +8,10 @@ den lokale arbeidsloggen (se [loggrutinen](prosess/loggrutine.md)). Én linje pe
 Skriv hvem som besluttet eller gjorde endringen, og lenk PR eller issue når det finnes.
 Oppføringene til og med 05.10.2026 er rekonstruert fra Git-historikken samme dag.
 
+## 2026-11-05
+
+- Tester (#295): søkeskjema-testen venter til siden er ferdig lastet, så den ikke feiler tilfeldig i CI. (Max, #295)
+
 ## 2026-11-04
 
 - Forsiden (#288): søket står i plommebåndet, med en kategorirad under som bruker det samme kategorifilteret, og rutenettet har fire kolonner på brede skjermer. Overskriften Annonser er bare for skjermlesere. Søkeforslag velges bare med piltastene, så Enter søker selv om musen står over listen. (Max, #288)
