@@ -115,7 +115,7 @@ test("begge ser kontaktinfo, bekrefter hver for seg, og avtalen blir fullført n
   await expect(toastOf(page)).toHaveText(/Overlevering bekreftet/);
   await expect(bannerOf(page)).toHaveText("Avtalt");
   await expect(page.getByRole("button", { name: "Bekreft overlevering" })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Avbestill" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Avbryt avtalen" })).toBeVisible();
 
   const buyer = await browser.newContext({ storageState: BUYER_AUTH_FILE, baseURL });
   const buyerPage = await buyer.newPage();
@@ -127,18 +127,18 @@ test("begge ser kontaktinfo, bekrefter hver for seg, og avtalen blir fullført n
   await buyer.close();
 });
 
-test("Avbestill krever en bekreftelse, og en avbestilt avtale legger annonsen ut igjen", async ({ page, browser, baseURL }) => {
+test("Avbryt avtalen krever en bekreftelse, og en avbestilt avtale legger annonsen ut igjen", async ({ page, browser, baseURL }) => {
   await page.goto("/requests/e2e-req-over-avbest", { waitUntil: "networkidle" });
-  await expect(page.getByText("Avbestille avtalen?")).toHaveCount(0);
+  await expect(page.getByText("Avbryte avtalen?")).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Avbestill" }).click();
-  await expect(page.getByText("Avbestille avtalen?")).toBeVisible();
+  await page.getByRole("button", { name: "Avbryt avtalen" }).click();
+  await expect(page.getByText("Avbryte avtalen?")).toBeVisible();
   await page.getByRole("button", { name: "Avbryt" }).click();
-  await expect(page.getByText("Avbestille avtalen?")).toHaveCount(0);
+  await expect(page.getByText("Avbryte avtalen?")).toHaveCount(0);
   await expect(bannerOf(page)).toHaveText("Avtalt");
 
-  await page.getByRole("button", { name: "Avbestill" }).click();
-  await page.getByRole("button", { name: "Ja, avbestill" }).click();
+  await page.getByRole("button", { name: "Avbryt avtalen" }).click();
+  await page.getByRole("button", { name: "Ja, avbryt" }).click();
 
   await expect(toastOf(page)).toHaveText(/Avtalen er avbestilt/);
   await expect(bannerOf(page)).toHaveText("Avbestilt");

@@ -330,13 +330,13 @@ describe("RequestPage, overlevering og kontakt (#188)", () => {
     expect(html).not.toMatch(/@hiof\.no|\+47|overlevering/);
   });
 
-  it("godtatt: Bekreft overlevering (sender «confirm») og Avbestill, for begge parter, og ingen Trekk tilbake", async () => {
+  it("godtatt: Bekreft overlevering (sender «confirm») og Avbryt avtalen, for begge parter, og ingen Trekk tilbake", async () => {
     await setStatus("accepted");
 
     for (const userId of [OWNER_ID, "kari"]) {
       const { html } = await visit("r1", userId);
       expect(html, userId).toMatch(/<button type="submit"(?=[^>]*name="intent")(?=[^>]*value="confirm")[^>]*>Bekreft overlevering<\/button>/);
-      expect(html, userId).toMatch(/<button type="button"[^>]*>Avbestill<\/button>/);
+      expect(html, userId).toMatch(/<button type="button"[^>]*>Avbryt avtalen<\/button>/);
       expect(html, userId).toContain('<input type="hidden" name="requestId" value="r1"/>');
       expect(html, userId).not.toMatch(/Trekk tilbake|>Godta<|>Avslå</);
     }
@@ -352,18 +352,18 @@ describe("RequestPage, overlevering og kontakt (#188)", () => {
     expect(buyer).toContain("Du Ikke bekreftet Ola Bekreftet");
   });
 
-  it("den som har bekreftet, mister Bekreft overlevering men beholder Avbestill; den andre beholder begge", async () => {
+  it("den som har bekreftet, mister Bekreft overlevering men beholder Avbryt avtalen; den andre beholder begge", async () => {
     await setStatus("accepted", { requesterConfirmed: true });
 
     const buyer = (await visit("r1", "kari")).html;
     const owner = (await visit("r1", OWNER_ID)).html;
 
     expect(buyer).not.toContain("Bekreft overlevering</button>");
-    expect(buyer).toContain(">Avbestill</button>");
+    expect(buyer).toContain(">Avbryt avtalen</button>");
     expect(owner).toContain(">Bekreft overlevering</button>");
   });
 
-  it("ikke bekreftet vises ikke som fullført: i bruk og fullført har verken Bekreft, Avbestill eller bekreftelsesstatus", async () => {
+  it("ikke bekreftet vises ikke som fullført: i bruk og fullført har verken Bekreft, Avbryt avtalen eller bekreftelsesstatus", async () => {
     for (const status of ["in_use", "completed"] as const) {
       await setStatus(status, { ownerConfirmed: true, requesterConfirmed: true });
       for (const userId of [OWNER_ID, "kari"]) {
@@ -381,10 +381,10 @@ describe("RequestPage, overlevering og kontakt (#188)", () => {
     }
   });
 
-  it("avsluttede forespørsler har ikke Trekk tilbake, Avbestill eller Bekreft overlevering", async () => {
+  it("avsluttede forespørsler har ikke Trekk tilbake, Avbryt avtalen eller Bekreft overlevering", async () => {
     for (const status of ["declined", "withdrawn", "expired", "cancelled"] as const) {
       await setStatus(status);
-      for (const userId of [OWNER_ID, "kari"]) expect((await visit("r1", userId)).html, `${status} ${userId}`).not.toMatch(/Trekk tilbake<\/button>|Avbestill<\/button>|Bekreft overlevering/);
+      for (const userId of [OWNER_ID, "kari"]) expect((await visit("r1", userId)).html, `${status} ${userId}`).not.toMatch(/Trekk tilbake<\/button>|Avbryt avtalen<\/button>|Bekreft overlevering/);
     }
   });
 
@@ -418,7 +418,7 @@ describe("RequestPage, bekreft retur (#214)", () => {
 
     expect(owner).toMatch(returnButton);
     expect(owner).toContain('<input type="hidden" name="requestId" value="rl"/>');
-    expect(owner).not.toMatch(/Bekreft overlevering|Avbestill|Trekk tilbake/);
+    expect(owner).not.toMatch(/Bekreft overlevering|Avbryt avtalen|Trekk tilbake/);
     expect(buyer).not.toMatch(/<button|Bekreft retur/);
   });
 
