@@ -6,9 +6,9 @@ import data from "../../../scripts/seed-listings.json";
 import { validateListing } from "./listing-schema";
 
 describe("demoannonsene", () => {
-  it("er 34, med unike slugs, og hver består skjemaets validering", () => {
-    expect(data.listings).toHaveLength(34);
-    expect(new Set(data.listings.map((l) => l.slug)).size).toBe(34);
+  it("er 47, med unike slugs, og hver består skjemaets validering", () => {
+    expect(data.listings).toHaveLength(47);
+    expect(new Set(data.listings.map((l) => l.slug)).size).toBe(47);
     for (const l of data.listings) {
       const result = validateListing({ ...l, price: l.price === null ? "" : String(l.price) });
       expect(result.success, `${l.slug}: ${JSON.stringify(result.success ? "" : result.fieldErrors)}`).toBe(true);
