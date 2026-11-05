@@ -26,7 +26,7 @@ export async function placeRequest(db: Db, { userId, listingId, now = new Date()
   }
 
   // Innholdet valideres på serveren også om skjemaet har gjort det; TypeScript sjekker ingenting i kjøretid.
-  const validated = validateOffer(found.type, values);
+  const validated = validateOffer(found.type, values, now);
   if (!validated.success) return { ok: false, fieldErrors: validated.fieldErrors };
   const { price, startDate, endDate } = validated.data;
 

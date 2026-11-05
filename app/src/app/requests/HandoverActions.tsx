@@ -1,5 +1,5 @@
 "use client";
-// Knappene etter at en forespørsel er godtatt eller mens den venter (WF-08, #188): Bekreft overlevering, Avbestill og
+// Knappene etter at en forespørsel er godtatt eller mens den venter (WF-08, #188): Bekreft overlevering, Avbryt avtalen og
 // Trekk tilbake, og for eieren av et lån i bruk Bekreft retur (#214). Alle unntatt Bekreft overlevering åpner en
 // bekreftelse (lokal tilstand), som Avslå i ResponseActions. Alle går til serverhandlingen updateRequest med valget i
 // skjemafeltet «intent»; reglene ligger i handover.ts, withdraw.ts og return.ts.
@@ -13,17 +13,19 @@ type HandoverActionsProps = { requestId: string; canConfirm: boolean; canCancel:
 
 const secondary =
   "h-12 w-full rounded-md border-2 border-ink bg-surface text-base font-semibold enabled:hover:bg-paper disabled:cursor-wait disabled:opacity-70";
-// Avbestill og Trekk tilbake er destruktive: rød kant og tekst, som «Slett annonse» (#253).
+// Avbryt avtalen og Trekk tilbake er destruktive: rød kant og tekst, som «Slett annonse» (#253).
 const destructive = secondary.replace("border-ink", "border-danger text-danger");
 const primary =
   "h-14 w-full rounded-md bg-action text-lg font-semibold text-white transition-colors enabled:hover:bg-action-hover disabled:cursor-wait disabled:opacity-70";
 
 const questions = {
-  cancel: "Avbestille avtalen?",
+  cancel: "Avbryte avtalen?",
   withdraw: "Trekke tilbake forespørselen?",
   return: "Bekrefte at lånet er levert tilbake?",
 } as const;
-const confirmLabels = { cancel: "Ja, avbestill", withdraw: "Ja, trekk tilbake", return: "Ja, bekreft retur" } as const;
+const confirmLabels = { cancel: "Ja, avbryt avtalen", withdraw: "Ja, trekk tilbake", return: "Ja, bekreft retur" } as const;
+// «Avbryt» ville betydd to ting i dialogen om å avbryte avtalen, så den har et eget svar (#300).
+const dismissLabels = { cancel: "Nei, behold avtalen", withdraw: "Avbryt", return: "Avbryt" } as const;
 
 export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw, canReturn }: HandoverActionsProps) {
   const [result, action, pending] = useActionState<ActionResult, FormData>(updateRequest, {});
@@ -34,7 +36,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
     <form action={action} noValidate>
       <input type="hidden" name="requestId" value={requestId} />
       <FieldError id="handover-error" message={state.error} />
-      {/* Hver del har egen key, så React lager nye knapper: ellers blir «Avbestill» til «Ja, avbestill» midt i klikket, og klikket sender skjemaet. */}
+      {/* Hver del har egen key, så React lager nye knapper: ellers blir «Avbryt avtalen» til «Ja, avbryt avtalen» midt i klikket, og klikket sender skjemaet. */}
       {mode === "idle" ? (
         <div key="idle" className="mt-3 space-y-3">
           {canConfirm && (
@@ -44,7 +46,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
           )}
           {canCancel && (
             <button type="button" onClick={() => setMode("cancel")} className={destructive}>
-              Avbestill
+              Avbryt avtalen
             </button>
           )}
           {canReturn && (
@@ -66,7 +68,7 @@ export function HandoverActions({ requestId, canConfirm, canCancel, canWithdraw,
               {confirmLabels[mode]}
             </button>
             <button type="button" onClick={() => setMode("idle")} className="min-h-12 px-2 font-semibold underline">
-              Avbryt
+              {dismissLabels[mode]}
             </button>
           </div>
         </div>

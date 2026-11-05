@@ -80,7 +80,7 @@ export async function respondToOffer(
   let counterId: string | undefined;
   if (action === "counter") {
     if (ad.type === "giveaway") return { ok: false, error: "Du kan ikke sende motbud på en gis bort" };
-    const validated = validateOffer(ad.type, { price, startDate, endDate });
+    const validated = validateOffer(ad.type, { price, startDate, endDate }, now);
     if (!validated.success) return { ok: false, fieldErrors: validated.fieldErrors };
     const { startDate: start, endDate: end } = validated.data;
     if (start && end && (await isTaken(db, ad.id, requestId, { startDate: start, endDate: end }))) return { ok: false, error: OVERLAP };

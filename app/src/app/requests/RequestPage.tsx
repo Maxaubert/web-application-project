@@ -1,7 +1,7 @@
 // Forespørselssiden /requests/:id (WF-08, #192). Beskyttet av requireUser. Viser status og siste bud
 // for de to partene. Andre enn eieren og forespørreren får samme borte-visning med 404 som en ukjent annonse, så
 // ingen kan se om en forespørsel finnes. Under budkortet har den som har tur knappene Godta, Motbud og Avslå (#187). Fra godtatt vises den andres
-// kontaktinfo og knappene Bekreft overlevering og Avbestill; forespørreren kan trekke tilbake mens den venter (#188).
+// kontaktinfo og knappene Bekreft overlevering og Avbryt avtalen; forespørreren kan trekke tilbake mens den venter (#188).
 // Tilbakelenken går til Min side (#193) og annonsekortet til annonsen.
 import type { RequestInfo } from "rwsdk/worker";
 import { HeaderActions } from "@/app/shared/HeaderActions";
