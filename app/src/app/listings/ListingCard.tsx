@@ -25,7 +25,7 @@ export function ListingCard({ listing, cover, favorite }: ListingCardProps) {
       <a href={`/listings/${listing.id}`} className="block rounded-xl focus-visible:-outline-offset-4">
         <ListingImage src={cover} className="aspect-[4/3] w-full" />
         <div className="px-4 py-3">
-          <h2 className="line-clamp-2 text-lg font-bold [overflow-wrap:anywhere]">{listing.title}</h2>
+          <h2 className="line-clamp-2 min-h-14 text-lg font-bold [overflow-wrap:anywhere]">{listing.title}</h2>
           <p className="mt-1 text-xl font-extrabold">{formatPrice(listing) ?? "Gratis"}</p>
         </div>
       </a>
